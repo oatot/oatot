@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+package oatot;
+
+import "google/protobuf/timestamp.proto";
+
+message SiteAuth {
+  string btc_address = 1;
+  string session_id = 2;
+}
+
+message OaAuth {
+  string qkey = 1;
+}
+
+message SiteLoginStep1Request {
+  string btc_address = 1;
+}
+
+message SiteLoginStep1Response {
+  string challenge = 1;
+}
+
+message SiteLoginStep2Request {
+  string btc_address = 1;
+  string challenge = 2;
+  string signed_text = 3;
+  string signature = 4;
+}
+
+message SiteLoginStep2Response {
+  string session_id = 2;
+}
+
+message SiteLogoutRequest {
+  SiteAuth site_auth = 1;
+}
+
+message SiteLogoutResponse {
+}
+
+message OaLoginStep1Request {
+  string qkey = 1;
+}
+
+message OaLoginStep1Response {
+  string token = 1;
+}
+
+message SiteOaLoginStep2Request {
+  SiteAuth site_auth = 1;
+  string token = 2;
+}
+
+message SiteOaLoginStep2Response {
+}
+
+message SiteMyQkeysRequest {
+  SiteAuth site_auth = 1;
+}
+
+message Qkey {
+  string qkey = 1;
+  google.protobuf.Timestamp added_time = 2;
+  google.protobuf.Timestamp last_used_time = 3;
+}
+
+message SiteMyQkeysResponse {
+  repeated Qkey qkeys = 1;
+}
+
+message SiteRemoveQkeyRequest {
+  SiteAuth site_auth = 1;
+  string qkey = 2;
+}
+
+message SiteRemoveQkeyResponse {
+}
+
+message SiteDepositBtcRequest {
+  SiteAuth site_auth = 1;
+}
+
+message SiteDepositBtcResponse {
+  string btc_address = 1;
+}
+
+message SiteWithdrawBtcRequest {
+  SiteAuth site_auth = 1;
+  string btc_address = 2;
+  fixed64 satoshis = 3;
+}
+
+message SiteWithdrawBtcResponse {
+  string tx = 1;
+}
+
+message OaBalanceRequest {
+  OaAuth oa_auth = 1;
+}
+
+message OaBalanceResponse {
+  fixed64 free_satoshis = 1;
+  fixed64 satoshis_on_bids = 2;
+}
+
+message Bid {
+  // Filled by the user who makes the bid.
+  string horse = 1;
+  fixed64 satoshis = 2;
+  // Filled by the system.
+  google.protobuf.Timestamp open_time = 3;
+  google.protobuf.Timestamp close_time = 4;
+  string winner = 5;
+  fixed64 prize = 6;
+}
+
+message OaBidRequest {
+  OaAuth oa_auth = 1;
+  Bid bid = 2;
+}
+
+message OaBidResponse {
+}
+
+message OaMyActiveBidsRequest {
+  OaAuth oa_auth = 1;
+}
+
+message OaMyActiveBidsResponse {
+  repeated Bid bids = 1;
+}
+
+message OaActiveBidsSummaryRequest {
+  OaAuth oa_auth = 1;
+}
+
+message OaActiveBidsSummaryResponse {
+  repeated Bid bids = 1; // Info about bids is aggregated.
+}
+
+message OaMyPastBidsRequest {
+  OaAuth oa_auth = 1;
+  string next_page = 2;
+}
+
+message OaMyPastBidsResponse {
+  repeated Bid bids = 1;
+  string next_page = 2;
+}
+
+message UpdatesRequest {
+  oneof auth {
+    OaAuth oa_auth = 1;
+    SiteAuth site_auth = 2;
+  }
+  string next_page = 3;
+}
+
+message BidClosedEvent {
+  Bid bid = 1;
+}
+
+message SummaryEvent {
+  repeated Bid new_summary = 1;
+}
+
+message Event {
+  oneof event {
+    BidClosedEvent bid_closed_event = 1;
+    SummaryEvent summary_event = 2;
+  }
+}
+
+message UpdatesResponse {
+  repeated Event events = 1;
+  string next_page = 2;
+}
+
+service Oatot {
+
+  rpc SiteLoginStep1(SiteLoginStep1Request) returns (SiteLoginStep1Response);
+
+  rpc SiteLoginStep2(SiteLoginStep2Request) returns (SiteLoginStep2Response);
+
+  rpc SiteLogout(SiteLogoutRequest) returns (SiteLogoutResponse);
+
+  rpc OaLoginStep1(OaLoginStep1Request) returns (OaLoginStep1Response);
+
+  rpc SiteOaLoginStep2(SiteOaLoginStep2Request) returns (SiteOaLoginStep2Response);
+
+  rpc SiteMyQkeys(SiteMyQkeysRequest) returns (SiteMyQkeysResponse);
+
+  rpc SiteRemoveQkey(SiteRemoveQkeyRequest) returns (SiteRemoveQkeyResponse);
+
+  rpc SiteDepositBtc(SiteDepositBtcRequest) returns (SiteDepositBtcResponse);
+
+  rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
+
+  rpc OaBalance(OaBalanceRequest) returns (OaBalanceResponse);
+
+  rpc OaBid(OaBidRequest) returns (OaBidResponse);
+
+  rpc OaMyActiveBids(OaMyActiveBidsRequest) returns (OaMyActiveBidsResponse);
+
+  rpc OaActiveBidsSummary(OaActiveBidsSummaryRequest) returns (OaActiveBidsSummaryResponse);
+
+  rpc OaMyPastBids(OaMyPastBidsRequest) returns (OaMyPastBidsResponse);
+
+  rpc Updates(UpdatesRequest) returns (UpdatesResponse);
+
+}
