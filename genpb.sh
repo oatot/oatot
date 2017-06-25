@@ -5,7 +5,7 @@ protoc \
     --go_out=plugins=grpc:backend/generated \
     api.proto
 
-mkdir -p oa/generated
-protoc-c \
-    --c_out=oa/generated \
+mkdir -p mod_proxy/generated
+protoc \
+    --go_out=plugins=grpc:mod_proxy/generated \
     api.proto
