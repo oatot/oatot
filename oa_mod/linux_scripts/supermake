@@ -1,9 +1,9 @@
 
 #Tip: You can create a supermake.local file and this script will get the variable from there!
-BINNAME=openarena
-MODNAME=oax
+BINNAME=openarena-server
+MODNAME=oatot
 #ARCH should be either i386 (32 bit) or x86_64 (64 bit)
-ARCH=i386
+ARCH=x86_64
 
 if [ -r ./supermake.local ] ; then
 source ./supermake.local
@@ -22,6 +22,6 @@ mkdir -p ~/.openarena/$MODNAME
 
 pushd ..
 #Build, pak it and start 
-make BASEGAME=$MODNAME && cd build/release-linux-$ARCH/${MODNAME} && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm && $BINNAME +set fs_game $MODNAME +set debug 1 +set sv_pure 0 +vm_ui 2 +vm_game 2 +vm_cgame 2
+make BASEGAME=$MODNAME && cd build/release-linux-$ARCH/${MODNAME} && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm && $BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port 27963 +exec server.cfg
 popd
 
