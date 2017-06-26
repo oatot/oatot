@@ -2014,15 +2014,18 @@ void Cmd_Bet_f( gentity_t *ent ) {
             } else if ( Q_strequal( arg1, "blue" ) ) {
             } else {
                 trap_SendServerCommand( ent-g_entities, "print \"Invalid horse.\n\"" );
+                return;
             }
             money = atoi( arg2 );
             if ( money <= 0 || money > G_oatot_getBalance( client->pers.guid, arg3 ) ) {
                 trap_SendServerCommand( ent-g_entities, "print \"Invalid amount of money.\n\"" );
+                return;
             }
             if ( Q_strequal( arg3, "BTC" ) ) {
             } else if ( Q_strequal( arg3, "OAC" ) ) {
             } else {
                 trap_SendServerCommand( ent-g_entities, "print \"Invalid currency.\n\"" );
+                return;
             }
             trap_RealTime( &open_time );
             strcpy(ent->client->pers.bids[bids_n].horse, arg1);
