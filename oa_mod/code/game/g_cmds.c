@@ -2039,6 +2039,16 @@ void Cmd_Bet_f( gentity_t *ent ) {
     }
 }
 
+/*
+==================
+Cmd_PastBids_f
+==================
+*/
+void Cmd_PastBids_f( gentity_t *ent ) {
+
+}
+
+/*
 ==================
 Cmd_CallTeamVote_f
 ==================
@@ -2279,6 +2289,7 @@ commands_t cmds[ ] =
 
 	// oatot commands
 	{ "bet", 0, Cmd_Bet_f },
+	{ "pastbids", 0, Cmd_PastBids_f },
 
 	// communication commands
 	{ "tell", CMD_MESSAGE, Cmd_Tell_f },
