@@ -10,7 +10,7 @@ message SiteAuth {
 }
 
 message OaAuth {
-  string qkey = 1;
+  string cl_guid = 1;
 }
 
 message SiteLoginStep1Request {
@@ -40,7 +40,7 @@ message SiteLogoutResponse {
 }
 
 message OaLoginStep1Request {
-  string qkey = 1;
+  string cl_guid = 1;
 }
 
 message OaLoginStep1Response {
@@ -55,26 +55,26 @@ message SiteOaLoginStep2Request {
 message SiteOaLoginStep2Response {
 }
 
-message SiteMyQkeysRequest {
+message SiteMyClGuidsRequest {
   SiteAuth site_auth = 1;
 }
 
-message Qkey {
-  string qkey = 1;
+message ClGuid {
+  string cl_guid = 1;
   google.protobuf.Timestamp added_time = 2;
   google.protobuf.Timestamp last_used_time = 3;
 }
 
-message SiteMyQkeysResponse {
-  repeated Qkey qkeys = 1;
+message SiteMyClGuidsResponse {
+  repeated ClGuid cl_guids = 1;
 }
 
-message SiteRemoveQkeyRequest {
+message SiteRemoveClGuidRequest {
   SiteAuth site_auth = 1;
-  string qkey = 2;
+  string cl_guid = 2;
 }
 
-message SiteRemoveQkeyResponse {
+message SiteRemoveClGuidResponse {
 }
 
 message SiteDepositBtcRequest {
@@ -97,22 +97,24 @@ message SiteWithdrawBtcResponse {
 
 message OaBalanceRequest {
   OaAuth oa_auth = 1;
+  string currency = 2;
 }
 
 message OaBalanceResponse {
-  fixed64 free_satoshis = 1;
-  fixed64 satoshis_on_bids = 2;
+  fixed64 free_money = 1;
+  fixed64 money_on_bids = 2;
 }
 
 message Bid {
   // Filled by the user who makes the bid.
   string horse = 1;
-  fixed64 satoshis = 2;
+  string currency = 2;
+  fixed64 amount = 3;
   // Filled by the system.
-  google.protobuf.Timestamp open_time = 3;
-  google.protobuf.Timestamp close_time = 4;
-  string winner = 5;
-  fixed64 prize = 6;
+  google.protobuf.Timestamp open_time = 4;
+  google.protobuf.Timestamp close_time = 5;
+  string winner = 6;
+  fixed64 prize = 7;
 }
 
 message OaBidRequest {
@@ -189,9 +191,9 @@ service Oatot {
 
   rpc SiteOaLoginStep2(SiteOaLoginStep2Request) returns (SiteOaLoginStep2Response);
 
-  rpc SiteMyQkeys(SiteMyQkeysRequest) returns (SiteMyQkeysResponse);
+  rpc SiteMyClGuids(SiteMyClGuidsRequest) returns (SiteMyClGuidsResponse);
 
-  rpc SiteRemoveQkey(SiteRemoveQkeyRequest) returns (SiteRemoveQkeyResponse);
+  rpc SiteRemoveClGuid(SiteRemoveClGuidRequest) returns (SiteRemoveClGuidResponse);
 
   rpc SiteDepositBtc(SiteDepositBtcRequest) returns (SiteDepositBtcResponse);
 
