@@ -1503,6 +1503,8 @@ void ClientBegin( int clientNum ) {
 	client->pers.enterTime = level.time;
 	client->pers.teamState.state = TEAM_BEGIN;
 
+    client->pers.activeBidsNumber = 0;
+
 	//Elimination:
 	client->pers.roundReached = 0; //We will spawn in next round
 	if(g_gametype.integer == GT_LMS) {

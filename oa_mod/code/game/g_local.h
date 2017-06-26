@@ -249,6 +249,18 @@ typedef struct {
 #define NUM_PING_SAMPLES 64
 //unlagged - true ping
 
+// max active bids number per client
+#define MAX_ACTIVE_BIDS_NUMBER 100
+typedef struct bid_s bid_t;
+
+// structure for describing a bid (oatot)
+struct bid_s {
+    char *horse;
+    char *currency;
+    int amount;
+    qtime_t openTime;
+};
+
 // client data that stays across multiple respawns, but is cleared
 // on each level change or team change at ClientBegin()
 typedef struct {
@@ -310,6 +322,8 @@ typedef struct {
 	int         nameChanges;
 
 	qboolean    cannotWin; // Set to true if the players joins a leading team or the team with the most players
+	int activeBidsNumber;
+	bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1
