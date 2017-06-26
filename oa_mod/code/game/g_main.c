@@ -136,6 +136,9 @@ vmCvar_t        g_elimination_lockspectator;
 
 vmCvar_t	g_rockets;
 
+//oatot
+vmCvar_t	g_allowBetting;
+
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
 vmCvar_t	g_vampire;
@@ -274,6 +277,9 @@ static cvarTable_t		gameCvarTable[] = {
 
 	{ &g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse },
 	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
+
+	//oatot
+	{ &g_allowBetting, "g_allowBetting", "1", 0, 0, qfalse },
 
 	//Votes start:
 	{ &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },

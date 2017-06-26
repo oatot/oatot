@@ -1093,6 +1093,9 @@ extern	vmCvar_t	g_proxMineTimeout;
 extern	vmCvar_t	g_music;
 extern  vmCvar_t        g_spawnprotect;
 
+//oatot
+extern	vmCvar_t	g_allowBetting;
+
 //elimination:
 extern	vmCvar_t	g_elimination_selfdamage;
 extern	vmCvar_t	g_elimination_startHealth;
