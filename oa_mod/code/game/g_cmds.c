@@ -1999,7 +1999,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
     char    arg3[MAX_STRING_TOKENS];
     qtime_t open_time;
     gclient_t *client = ent->client;
-    if ( !g_allowBetting.integer ) {
+    if ( g_gameStage.integer != MAKING_BETS) {
         trap_SendServerCommand( ent-g_entities, "print \"Betting not allowed now.\n\"" );
         return;
     }

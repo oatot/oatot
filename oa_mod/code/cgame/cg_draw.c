@@ -2958,6 +2958,21 @@ static void CG_DrawCrosshairNames(void) {
 
 /*
 =================
+CG_DrawGameStageInfo
+=================
+ */
+static void CG_DrawGameStageInfo(void) {
+	if ( cgs.gameStage == FORMING_TEAMS ) {
+		CG_DrawBigString(320 - 13 * 8, 40, "^2FORMING TEAMS", 1.0F);
+	} else if ( cgs.gameStage == MAKING_BETS ) {
+		CG_DrawBigString(320 - 11 * 8, 40, "^1MAKING BETS", 1.0F);
+	} else if ( cgs.gameStage == PLAYING) {
+		CG_DrawBigString(320 - 7 * 8, 40, "^3PLAYING", 1.0F);
+	}
+}
+
+/*
+=================
 CG_DrawSpectator
 =================
  */
@@ -3493,6 +3508,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			return;
 		}
 	 */
+	CG_DrawGameStageInfo();
 	if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR /*|| cg.snap->ps.pm_type == PM_SPECTATOR*/) {
 		CG_DrawSpectator();
 

@@ -936,6 +936,10 @@ team_t PickTeam( int ignoreClientNum ) {
 	counts[TEAM_BLUE] = TeamCount( ignoreClientNum, TEAM_BLUE );
 	counts[TEAM_RED] = TeamCount( ignoreClientNum, TEAM_RED );
 
+	if ( g_gameStage.integer != FORMING_TEAMS) {
+		return TEAM_NONE;
+	}
+
 	//KK-OAX Both Teams locked...forget about it, print an error message, keep as spec
 	if ( level.RedTeamLocked && level.BlueTeamLocked ) {
 		G_Printf( "Both teams have been locked by the Admin! \n" );
@@ -2083,6 +2087,10 @@ void ClientDisconnect( int clientNum ) {
 
 	if ( ent->r.svFlags & SVF_BOT ) {
 		BotAIShutdownClient( clientNum, qfalse );
+	}
+	if ( g_gameStage.integer != FORMING_TEAMS) {
+		// quitting during the match isn't allowed, auto-restart
+		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}
 }
 

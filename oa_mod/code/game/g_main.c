@@ -137,7 +137,7 @@ vmCvar_t        g_elimination_lockspectator;
 vmCvar_t	g_rockets;
 
 //oatot
-vmCvar_t	g_allowBetting;
+vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
 
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
@@ -279,7 +279,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
 	//oatot
-	{ &g_allowBetting, "g_allowBetting", "1", 0, 0, qfalse },
+	{ &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
 
 	//Votes start:
 	{ &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },

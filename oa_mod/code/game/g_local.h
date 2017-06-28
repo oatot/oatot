@@ -1108,7 +1108,7 @@ extern	vmCvar_t	g_music;
 extern  vmCvar_t        g_spawnprotect;
 
 //oatot
-extern	vmCvar_t	g_allowBetting;
+extern	vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
 
 //elimination:
 extern	vmCvar_t	g_elimination_selfdamage;
