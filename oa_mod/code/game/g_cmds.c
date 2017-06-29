@@ -1993,53 +1993,53 @@ Cmd_Bet_f
 ==================
 */
 void Cmd_Bet_f( gentity_t *ent ) {
-    int     money;
-    char    arg1[MAX_STRING_TOKENS];
-    char    arg2[MAX_STRING_TOKENS];
-    char    arg3[MAX_STRING_TOKENS];
-    qtime_t open_time;
-    gclient_t *client = ent->client;
-    if ( g_gameStage.integer != MAKING_BETS) {
-        trap_SendServerCommand( ent-g_entities, "print \"Betting not allowed now.\n\"" );
-        return;
-    }
-    if ( client ) {
-        int bids_n = client->pers.activeBidsNumber;
-        if ( bids_n < MAX_ACTIVE_BIDS_NUMBER ) {
-            // check args
-            trap_Argv( 1, arg1, sizeof( arg1 ) );
-            trap_Argv( 2, arg2, sizeof( arg2 ) );
-            trap_Argv( 3, arg3, sizeof( arg3 ) );
-            if ( Q_strequal( arg1, "red" ) ) {
-            } else if ( Q_strequal( arg1, "blue" ) ) {
-            } else {
-                trap_SendServerCommand( ent-g_entities, "print \"Invalid horse.\n\"" );
-                return;
-            }
-            money = atoi( arg2 );
-            if ( money <= 0 || money > G_oatot_getBalance( client->pers.guid, arg3 ) ) {
-                trap_SendServerCommand( ent-g_entities, "print \"Invalid amount of money.\n\"" );
-                return;
-            }
-            if ( Q_strequal( arg3, "BTC" ) ) {
-            } else if ( Q_strequal( arg3, "OAC" ) ) {
-            } else {
-                trap_SendServerCommand( ent-g_entities, "print \"Invalid currency.\n\"" );
-                return;
-            }
-            trap_RealTime( &open_time );
-            strcpy(ent->client->pers.bids[bids_n].horse, arg1);
-            strcpy(ent->client->pers.bids[bids_n].currency, arg3);
-            ent->client->pers.bids[bids_n].amount = money;
-            ent->client->pers.bids[bids_n].openTime = open_time;
-            ent->client->pers.activeBidsNumber += 1;
-            trap_SendServerCommand( ent-g_entities, "print \"Your bet is made.\n\"" );
-        } else {
-            trap_SendServerCommand( ent-g_entities, "print \"You can't make so many bets, sorry!\n\"" );
-        }
-    } else {
-        trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
-    }
+	int     money;
+	char    arg1[MAX_STRING_TOKENS];
+	char    arg2[MAX_STRING_TOKENS];
+	char    arg3[MAX_STRING_TOKENS];
+	qtime_t open_time;
+	gclient_t *client = ent->client;
+	if ( g_gameStage.integer != MAKING_BETS ) {
+		trap_SendServerCommand( ent-g_entities, "print \"Betting not allowed now.\n\"" );
+		return;
+	}
+	if ( client ) {
+		int bids_n = client->pers.activeBidsNumber;
+		if ( bids_n < MAX_ACTIVE_BIDS_NUMBER ) {
+			// check args
+			trap_Argv( 1, arg1, sizeof( arg1 ) );
+			trap_Argv( 2, arg2, sizeof( arg2 ) );
+			trap_Argv( 3, arg3, sizeof( arg3 ) );
+			if ( Q_strequal( arg1, "red" ) ) {
+			} else if ( Q_strequal( arg1, "blue" ) ) {
+			} else {
+				trap_SendServerCommand( ent-g_entities, "print \"Invalid horse.\n\"" );
+				return;
+			}
+			money = atoi( arg2 );
+			if ( money <= 0 || money > G_oatot_getBalance( client->pers.guid, arg3 ) ) {
+				trap_SendServerCommand( ent-g_entities, "print \"Invalid amount of money.\n\"" );
+				return;
+			}
+			if ( Q_strequal( arg3, "BTC" ) ) {
+			} else if ( Q_strequal( arg3, "OAC" ) ) {
+			} else {
+				trap_SendServerCommand( ent-g_entities, "print \"Invalid currency.\n\"" );
+				return;
+			}
+			trap_RealTime( &open_time );
+			strcpy(ent->client->pers.bids[bids_n].horse, arg1);
+			strcpy(ent->client->pers.bids[bids_n].currency, arg3);
+			ent->client->pers.bids[bids_n].amount = money;
+			ent->client->pers.bids[bids_n].openTime = open_time;
+			ent->client->pers.activeBidsNumber += 1;
+			trap_SendServerCommand( ent-g_entities, "print \"Your bet is made.\n\"" );
+		} else {
+			trap_SendServerCommand( ent-g_entities, "print \"You can't make so many bets, sorry!\n\"" );
+		}
+	} else {
+		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+	}
 }
 
 /*
