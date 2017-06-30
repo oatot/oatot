@@ -255,6 +255,7 @@ typedef struct bid_s bid_t;
 
 // structure for describing a bid (oatot)
 struct bid_s {
+    qboolean discarded;
     char *horse;
     char *currency;
     int amount;

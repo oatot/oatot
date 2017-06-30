@@ -2037,11 +2037,40 @@ void Cmd_Bet_f( gentity_t *ent ) {
 			strcpy(ent->client->pers.bids[bids_n].currency, arg3);
 			ent->client->pers.bids[bids_n].amount = money;
 			ent->client->pers.bids[bids_n].openTime = open_time;
+			ent->client->pers.bids[bids_n].discarded = qfalse;
 			ent->client->pers.activeBidsNumber += 1;
 			trap_SendServerCommand( ent-g_entities, "print \"Your bet is made.\n\"" );
 		} else {
 			trap_SendServerCommand( ent-g_entities, "print \"You can't make so many bets, sorry!\n\"" );
 		}
+	} else {
+		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+	}
+}
+
+/*
+==================
+Cmd_Unbet_f
+==================
+*/
+void Cmd_Unbet_f( gentity_t *ent ) {
+	int     bet_ID;
+	char    arg1[MAX_STRING_TOKENS];
+	gclient_t *client = ent->client;
+	if ( g_gameStage.integer != MAKING_BETS ) {
+		trap_SendServerCommand( ent-g_entities, "print \"You can't unbet anything now.\n\"" );
+		return;
+	}
+	if ( client ) {
+		// check arg
+		trap_Argv( 1, arg1, sizeof( arg1 ) );
+		bet_ID = atoi( arg1 );
+		if ( bet_ID < 0 || bet_ID >= client->pers.activeBidsNumber) {
+			trap_SendServerCommand( ent-g_entities, "print \"Invalid bet ID.\n\"" );
+			return;
+		}
+		ent->client->pers.bids[bet_ID].discarded = qtrue;
+		trap_SendServerCommand( ent-g_entities, "print \"Bet was discarded.\n\"" );
 	} else {
 		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
 	}
@@ -2343,6 +2372,7 @@ commands_t cmds[ ] =
 
 	// oatot commands
 	{ "bet", 0, Cmd_Bet_f },
+	{ "unbet", 0, Cmd_Unbet_f },
 	{ "pastbids", 0, Cmd_PastBids_f },
 	{ "readyToBet", 0, Cmd_ReadyToBet_f },
 	{ "finishedBetting", 0, Cmd_FinishedBetting_f },
