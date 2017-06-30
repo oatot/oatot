@@ -885,6 +885,10 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 
 	G_RemapTeamShaders();
 
+	//oatot:
+	level.finishedBettingN = 0;
+	level.readyToBetN = 0;
+
 	//elimination:
 	level.roundNumber = 1;
 	level.roundNumberStarted = 0;

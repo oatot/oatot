@@ -579,6 +579,9 @@ int         mKillUBound;
 	int		max_humanplayers;
 	int		lastActiveTime; ///< Updated as long as there are at least one human player on the server
 
+	// oatot
+	int readyToBetN;
+	int finishedBettingN;
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin

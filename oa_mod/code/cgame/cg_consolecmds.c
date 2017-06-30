@@ -680,4 +680,6 @@ void CG_InitConsoleCommands(void) {
 	trap_AddCommand("loaddefered"); // spelled wrong, but not changing for demo
 	trap_AddCommand("bet"); // oatot
 	trap_AddCommand("pastbids"); // oatot
+	trap_AddCommand("readyToBet"); // oatot
+	trap_AddCommand("finishedBetting"); // oatot
 }

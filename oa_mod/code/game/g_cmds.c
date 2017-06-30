@@ -2053,6 +2053,52 @@ void Cmd_PastBids_f( gentity_t *ent ) {
 
 /*
 ==================
+Cmd_ReadyToBet_f
+==================
+*/
+void Cmd_ReadyToBet_f( gentity_t *ent ) {
+	if ( g_gameStage.integer == MAKING_BETS ) {
+		trap_SendServerCommand( ent-g_entities, "print \"You can do it already.\n\"" );
+		return;
+	}
+	if ( g_gameStage.integer == PLAYING ) {
+		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
+		return;
+	}
+	if ( g_gameStage.integer == FORMING_TEAMS ) {
+		level.readyToBetN += 1;
+		if ( level.readyToBetN > ( level.numConnectedClients / 2 ) ) {
+			trap_Cvar_Set( "g_gameStage", "1" );
+			trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
+		}
+	}
+}
+
+/*
+==================
+Cmd_FinishedBetting_f
+==================
+*/
+void Cmd_FinishedBetting_f( gentity_t *ent ) {
+	if ( g_gameStage.integer == FORMING_TEAMS ) {
+		trap_SendServerCommand( ent-g_entities, "print \"We haven't started to make bets yet, you stupid!\n\"" );
+		return;
+	}
+	if ( g_gameStage.integer == PLAYING ) {
+		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
+		return;
+	}
+	if ( g_gameStage.integer == MAKING_BETS ) {
+		level.finishedBettingN += 1;
+		if (level.finishedBettingN > ( level.numConnectedClients / 2 ) ) {
+			trap_Cvar_Set( "g_gameStage", "2" );
+			trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
+		}
+	}
+}
+
+/*
+==================
 Cmd_CallTeamVote_f
 ==================
 */
@@ -2293,6 +2339,8 @@ commands_t cmds[ ] =
 	// oatot commands
 	{ "bet", 0, Cmd_Bet_f },
 	{ "pastbids", 0, Cmd_PastBids_f },
+	{ "readyToBet", 0, Cmd_ReadyToBet_f },
+	{ "finishedBetting", 0, Cmd_FinishedBetting_f },
 
 	// communication commands
 	{ "tell", CMD_MESSAGE, Cmd_Tell_f },
