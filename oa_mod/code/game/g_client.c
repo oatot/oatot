@@ -1327,7 +1327,11 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 
  	value = Info_ValueForKey( userinfo, "cl_guid" );
  	Q_strncpyz( client->pers.guid, value, sizeof( client->pers.guid ) );
- 	
+
+
+	if ( g_gameStage.integer != PLAYING ) {
+		client->pers.activeBidsNumber = 0;
+	}
 
  	// IP filtering //KK-OAX Has this been obsoleted? 
  	// https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=500
@@ -1502,8 +1506,6 @@ void ClientBegin( int clientNum ) {
 	client->pers.connected = CON_CONNECTED;
 	client->pers.enterTime = level.time;
 	client->pers.teamState.state = TEAM_BEGIN;
-
-	client->pers.activeBidsNumber = 0;
 
 	//Elimination:
 	client->pers.roundReached = 0; //We will spawn in next round
@@ -2084,7 +2086,7 @@ void ClientDisconnect( int clientNum ) {
 	if ( ent->r.svFlags & SVF_BOT ) {
 		BotAIShutdownClient( clientNum, qfalse );
 	}
-	if ( g_gameStage.integer != FORMING_TEAMS) {
+	if ( g_gameStage.integer != FORMING_TEAMS || checkForRestart() ) {
 		// quitting during the match isn't allowed, auto-restart
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}

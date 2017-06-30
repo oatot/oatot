@@ -279,7 +279,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
 	//oatot
-	{ &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
+	{ &g_gameStage, "g_gameStage", "", CVAR_SERVERINFO, 0, qfalse },
 
 	//Votes start:
 	{ &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
@@ -757,8 +757,8 @@ G_InitGame
 */
 void G_InitGame( int levelTime, int randomSeed, int restart )
 {
-	int					i;
-	char	mapname[MAX_CVAR_VALUE_STRING];
+	int					i, next_game_stage;
+	char	mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
 
 
 	G_Printf ("------- Game Initialization -------\n");
@@ -839,6 +839,20 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 		g_entities[i].client = level.clients + i;
 	}
 
+	// oatot game stages changing logic:
+	if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+		// normal stage change or map change
+		next_game_stage = ( g_gameStage.integer + 1 ) % 3;
+		Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
+		trap_Cvar_Set( "g_gameStage", next_game_stage_str );
+	} else if ( g_gameStage.integer == MAKING_BETS ) {
+		// rage quit or was callvoted
+		trap_Cvar_Set( "g_gameStage", "0" );
+	}
+
+	level.finishedBettingN = 0;
+	level.readyToBetN = 0;
+
 	// always leave room for the max number of clients,
 	// even if they aren't all used, so numbers inside that
 	// range are NEVER anything but clients
@@ -884,13 +898,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 	}
 
 	G_RemapTeamShaders();
-
-	//oatot:
-	if ( g_gameStage.integer == PLAYING ) {
-		trap_Cvar_Set( "g_gameStage", "0" );
-	}
-	level.finishedBettingN = 0;
-	level.readyToBetN = 0;
 
 	//elimination:
 	level.roundNumber = 1;

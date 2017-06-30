@@ -989,6 +989,9 @@ void CheckVote( void );
 void CountVotes( void );
 void ClientLeaving(int clientNumber);
 
+// oatot
+qboolean checkForRestart( void );
+
 #define MAX_MAPNAME 32
 #define MAPS_PER_PAGE 10
 #define MAX_MAPNAME_BUFFER MAX_MAPNAME*600

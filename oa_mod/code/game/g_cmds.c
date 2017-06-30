@@ -755,6 +755,10 @@ void SetTeam( gentity_t *ent, char *s ) {
 	//
 	client = ent->client;
 
+	if ( g_gameStage.integer != FORMING_TEAMS ) {
+		return;
+	}
+
 	clientNum = client - level.clients;
 	trap_GetUserinfo( clientNum, userinfo, sizeof( userinfo ) );
 	specClient = 0;
@@ -885,10 +889,6 @@ void SetTeam( gentity_t *ent, char *s ) {
 // they go to the end of the line for tournements
 	if(team == TEAM_SPECTATOR && oldTeam != team) {
 		AddTournamentQueue(client);
-	}
-
-	if ( g_gameStage.integer != FORMING_TEAMS ) {
-		team = TEAM_NONE;
 	}
 
 	client->sess.sessionTeam = team;
@@ -2082,7 +2082,20 @@ Cmd_PastBids_f
 ==================
 */
 void Cmd_PastBids_f( gentity_t *ent ) {
+}
 
+qboolean checkForRestart( void ) {
+	if ( g_gameStage.integer == FORMING_TEAMS ) {
+		if ( level.readyToBetN > ( level.numConnectedClients / 2 ) ) {
+			return qtrue;
+		}
+	}
+	if ( g_gameStage.integer == MAKING_BETS ) {
+		if (level.finishedBettingN > ( level.numConnectedClients / 2 ) ) {
+			return qtrue;
+		}
+	}
+	return qfalse;
 }
 
 /*
@@ -2099,12 +2112,9 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
 		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
 		return;
 	}
-	if ( g_gameStage.integer == FORMING_TEAMS ) {
-		level.readyToBetN += 1;
-		if ( level.readyToBetN > ( level.numConnectedClients / 2 ) ) {
-			trap_Cvar_Set( "g_gameStage", "1" );
-			trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
-		}
+	level.readyToBetN += 1;
+	if ( checkForRestart() ) {
+		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}
 }
 
@@ -2122,12 +2132,9 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
 		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
 		return;
 	}
-	if ( g_gameStage.integer == MAKING_BETS ) {
-		level.finishedBettingN += 1;
-		if (level.finishedBettingN > ( level.numConnectedClients / 2 ) ) {
-			trap_Cvar_Set( "g_gameStage", "2" );
-			trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
-		}
+	level.finishedBettingN += 1;
+	if ( checkForRestart() ) {
+		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}
 }
 

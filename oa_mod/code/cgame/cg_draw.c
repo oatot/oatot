@@ -3508,7 +3508,6 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 			return;
 		}
 	 */
-	CG_DrawGameStageInfo();
 	if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR /*|| cg.snap->ps.pm_type == PM_SPECTATOR*/) {
 		CG_DrawSpectator();
 
@@ -3582,6 +3581,9 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		CG_DrawCenterDDString();
 		CG_DrawCenter1FctfString();
 		CG_DrawCenterString();
+		if ( !cg.loading && !cg.warmup ) {
+			CG_DrawGameStageInfo();
+		}
 	}
 
 	cg.accBoardShowing = CG_DrawAccboard();
