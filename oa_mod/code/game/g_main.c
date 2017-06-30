@@ -886,6 +886,9 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 	G_RemapTeamShaders();
 
 	//oatot:
+	if ( g_gameStage.integer == PLAYING ) {
+		trap_Cvar_Set( "g_gameStage", "0" );
+	}
 	level.finishedBettingN = 0;
 	level.readyToBetN = 0;
 
