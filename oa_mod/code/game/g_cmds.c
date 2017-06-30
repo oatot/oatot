@@ -886,6 +886,11 @@ void SetTeam( gentity_t *ent, char *s ) {
 	if(team == TEAM_SPECTATOR && oldTeam != team) {
 		AddTournamentQueue(client);
 	}
+
+	if ( g_gameStage.integer != FORMING_TEAMS ) {
+		team = TEAM_NONE;
+	}
+
 	client->sess.sessionTeam = team;
 	client->sess.spectatorState = specState;
 	client->sess.spectatorClient = specClient;
