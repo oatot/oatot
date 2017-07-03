@@ -2117,6 +2117,7 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
 	new_val = g_readyToBetN.integer + 1;
 	Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
 	trap_Cvar_Set( "g_readyToBetN", new_val_str );
+	G_UpdateCvars();
 	if ( checkForRestart() ) {
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}
@@ -2141,6 +2142,7 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
 	new_val = g_finishedBettingN.integer + 1;
 	Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
 	trap_Cvar_Set( "g_finishedBettingN", new_val_str );
+	G_UpdateCvars();
 	if ( checkForRestart() ) {
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}

@@ -870,6 +870,7 @@ void SendCustomVoteCommands(int clientNum);
 //
 // g_main.c
 //
+void G_UpdateCvars( void );
 void FindIntermissionPoint( void );
 void SetLeader(int team, int client);
 void CheckTeamLeader( int team );
