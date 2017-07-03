@@ -2086,12 +2086,12 @@ void Cmd_PastBids_f( gentity_t *ent ) {
 
 qboolean checkForRestart( void ) {
 	if ( g_gameStage.integer == FORMING_TEAMS ) {
-		if ( level.readyToBetN > ( level.numConnectedClients / 2 ) ) {
+		if ( g_readyToBetN.integer > ( level.numConnectedClients / 2 ) ) {
 			return qtrue;
 		}
 	}
 	if ( g_gameStage.integer == MAKING_BETS ) {
-		if (level.finishedBettingN > ( level.numConnectedClients / 2 ) ) {
+		if ( g_finishedBettingN.integer > ( level.numConnectedClients / 2 ) ) {
 			return qtrue;
 		}
 	}
@@ -2104,6 +2104,8 @@ Cmd_ReadyToBet_f
 ==================
 */
 void Cmd_ReadyToBet_f( gentity_t *ent ) {
+	int new_val;
+	char new_val_str[MAX_CVAR_VALUE_STRING];
 	if ( g_gameStage.integer == MAKING_BETS ) {
 		trap_SendServerCommand( ent-g_entities, "print \"You can do it already.\n\"" );
 		return;
@@ -2112,7 +2114,9 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
 		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
 		return;
 	}
-	level.readyToBetN += 1;
+	new_val = g_readyToBetN.integer + 1;
+	Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
+	trap_Cvar_Set( "g_readyToBetN", new_val_str );
 	if ( checkForRestart() ) {
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}
@@ -2124,6 +2128,8 @@ Cmd_FinishedBetting_f
 ==================
 */
 void Cmd_FinishedBetting_f( gentity_t *ent ) {
+	int new_val;
+	char new_val_str[MAX_CVAR_VALUE_STRING];
 	if ( g_gameStage.integer == FORMING_TEAMS ) {
 		trap_SendServerCommand( ent-g_entities, "print \"We haven't started to make bets yet, you stupid!\n\"" );
 		return;
@@ -2132,7 +2138,9 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
 		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
 		return;
 	}
-	level.finishedBettingN += 1;
+	new_val = g_finishedBettingN.integer + 1;
+	Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
+	trap_Cvar_Set( "g_finishedBettingN", new_val_str );
 	if ( checkForRestart() ) {
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
 	}

@@ -580,9 +580,6 @@ int         mKillUBound;
 	int		max_humanplayers;
 	int		lastActiveTime; ///< Updated as long as there are at least one human player on the server
 
-	// oatot
-	int readyToBetN;
-	int finishedBettingN;
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1116,6 +1113,8 @@ extern  vmCvar_t        g_spawnprotect;
 
 //oatot
 extern	vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
+extern	vmCvar_t	g_readyToBetN;
+extern	vmCvar_t	g_finishedBettingN;
 
 //elimination:
 extern	vmCvar_t	g_elimination_selfdamage;

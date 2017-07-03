@@ -138,6 +138,8 @@ vmCvar_t	g_rockets;
 
 //oatot
 vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
+vmCvar_t	g_readyToBetN;
+vmCvar_t	g_finishedBettingN;
 
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
@@ -279,7 +281,9 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
 	//oatot
-	{ &g_gameStage, "g_gameStage", "", CVAR_SERVERINFO, 0, qfalse },
+	{ &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
+	{ &g_readyToBetN, "g_readyToBetN", "0", CVAR_SERVERINFO, 0, qfalse },
+	{ &g_finishedBettingN, "g_finishedBettingN", "0", CVAR_SERVERINFO, 0, qfalse },
 
 	//Votes start:
 	{ &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
@@ -778,6 +782,20 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 		g_vampire.value = 0.0f;
 	}
 
+	// oatot game stages changing logic:
+	if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+		// normal stage change or map change
+		next_game_stage = ( g_gameStage.integer + 1 ) % 3;
+		Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
+		trap_Cvar_Set( "g_gameStage", next_game_stage_str );
+	} else if ( g_gameStage.integer == MAKING_BETS ) {
+		// rage quit or was callvoted
+		trap_Cvar_Set( "g_gameStage", "0" );
+	}
+
+	trap_Cvar_Set( "g_finishedBettingN", "0" );
+	trap_Cvar_Set( "g_readyToBetN", "0" );
+
 	G_ProcessIPBans();
 
 	//KK-OAX Changed to Tremulous's BG_InitMemory
@@ -838,20 +856,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 	for ( i=0 ; i<level.maxclients ; i++ ) {
 		g_entities[i].client = level.clients + i;
 	}
-
-	// oatot game stages changing logic:
-	if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
-		// normal stage change or map change
-		next_game_stage = ( g_gameStage.integer + 1 ) % 3;
-		Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
-		trap_Cvar_Set( "g_gameStage", next_game_stage_str );
-	} else if ( g_gameStage.integer == MAKING_BETS ) {
-		// rage quit or was callvoted
-		trap_Cvar_Set( "g_gameStage", "0" );
-	}
-
-	level.finishedBettingN = 0;
-	level.readyToBetN = 0;
 
 	// always leave room for the max number of clients,
 	// even if they aren't all used, so numbers inside that
