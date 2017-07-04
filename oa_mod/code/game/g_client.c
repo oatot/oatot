@@ -2003,6 +2003,7 @@ server system housekeeping.
 void ClientDisconnect( int clientNum ) {
 	gentity_t	*ent;
 	int			i;
+	team_t		cl_team;
 	char	userinfo[MAX_INFO_STRING];
 
 	// cleanup if we are kicking a bot that
@@ -2013,6 +2014,8 @@ void ClientDisconnect( int clientNum ) {
 	if ( !ent->client ) {
 		return;
 	}
+	// store the team for oatot
+	cl_team = ent->client->sess.sessionTeam;
 
 	ClientLeaving( clientNum);
 	//KK-OAX Admin
@@ -2090,9 +2093,15 @@ void ClientDisconnect( int clientNum ) {
 	if ( ent->r.svFlags & SVF_BOT ) {
 		BotAIShutdownClient( clientNum, qfalse );
 	}
-	if ( g_gameStage.integer != FORMING_TEAMS || checkForRestart() ) {
-		// quitting during the match isn't allowed, auto-restart
+	if ( checkForRestart() ) {
+		// perhaps the majority is ready now
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
+	}
+	if ( g_gameStage.integer != FORMING_TEAMS ) {
+		if ( cl_team != TEAM_SPECTATOR ) {
+			// quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
+			trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
+		}
 	}
 }
 
