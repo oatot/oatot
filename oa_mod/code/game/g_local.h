@@ -330,6 +330,9 @@ typedef struct {
 	int         nameChanges;
 
 	qboolean    cannotWin; // Set to true if the players joins a leading team or the team with the most players
+	// oatot
+	qboolean readyToBet;
+	qboolean finishedBetting;
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1

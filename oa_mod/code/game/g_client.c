@@ -1503,6 +1503,10 @@ void ClientBegin( int clientNum ) {
 	ent->pain = 0;
 	ent->client = client;
 
+	// oatot
+	client->pers.readyToBet = qfalse;
+	client->pers.finishedBetting = qfalse;
+
 	client->pers.connected = CON_CONNECTED;
 	client->pers.enterTime = level.time;
 	client->pers.teamState.state = TEAM_BEGIN;
