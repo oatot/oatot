@@ -223,6 +223,23 @@ typedef struct {
 	float		lastfraggedcarrier;
 } playerTeamState_t;
 
+// max active bids number per client
+#define MAX_ACTIVE_BIDS_NUMBER 100
+// number of bids in single page when showing history with `pastbids` cmd
+#define BIDS_NUMBER_IN_HISTORY_PAGE 15
+
+typedef struct bid_s bid_t;
+typedef struct fullbid_s fullbid_t;
+
+// structure for describing a bid (oatot)
+struct bid_s {
+	qboolean discarded;
+	char *horse;
+	char *currency;
+	int amount;
+	qtime_t openTime;
+};
+
 // the auto following clients don't follow a specific client
 // number, but instead follow the first two active players
 #define	FOLLOW_ACTIVE1	-1
@@ -239,6 +256,9 @@ typedef struct {
 	int			spectatorClient;	// for chasecam and follow mode
 	int			wins, losses;		// tournament stats
 	qboolean	teamLeader;			// true when this client is a team leader
+	// oatot
+	int activeBidsNumber;
+	bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
 } clientSession_t;
 
 //
@@ -248,19 +268,6 @@ typedef struct {
 //unlagged - true ping
 #define NUM_PING_SAMPLES 64
 //unlagged - true ping
-
-// max active bids number per client
-#define MAX_ACTIVE_BIDS_NUMBER 100
-typedef struct bid_s bid_t;
-
-// structure for describing a bid (oatot)
-struct bid_s {
-    qboolean discarded;
-    char *horse;
-    char *currency;
-    int amount;
-    qtime_t openTime;
-};
 
 // client data that stays across multiple respawns, but is cleared
 // on each level change or team change at ClientBegin()
@@ -323,8 +330,6 @@ typedef struct {
 	int         nameChanges;
 
 	qboolean    cannotWin; // Set to true if the players joins a leading team or the team with the most players
-	int activeBidsNumber;
-	bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1

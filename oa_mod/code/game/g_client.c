@@ -1330,7 +1330,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 
 
 	if ( g_gameStage.integer != PLAYING ) {
-		client->pers.activeBidsNumber = 0;
+		client->sess.activeBidsNumber = 0;
 	}
 
  	// IP filtering //KK-OAX Has this been obsoleted? 

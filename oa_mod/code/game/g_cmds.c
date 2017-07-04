@@ -2009,7 +2009,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
 		return;
 	}
 	if ( client ) {
-		int bids_n = client->pers.activeBidsNumber;
+		int bids_n = client->sess.activeBidsNumber;
 		if ( bids_n < MAX_ACTIVE_BIDS_NUMBER ) {
 			// check args
 			trap_Argv( 1, arg1, sizeof( arg1 ) );
@@ -2033,12 +2033,12 @@ void Cmd_Bet_f( gentity_t *ent ) {
 				return;
 			}
 			trap_RealTime( &open_time );
-			strcpy(ent->client->pers.bids[bids_n].horse, arg1);
-			strcpy(ent->client->pers.bids[bids_n].currency, arg3);
-			ent->client->pers.bids[bids_n].amount = money;
-			ent->client->pers.bids[bids_n].openTime = open_time;
-			ent->client->pers.bids[bids_n].discarded = qfalse;
-			ent->client->pers.activeBidsNumber += 1;
+			strcpy(ent->client->sess.bids[bids_n].horse, arg1);
+			strcpy(ent->client->sess.bids[bids_n].currency, arg3);
+			ent->client->sess.bids[bids_n].amount = money;
+			ent->client->sess.bids[bids_n].openTime = open_time;
+			ent->client->sess.bids[bids_n].discarded = qfalse;
+			ent->client->sess.activeBidsNumber += 1;
 			trap_SendServerCommand( ent-g_entities, "print \"Your bet is made.\n\"" );
 		} else {
 			trap_SendServerCommand( ent-g_entities, "print \"You can't make so many bets, sorry!\n\"" );
@@ -2065,11 +2065,11 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 		// check arg
 		trap_Argv( 1, arg1, sizeof( arg1 ) );
 		bet_ID = atoi( arg1 );
-		if ( bet_ID < 0 || bet_ID >= client->pers.activeBidsNumber) {
+		if ( bet_ID < 0 || bet_ID >= client->sess.activeBidsNumber) {
 			trap_SendServerCommand( ent-g_entities, "print \"Invalid bet ID.\n\"" );
 			return;
 		}
-		ent->client->pers.bids[bet_ID].discarded = qtrue;
+		ent->client->sess.bids[bet_ID].discarded = qtrue;
 		trap_SendServerCommand( ent-g_entities, "print \"Bet was discarded.\n\"" );
 	} else {
 		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
