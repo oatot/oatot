@@ -2095,12 +2095,12 @@ void ClientDisconnect( int clientNum ) {
 	}
 	if ( checkForRestart() ) {
 		// perhaps the majority is ready now
-		trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
+		trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
 	}
 	if ( g_gameStage.integer != FORMING_TEAMS ) {
 		if ( cl_team != TEAM_SPECTATOR ) {
 			// quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-			trap_SendConsoleCommand( EXEC_APPEND, "map_restart" );
+			trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
 		}
 	}
 }
