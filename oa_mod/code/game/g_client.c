@@ -2002,9 +2002,10 @@ server system housekeeping.
 */
 void ClientDisconnect( int clientNum ) {
 	gentity_t	*ent;
-	int			i;
+	int			i, new_val;
 	team_t		cl_team;
 	char	userinfo[MAX_INFO_STRING];
+	char	new_val_str[MAX_CVAR_VALUE_STRING];
 
 	// cleanup if we are kicking a bot that
 	// hasn't spawned yet
@@ -2093,6 +2094,25 @@ void ClientDisconnect( int clientNum ) {
 	if ( ent->r.svFlags & SVF_BOT ) {
 		BotAIShutdownClient( clientNum, qfalse );
 	}
+
+	if ( g_gameStage.integer == FORMING_TEAMS ) {
+		if ( ent->client->pers.readyToBet ) {
+			new_val = g_readyToBetN.integer - 1;
+			Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
+			trap_Cvar_Set( "g_readyToBetN", new_val_str );
+		}
+	}
+
+	if ( g_gameStage.integer == MAKING_BETS ) {
+		if ( ent->client->pers.finishedBetting ) {
+			new_val = g_finishedBettingN.integer - 1;
+			Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
+			trap_Cvar_Set( "g_finishedBettingN", new_val_str );
+		}
+	}
+
+	G_UpdateCvars();
+
 	if ( checkForRestart() ) {
 		// perhaps the majority is ready now
 		trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
