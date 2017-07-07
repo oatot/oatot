@@ -58,7 +58,7 @@ void AddScore( gentity_t *ent, vec3_t origin, int score )
 		return;
 	}
 	// no scoring during pre-match warmup
-	if ( level.warmupTime ) {
+	if ( ( level.warmupTime ) || ( g_gameStage.integer != PLAYING ) ) {
 		return;
 	}
 
