@@ -3573,6 +3573,11 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 
 	if (!CG_DrawFollow()) {
 		CG_DrawWarmup();
+		if (!cg.scoreBoardShowing) {
+				if ( !cg.loading && !cg.warmup ) {
+					CG_DrawGameStageInfo();
+				}
+		}
 	}
 
 	// don't draw center string if scoreboard is up
@@ -3581,9 +3586,6 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 		CG_DrawCenterDDString();
 		CG_DrawCenter1FctfString();
 		CG_DrawCenterString();
-		if ( !cg.loading && !cg.warmup ) {
-			CG_DrawGameStageInfo();
-		}
 	}
 
 	cg.accBoardShowing = CG_DrawAccboard();
