@@ -227,7 +227,7 @@ typedef struct {
 } playerTeamState_t;
 
 // max active bids number per client
-#define MAX_ACTIVE_BIDS_NUMBER 100
+#define MAX_ACTIVE_BIDS_NUMBER 5
 // number of bids in single page when showing history with `pastbids` cmd
 #define BIDS_NUMBER_IN_HISTORY_PAGE 15
 
