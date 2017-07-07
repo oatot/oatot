@@ -2076,28 +2076,59 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 	}
 }
 
-void qtimeToStr( qtime_t time, char *output ) {
+const char* qtimeToStr( qtime_t time ) {
 	static const char *months[] = {
 		"Jan", "Feb", "Mar", "Apr",
 		"May", "Jun", "Jul", "Aug",
 		"Sep", "Oct", "Nov", "Dec"
 	};
-	output = va("%s %d %d:%d:%d %d",
-				months[time.tm_mon],
-				time.tm_mday,
-				time.tm_hour,
-				time.tm_min,
-				time.tm_sec,
-				time.tm_year + 1900
+	return va("%s %d %d:%d:%d %d",
+			months[time.tm_mon],
+			time.tm_mday,
+			time.tm_hour,
+			time.tm_min,
+			time.tm_sec,
+			time.tm_year + 1900
 	);
 }
 
 /*
 ==================
 Cmd_PastBids_f
+get last BIDS_NUMBER_IN_HISTORY_PAGE bids,
+specifying 0,-1,-2,-3.. as arg shows the prev page.
 ==================
 */
 void Cmd_PastBids_f( gentity_t *ent ) {
+	int     page_index, i, bids_n;
+	char    arg1[MAX_STRING_TOKENS];
+	const char*    open_time_str;
+	fullbid_t past_bids[BIDS_NUMBER_IN_HISTORY_PAGE];
+	gclient_t *client = ent->client;
+	if ( client ) {
+		// check arg
+		trap_Argv( 1, arg1, sizeof( arg1 ) );
+		page_index = atoi( arg1 );
+		if ( page_index > 0 ) {
+			trap_SendServerCommand( ent-g_entities, "print \"Invalid page index.\n\"" );
+			return;
+		}
+		bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, page_index );
+		for ( i = 0; i < bids_n; i++ ) {
+			fullbid_t bid = past_bids[i];
+			const char* res = ( bid.prize > 0 ) ? "^2Win" : "^1Defeat";
+			open_time_str = qtimeToStr( bid.open_bid.openTime );
+			trap_SendServerCommand( ent-g_entities, va( "print \"%s  %d  %s  %d  %s\n\"",
+				bid.open_bid.horse,
+				bid.open_bid.amount,
+				res,
+				bid.prize,
+				open_time_str
+			) );
+		}
+	} else {
+		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+	}
 }
 
 qboolean checkForRestart( void ) {
