@@ -243,6 +243,14 @@ struct bid_s {
 	qtime_t openTime;
 };
 
+// structure for describing a bid and its result (oatot)
+struct fullbid_s {
+	bid_t open_bid;
+	qtime_t closeTime;
+	char *winner;
+	int prize;
+};
+
 // the auto following clients don't follow a specific client
 // number, but instead follow the first two active players
 #define	FOLLOW_ACTIVE1	-1
