@@ -2076,6 +2076,22 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 	}
 }
 
+void qtimeToStr( qtime_t time, char *output ) {
+	static const char *months[] = {
+		"Jan", "Feb", "Mar", "Apr",
+		"May", "Jun", "Jul", "Aug",
+		"Sep", "Oct", "Nov", "Dec"
+	};
+	output = va("%s %d %d:%d:%d %d",
+				months[time.tm_mon],
+				time.tm_mday,
+				time.tm_hour,
+				time.tm_min,
+				time.tm_sec,
+				time.tm_year + 1900
+	);
+}
+
 /*
 ==================
 Cmd_PastBids_f

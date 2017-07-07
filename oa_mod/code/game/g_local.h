@@ -1000,6 +1000,7 @@ void ClientLeaving(int clientNumber);
 
 // oatot
 qboolean checkForRestart( void );
+void qtimeToStr( qtime_t time, char* output );
 
 #define MAX_MAPNAME 32
 #define MAPS_PER_PAGE 10
