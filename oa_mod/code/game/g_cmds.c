@@ -2005,7 +2005,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
 	qtime_t open_time;
 	gclient_t *client = ent->client;
 	if ( g_gameStage.integer != MAKING_BETS ) {
-		trap_SendServerCommand( ent-g_entities, "print \"Betting not allowed now.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1Betting not allowed now.\n\"" );
 		return;
 	}
 	if ( client ) {
@@ -2018,18 +2018,18 @@ void Cmd_Bet_f( gentity_t *ent ) {
 			if ( Q_strequal( arg1, "red" ) ) {
 			} else if ( Q_strequal( arg1, "blue" ) ) {
 			} else {
-				trap_SendServerCommand( ent-g_entities, "print \"Invalid horse.\n\"" );
+				trap_SendServerCommand( ent-g_entities, "print \"^1Invalid horse.\n\"" );
 				return;
 			}
 			money = atoi( arg2 );
 			if ( money <= 0 || money > G_oatot_getBalance( client->pers.guid, arg3 ) ) {
-				trap_SendServerCommand( ent-g_entities, "print \"Invalid amount of money.\n\"" );
+				trap_SendServerCommand( ent-g_entities, "print \"^1Invalid amount of money.\n\"" );
 				return;
 			}
 			if ( Q_strequal( arg3, "BTC" ) ) {
 			} else if ( Q_strequal( arg3, "OAC" ) ) {
 			} else {
-				trap_SendServerCommand( ent-g_entities, "print \"Invalid currency.\n\"" );
+				trap_SendServerCommand( ent-g_entities, "print \"^1Invalid currency.\n\"" );
 				return;
 			}
 			trap_RealTime( &open_time );
@@ -2039,12 +2039,12 @@ void Cmd_Bet_f( gentity_t *ent ) {
 			ent->client->sess.bids[bids_n].openTime = open_time;
 			ent->client->sess.bids[bids_n].discarded = qfalse;
 			ent->client->sess.activeBidsNumber += 1;
-			trap_SendServerCommand( ent-g_entities, "print \"Your bet is made.\n\"" );
+			trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
 		} else {
-			trap_SendServerCommand( ent-g_entities, "print \"You can't make so many bets, sorry!\n\"" );
+			trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
 		}
 	} else {
-		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
 	}
 }
 
@@ -2058,7 +2058,7 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 	char    arg1[MAX_STRING_TOKENS];
 	gclient_t *client = ent->client;
 	if ( g_gameStage.integer != MAKING_BETS ) {
-		trap_SendServerCommand( ent-g_entities, "print \"You can't unbet anything now.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1You can't unbet anything now.\n\"" );
 		return;
 	}
 	if ( client ) {
@@ -2066,13 +2066,13 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 		trap_Argv( 1, arg1, sizeof( arg1 ) );
 		bet_ID = atoi( arg1 );
 		if ( bet_ID < 0 || bet_ID >= client->sess.activeBidsNumber) {
-			trap_SendServerCommand( ent-g_entities, "print \"Invalid bet ID.\n\"" );
+			trap_SendServerCommand( ent-g_entities, "print \"^1Invalid bet ID.\n\"" );
 			return;
 		}
 		ent->client->sess.bids[bet_ID].discarded = qtrue;
-		trap_SendServerCommand( ent-g_entities, "print \"Bet was discarded.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
 	} else {
-		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
 	}
 }
 
@@ -2082,7 +2082,7 @@ const char* qtimeToStr( qtime_t time ) {
 		"May", "Jun", "Jul", "Aug",
 		"Sep", "Oct", "Nov", "Dec"
 	};
-	return va("%s %d %d:%d:%d %d",
+	return va("^7%s %d %d:%d:%d %d",
 			months[time.tm_mon],
 			time.tm_mday,
 			time.tm_hour,
@@ -2103,6 +2103,10 @@ void Cmd_PastBids_f( gentity_t *ent ) {
 	int     page_index, i, bids_n;
 	char    arg1[MAX_STRING_TOKENS];
 	const char*    open_time_str;
+	const char*    prize_str;
+	const char*    res;
+	const char*    horse_str;
+	const char*    amount_str;
 	fullbid_t past_bids[BIDS_NUMBER_IN_HISTORY_PAGE];
 	gclient_t *client = ent->client;
 	if ( client ) {
@@ -2110,24 +2114,39 @@ void Cmd_PastBids_f( gentity_t *ent ) {
 		trap_Argv( 1, arg1, sizeof( arg1 ) );
 		page_index = atoi( arg1 );
 		if ( page_index > 0 ) {
-			trap_SendServerCommand( ent-g_entities, "print \"Invalid page index.\n\"" );
+			trap_SendServerCommand( ent-g_entities, "print \"^1Invalid page index.\n\"" );
 			return;
 		}
 		bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, page_index );
+		trap_SendServerCommand( ent-g_entities, "print \"^4Bids list:\n\"" );
 		for ( i = 0; i < bids_n; i++ ) {
 			fullbid_t bid = past_bids[i];
-			const char* res = ( bid.prize > 0 ) ? "^2Win" : "^1Defeat";
+			res = ( bid.prize > 0 ) ? "^2Win" : "^1Defeat";
+			if ( !strcmp( bid.open_bid.horse, "red" ) ) {
+				horse_str = "^1Red";
+			} else {
+				horse_str = "^5Blue";
+			}
+			if ( !strcmp( bid.open_bid.currency, "OAC" ) ) {
+				amount_str = va( "%d %s", bid.open_bid.amount, "^3OAC");
+				prize_str = va( "%d %s", bid.prize, "^3OAC");
+			} else {
+				amount_str = va( "%d %s", bid.open_bid.amount, "^2BTC");
+				prize_str = va( "%d %s", bid.prize, "^2BTC");
+			}
 			open_time_str = qtimeToStr( bid.open_bid.openTime );
-			trap_SendServerCommand( ent-g_entities, va( "print \"%s  %d  %s  %d  %s\n\"",
-				bid.open_bid.horse,
-				bid.open_bid.amount,
+			trap_SendServerCommand( ent-g_entities, "print \"^3=====================================\n\"" );
+			trap_SendServerCommand( ent-g_entities, va( "print \"%s  %s  %s  %s  %s\n\"",
+				horse_str,
+				amount_str,
 				res,
-				bid.prize,
+				prize_str,
 				open_time_str
 			) );
+			trap_SendServerCommand( ent-g_entities, "print \"^3=====================================\n\"" );
 		}
 	} else {
-		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
 	}
 }
 
@@ -2155,11 +2174,11 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
 	char new_val_str[MAX_CVAR_VALUE_STRING];
 	gclient_t *client = ent->client;
 	if ( g_gameStage.integer == MAKING_BETS ) {
-		trap_SendServerCommand( ent-g_entities, "print \"You can do it already.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^2You can do it already.\n\"" );
 		return;
 	}
 	if ( g_gameStage.integer == PLAYING ) {
-		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1Too slow, they are playing already.\n\"" );
 		return;
 	}
 	if ( client ) {
@@ -2174,7 +2193,7 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
 			}
 		}
 	} else {
-		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
 	}
 }
 
@@ -2188,11 +2207,11 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
 	char new_val_str[MAX_CVAR_VALUE_STRING];
 	gclient_t *client = ent->client;
 	if ( g_gameStage.integer == FORMING_TEAMS ) {
-		trap_SendServerCommand( ent-g_entities, "print \"We haven't started to make bets yet, you stupid!\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1We haven't started to make bets yet, you stupid!\n\"" );
 		return;
 	}
 	if ( g_gameStage.integer == PLAYING ) {
-		trap_SendServerCommand( ent-g_entities, "print \"Too slow, they are playing already.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1Too slow, they are playing already.\n\"" );
 		return;
 	}
 	if ( client ) {
@@ -2207,7 +2226,7 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
 			}
 		}
 	} else {
-		trap_SendServerCommand( ent-g_entities, "print \"You aren't a client!\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
 	}
 }
 
