@@ -47,20 +47,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //structure field definition
 typedef struct fielddef_s
 {
-	char *name;										//name of the field
-	int offset;										//offset in the structure
-	int type;										//type of the field
-	//type specific fields
-	int maxarray;									//maximum array size
-	float floatmin, floatmax;					//float min and max
-	struct structdef_s *substruct;			//sub structure
+    char *name;										//name of the field
+    int offset;										//offset in the structure
+    int type;										//type of the field
+    //type specific fields
+    int maxarray;									//maximum array size
+    float floatmin, floatmax;					//float min and max
+    struct structdef_s *substruct;			//sub structure
 } fielddef_t;
 
 //structure definition
 typedef struct structdef_s
 {
-	int size;
-	fielddef_t *fields;
+    int size;
+    fielddef_t *fields;
 } structdef_t;
 
 //read a structure from a script

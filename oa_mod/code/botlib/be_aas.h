@@ -74,22 +74,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 typedef enum
 {
-	SOLID_NOT,			// no interaction with other objects
-	SOLID_TRIGGER,		// only touch when inside, after moving
-	SOLID_BBOX,			// touch on edge
-	SOLID_BSP			// bsp clip, touch on edge
+    SOLID_NOT,			// no interaction with other objects
+    SOLID_TRIGGER,		// only touch when inside, after moving
+    SOLID_BBOX,			// touch on edge
+    SOLID_BSP			// bsp clip, touch on edge
 } solid_t;
 
 //a trace is returned when a box is swept through the AAS world
 typedef struct aas_trace_s
 {
-	qboolean	startsolid;	// if true, the initial point was in a solid area
-	float		fraction;	// time completed, 1.0 = didn't hit anything
-	vec3_t		endpos;		// final position
-	int			ent;		// entity blocking the trace
-	int			lastarea;	// last area the trace was in (zero if none)
-	int			area;		// area blocking the trace (zero if none)
-	int			planenum;	// number of the plane that was hit
+    qboolean	startsolid;	// if true, the initial point was in a solid area
+    float		fraction;	// time completed, 1.0 = didn't hit anything
+    vec3_t		endpos;		// final position
+    int			ent;		// entity blocking the trace
+    int			lastarea;	// last area the trace was in (zero if none)
+    int			area;		// area blocking the trace (zero if none)
+    int			planenum;	// number of the plane that was hit
 } aas_trace_t;
 
 /* Defined in botlib.h
@@ -122,41 +122,41 @@ typedef struct bsp_trace_s
 //entity info
 typedef struct aas_entityinfo_s
 {
-	int		valid;			// true if updated this frame
-	int		type;			// entity type
-	int		flags;			// entity flags
-	float	ltime;			// local time
-	float	update_time;	// time between last and current update
-	int		number;			// number of the entity
-	vec3_t	origin;			// origin of the entity
-	vec3_t	angles;			// angles of the model
-	vec3_t	old_origin;		// for lerping
-	vec3_t	lastvisorigin;	// last visible origin
-	vec3_t	mins;			// bounding box minimums
-	vec3_t	maxs;			// bounding box maximums
-	int		groundent;		// ground entity
-	int		solid;			// solid type
-	int		modelindex;		// model used
-	int		modelindex2;	// weapons, CTF flags, etc
-	int		frame;			// model frame number
-	int		event;			// impulse events -- muzzle flashes, footsteps, etc
-	int		eventParm;		// even parameter
-	int		powerups;		// bit flags
-	int		weapon;			// determines weapon and flash model, etc
-	int		legsAnim;		// mask off ANIM_TOGGLEBIT
-	int		torsoAnim;		// mask off ANIM_TOGGLEBIT
+    int		valid;			// true if updated this frame
+    int		type;			// entity type
+    int		flags;			// entity flags
+    float	ltime;			// local time
+    float	update_time;	// time between last and current update
+    int		number;			// number of the entity
+    vec3_t	origin;			// origin of the entity
+    vec3_t	angles;			// angles of the model
+    vec3_t	old_origin;		// for lerping
+    vec3_t	lastvisorigin;	// last visible origin
+    vec3_t	mins;			// bounding box minimums
+    vec3_t	maxs;			// bounding box maximums
+    int		groundent;		// ground entity
+    int		solid;			// solid type
+    int		modelindex;		// model used
+    int		modelindex2;	// weapons, CTF flags, etc
+    int		frame;			// model frame number
+    int		event;			// impulse events -- muzzle flashes, footsteps, etc
+    int		eventParm;		// even parameter
+    int		powerups;		// bit flags
+    int		weapon;			// determines weapon and flash model, etc
+    int		legsAnim;		// mask off ANIM_TOGGLEBIT
+    int		torsoAnim;		// mask off ANIM_TOGGLEBIT
 } aas_entityinfo_t;
 
 // area info
 typedef struct aas_areainfo_s
 {
-	int contents;
-	int flags;
-	int presencetype;
-	int cluster;
-	vec3_t mins;
-	vec3_t maxs;
-	vec3_t center;
+    int contents;
+    int flags;
+    int presencetype;
+    int cluster;
+    vec3_t mins;
+    vec3_t maxs;
+    vec3_t center;
 } aas_areainfo_t;
 
 // client movement prediction stop events, stop as soon as:
@@ -177,15 +177,15 @@ typedef struct aas_areainfo_s
 
 typedef struct aas_clientmove_s
 {
-	vec3_t endpos;			//position at the end of movement prediction
-	int endarea;			//area at end of movement prediction
-	vec3_t velocity;		//velocity at the end of movement prediction
-	aas_trace_t trace;		//last trace
-	int presencetype;		//presence type at end of movement prediction
-	int stopevent;			//event that made the prediction stop
-	int endcontents;		//contents at the end of movement prediction
-	float time;				//time predicted ahead
-	int frames;				//number of frames predicted ahead
+    vec3_t endpos;			//position at the end of movement prediction
+    int endarea;			//area at end of movement prediction
+    vec3_t velocity;		//velocity at the end of movement prediction
+    aas_trace_t trace;		//last trace
+    int presencetype;		//presence type at end of movement prediction
+    int stopevent;			//event that made the prediction stop
+    int endcontents;		//contents at the end of movement prediction
+    float time;				//time predicted ahead
+    int frames;				//number of frames predicted ahead
 } aas_clientmove_t;
 
 // alternate route goals
@@ -195,11 +195,11 @@ typedef struct aas_clientmove_s
 
 typedef struct aas_altroutegoal_s
 {
-	vec3_t origin;
-	int areanum;
-	unsigned short starttraveltime;
-	unsigned short goaltraveltime;
-	unsigned short extratraveltime;
+    vec3_t origin;
+    int areanum;
+    unsigned short starttraveltime;
+    unsigned short goaltraveltime;
+    unsigned short extratraveltime;
 } aas_altroutegoal_t;
 
 // route prediction stop events
@@ -211,11 +211,11 @@ typedef struct aas_altroutegoal_s
 
 typedef struct aas_predictroute_s
 {
-	vec3_t endpos;			//position at the end of movement prediction
-	int endarea;			//area at end of movement prediction
-	int stopevent;			//event that made the prediction stop
-	int endcontents;		//contents at the end of movement prediction
-	int endtravelflags;		//end travel flags
-	int numareas;			//number of areas predicted ahead
-	int time;				//time predicted ahead (in hundreth of a sec)
+    vec3_t endpos;			//position at the end of movement prediction
+    int endarea;			//area at end of movement prediction
+    int stopevent;			//event that made the prediction stop
+    int endcontents;		//contents at the end of movement prediction
+    int endtravelflags;		//end travel flags
+    int numareas;			//number of areas predicted ahead
+    int time;				//time predicted ahead (in hundreth of a sec)
 } aas_predictroute_t;

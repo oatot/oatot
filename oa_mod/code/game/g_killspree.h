@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 //definitions
-// I'd say 32 sprees is a lot!!! 
+// I'd say 32 sprees is a lot!!!
 #define MAX_KSPREE      32
 #define MAX_DSPREE      32
 #define MAX_MULTIKILLS  32
@@ -30,35 +30,35 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define CHAT            2
 
 //Used to pass parameter to calculate the upper-most level of
-// the spree/multikill arrays. 
+// the spree/multikill arrays.
 #define LARGEST_KILLSPREE   1
 #define LARGEST_DEATHSPREE  2
 #define LARGEST_MULTIKILL   3
 
 typedef struct killspree
 {
-	int                 spreeLevel;
-	int                 streakCount; //Added programatically based off SpreeDivisor. 
-	char                spreeMsg[ MAX_STRING_CHARS ];
-	char                sound2Play[ MAX_STRING_CHARS ];
-	int                 position;
+    int                 spreeLevel;
+    int                 streakCount; //Added programatically based off SpreeDivisor.
+    char                spreeMsg[ MAX_STRING_CHARS ];
+    char                sound2Play[ MAX_STRING_CHARS ];
+    int                 position;
 } killspree_t;
 
 
 typedef struct deathspree
 {
-	int                 spreeLevel;
-	int                 streakCount; //Added programatically based off SpreeDivisor.
-	char                spreeMsg[ MAX_STRING_CHARS ];
-	char                sound2Play[ MAX_STRING_CHARS ];
-	int                 position;
+    int                 spreeLevel;
+    int                 streakCount; //Added programatically based off SpreeDivisor.
+    char                spreeMsg[ MAX_STRING_CHARS ];
+    char                sound2Play[ MAX_STRING_CHARS ];
+    int                 position;
 } deathspree_t;
 
 typedef struct multikill
 {
-	char                killMsg[ MAX_STRING_CHARS ];
-	char                sound2Play[ MAX_STRING_CHARS ];
-	int                 kills;
+    char                killMsg[ MAX_STRING_CHARS ];
+    char                sound2Play[ MAX_STRING_CHARS ];
+    int                 kills;
 } multikill_t;
 
 //function declarations

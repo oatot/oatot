@@ -75,38 +75,38 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //the or_moveflags MFL_ONGROUND, MFL_TELEPORTED and MFL_WATERJUMP come from the playerstate
 typedef struct bot_initmove_s
 {
-	vec3_t origin;				//origin of the bot
-	vec3_t velocity;			//velocity of the bot
-	vec3_t viewoffset;			//view offset
-	int entitynum;				//entity number of the bot
-	int client;					//client number of the bot
-	float thinktime;			//time the bot thinks
-	int presencetype;			//presencetype of the bot
-	vec3_t viewangles;			//view angles of the bot
-	int or_moveflags;			//values ored to the movement flags
+    vec3_t origin;				//origin of the bot
+    vec3_t velocity;			//velocity of the bot
+    vec3_t viewoffset;			//view offset
+    int entitynum;				//entity number of the bot
+    int client;					//client number of the bot
+    float thinktime;			//time the bot thinks
+    int presencetype;			//presencetype of the bot
+    vec3_t viewangles;			//view angles of the bot
+    int or_moveflags;			//values ored to the movement flags
 } bot_initmove_t;
 
 //NOTE: the ideal_viewangles are only valid if MFL_MOVEMENTVIEW is set
 typedef struct bot_moveresult_s
 {
-	int failure;				//true if movement failed all together
-	int type;					//failure or blocked type
-	int blocked;				//true if blocked by an entity
-	int blockentity;			//entity blocking the bot
-	int traveltype;				//last executed travel type
-	int flags;					//result flags
-	int weapon;					//weapon used for movement
-	vec3_t movedir;				//movement direction
-	vec3_t ideal_viewangles;	//ideal viewangles for the movement
+    int failure;				//true if movement failed all together
+    int type;					//failure or blocked type
+    int blocked;				//true if blocked by an entity
+    int blockentity;			//entity blocking the bot
+    int traveltype;				//last executed travel type
+    int flags;					//result flags
+    int weapon;					//weapon used for movement
+    vec3_t movedir;				//movement direction
+    vec3_t ideal_viewangles;	//ideal viewangles for the movement
 } bot_moveresult_t;
 
 #define bot_moveresult_t_cleared(x) bot_moveresult_t (x) = {0, 0, 0, 0, 0, 0, 0, {0, 0, 0}, {0, 0, 0}}
 
 typedef struct bot_avoidspot_s
 {
-	vec3_t origin;
-	float radius;
-	int type;
+    vec3_t origin;
+    float radius;
+    int type;
 } bot_avoidspot_t;
 
 //resets the whole move state

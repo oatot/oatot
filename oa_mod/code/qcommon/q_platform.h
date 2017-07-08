@@ -206,7 +206,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <machine/endian.h>
 
 #ifndef __BSD__
-  #define __BSD__
+#define __BSD__
 #endif
 
 #if defined(__FreeBSD__)

@@ -38,18 +38,18 @@ void AAS_DumpBSPData(void);
 void AAS_UnlinkFromBSPLeaves(bsp_link_t *leaves);
 //link the given entity to the bsp tree leaves of the given model
 bsp_link_t *AAS_BSPLinkEntity(vec3_t absmins,
-										vec3_t absmaxs,
-										int entnum,
-										int modelnum);
+                              vec3_t absmaxs,
+                              int entnum,
+                              int modelnum);
 
 //calculates collision with given entity
 qboolean AAS_EntityCollision(int entnum,
-										vec3_t start,
-										vec3_t boxmins,
-										vec3_t boxmaxs,
-										vec3_t end,
-										int contentmask,
-										bsp_trace_t *trace);
+                             vec3_t start,
+                             vec3_t boxmins,
+                             vec3_t boxmaxs,
+                             vec3_t end,
+                             int contentmask,
+                             bsp_trace_t *trace);
 //for debugging
 void AAS_PrintFreeBSPLinks(char *str);
 //
@@ -59,11 +59,11 @@ void AAS_PrintFreeBSPLinks(char *str);
 
 //trace through the world
 bsp_trace_t AAS_Trace(	vec3_t start,
-								vec3_t mins,
-								vec3_t maxs,
-								vec3_t end,
-								int passent,
-								int contentmask);
+                        vec3_t mins,
+                        vec3_t maxs,
+                        vec3_t end,
+                        int passent,
+                        int contentmask);
 //returns the contents at the given point
 int AAS_PointContents(vec3_t point);
 //returns true when p2 is in the PVS of p1
