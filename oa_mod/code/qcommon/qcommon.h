@@ -40,14 +40,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // msg.c
 //
 typedef struct {
-	qboolean	allowoverflow;	// if false, do a Com_Error
-	qboolean	overflowed;		// set to true if the buffer size failed (with allowoverflow set)
-	qboolean	oob;			// set to true if the buffer size failed (with allowoverflow set)
-	byte	*data;
-	int		maxsize;
-	int		cursize;
-	int		readcount;
-	int		bit;				// for bitwise reads and writes
+    qboolean	allowoverflow;	// if false, do a Com_Error
+    qboolean	overflowed;		// set to true if the buffer size failed (with allowoverflow set)
+    qboolean	oob;			// set to true if the buffer size failed (with allowoverflow set)
+    byte	*data;
+    int		maxsize;
+    int		cursize;
+    int		readcount;
+    int		bit;				// for bitwise reads and writes
 } msg_t;
 
 void MSG_Init (msg_t *buf, byte *data, int length);
@@ -101,9 +101,9 @@ void MSG_WriteDeltaUsercmdKey( msg_t *msg, int key, usercmd_t *from, usercmd_t *
 void MSG_ReadDeltaUsercmdKey( msg_t *msg, int key, usercmd_t *from, usercmd_t *to );
 
 void MSG_WriteDeltaEntity( msg_t *msg, struct entityState_s *from, struct entityState_s *to
-						   , qboolean force );
-void MSG_ReadDeltaEntity( msg_t *msg, entityState_t *from, entityState_t *to, 
-						 int number );
+                           , qboolean force );
+void MSG_ReadDeltaEntity( msg_t *msg, entityState_t *from, entityState_t *to,
+                          int number );
 
 void MSG_WriteDeltaPlayerstate( msg_t *msg, struct playerState_s *from, struct playerState_s *to );
 void MSG_ReadDeltaPlayerstate( msg_t *msg, struct playerState_s *from, struct playerState_s *to );
@@ -122,7 +122,7 @@ NET
 */
 
 #define	PACKET_BACKUP	32	// number of old messages that must be kept on client and
-							// server for delta comrpession and ping estimation
+// server for delta comrpession and ping estimation
 #define	PACKET_MASK		(PACKET_BACKUP-1)
 
 #define	MAX_PACKET_USERCMDS		32		// max number of usercmd_t in a packet
@@ -132,29 +132,29 @@ NET
 #define	MAX_RELIABLE_COMMANDS	64			// max string commands buffered for restransmit
 
 typedef enum {
-	NA_BOT,
-	NA_BAD,					// an address lookup failed
-	NA_LOOPBACK,
-	NA_BROADCAST,
-	NA_IP,
-	NA_IP6,
-	NA_MULTICAST6,
-	NA_UNSPEC
+    NA_BOT,
+    NA_BAD,					// an address lookup failed
+    NA_LOOPBACK,
+    NA_BROADCAST,
+    NA_IP,
+    NA_IP6,
+    NA_MULTICAST6,
+    NA_UNSPEC
 } netadrtype_t;
 
 typedef enum {
-	NS_CLIENT,
-	NS_SERVER
+    NS_CLIENT,
+    NS_SERVER
 } netsrc_t;
 
 #define NET_ADDRSTRMAXLEN 48	// maximum length of an IPv6 address string including trailing '\0'
 typedef struct {
-	netadrtype_t	type;
+    netadrtype_t	type;
 
-	byte	ip[4];
-	byte	ip6[16];
+    byte	ip[4];
+    byte	ip6[16];
 
-	unsigned short	port;
+    unsigned short	port;
 } netadr_t;
 
 void		NET_Init( void );
@@ -179,39 +179,39 @@ void		NET_Sleep(int msec);
 
 
 #define	MAX_MSGLEN				16384		// max length of a message, which may
-											// be fragmented into multiple packets
+// be fragmented into multiple packets
 
 #define MAX_DOWNLOAD_WINDOW			8		// max of eight download frames
 #define MAX_DOWNLOAD_BLKSIZE		2048	// 2048 byte block chunks
- 
+
 
 /*
 Netchan handles packet fragmentation and out of order / duplicate suppression
 */
 
 typedef struct {
-	netsrc_t	sock;
+    netsrc_t	sock;
 
-	int			dropped;			// between last packet and previous
+    int			dropped;			// between last packet and previous
 
-	netadr_t	remoteAddress;
-	int			qport;				// qport value to write when transmitting
+    netadr_t	remoteAddress;
+    int			qport;				// qport value to write when transmitting
 
-	// sequencing variables
-	int			incomingSequence;
-	int			outgoingSequence;
+    // sequencing variables
+    int			incomingSequence;
+    int			outgoingSequence;
 
-	// incoming fragment assembly buffer
-	int			fragmentSequence;
-	int			fragmentLength;	
-	byte		fragmentBuffer[MAX_MSGLEN];
+    // incoming fragment assembly buffer
+    int			fragmentSequence;
+    int			fragmentLength;
+    byte		fragmentBuffer[MAX_MSGLEN];
 
-	// outgoing fragment buffer
-	// we need to space out the sending of large fragmented messages
-	qboolean	unsentFragments;
-	int			unsentFragmentStart;
-	int			unsentLength;
-	byte		unsentBuffer[MAX_MSGLEN];
+    // outgoing fragment buffer
+    // we need to space out the sending of large fragmented messages
+    qboolean	unsentFragments;
+    int			unsentFragmentStart;
+    int			unsentLength;
+    byte		unsentBuffer[MAX_MSGLEN];
 } netchan_t;
 
 void Netchan_Init( int qport );
@@ -249,20 +249,20 @@ extern int demo_protocols[];
 #endif
 
 #ifndef STANDALONE
-  #ifndef AUTHORIZE_SERVER_NAME
-    #define	AUTHORIZE_SERVER_NAME	"authorize.quake3arena.com"
-  #endif
-  #ifndef PORT_AUTHORIZE
-  #define	PORT_AUTHORIZE		27952
-  #endif
+#ifndef AUTHORIZE_SERVER_NAME
+#define	AUTHORIZE_SERVER_NAME	"authorize.quake3arena.com"
+#endif
+#ifndef PORT_AUTHORIZE
+#define	PORT_AUTHORIZE		27952
+#endif
 #endif
 
 #define	PORT_MASTER			27950
 #define	PORT_UPDATE			27951
 #define	PORT_SERVER			27960
 #define	NUM_SERVER_PORTS	4		// broadcast scan this many ports after
-									// PORT_SERVER so a single machine can
-									// run multiple servers
+// PORT_SERVER so a single machine can
+// run multiple servers
 
 
 // the svc_strings[] array in cl_parse.c should mirror this
@@ -270,20 +270,20 @@ extern int demo_protocols[];
 // server to client
 //
 enum svc_ops_e {
-	svc_bad,
-	svc_nop,
-	svc_gamestate,
-	svc_configstring,			// [short] [string] only in gamestate messages
-	svc_baseline,				// only in gamestate messages
-	svc_serverCommand,			// [string] to be executed by client game module
-	svc_download,				// [short] size [size bytes]
-	svc_snapshot,
-	svc_EOF,
+    svc_bad,
+    svc_nop,
+    svc_gamestate,
+    svc_configstring,			// [short] [string] only in gamestate messages
+    svc_baseline,				// only in gamestate messages
+    svc_serverCommand,			// [string] to be executed by client game module
+    svc_download,				// [short] size [size bytes]
+    svc_snapshot,
+    svc_EOF,
 
-	// svc_extension follows a svc_EOF, followed by another svc_* ...
-	//  this keeps legacy clients compatible.
-	svc_extension,
-	svc_voip,     // not wrapped in USE_VOIP, so this value is reserved.
+    // svc_extension follows a svc_EOF, followed by another svc_* ...
+    //  this keeps legacy clients compatible.
+    svc_extension,
+    svc_voip,     // not wrapped in USE_VOIP, so this value is reserved.
 };
 
 
@@ -291,17 +291,17 @@ enum svc_ops_e {
 // client to server
 //
 enum clc_ops_e {
-	clc_bad,
-	clc_nop, 		
-	clc_move,				// [[usercmd_t]
-	clc_moveNoDelta,		// [[usercmd_t]
-	clc_clientCommand,		// [string] message
-	clc_EOF,
+    clc_bad,
+    clc_nop,
+    clc_move,				// [[usercmd_t]
+    clc_moveNoDelta,		// [[usercmd_t]
+    clc_clientCommand,		// [string] message
+    clc_EOF,
 
-	// clc_extension follows a clc_EOF, followed by another clc_* ...
-	//  this keeps legacy servers compatible.
-	clc_extension,
-	clc_voip,   // not wrapped in USE_VOIP, so this value is reserved.
+    // clc_extension follows a clc_EOF, followed by another clc_* ...
+    //  this keeps legacy servers compatible.
+    clc_extension,
+    clc_voip,   // not wrapped in USE_VOIP, so this value is reserved.
 };
 
 /*
@@ -315,32 +315,32 @@ VIRTUAL MACHINE
 typedef struct vm_s vm_t;
 
 typedef enum {
-	VMI_NATIVE,
-	VMI_BYTECODE,
-	VMI_COMPILED
+    VMI_NATIVE,
+    VMI_BYTECODE,
+    VMI_COMPILED
 } vmInterpret_t;
 
 typedef enum {
-	TRAP_MEMSET = 100,
-	TRAP_MEMCPY,
-	TRAP_STRNCPY,
-	TRAP_SIN,
-	TRAP_COS,
-	TRAP_ATAN2,
-	TRAP_SQRT,
-	TRAP_MATRIXMULTIPLY,
-	TRAP_ANGLEVECTORS,
-	TRAP_PERPENDICULARVECTOR,
-	TRAP_FLOOR,
-	TRAP_CEIL,
+    TRAP_MEMSET = 100,
+    TRAP_MEMCPY,
+    TRAP_STRNCPY,
+    TRAP_SIN,
+    TRAP_COS,
+    TRAP_ATAN2,
+    TRAP_SQRT,
+    TRAP_MATRIXMULTIPLY,
+    TRAP_ANGLEVECTORS,
+    TRAP_PERPENDICULARVECTOR,
+    TRAP_FLOOR,
+    TRAP_CEIL,
 
-	TRAP_TESTPRINTINT,
-	TRAP_TESTPRINTFLOAT
+    TRAP_TESTPRINTINT,
+    TRAP_TESTPRINTFLOAT
 } sharedTraps_t;
 
 void	VM_Init( void );
-vm_t	*VM_Create( const char *module, intptr_t (*systemCalls)(intptr_t *), 
-				   vmInterpret_t interpret );
+vm_t	*VM_Create( const char *module, intptr_t (*systemCalls)(intptr_t *),
+                    vmInterpret_t interpret );
 // module should be bare: "cgame", not "cgame.dll" or "vm/cgame.qvm"
 
 void	VM_Free( vm_t *vm );
@@ -359,9 +359,9 @@ void	*VM_ExplicitArgPtr( vm_t *vm, intptr_t intValue );
 #define	VMA(x) VM_ArgPtr(args[x])
 static ID_INLINE float _vmf(intptr_t x)
 {
-	floatint_t fi;
-	fi.i = (int) x;
-	return fi.f;
+    floatint_t fi;
+    fi.i = (int) x;
+    return fi.f;
 }
 #define	VMF(x)	_vmf(args[x])
 
@@ -668,9 +668,9 @@ const char *FS_LoadedPakPureChecksums( void );
 const char *FS_ReferencedPakNames( void );
 const char *FS_ReferencedPakChecksums( void );
 const char *FS_ReferencedPakPureChecksums( void );
-// Returns a space separated string containing the checksums of all loaded 
-// AND referenced pk3 files. Servers with sv_pure set will get this string 
-// back from clients for pure validation 
+// Returns a space separated string containing the checksums of all loaded
+// AND referenced pk3 files. Servers with sv_pure set will get this string
+// back from clients for pure validation
 
 void FS_ClearPakReferences( int flags );
 // clears referenced booleans on loaded pk3s
@@ -692,7 +692,7 @@ void FS_Remove( const char *osPath );
 void FS_HomeRemove( const char *homePath );
 
 void	FS_FilenameCompletion( const char *dir, const char *ext,
-		qboolean stripExt, void(*callback)(const char *s) );
+                               qboolean stripExt, void(*callback)(const char *s) );
 
 /*
 ==============================================================
@@ -704,10 +704,10 @@ Edit fields and command line history/completion
 
 #define	MAX_EDIT_LINE	256
 typedef struct {
-	int		cursor;
-	int		scroll;
-	int		widthInChars;
-	char	buffer[MAX_EDIT_LINE];
+    int		cursor;
+    int		scroll;
+    int		widthInChars;
+    char	buffer[MAX_EDIT_LINE];
 } field_t;
 
 void Field_Clear( field_t *edit );
@@ -728,14 +728,14 @@ extern char cl_cdkey[34];
 // returned by Sys_GetProcessorFeatures
 typedef enum
 {
-  CF_RDTSC      = 1 << 0,
-  CF_MMX        = 1 << 1,
-  CF_MMX_EXT    = 1 << 2,
-  CF_3DNOW      = 1 << 3,
-  CF_3DNOW_EXT  = 1 << 4,
-  CF_SSE        = 1 << 5,
-  CF_SSE2       = 1 << 6,
-  CF_ALTIVEC    = 1 << 7
+    CF_RDTSC      = 1 << 0,
+    CF_MMX        = 1 << 1,
+    CF_MMX_EXT    = 1 << 2,
+    CF_3DNOW      = 1 << 3,
+    CF_3DNOW_EXT  = 1 << 4,
+    CF_SSE        = 1 << 5,
+    CF_SSE2       = 1 << 6,
+    CF_ALTIVEC    = 1 << 7
 } cpuFeatures_t;
 
 // centralized and cleaned, that's the max string you can send to a Com_Printf / Com_DPrintf (above gets truncated)
@@ -743,22 +743,22 @@ typedef enum
 
 
 typedef enum {
-	// SE_NONE must be zero
-	SE_NONE = 0,	// evTime is still valid
-	SE_KEY,		// evValue is a key code, evValue2 is the down flag
-	SE_CHAR,	// evValue is an ascii char
-	SE_MOUSE,	// evValue and evValue2 are reletive signed x / y moves
-	SE_JOYSTICK_AXIS,	// evValue is an axis number and evValue2 is the current state (-127 to 127)
-	SE_CONSOLE,	// evPtr is a char*
-	SE_PACKET	// evPtr is a netadr_t followed by data bytes to evPtrLength
+    // SE_NONE must be zero
+    SE_NONE = 0,	// evTime is still valid
+    SE_KEY,		// evValue is a key code, evValue2 is the down flag
+    SE_CHAR,	// evValue is an ascii char
+    SE_MOUSE,	// evValue and evValue2 are reletive signed x / y moves
+    SE_JOYSTICK_AXIS,	// evValue is an axis number and evValue2 is the current state (-127 to 127)
+    SE_CONSOLE,	// evPtr is a char*
+    SE_PACKET	// evPtr is a netadr_t followed by data bytes to evPtrLength
 } sysEventType_t;
 
 typedef struct {
-	int				evTime;
-	sysEventType_t	evType;
-	int				evValue, evValue2;
-	int				evPtrLength;	// bytes of data pointed to by evPtr, for journaling
-	void			*evPtr;			// this must be manually freed if not NULL
+    int				evTime;
+    sysEventType_t	evType;
+    int				evValue, evValue2;
+    int				evPtrLength;	// bytes of data pointed to by evPtr, for journaling
+    void			*evPtr;			// this must be manually freed if not NULL
 } sysEvent_t;
 
 void		Com_QueueEvent( int time, sysEventType_t type, int value, int value2, int ptrLength, void *ptr );
@@ -827,12 +827,12 @@ extern	fileHandle_t	com_journalFile;
 extern	fileHandle_t	com_journalDataFile;
 
 typedef enum {
-	TAG_FREE,
-	TAG_GENERAL,
-	TAG_BOTLIB,
-	TAG_RENDERER,
-	TAG_SMALL,
-	TAG_STATIC
+    TAG_FREE,
+    TAG_GENERAL,
+    TAG_BOTLIB,
+    TAG_RENDERER,
+    TAG_SMALL,
+    TAG_STATIC
 } memtag_t;
 
 /*
@@ -855,7 +855,7 @@ temp file loading
 */
 
 #if defined(_DEBUG) && !defined(BSPC)
-	#define ZONE_DEBUG
+#define ZONE_DEBUG
 #endif
 
 #ifdef ZONE_DEBUG
@@ -986,20 +986,20 @@ NON-PORTABLE SYSTEM SERVICES
 */
 
 typedef enum {
-	AXIS_SIDE,
-	AXIS_FORWARD,
-	AXIS_UP,
-	AXIS_ROLL,
-	AXIS_YAW,
-	AXIS_PITCH,
-	MAX_JOYSTICK_AXIS
+    AXIS_SIDE,
+    AXIS_FORWARD,
+    AXIS_UP,
+    AXIS_ROLL,
+    AXIS_YAW,
+    AXIS_PITCH,
+    MAX_JOYSTICK_AXIS
 } joystickAxis_t;
 
 void	Sys_Init (void);
 
 // general development dll loading for virtual machine testing
 void	* QDECL Sys_LoadDll( const char *name, char *fqpath , intptr_t (QDECL **entryPoint)(int, ...),
-				  intptr_t (QDECL *systemcalls)(intptr_t, ...) );
+                             intptr_t (QDECL *systemcalls)(intptr_t, ...) );
 void	Sys_UnloadDll( void *dllHandle );
 
 void	Sys_UnloadGame( void );
@@ -1076,32 +1076,32 @@ qboolean Sys_LowPhysicalMemory( void );
 #define INTERNAL_NODE (HMAX+1)
 
 typedef struct nodetype {
-	struct	nodetype *left, *right, *parent; /* tree structure */ 
-	struct	nodetype *next, *prev; /* doubly-linked list */
-	struct	nodetype **head; /* highest ranked node in block */
-	int		weight;
-	int		symbol;
+    struct	nodetype *left, *right, *parent; /* tree structure */
+    struct	nodetype *next, *prev; /* doubly-linked list */
+    struct	nodetype **head; /* highest ranked node in block */
+    int		weight;
+    int		symbol;
 } node_t;
 
 #define HMAX 256 /* Maximum symbol */
 
 typedef struct {
-	int			blocNode;
-	int			blocPtrs;
+    int			blocNode;
+    int			blocPtrs;
 
-	node_t*		tree;
-	node_t*		lhead;
-	node_t*		ltail;
-	node_t*		loc[HMAX+1];
-	node_t**	freelist;
+    node_t*		tree;
+    node_t*		lhead;
+    node_t*		ltail;
+    node_t*		loc[HMAX+1];
+    node_t**	freelist;
 
-	node_t		nodeList[768];
-	node_t*		nodePtrs[768];
+    node_t		nodeList[768];
+    node_t*		nodePtrs[768];
 } huff_t;
 
 typedef struct {
-	huff_t		compressor;
-	huff_t		decompressor;
+    huff_t		compressor;
+    huff_t		decompressor;
 } huffman_t;
 
 void	Huff_Compress(msg_t *buf, int offset);

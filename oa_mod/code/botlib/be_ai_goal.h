@@ -40,13 +40,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //a bot goal
 typedef struct bot_goal_s
 {
-	vec3_t origin;				//origin of the goal
-	int areanum;				//area number of the goal
-	vec3_t mins, maxs;			//mins and maxs of the goal
-	int entitynum;				//number of the goal entity
-	int number;					//goal number
-	int flags;					//goal flags
-	int iteminfo;				//item information
+    vec3_t origin;				//origin of the goal
+    int areanum;				//area number of the goal
+    vec3_t mins, maxs;			//mins and maxs of the goal
+    int entitynum;				//number of the goal entity
+    int number;					//goal number
+    int flags;					//goal flags
+    int iteminfo;				//item information
 } bot_goal_t;
 
 //reset the whole goal state, but keep the item weights
@@ -78,7 +78,7 @@ int BotChooseLTGItem(int goalstate, vec3_t origin, int *inventory, int travelfla
 //also the travel time from the nearby goal towards the long term goal may not
 //be larger than the travel time towards the long term goal from the current bot position
 int BotChooseNBGItem(int goalstate, vec3_t origin, int *inventory, int travelflags,
-							bot_goal_t *ltg, float maxtime);
+                     bot_goal_t *ltg, float maxtime);
 //returns true if the bot touches the goal
 int BotTouchingGoal(vec3_t origin, bot_goal_t *goal);
 //returns true if the goal should be visible but isn't

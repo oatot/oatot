@@ -37,7 +37,7 @@ CREDITS
 
 
 typedef struct {
-	menuframework_s	menu;
+    menuframework_s	menu;
 } creditsmenu_t;
 
 static creditsmenu_t	s_credits;
@@ -49,13 +49,13 @@ UI_CreditMenu_Key
 =================
 */
 static sfxHandle_t UI_CreditMenu_Key( int key ) {
-	if( key & K_CHAR_FLAG ) {
-		return 0;
-	}
+    if( key & K_CHAR_FLAG ) {
+        return 0;
+    }
 
-        //Sago: I no longer show credits on close. Consider something else if ingame credits are to be made
-	//trap_Cmd_ExecuteText( EXEC_APPEND, "quit\n" );
-	return 0;
+    //Sago: I no longer show credits on close. Consider something else if ingame credits are to be made
+    //trap_Cmd_ExecuteText( EXEC_APPEND, "quit\n" );
+    return 0;
 }
 
 
@@ -65,18 +65,18 @@ UI_CreditMenu_Draw
 ===============
 */
 static void UI_CreditMenu_Draw( void ) {
-	int		y;
+    int		y;
 
-	y = 12;
-	UI_DrawProportionalString( 320, y, "Thank you for playing", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Open Arena", UI_CENTER|UI_SMALLFONT, color_white );
-	
-	y += 228;
-	UI_DrawString( 320, y, "Terminating...", UI_CENTER|UI_SMALLFONT, color_red );
-        
-        y = 480 - PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "www.openarena.ws", UI_CENTER|UI_SMALLFONT, color_white );
+    y = 12;
+    UI_DrawProportionalString( 320, y, "Thank you for playing", UI_CENTER|UI_SMALLFONT, color_white );
+    y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+    UI_DrawProportionalString( 320, y, "Open Arena", UI_CENTER|UI_SMALLFONT, color_white );
+
+    y += 228;
+    UI_DrawString( 320, y, "Terminating...", UI_CENTER|UI_SMALLFONT, color_red );
+
+    y = 480 - PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+    UI_DrawProportionalString( 320, y, "www.openarena.ws", UI_CENTER|UI_SMALLFONT, color_white );
 }
 
 
@@ -86,11 +86,11 @@ UI_CreditMenu
 ===============
 */
 void UI_CreditMenu( void ) {
-	memset( &s_credits, 0 ,sizeof(s_credits) );
+    memset( &s_credits, 0 ,sizeof(s_credits) );
 
-	s_credits.menu.draw = UI_CreditMenu_Draw;
-	s_credits.menu.key = UI_CreditMenu_Key;
-	s_credits.menu.fullscreen = qtrue;
-	UI_PushMenu ( &s_credits.menu );
-        trap_Cmd_ExecuteText( EXEC_APPEND, "wait 2; quit\n" );
+    s_credits.menu.draw = UI_CreditMenu_Draw;
+    s_credits.menu.key = UI_CreditMenu_Key;
+    s_credits.menu.fullscreen = qtrue;
+    UI_PushMenu ( &s_credits.menu );
+    trap_Cmd_ExecuteText( EXEC_APPEND, "wait 2; quit\n" );
 }
