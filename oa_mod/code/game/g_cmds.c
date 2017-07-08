@@ -2082,7 +2082,7 @@ const char* qtimeToStr( qtime_t time ) {
         "May", "Jun", "Jul", "Aug",
         "Sep", "Oct", "Nov", "Dec"
     };
-    return va("^7%s %d %d:%d:%d %d",
+    return va("^6%s %d %d:%d:%d %d",
               months[time.tm_mon],
               time.tm_mday,
               time.tm_hour,
@@ -2102,11 +2102,9 @@ specifying 0,-1,-2,-3.. as arg shows the prev page.
 void Cmd_PastBids_f( gentity_t *ent ) {
     int     page_index, i, bids_n;
     char    arg1[MAX_STRING_TOKENS];
-    const char*    open_time_str;
-    const char*    prize_str;
-    const char*    res;
-    const char*    horse_str;
-    const char*    amount_str;
+    char    bid_str[MAX_STRING_TOKENS];
+    char    amount_str[MAX_STRING_TOKENS];
+    char    prize_str[MAX_STRING_TOKENS];
     fullbid_t past_bids[BIDS_NUMBER_IN_HISTORY_PAGE];
     gclient_t *client = ent->client;
     if ( client ) {
@@ -2118,32 +2116,31 @@ void Cmd_PastBids_f( gentity_t *ent ) {
             return;
         }
         bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, page_index );
-        trap_SendServerCommand( ent-g_entities, "print \"^4Bids list:\n\"" );
+        trap_SendServerCommand( ent-g_entities, "print \"^6Bids list:\n\"" );
         for ( i = 0; i < bids_n; i++ ) {
             fullbid_t bid = past_bids[i];
-            res = ( bid.prize > 0 ) ? "^2Win" : "^1Defeat";
+            bid_str[0] = 0;
+            strcat( bid_str, "print \"" );
             if ( !strcmp( bid.open_bid.horse, "red" ) ) {
-                horse_str = "^1Red";
+               strcat( bid_str, "^6*^7On ^1Red^6*^7 " );
             } else {
-                horse_str = "^5Blue";
+               strcat( bid_str, "^6*^7On ^5Blue^6*^7 " );
             }
+            strcat( bid_str, ( ( bid.prize > 0 ) ? "^6Result: ^2Win^7 " : "^1Defeat^7 " ) );
             if ( !strcmp( bid.open_bid.currency, "OAC" ) ) {
-                amount_str = va( "%d %s", bid.open_bid.amount, "^3OAC");
-                prize_str = va( "%d %s", bid.prize, "^3OAC");
+                    Q_snprintf( amount_str, MAX_STRING_TOKENS, "^6Amount:^7 %d %s ", bid.open_bid.amount, "^3OAC");
+                    Q_snprintf( prize_str, MAX_STRING_TOKENS, "^6Prize:^7 %d %s ", bid.prize, "^3OAC");
             } else {
-                amount_str = va( "%d %s", bid.open_bid.amount, "^2BTC");
-                prize_str = va( "%d %s", bid.prize, "^2BTC");
+                    Q_snprintf( amount_str, MAX_STRING_TOKENS, "^6Amount:^7 %d %s ", bid.open_bid.amount, "^2BTC");
+                    Q_snprintf( prize_str, MAX_STRING_TOKENS, "^6Prize:^7 %d %s ", bid.prize, "^2BTC");
             }
-            open_time_str = qtimeToStr( bid.open_bid.openTime );
-            trap_SendServerCommand( ent-g_entities, "print \"^3=====================================\n\"" );
-            trap_SendServerCommand( ent-g_entities, va( "print \"%s  %s  %s  %s  %s\n\"",
-                                    horse_str,
-                                    amount_str,
-                                    res,
-                                    prize_str,
-                                    open_time_str
-                                                      ) );
-            trap_SendServerCommand( ent-g_entities, "print \"^3=====================================\n\"" );
+            strcat( bid_str, amount_str );
+            strcat( bid_str, prize_str );
+            strcat( bid_str, qtimeToStr( bid.open_bid.openTime ) );
+            strcat( bid_str, "\n\"" );
+            trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+            trap_SendServerCommand( ent-g_entities, bid_str );
+            trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
         }
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
