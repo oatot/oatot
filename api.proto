@@ -95,6 +95,29 @@ message SiteWithdrawBtcResponse {
   string tx = 1;
 }
 
+message OaChangeGameStageRequest {
+  // 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
+  fixed64 new_stage = 1;
+}
+
+message OaChangeGameStageResponse {
+}
+
+message OaIsNewRequest {
+  OaAuth oa_auth = 1;
+}
+
+message OaIsNewResponse {
+  bool result = 1;
+}
+
+message OaRegisterRequest {
+  OaAuth oa_auth = 1;
+}
+
+message OaRegisterResponse {
+}
+
 message OaMyBalanceRequest {
   OaAuth oa_auth = 1;
   string currency = 2;
@@ -132,6 +155,12 @@ message OaCloseBidsRequest {
 message OaCloseBidsResponse {
 }
 
+message OaCloseBidsByIncidentRequest {
+}
+
+message OaCloseBidsByIncidentResponse {
+}
+
 message OaMyActiveBidsRequest {
   OaAuth oa_auth = 1;
 }
@@ -142,6 +171,7 @@ message OaMyActiveBidsResponse {
 
 message OaMyPastBidsRequest {
   OaAuth oa_auth = 1;
+  // page index (<= 0), 15 bids per page
   fixed64 page_number = 2;
 }
 
@@ -174,6 +204,7 @@ service Oatot {
 
   rpc SiteLogout(SiteLogoutRequest) returns (SiteLogoutResponse);
 
+  // Isn't currently used, for BTC only.
   rpc OaLoginStep1(OaLoginStep1Request) returns (OaLoginStep1Response);
 
   rpc SiteOaLoginStep2(SiteOaLoginStep2Request) returns (SiteOaLoginStep2Response);
@@ -186,14 +217,32 @@ service Oatot {
 
   rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
 
+  // Change game stage (FORMING_TEAMS, MAKING_BETS, PLAYING)
+  rpc OaChangeGameStage(OaChangeGameStageRequest) returns (OaChangeGameStageResponse);
+
+  // Check if this player hasn't appeared before.
+  rpc OaIsNew(OaIsNewRequest) returns (OaIsNewResponse);
+
+  // Register player in the databse, sponsor him/her with 1000 OAC.
+  rpc OaRegister(OaRegisterRequest) returns (OaRegisterResponse);
+
+  // OaMy* - operations with the given client.
   rpc OaMyBalance(OaMyBalanceRequest) returns (OaMyBalanceResponse);
 
   rpc OaMyBid(OaMyBidRequest) returns (OaMyBidResponse);
 
+  // For all the players, after the match is finished in an appropriate way.
+  // We know the winner.
   rpc OaCloseBids(OaCloseBidsRequest) returns (OaCloseBidsResponse);
 
+  // For all the players, in case match is finished by incident (e.g. someone disconnects).
+  // We have to return all the money back.
+  rpc OaCloseBidsByIncident(OaCloseBidsByIncidentRequest) returns (OaCloseBidsByIncidentResponse);
+
+  // Active bids for this match
   rpc OaMyActiveBids(OaMyActiveBidsRequest) returns (OaMyActiveBidsResponse);
 
+  // Past bids (15 per page)
   rpc OaMyPastBids(OaMyPastBidsRequest) returns (OaMyPastBidsResponse);
 
   rpc OaMyBidsSummary(OaMyBidsSummaryRequest) returns (OaMyBidsSummaryResponse);
