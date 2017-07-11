@@ -95,6 +95,16 @@ message SiteWithdrawBtcResponse {
   string tx = 1;
 }
 
+message OaDiscardBetRequest {
+  OaAuth oa_auth = 1;
+  // bet number [0, N), where N - number of active bets for the given client.
+  // id increments over time (first opended bet ALWAYS 0, second - 1... etc)
+  fixed64 bet_id = 2;
+}
+
+message OaDiscardBetResponse {
+}
+
 message OaTransferMoneyRequest {
   OaAuth oa_auth = 1;
   fixed64 amount = 2; // prize
@@ -234,6 +244,9 @@ service Oatot {
 
   rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
 
+  // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
+  rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
+
   // Transfer 'prize' money calculated by player score after the end of match.
   rpc OaTransferMoney(OaTransferMoneyRequest) returns (OaTransferMoneyResponse);
 
@@ -265,7 +278,7 @@ service Oatot {
   // Active bids for this match
   rpc OaMyActiveBids(OaMyActiveBidsRequest) returns (OaMyActiveBidsResponse);
 
-  // Past bids (15 per page)
+  // Past bids (15 per page), DO NOT include active bids here.
   rpc OaMyPastBids(OaMyPastBidsRequest) returns (OaMyPastBidsResponse);
 
   rpc OaMyBidsSummary(OaMyBidsSummaryRequest) returns (OaMyBidsSummaryResponse);
