@@ -1992,6 +1992,12 @@ void Cmd_Vote_f( gentity_t *ent ) {
     // for players entering or leaving
 }
 
+void printConsoleMessage( gentity_t *ent, const char* message ) {
+    trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+    trap_SendServerCommand( ent-g_entities, message );
+    trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+}
+
 /*
 ==================
 Cmd_Bet_f
@@ -2089,7 +2095,7 @@ const char* qtimeToStr( qtime_t time ) {
               time.tm_min,
               time.tm_sec,
               time.tm_year + 1900
-             );
+    );
 }
 
 /*
@@ -2138,10 +2144,50 @@ void Cmd_PastBids_f( gentity_t *ent ) {
             strcat( bid_str, prize_str );
             strcat( bid_str, qtimeToStr( bid.open_bid.openTime ) );
             strcat( bid_str, "\n\"" );
-            trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
-            trap_SendServerCommand( ent-g_entities, bid_str );
-            trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+            printConsoleMessage( ent, bid_str );
         }
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+void printCurrencySummary( gentity_t *ent, currencySummary_t summary, const char* currency ) {
+    char    summary_str[MAX_STRING_TOKENS];
+    char    total_bet_str[MAX_STRING_TOKENS];
+    char    total_prize_str[MAX_STRING_TOKENS];
+    char    total_lost_str[MAX_STRING_TOKENS];
+    char    bets_won_str[MAX_STRING_TOKENS];
+    char    bets_lost_str[MAX_STRING_TOKENS];
+    summary_str[0] = 0;
+    strcat( summary_str, "print \"" );
+    strcat( summary_str, "^6Your" );
+    strcat( summary_str, currency );
+    strcat( summary_str, " ^6summary:\n" );
+    Q_snprintf( total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %d%s\n", summary.total_bet, currency );
+    strcat( summary_str, total_bet_str );
+    Q_snprintf( total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %d%s\n", summary.total_prize, currency );
+    strcat( summary_str, total_prize_str );
+    Q_snprintf( total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %d%s\n", summary.total_lost, currency );
+    strcat( summary_str, total_lost_str );
+    Q_snprintf( bets_won_str, MAX_STRING_TOKENS, "^2Bets won: %d\n", summary.bets_won );
+    strcat( summary_str, bets_won_str );
+    Q_snprintf( bets_lost_str, MAX_STRING_TOKENS, "^1Bets lost: %d\n", summary.bets_lost );
+    strcat( summary_str, bets_lost_str );
+    strcat( summary_str, "\n\"" );
+    printConsoleMessage( ent, summary_str );
+}
+
+/*
+==================
+Cmd_BidsSummary_f
+==================
+*/
+void Cmd_BidsSummary_f( gentity_t *ent ) {
+    gclient_t *client = ent->client;
+    if ( client ) {
+        bidsSummary_t bids_summary = G_oatot_getBidsSummary( client->pers.guid );
+        printCurrencySummary( ent, bids_summary.oac_summary, " ^3OAC" );
+        printCurrencySummary( ent, bids_summary.btc_summary, " ^2BTC" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }
@@ -2470,6 +2516,7 @@ commands_t cmds[ ] =
     { "bet", 0, Cmd_Bet_f },
     { "unbet", 0, Cmd_Unbet_f },
     { "pastBids", 0, Cmd_PastBids_f },
+    { "bidsSummary", 0, Cmd_BidsSummary_f },
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
 

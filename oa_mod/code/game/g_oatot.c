@@ -28,3 +28,23 @@ int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_inde
     bids_arr[0] = test;
     return 1;
 }
+
+bidsSummary_t G_oatot_getBidsSummary( const char* cl_guid ) {
+    // TODO dummy, no implementation yet.
+    bidsSummary_t test_summary;
+    currencySummary_t btc_summary;
+    currencySummary_t oac_summary;
+    btc_summary.total_bet = 0;
+    btc_summary.total_prize = 0;
+    btc_summary.total_lost = 0;
+    btc_summary.bets_won = 0;
+    btc_summary.bets_lost = 0;
+    oac_summary.total_bet = 5;
+    oac_summary.total_prize = 5;
+    oac_summary.total_lost = 0;
+    oac_summary.bets_won = 5;
+    oac_summary.bets_lost = 0;
+    test_summary.btc_summary = btc_summary;
+    test_summary.oac_summary = oac_summary;
+    return test_summary;
+}

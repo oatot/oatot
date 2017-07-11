@@ -9,5 +9,6 @@ Declarations for interactions with `mod_proxy`.
 
 int G_oatot_getBalance( const char* cl_guid, const char* currency );
 int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_index );
+bidsSummary_t G_oatot_getBidsSummary( const char* cl_guid );
 
 #endif /* ifndef _G_OATOT_H */

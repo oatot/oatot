@@ -233,6 +233,8 @@ typedef struct {
 
 typedef struct bid_s bid_t;
 typedef struct fullbid_s fullbid_t;
+typedef struct currencySummary_s currencySummary_t;
+typedef struct bidsSummary_s bidsSummary_t;
 
 // structure for describing a bid (oatot)
 struct bid_s {
@@ -249,6 +251,19 @@ struct fullbid_s {
     qtime_t closeTime;
     char *winner;
     int prize;
+};
+
+struct currencySummary_s {
+    int total_bet;
+    int total_prize;
+    int total_lost;
+    int bets_won;
+    int bets_lost;
+};
+
+struct bidsSummary_s {
+    currencySummary_t oac_summary;
+    currencySummary_t btc_summary;
 };
 
 // the auto following clients don't follow a specific client
