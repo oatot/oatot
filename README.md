@@ -9,6 +9,14 @@ Make betting (with both virtual currency or [BTC][BTC-link]) possible in [OA][OA
 
 Just for fun and to keep the game I love alive.
 
+## Architecture of the project
+
+```
+OaMod <-----------------> ModProxy <-----------------> Backend
+        FUSE/FileSocket                    gRPC
+                                 (documented in api.proto)
+```
+
 ## OpenArena mod
 
 *New console commands*:
@@ -22,7 +30,6 @@ Basic stuff you can call by typing `/<command>` in OA game console.
  - bidsSummary
  - readyToBet
  - finishedBetting
- - listPlayersBids
  - help
 ```
 
@@ -39,22 +46,25 @@ in some way.
     You can't make any bets yet, teams aren't formed.
 
  - **MAKING_BETS**<br>
-    Available commands: `bet, unbet, pastBids, bidsSummary, finishedBetting, listPlayersBids, help`.
+    Available commands: `bet, unbet, pastBids, bidsSummary, finishedBetting, help`.
     Teams are fixed, you can't switch. If someone disconnects, `map_restart` is called.
     You can now make and discard your bets. Still no scores though.
 
  - **PLAYING**<br>
-    Available commands: `pastBids, bidsSummary, listPlayersBids, help`.
+    Available commands: `pastBids, bidsSummary, help`.
     Betting is finished. Teams are still locked, but the game has started already,
     so score is now counted.
 
-## Architecture of the project
+*How to earn OaCoins?*
 
-```
-OaMod <-----------------> ModProxy <-----------------> Backend
-        FUSE/FileSocket                    gRPC
-                                 (documented in api.proto)
-```
+ - Every new player is sponsored with 1000 OAC for first sign up.
+ - Your score after every single match played in oatot mod is transferred to your
+    *prize top-up* (1 score point is equal to one OAC for now).
+ - Obviously - by making bets and winning them! :)<br>
+
+*Future solutions*
+ - Mining
+ - Make OaCoins visible items on the map so you can collect them while playing.
 
 [BTC-link]: https://en.wikipedia.org/wiki/Bitcoin
 [OA-link]: https://en.wikipedia.org/wiki/OpenArena
