@@ -95,6 +95,14 @@ message SiteWithdrawBtcResponse {
   string tx = 1;
 }
 
+message OaTransferMoneyRequest {
+  OaAuth oa_auth = 1;
+  fixed64 amount = 2; // prize
+}
+
+message OaTransferMoneyResponse {
+}
+
 message OaActiveBidsSumsRequest {
   string horse = 1;
 }
@@ -225,6 +233,9 @@ service Oatot {
   rpc SiteDepositBtc(SiteDepositBtcRequest) returns (SiteDepositBtcResponse);
 
   rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
+
+  // Transfer 'prize' money calculated by player score after the end of match.
+  rpc OaTransferMoney(OaTransferMoneyRequest) returns (OaTransferMoneyResponse);
 
   // Active bids sums by horse.
   rpc OaActiveBidsSums(OaActiveBidsSumsRequest) returns (OaActiveBidsSumsResponse);
