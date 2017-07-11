@@ -2469,7 +2469,7 @@ commands_t cmds[ ] =
     // oatot commands
     { "bet", 0, Cmd_Bet_f },
     { "unbet", 0, Cmd_Unbet_f },
-    { "pastbids", 0, Cmd_PastBids_f },
+    { "pastBids", 0, Cmd_PastBids_f },
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
 
