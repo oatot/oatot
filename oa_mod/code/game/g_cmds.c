@@ -2275,6 +2275,35 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
 
 /*
 ==================
+Cmd_Help_f
+==================
+*/
+void Cmd_Help_f( gentity_t *ent ) {
+    char            help_message[MAX_STRING_TOKENS];
+    char            buffer[MAX_STRING_TOKENS];
+    fileHandle_t    file;
+    gclient_t *client = ent->client;
+    if ( client ) {
+        if ( g_gameStage.integer == FORMING_TEAMS ) {
+            trap_FS_FOpenFile( "texts/help_message_forming_teams.txt", &file, FS_READ );
+        } else if ( g_gameStage.integer == MAKING_BETS ) {
+            trap_FS_FOpenFile( "texts/help_message_making_bets.txt", &file, FS_READ );
+        } else {
+            trap_FS_FOpenFile( "texts/help_message_playing.txt", &file, FS_READ );
+        }
+        if ( file ) {
+            trap_FS_Read( &help_message, sizeof( help_message ), file );
+            Q_snprintf( buffer, MAX_STRING_TOKENS, "print \"%s\n\"", help_message );
+            trap_SendServerCommand( ent-g_entities, buffer );
+            trap_FS_FCloseFile( file );
+        }
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+/*
+==================
 Cmd_CallTeamVote_f
 ==================
 */
@@ -2519,6 +2548,7 @@ commands_t cmds[ ] =
     { "bidsSummary", 0, Cmd_BidsSummary_f },
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
+    { "help", 0, Cmd_Help_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },
