@@ -1,6 +1,5 @@
 ^2Help
 ^1----
-
 ^6Type ^1/bet <horse>[^1red^1,^5blue^1] <amount> <currency>[^3OAC^1,^2BTC^1]^6
 to make a bet.
 ^6Type ^1/unbet <bet_ID>^6 to discard one of your active bets.

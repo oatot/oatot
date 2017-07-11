@@ -1,6 +1,5 @@
 ^2Help
 ^1----
-
 ^6Type ^1/readyToBet^6 if you think that teams are already formed.
 ^6Type ^1/pastBids 0^6 to get last 15 closed bets; decrease arg by 1
 to get previous 15 bets, like ^1/pastBids -1^6.
