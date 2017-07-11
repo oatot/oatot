@@ -95,6 +95,15 @@ message SiteWithdrawBtcResponse {
   string tx = 1;
 }
 
+message OaActiveBidsSumsRequest {
+  string horse = 1;
+}
+
+message OaActiveBidsSumsResponse {
+  fixed64 oac_amount = 1;
+  fixed64 btc_amount = 2;
+}
+
 message OaChangeGameStageRequest {
   // 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
   fixed64 new_stage = 1;
@@ -216,6 +225,9 @@ service Oatot {
   rpc SiteDepositBtc(SiteDepositBtcRequest) returns (SiteDepositBtcResponse);
 
   rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
+
+  // Active bids sums by horse.
+  rpc OaActiveBidsSums(OaActiveBidsSumsRequest) returns (OaActiveBidsSumsResponse);
 
   // Change game stage (FORMING_TEAMS, MAKING_BETS, PLAYING)
   rpc OaChangeGameStage(OaChangeGameStageRequest) returns (OaChangeGameStageResponse);
