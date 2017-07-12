@@ -63,7 +63,7 @@ in some way.
  - Obviously - by making bets and winning them! :)<br>
 
 *Future solutions*
- - Mining
+ - Mining.
  - Make OaCoins visible items on the map so you can collect them while playing.
 
 [BTC-link]: https://en.wikipedia.org/wiki/Bitcoin
