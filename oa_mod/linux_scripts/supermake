@@ -21,7 +21,7 @@ mkdir -p ~/.openarena/$MODNAME
 
 #Copy texts from repo to build dir
 mkdir -p ../build/release-linux-$ARCH/oatot/texts
-cp ../code/game/*.txt ../build/release-linux-$ARCH/oatot/texts
+cp ../text/help_message*.txt ../build/release-linux-$ARCH/oatot/texts
 
 pushd ..
 #Build, pak it and start 
