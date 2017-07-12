@@ -4,9 +4,45 @@ Interactions with `mod_proxy`.
 
 #include "g_oatot.h"
 
+void G_oatot_discardBet( const char* cl_guid, int bet_id ) {
+}
+
+void G_oatot_transferMoney( const char* cl_guid, int amount ) {
+}
+
+betSum_t G_oatot_getActiveBidsSums( const char* horse ) {
+    betSum_t bet_sum;
+    bet_sum.oac_amount = 1000;
+    bet_sum.btc_amount = 1000;
+    return bet_sum;
+}
+
+void G_oatot_changeGameStage( gameStage_t new_stage) {
+}
+
+qboolean G_oatot_isNew( const char* cl_guid ) {
+    return qfalse;
+}
+
+void G_oatot_register( const char* cl_guid ) {
+}
+
 int G_oatot_getBalance( const char* cl_guid, const char* currency ) {
     // TODO dummy, no implementation yet.
     return 999999;
+}
+
+void G_oatot_makeBet( const char* cl_guid, bid_t bet ) {
+}
+
+void G_oatot_closeBids( const char* winner ) {
+}
+
+void G_oatot_closeBidsByIncident( void ) {
+}
+
+int G_oatot_getActiveBids( const char* cl_guid, bid_t* bids_arr ) {
+    return 0;
 }
 
 int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_index ) {
@@ -16,7 +52,6 @@ int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_inde
     fullbid_t test;
     trap_RealTime( &open_time );
     trap_RealTime( &close_time );
-    test_b.discarded = qfalse;
     test_b.horse = "Red";
     test_b.currency = "OAC";
     test_b.amount = 10;

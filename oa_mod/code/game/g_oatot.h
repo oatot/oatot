@@ -7,8 +7,18 @@ Declarations for interactions with `mod_proxy`.
 
 #include "g_local.h"
 
+void G_oatot_discardBet( const char* cl_guid, int bet_id ); // done
+void G_oatot_transferMoney( const char* cl_guid, int amount );
+betSum_t G_oatot_getActiveBidsSums( const char* horse );
+void G_oatot_changeGameStage( gameStage_t new_stage );
+qboolean G_oatot_isNew( const char* cl_guid ); // done
+void G_oatot_register( const char* cl_guid ); // done
 int G_oatot_getBalance( const char* cl_guid, const char* currency );
-int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_index );
-bidsSummary_t G_oatot_getBidsSummary( const char* cl_guid );
+void G_oatot_makeBet( const char* cl_guid, bid_t bet ); // done
+void G_oatot_closeBids( const char* winner );
+void G_oatot_closeBidsByIncident( void );
+int G_oatot_getActiveBids( const char* cl_guid, bid_t* bids_arr );
+int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_index ); // done
+bidsSummary_t G_oatot_getBidsSummary( const char* cl_guid ); // done
 
 #endif /* ifndef _G_OATOT_H */
