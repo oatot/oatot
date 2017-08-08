@@ -50,6 +50,14 @@ func (s *Server) SiteWithdrawBtc(ctx context.Context, req *g.SiteWithdrawBtcRequ
 	return nil, status.Errorf(codes.Unimplemented, "Not implemented")
 }
 
+func (s *Server) OaDiscardBet(ctx context.Context, req *g.OaDiscardBetRequest) (*g.OaDiscardBetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "Not implemented")
+}
+
+func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequest) (*g.OaTransferMoneyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "Not implemented")
+}
+
 func (s *Server) OaActiveBidsSums(ctx context.Context, req *g.OaActiveBidsSumsRequest) (*g.OaActiveBidsSumsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "Not implemented")
 }
