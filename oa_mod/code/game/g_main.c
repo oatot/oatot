@@ -2053,6 +2053,18 @@ qboolean ScoreIsTied( void )
     return a == b;
 }
 
+void transferPrizeMoney( void ) {
+    gclient_t	*cl;
+    int         i;
+    // Amount of "prize" is equal to player score.
+    for ( i = 0; i <  g_maxclients.integer; i++ ) {
+        cl = level.clients + i;
+        if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
+            G_oatot_transferMoney( cl->pers.guid, cl->ps.persistant[PERS_SCORE] );
+        }
+    }
+}
+
 /*
 =================
 CheckExitRules
@@ -2107,6 +2119,13 @@ void CheckExitRules( void )
 
     if ( g_timelimit.integer > 0 && !level.warmupTime ) {
         if ( (level.time - level.startTime)/60000 >= g_timelimit.integer ) {
+            if ( level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE] ) {
+                transferPrizeMoney();
+                G_oatot_closeBids( "red" );
+            } else {
+                transferPrizeMoney();
+                G_oatot_closeBids( "blue" );
+            }
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
             return;
@@ -2151,12 +2170,16 @@ void CheckExitRules( void )
     if ( (g_gametype.integer >= GT_CTF && g_ffa_gt<1) && g_capturelimit.integer ) {
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
+            transferPrizeMoney();
+            G_oatot_closeBids( "red" );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
         }
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
+            transferPrizeMoney();
+            G_oatot_closeBids( "blue" );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;

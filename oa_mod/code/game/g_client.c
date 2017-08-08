@@ -2124,6 +2124,7 @@ void ClientDisconnect( int clientNum ) {
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
             // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
+            G_oatot_closeBidsByIncident();
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
     }
