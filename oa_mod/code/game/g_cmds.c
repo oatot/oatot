@@ -2009,6 +2009,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
     char    arg2[MAX_STRING_TOKENS];
     char    arg3[MAX_STRING_TOKENS];
     qtime_t open_time;
+    bid_t   bet;
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1Betting not allowed now.\n\"" );
@@ -2039,12 +2040,12 @@ void Cmd_Bet_f( gentity_t *ent ) {
                 return;
             }
             trap_RealTime( &open_time );
-            strcpy(ent->client->sess.bids[bids_n].horse, arg1);
-            strcpy(ent->client->sess.bids[bids_n].currency, arg3);
-            ent->client->sess.bids[bids_n].amount = money;
-            ent->client->sess.bids[bids_n].openTime = open_time;
-            ent->client->sess.bids[bids_n].discarded = qfalse;
+            bet.horse = arg1;
+            bet.currency = arg3;
+            bet.amount = money;
+            bet.openTime = open_time;
             ent->client->sess.activeBidsNumber += 1;
+            G_oatot_makeBet( client->pers.guid, bet );
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );

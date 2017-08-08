@@ -284,7 +284,6 @@ typedef struct {
     qboolean	teamLeader;			// true when this client is a team leader
     // oatot
     int activeBidsNumber;
-    bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
 } clientSession_t;
 
 //
