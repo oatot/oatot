@@ -95,6 +95,23 @@ message SiteWithdrawBtcResponse {
   string tx = 1;
 }
 
+message OaDiscardBetRequest {
+  OaAuth oa_auth = 1;
+  // Unique bet ID.
+  fixed64 bet_id = 2;
+}
+
+message OaDiscardBetResponse {
+}
+
+message OaTransferMoneyRequest {
+  OaAuth oa_auth = 1;
+  fixed64 amount = 2; // prize
+}
+
+message OaTransferMoneyResponse {
+}
+
 message OaActiveBidsSumsRequest {
   string horse = 1;
 }
@@ -147,6 +164,8 @@ message Bid {
   google.protobuf.Timestamp close_time = 5;
   string winner = 6;
   fixed64 prize = 7;
+  // Unique bet ID.
+  fixed64 bet_id = 8;
 }
 
 message OaMyBidRequest {
@@ -180,12 +199,14 @@ message OaMyActiveBidsResponse {
 
 message OaMyPastBidsRequest {
   OaAuth oa_auth = 1;
-  // page index (<= 0), 15 bids per page
-  fixed64 page_number = 2;
+  // 15 bids per page.
+  // If page string is empty (""), return last 15 bids.
+  string page = 2;
 }
 
 message OaMyPastBidsResponse {
   repeated Bid bids = 1;
+  string next_page = 2;
 }
 
 message CurrencySummary {
@@ -226,16 +247,24 @@ service Oatot {
 
   rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
 
+  // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
+  // Completely remove it and disregard in OaActiveBidsSums, OaMyActiveBids,
+  // OaMyPastBids, ...
+  rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
+
+  // Transfer 'prize' money calculated by player score after the end of match.
+  rpc OaTransferMoney(OaTransferMoneyRequest) returns (OaTransferMoneyResponse);
+
   // Active bids sums by horse.
   rpc OaActiveBidsSums(OaActiveBidsSumsRequest) returns (OaActiveBidsSumsResponse);
 
-  // Change game stage (FORMING_TEAMS, MAKING_BETS, PLAYING)
+  // Change game stage (FORMING_TEAMS, MAKING_BETS, PLAYING).
   rpc OaChangeGameStage(OaChangeGameStageRequest) returns (OaChangeGameStageResponse);
 
   // Check if this player hasn't appeared before.
   rpc OaIsNew(OaIsNewRequest) returns (OaIsNewResponse);
 
-  // Register player in the databse, sponsor him/her with 1000 OAC.
+  // Register player in the database, sponsor him/her with 1000 OAC.
   rpc OaRegister(OaRegisterRequest) returns (OaRegisterResponse);
 
   // OaMy* - operations with the given client.
@@ -251,10 +280,11 @@ service Oatot {
   // We have to return all the money back.
   rpc OaCloseBidsByIncident(OaCloseBidsByIncidentRequest) returns (OaCloseBidsByIncidentResponse);
 
-  // Active bids for this match
+  // Active bids for this match. Output array MUST BE sorted by open time increase.
+  // (first opened bet ALWAYS 0, second - 1... etc).
   rpc OaMyActiveBids(OaMyActiveBidsRequest) returns (OaMyActiveBidsResponse);
 
-  // Past bids (15 per page)
+  // Past bids (15 per page), DO NOT include active bids here.
   rpc OaMyPastBids(OaMyPastBidsRequest) returns (OaMyPastBidsResponse);
 
   rpc OaMyBidsSummary(OaMyBidsSummaryRequest) returns (OaMyBidsSummaryResponse);

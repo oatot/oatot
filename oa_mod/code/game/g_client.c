@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 //
 #include "g_local.h"
+#include "g_oatot.h"
 
 // g_client.c -- client functions that don't happen every frame
 
@@ -1412,6 +1413,9 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
     // don't do the "xxx connected" messages if they were caried over from previous level
     if ( firstTime ) {
         trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " connected\n\"", client->pers.netname) );
+        if ( G_oatot_isNew( client->pers.guid ) ) {
+            G_oatot_register( client->pers.guid );
+        }
     }
 
     if ( g_gametype.integer >= GT_TEAM &&
@@ -1506,6 +1510,7 @@ void ClientBegin( int clientNum ) {
     // oatot
     client->pers.readyToBet = qfalse;
     client->pers.finishedBetting = qfalse;
+    client->pers.nextPageUsed = qfalse;
 
     client->pers.connected = CON_CONNECTED;
     client->pers.enterTime = level.time;
@@ -2119,6 +2124,7 @@ void ClientDisconnect( int clientNum ) {
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
             // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
+            G_oatot_closeBidsByIncident();
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
     }

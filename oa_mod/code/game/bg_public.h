@@ -114,6 +114,14 @@ typedef enum {
     PLAYING
 } gameStage_t;
 
+typedef struct betSum_s betSum_t;
+
+// Total amount bet on some horse.
+struct betSum_s {
+    int oac_amount;
+    int btc_amount;
+};
+
 typedef enum {
     GT_FFA,				// free for all
     GT_TOURNAMENT,		// one on one tournament

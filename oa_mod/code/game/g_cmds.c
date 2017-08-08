@@ -1992,6 +1992,12 @@ void Cmd_Vote_f( gentity_t *ent ) {
     // for players entering or leaving
 }
 
+void printConsoleMessage( gentity_t *ent, const char* message ) {
+    trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+    trap_SendServerCommand( ent-g_entities, message );
+    trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+}
+
 /*
 ==================
 Cmd_Bet_f
@@ -2003,6 +2009,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
     char    arg2[MAX_STRING_TOKENS];
     char    arg3[MAX_STRING_TOKENS];
     qtime_t open_time;
+    bid_t   bet;
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1Betting not allowed now.\n\"" );
@@ -2033,12 +2040,12 @@ void Cmd_Bet_f( gentity_t *ent ) {
                 return;
             }
             trap_RealTime( &open_time );
-            strcpy(ent->client->sess.bids[bids_n].horse, arg1);
-            strcpy(ent->client->sess.bids[bids_n].currency, arg3);
-            ent->client->sess.bids[bids_n].amount = money;
-            ent->client->sess.bids[bids_n].openTime = open_time;
-            ent->client->sess.bids[bids_n].discarded = qfalse;
+            bet.horse = arg1;
+            bet.currency = arg3;
+            bet.amount = money;
+            bet.openTime = open_time;
             ent->client->sess.activeBidsNumber += 1;
+            G_oatot_makeBet( client->pers.guid, bet );
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
@@ -2056,6 +2063,7 @@ Cmd_Unbet_f
 void Cmd_Unbet_f( gentity_t *ent ) {
     int     bet_ID;
     char    arg1[MAX_STRING_TOKENS];
+    bid_t   active_bids[MAX_ACTIVE_BIDS_NUMBER];
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1You can't unbet anything now.\n\"" );
@@ -2064,12 +2072,15 @@ void Cmd_Unbet_f( gentity_t *ent ) {
     if ( client ) {
         // check arg
         trap_Argv( 1, arg1, sizeof( arg1 ) );
-        bet_ID = atoi( arg1 );
-        if ( bet_ID < 0 || bet_ID >= client->sess.activeBidsNumber) {
+        if ( atoi( arg1 ) < 0 || atoi( arg1 ) >= client->sess.activeBidsNumber) {
             trap_SendServerCommand( ent-g_entities, "print \"^1Invalid bet ID.\n\"" );
             return;
         }
-        ent->client->sess.bids[bet_ID].discarded = qtrue;
+        // get bet ID
+        G_oatot_getActiveBids( client->pers.guid, active_bids );
+        bet_ID = active_bids[atoi( arg1 )].bet_ID;
+        ent->client->sess.activeBidsNumber -= 1;
+        G_oatot_discardBet( client->pers.guid, bet_ID );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
@@ -2089,33 +2100,30 @@ const char* qtimeToStr( qtime_t time ) {
               time.tm_min,
               time.tm_sec,
               time.tm_year + 1900
-             );
+    );
 }
 
 /*
 ==================
 Cmd_PastBids_f
 get last BIDS_NUMBER_IN_HISTORY_PAGE bids,
-specifying 0,-1,-2,-3.. as arg shows the prev page.
+specifying "elder" as arg shows the page before.
 ==================
 */
 void Cmd_PastBids_f( gentity_t *ent ) {
-    int     page_index, i, bids_n;
-    char    arg1[MAX_STRING_TOKENS];
+    int     i, bids_n;
     char    bid_str[MAX_STRING_TOKENS];
     char    amount_str[MAX_STRING_TOKENS];
     char    prize_str[MAX_STRING_TOKENS];
     fullbid_t past_bids[BIDS_NUMBER_IN_HISTORY_PAGE];
     gclient_t *client = ent->client;
     if ( client ) {
-        // check arg
-        trap_Argv( 1, arg1, sizeof( arg1 ) );
-        page_index = atoi( arg1 );
-        if ( page_index > 0 ) {
-            trap_SendServerCommand( ent-g_entities, "print \"^1Invalid page index.\n\"" );
-            return;
+        if ( trap_Argc() == 1 || !client->pers.nextPageUsed ) {
+            bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, "", client->pers.next_page );
+            client->pers.nextPageUsed = qtrue;
+        } else {
+            bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, client->pers.next_page, client->pers.next_page );
         }
-        bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, page_index );
         trap_SendServerCommand( ent-g_entities, "print \"^6Bids list:\n\"" );
         for ( i = 0; i < bids_n; i++ ) {
             fullbid_t bid = past_bids[i];
@@ -2138,10 +2146,50 @@ void Cmd_PastBids_f( gentity_t *ent ) {
             strcat( bid_str, prize_str );
             strcat( bid_str, qtimeToStr( bid.open_bid.openTime ) );
             strcat( bid_str, "\n\"" );
-            trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
-            trap_SendServerCommand( ent-g_entities, bid_str );
-            trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
+            printConsoleMessage( ent, bid_str );
         }
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+void printCurrencySummary( gentity_t *ent, currencySummary_t summary, const char* currency ) {
+    char    summary_str[MAX_STRING_TOKENS];
+    char    total_bet_str[MAX_STRING_TOKENS];
+    char    total_prize_str[MAX_STRING_TOKENS];
+    char    total_lost_str[MAX_STRING_TOKENS];
+    char    bets_won_str[MAX_STRING_TOKENS];
+    char    bets_lost_str[MAX_STRING_TOKENS];
+    summary_str[0] = 0;
+    strcat( summary_str, "print \"" );
+    strcat( summary_str, "^6Your" );
+    strcat( summary_str, currency );
+    strcat( summary_str, " ^6summary:\n" );
+    Q_snprintf( total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %d%s\n", summary.total_bet, currency );
+    strcat( summary_str, total_bet_str );
+    Q_snprintf( total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %d%s\n", summary.total_prize, currency );
+    strcat( summary_str, total_prize_str );
+    Q_snprintf( total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %d%s\n", summary.total_lost, currency );
+    strcat( summary_str, total_lost_str );
+    Q_snprintf( bets_won_str, MAX_STRING_TOKENS, "^2Bets won: %d\n", summary.bets_won );
+    strcat( summary_str, bets_won_str );
+    Q_snprintf( bets_lost_str, MAX_STRING_TOKENS, "^1Bets lost: %d\n", summary.bets_lost );
+    strcat( summary_str, bets_lost_str );
+    strcat( summary_str, "\n\"" );
+    printConsoleMessage( ent, summary_str );
+}
+
+/*
+==================
+Cmd_BidsSummary_f
+==================
+*/
+void Cmd_BidsSummary_f( gentity_t *ent ) {
+    gclient_t *client = ent->client;
+    if ( client ) {
+        bidsSummary_t bids_summary = G_oatot_getBidsSummary( client->pers.guid );
+        printCurrencySummary( ent, bids_summary.oac_summary, " ^3OAC" );
+        printCurrencySummary( ent, bids_summary.btc_summary, " ^2BTC" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }
@@ -2221,6 +2269,35 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
             if ( checkForRestart() ) {
                 trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
             }
+        }
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+/*
+==================
+Cmd_Help_f
+==================
+*/
+void Cmd_Help_f( gentity_t *ent ) {
+    char            help_message[MAX_STRING_TOKENS];
+    char            buffer[MAX_STRING_TOKENS];
+    fileHandle_t    file;
+    gclient_t *client = ent->client;
+    if ( client ) {
+        if ( g_gameStage.integer == FORMING_TEAMS ) {
+            trap_FS_FOpenFile( "texts/help_message_forming_teams.txt", &file, FS_READ );
+        } else if ( g_gameStage.integer == MAKING_BETS ) {
+            trap_FS_FOpenFile( "texts/help_message_making_bets.txt", &file, FS_READ );
+        } else {
+            trap_FS_FOpenFile( "texts/help_message_playing.txt", &file, FS_READ );
+        }
+        if ( file ) {
+            trap_FS_Read( &help_message, sizeof( help_message ), file );
+            Q_snprintf( buffer, MAX_STRING_TOKENS, "print \"%s\n\"", help_message );
+            trap_SendServerCommand( ent-g_entities, buffer );
+            trap_FS_FCloseFile( file );
         }
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
@@ -2470,8 +2547,10 @@ commands_t cmds[ ] =
     { "bet", 0, Cmd_Bet_f },
     { "unbet", 0, Cmd_Unbet_f },
     { "pastBids", 0, Cmd_PastBids_f },
+    { "bidsSummary", 0, Cmd_BidsSummary_f },
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
+    { "help", 0, Cmd_Help_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },

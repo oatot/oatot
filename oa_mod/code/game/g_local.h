@@ -233,14 +233,16 @@ typedef struct {
 
 typedef struct bid_s bid_t;
 typedef struct fullbid_s fullbid_t;
+typedef struct currencySummary_s currencySummary_t;
+typedef struct bidsSummary_s bidsSummary_t;
 
 // structure for describing a bid (oatot)
 struct bid_s {
-    qboolean discarded;
     char *horse;
     char *currency;
     int amount;
     qtime_t openTime;
+    int bet_ID; // Unique bet ID.
 };
 
 // structure for describing a bid and its result (oatot)
@@ -249,6 +251,19 @@ struct fullbid_s {
     qtime_t closeTime;
     char *winner;
     int prize;
+};
+
+struct currencySummary_s {
+    int total_bet;
+    int total_prize;
+    int total_lost;
+    int bets_won;
+    int bets_lost;
+};
+
+struct bidsSummary_s {
+    currencySummary_t oac_summary;
+    currencySummary_t btc_summary;
 };
 
 // the auto following clients don't follow a specific client
@@ -269,7 +284,6 @@ typedef struct {
     qboolean	teamLeader;			// true when this client is a team leader
     // oatot
     int activeBidsNumber;
-    bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
 } clientSession_t;
 
 //
@@ -342,8 +356,10 @@ typedef struct {
 
     qboolean    cannotWin; // Set to true if the players joins a leading team or the team with the most players
     // oatot
-    qboolean readyToBet;
-    qboolean finishedBetting;
+    qboolean    readyToBet;
+    qboolean    finishedBetting;
+    qboolean    nextPageUsed; // shows if next_page is initialized
+    char        next_page[MAX_STRING_CHARS]; // next page ID for pastBids()
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1

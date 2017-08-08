@@ -1,0 +1,11 @@
+^2Help
+^1----
+^6Type ^1/bet <horse>[^1red^1,^5blue^1] <amount> <currency>[^3OAC^1,^2BTC^1]^6
+to make a bet.
+^6Type ^1/unbet <bet_ID>^6 to discard one of your active bets.
+^1<bet_ID>^6 is shown in the user interface.
+^6Type ^1/finishedBetting^6 in case you made all the bets you want.
+^6Type ^1/pastBids^6 to get last 15 closed bets, type ^1/pastBids elder^6
+to get previous 15 bets.
+^6Type ^1/bidsSummary^6 to get info on your total lose/win stats for all the bets.
+^1Mail ^5dio@guild-oa.com ^1for any suggestions, bug reports and other stuff.
