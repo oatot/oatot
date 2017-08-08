@@ -7,10 +7,12 @@ Declarations for interactions with `mod_proxy`.
 
 #include "g_local.h"
 
+// "done" means is properly used within a mod already.
+
 void G_oatot_discardBet( const char* cl_guid, int bet_id ); // done
 void G_oatot_transferMoney( const char* cl_guid, int amount );
 betSum_t G_oatot_getActiveBidsSums( const char* horse );
-void G_oatot_changeGameStage( gameStage_t new_stage );
+void G_oatot_changeGameStage( gameStage_t new_stage ); // done
 qboolean G_oatot_isNew( const char* cl_guid ); // done
 void G_oatot_register( const char* cl_guid ); // done
 int G_oatot_getBalance( const char* cl_guid, const char* currency );
