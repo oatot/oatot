@@ -97,8 +97,7 @@ message SiteWithdrawBtcResponse {
 
 message OaDiscardBetRequest {
   OaAuth oa_auth = 1;
-  // bet number [0, N), where N - number of active bets for the given client.
-  // id increments over time (first opended bet ALWAYS 0, second - 1... etc)
+  // Unique bet ID.
   fixed64 bet_id = 2;
 }
 
@@ -165,6 +164,8 @@ message Bid {
   google.protobuf.Timestamp close_time = 5;
   string winner = 6;
   fixed64 prize = 7;
+  // Unique bet ID.
+  fixed64 bet_id = 8;
 }
 
 message OaMyBidRequest {

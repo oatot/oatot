@@ -2063,6 +2063,7 @@ Cmd_Unbet_f
 void Cmd_Unbet_f( gentity_t *ent ) {
     int     bet_ID;
     char    arg1[MAX_STRING_TOKENS];
+    bid_t   active_bids[MAX_ACTIVE_BIDS_NUMBER];
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1You can't unbet anything now.\n\"" );
@@ -2071,12 +2072,15 @@ void Cmd_Unbet_f( gentity_t *ent ) {
     if ( client ) {
         // check arg
         trap_Argv( 1, arg1, sizeof( arg1 ) );
-        bet_ID = atoi( arg1 );
-        if ( bet_ID < 0 || bet_ID >= client->sess.activeBidsNumber) {
+        if ( atoi( arg1 ) < 0 || atoi( arg1 ) >= client->sess.activeBidsNumber) {
             trap_SendServerCommand( ent-g_entities, "print \"^1Invalid bet ID.\n\"" );
             return;
         }
-        ent->client->sess.bids[bet_ID].discarded = qtrue;
+        // get bet ID
+        G_oatot_getActiveBids( client->pers.guid, active_bids );
+        bet_ID = active_bids[atoi( arg1 )].bet_ID;
+        ent->client->sess.activeBidsNumber -= 1;
+        G_oatot_discardBet( client->pers.guid, bet_ID );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );

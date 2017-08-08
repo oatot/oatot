@@ -238,11 +238,11 @@ typedef struct bidsSummary_s bidsSummary_t;
 
 // structure for describing a bid (oatot)
 struct bid_s {
-    qboolean discarded;
     char *horse;
     char *currency;
     int amount;
     qtime_t openTime;
+    int bet_ID; // Unique bet ID.
 };
 
 // structure for describing a bid and its result (oatot)
