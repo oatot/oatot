@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "g_local.h"
 #include "bg_public.h"
+#include "g_oatot.h"
 
 level_locals_t	level;
 
@@ -788,9 +789,11 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         next_game_stage = ( g_gameStage.integer + 1 ) % 3;
         Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
         trap_Cvar_Set( "g_gameStage", next_game_stage_str );
+        G_oatot_changeGameStage( next_game_stage );
     } else if ( g_gameStage.integer == MAKING_BETS ) {
         // rage quit or was callvoted
         trap_Cvar_Set( "g_gameStage", "0" );
+        G_oatot_changeGameStage( FORMING_TEAMS );
     }
 
     trap_Cvar_Set( "g_finishedBettingN", "0" );
