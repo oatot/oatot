@@ -26,7 +26,8 @@ Basic stuff you can call by typing `/<command>` in OA game console.
 ```
  - bet              <horse>[red,blue] <amount> <currency>[BTC,OAC]
  - unbet            <bet_ID>
- - pastBids         <page_index>
+ - pastBids
+ - pastBids         elder
  - bidsSummary
  - readyToBet
  - finishedBetting

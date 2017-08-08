@@ -20,7 +20,7 @@ void G_oatot_makeBet( const char* cl_guid, bid_t bet ); // done
 void G_oatot_closeBids( const char* winner );
 void G_oatot_closeBidsByIncident( void );
 int G_oatot_getActiveBids( const char* cl_guid, bid_t* bids_arr ); // postponed
-int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_index ); // done
+int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, const char* page, char* next_page ); // done
 bidsSummary_t G_oatot_getBidsSummary( const char* cl_guid ); // done
 
 #endif /* ifndef _G_OATOT_H */

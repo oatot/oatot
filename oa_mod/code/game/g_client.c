@@ -1510,6 +1510,7 @@ void ClientBegin( int clientNum ) {
     // oatot
     client->pers.readyToBet = qfalse;
     client->pers.finishedBetting = qfalse;
+    client->pers.nextPageUsed = qfalse;
 
     client->pers.connected = CON_CONNECTED;
     client->pers.enterTime = level.time;

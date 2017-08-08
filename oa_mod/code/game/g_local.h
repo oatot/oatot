@@ -356,8 +356,10 @@ typedef struct {
 
     qboolean    cannotWin; // Set to true if the players joins a leading team or the team with the most players
     // oatot
-    qboolean readyToBet;
-    qboolean finishedBetting;
+    qboolean    readyToBet;
+    qboolean    finishedBetting;
+    qboolean    nextPageUsed; // shows if next_page is initialized
+    char        next_page[MAX_STRING_CHARS]; // next page ID for pastBids()
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1

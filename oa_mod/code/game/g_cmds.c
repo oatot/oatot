@@ -2107,26 +2107,23 @@ const char* qtimeToStr( qtime_t time ) {
 ==================
 Cmd_PastBids_f
 get last BIDS_NUMBER_IN_HISTORY_PAGE bids,
-specifying 0,-1,-2,-3.. as arg shows the prev page.
+specifying "elder" as arg shows the page before.
 ==================
 */
 void Cmd_PastBids_f( gentity_t *ent ) {
-    int     page_index, i, bids_n;
-    char    arg1[MAX_STRING_TOKENS];
+    int     i, bids_n;
     char    bid_str[MAX_STRING_TOKENS];
     char    amount_str[MAX_STRING_TOKENS];
     char    prize_str[MAX_STRING_TOKENS];
     fullbid_t past_bids[BIDS_NUMBER_IN_HISTORY_PAGE];
     gclient_t *client = ent->client;
     if ( client ) {
-        // check arg
-        trap_Argv( 1, arg1, sizeof( arg1 ) );
-        page_index = atoi( arg1 );
-        if ( page_index > 0 ) {
-            trap_SendServerCommand( ent-g_entities, "print \"^1Invalid page index.\n\"" );
-            return;
+        if ( trap_Argc() == 1 || !client->pers.nextPageUsed ) {
+            bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, "", client->pers.next_page );
+            client->pers.nextPageUsed = qtrue;
+        } else {
+            bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, client->pers.next_page, client->pers.next_page );
         }
-        bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, page_index );
         trap_SendServerCommand( ent-g_entities, "print \"^6Bids list:\n\"" );
         for ( i = 0; i < bids_n; i++ ) {
             fullbid_t bid = past_bids[i];

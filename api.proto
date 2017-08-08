@@ -199,12 +199,14 @@ message OaMyActiveBidsResponse {
 
 message OaMyPastBidsRequest {
   OaAuth oa_auth = 1;
-  // page index (<= 0), 15 bids per page.
-  fixed64 page_number = 2;
+  // 15 bids per page.
+  // If page string is empty (""), return last 15 bids.
+  string page = 2;
 }
 
 message OaMyPastBidsResponse {
   repeated Bid bids = 1;
+  string next_page = 2;
 }
 
 message CurrencySummary {

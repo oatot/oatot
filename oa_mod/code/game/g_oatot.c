@@ -45,7 +45,7 @@ int G_oatot_getActiveBids( const char* cl_guid, bid_t* bids_arr ) {
     return 0;
 }
 
-int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_index ) {
+int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, const char* page, char* next_page ) {
     // TODO dummy, no implementation yet.
     qtime_t open_time, close_time;
     bid_t test_b;
@@ -61,6 +61,7 @@ int G_oatot_getPastBids( const char* cl_guid, fullbid_t* bids_arr, int page_inde
     test.prize = 20;
     test.closeTime = close_time;
     bids_arr[0] = test;
+    next_page = "aaaa";
     return 1;
 }
 
