@@ -12,9 +12,9 @@ Just for fun and to keep the game I love alive.
 ## Architecture of the project
 
 ```
-OaMod <-----------------> ModProxy <-----------------> Backend
-        FUSE/FileSocket                    gRPC
-                                 (documented in api.proto)
+OaMod <-----------------> Backend
+             gRPC
+   (documented in api.proto)
 ```
 
 ## OpenArena mod
