@@ -1291,6 +1291,9 @@ makedirs:
 	@if [ ! -d $(B)/$(BASEGAME) ];then $(MKDIR) $(B)/$(BASEGAME);fi
 	@if [ ! -d $(B)/$(BASEGAME)/cgame ];then $(MKDIR) $(B)/$(BASEGAME)/cgame;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game ];then $(MKDIR) $(B)/$(BASEGAME)/game;fi
+	@if [ ! -d $(B)/$(BASEGAME)/game/generated ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated;fi
+	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google;fi
+	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google/protobuf ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google/protobuf;fi
 	@if [ ! -d $(B)/$(BASEGAME)/ui ];then $(MKDIR) $(B)/$(BASEGAME)/ui;fi
 	@if [ ! -d $(B)/$(BASEGAME)/qcommon ];then $(MKDIR) $(B)/$(BASEGAME)/qcommon;fi
 	@if [ ! -d $(B)/$(BASEGAME)/vm ];then $(MKDIR) $(B)/$(BASEGAME)/vm;fi
@@ -2419,6 +2422,9 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_vote.o \
   $(B)/$(BASEGAME)/game/g_weapon.o \
   \
+  $(B)/$(BASEGAME)/game/generated/api.pb-c.o \
+  $(B)/$(BASEGAME)/game/generated/timestamp.pb-c.o \
+  \
   $(B)/$(BASEGAME)/qcommon/q_math.o \
   $(B)/$(BASEGAME)/qcommon/q_shared.o
 
@@ -2480,6 +2486,9 @@ MPGOBJ_ = \
   $(B)/$(MISSIONPACK)/game/g_utils.o \
   $(B)/$(MISSIONPACK)/game/g_vote.o \
   $(B)/$(MISSIONPACK)/game/g_weapon.o \
+  \
+  $(B)/$(MISSIONPACK)/game/generated/api.pb-c.o \
+  $(B)/$(MISSIONPACK)/game/generated/timestamp.pb-c.o \
   \
   $(B)/$(MISSIONPACK)/qcommon/q_math.o \
   $(B)/$(MISSIONPACK)/qcommon/q_shared.o
