@@ -21,7 +21,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 //
 
-#include <protobuf-c/protobuf-c.h>
+#include <protobuf-c-rpc/protobuf-c-rpc.h>
+#include "generated/api.pb-c.h"
 
 #include "g_local.h"
 #include "bg_public.h"
@@ -766,7 +767,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 {
     int					i, next_game_stage;
     char	mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
-
+    ProtobufC_RPC_AddressType address_type=0;
 
     G_Printf ("------- Game Initialization -------\n");
     G_Printf ("gamename: %s\n", GAMEVERSION);
@@ -800,6 +801,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 
     trap_Cvar_Set( "g_finishedBettingN", "0" );
     trap_Cvar_Set( "g_readyToBetN", "0" );
+
+    level.service = protobuf_c_rpc_client_new(address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL);
 
     G_ProcessIPBans();
 
@@ -1004,6 +1007,8 @@ void G_ShutdownGame( int restart )
     if ( trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
         BotAIShutdown( restart );
     }
+
+    protobuf_c_service_destroy(level.service);
 }
 
 
