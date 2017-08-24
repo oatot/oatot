@@ -767,7 +767,9 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 {
     int					i, next_game_stage;
     char	mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
-    ProtobufC_RPC_AddressType address_type=0;
+
+    ProtobufC_RPC_AddressType address_type = PROTOBUF_C_RPC_ADDRESS_TCP;
+    ProtobufC_RPC_Client* client;
 
     G_Printf ("------- Game Initialization -------\n");
     G_Printf ("gamename: %s\n", GAMEVERSION);
@@ -803,6 +805,16 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     trap_Cvar_Set( "g_readyToBetN", "0" );
 
     level.service = protobuf_c_rpc_client_new(address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL);
+    if ( level.service == NULL ) {
+        G_Printf( "gRPC: Error creating client!" );
+    }
+    client = (ProtobufC_RPC_Client*) level.service;
+
+    G_Printf( "gRPC: Connecting..." );
+    while ( !protobuf_c_rpc_client_is_connected (client) ) {
+        protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
+    }
+    G_Printf( "gRPC: done.\n");
 
     G_ProcessIPBans();
 

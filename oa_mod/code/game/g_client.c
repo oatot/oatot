@@ -1429,7 +1429,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
         while ( !result.done ) {
             protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
         }
-        if ( ((Oatot__OaIsNewResponse*) result.result)->result ) {
+        if ( ((Oatot__OaIsNewResponse*) (result.result))->result ) {
             G_oatot_register( client->pers.guid );
         }
     }
