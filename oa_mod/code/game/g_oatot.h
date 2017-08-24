@@ -5,7 +5,19 @@ Declarations for interactions with `mod_proxy`.
 #ifndef _G_OATOT_H
 #define _G_OATOT_H
 
+#include "generated/api.pb-c.h"
+
 #include "g_local.h"
+
+typedef struct {
+    ProtobufCMessage* result;
+    qboolean* done;
+} RPC_result;
+
+void G_oatot_IsNew_Closure(
+    const Oatot__OaIsNewResponse* message,
+    void* closure_data
+);
 
 // "done" means is properly used within a mod already.
 

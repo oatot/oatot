@@ -4,6 +4,14 @@ Interactions with `mod_proxy`.
 
 #include "g_oatot.h"
 
+void G_oatot_IsNew_Closure(
+    const Oatot__OaIsNewResponse* message,
+    void* closure_data
+) {
+    ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
+    *(((RPC_result*) closure_data)->done) = qtrue;
+}
+
 void G_oatot_discardBet( const char* cl_guid, int bet_id ) {
 }
 
