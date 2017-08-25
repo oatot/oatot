@@ -1425,7 +1425,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
         is_new_arg.oa_auth = &oa_auth;
         RPC_result result;
         result.done = qfalse;
-        oatot__oatot__oa_is_new( level.service, &is_new_arg, G_oatot_IsNew_Closure, &result );
+        oatot__oatot__oa_is_new( service, &is_new_arg, G_oatot_IsNew_Closure, &result );
         while ( !result.done ) {
             protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
         }

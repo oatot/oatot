@@ -616,8 +616,6 @@ typedef struct {
 
     int		max_humanplayers;
     int		lastActiveTime; ///< Updated as long as there are at least one human player on the server
-
-    ProtobufCService *service;
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1082,6 +1080,7 @@ void BotTestAAS(vec3_t origin);
 
 extern	level_locals_t	level;
 extern	gentity_t		g_entities[MAX_GENTITIES];
+extern  ProtobufCService *service;
 
 #define	FOFS(x) ((size_t)&(((gentity_t *)0)->x))
 
