@@ -9,7 +9,7 @@ void G_oatot_IsNew_Closure(
     void* closure_data
 ) {
     ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
-    *(((RPC_result*) closure_data)->done) = qtrue;
+    (((RPC_result*) closure_data)->done) = qtrue;
 }
 
 void G_oatot_discardBet( const char* cl_guid, int bet_id ) {

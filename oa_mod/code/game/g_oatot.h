@@ -11,7 +11,7 @@ Declarations for interactions with `mod_proxy`.
 
 typedef struct {
     ProtobufCMessage* result;
-    qboolean* done;
+    qboolean done;
 } RPC_result;
 
 void G_oatot_IsNew_Closure(
