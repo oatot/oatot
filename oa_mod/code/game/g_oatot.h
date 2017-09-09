@@ -9,6 +9,8 @@ Declarations for interactions with `mod_proxy`.
 
 #include "g_local.h"
 
+void waitForRPC( qboolean* done );
+
 typedef struct {
     ProtobufCMessage* result;
     qboolean done;
@@ -16,6 +18,11 @@ typedef struct {
 
 void G_oatot_IsNew_Closure(
     const Oatot__OaIsNewResponse* message,
+    void* closure_data
+);
+
+void G_oatot_Register_Closure(
+    const Oatot__OaRegisterResponse* message,
     void* closure_data
 );
 

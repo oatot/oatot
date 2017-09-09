@@ -4,8 +4,22 @@ Interactions with `mod_proxy`.
 
 #include "g_oatot.h"
 
+void waitForRPC( qboolean* done ) {
+    while ( !(*done) ) {
+        protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
+    }
+}
+
 void G_oatot_IsNew_Closure(
     const Oatot__OaIsNewResponse* message,
+    void* closure_data
+) {
+    ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
+    (((RPC_result*) closure_data)->done) = qtrue;
+}
+
+void G_oatot_Register_Closure(
+    const Oatot__OaRegisterResponse* message,
     void* closure_data
 ) {
     ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
