@@ -34,6 +34,14 @@ void G_oatot_DiscardBet_Closure(
     (((RPC_result*) closure_data)->done) = qtrue;
 }
 
+void G_oatot_TransferMoney_Closure(
+    const Oatot__OaTransferMoneyResponse* message,
+    void* closure_data
+) {
+    ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
+    (((RPC_result*) closure_data)->done) = qtrue;
+}
+
 void G_oatot_discardBet( const char* cl_guid, int bet_id ) {
 }
 

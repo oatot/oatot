@@ -2080,7 +2080,15 @@ void transferPrizeMoney( void ) {
     for ( i = 0; i <  g_maxclients.integer; i++ ) {
         cl = level.clients + i;
         if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
-            G_oatot_transferMoney( cl->pers.guid, cl->ps.persistant[PERS_SCORE] );
+            Oatot__OaTransferMoneyRequest transfer_money_arg = OATOT__OA_TRANSFER_MONEY_REQUEST__INIT;
+            Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+            oa_auth.cl_guid = cl->pers.guid;
+            transfer_money_arg.oa_auth = &oa_auth;
+            transfer_money_arg.amount = cl->ps.persistant[PERS_SCORE];
+            RPC_result result;
+            result.done = qfalse;
+            oatot__oatot__oa_transfer_money( service, &transfer_money_arg, G_oatot_TransferMoney_Closure, &result );
+            waitForRPC( &(result.done) );
         }
     }
 }

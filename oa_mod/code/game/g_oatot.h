@@ -31,6 +31,11 @@ void G_oatot_DiscardBet_Closure(
     void* closure_data
 );
 
+void G_oatot_TransferMoney_Closure(
+    const Oatot__OaTransferMoneyResponse* message,
+    void* closure_data
+);
+
 // "done" means is properly used within a mod already.
 
 void G_oatot_discardBet( const char* cl_guid, int bet_id ); // done
