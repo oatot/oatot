@@ -2076,11 +2076,19 @@ void Cmd_Unbet_f( gentity_t *ent ) {
             trap_SendServerCommand( ent-g_entities, "print \"^1Invalid bet ID.\n\"" );
             return;
         }
+        ent->client->sess.activeBidsNumber -= 1;
         // get bet ID
         G_oatot_getActiveBids( client->pers.guid, active_bids );
         bet_ID = active_bids[atoi( arg1 )].bet_ID;
-        ent->client->sess.activeBidsNumber -= 1;
-        G_oatot_discardBet( client->pers.guid, bet_ID );
+        Oatot__OaDiscardBetRequest discard_bet_arg = OATOT__OA_DISCARD_BET_REQUEST__INIT;
+        discard_bet_arg.bet_id = bet_ID;
+        Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+        oa_auth.cl_guid = client->pers.guid;
+        discard_bet_arg.oa_auth = &oa_auth;
+        RPC_result result;
+        result.done = qfalse;
+        oatot__oatot__oa_discard_bet( service, &discard_bet_arg, G_oatot_DiscardBet_Closure, &result );
+        waitForRPC( &(result.done) );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
