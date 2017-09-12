@@ -789,6 +789,18 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_vampire.value = 0.0f;
     }
 
+    service = protobuf_c_rpc_client_new( address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL );
+    if ( service == NULL ) {
+        G_Printf( "gRPC: Error creating client!" );
+    }
+    client = (ProtobufC_RPC_Client*) service;
+
+    G_Printf( "gRPC: Connecting..." );
+    while ( !protobuf_c_rpc_client_is_connected (client) ) {
+        protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
+    }
+    G_Printf( "gRPC: done.\n");
+
     // oatot game stages changing logic:
     RPC_result result;
     result.done = qfalse;
@@ -811,18 +823,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
 
     trap_Cvar_Set( "g_finishedBettingN", "0" );
     trap_Cvar_Set( "g_readyToBetN", "0" );
-
-    service = protobuf_c_rpc_client_new( address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL );
-    if ( service == NULL ) {
-        G_Printf( "gRPC: Error creating client!" );
-    }
-    client = (ProtobufC_RPC_Client*) service;
-
-    G_Printf( "gRPC: Connecting..." );
-    while ( !protobuf_c_rpc_client_is_connected (client) ) {
-        protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
-    }
-    G_Printf( "gRPC: done.\n");
 
     G_ProcessIPBans();
 
