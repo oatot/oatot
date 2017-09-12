@@ -2142,7 +2142,11 @@ void ClientDisconnect( int clientNum ) {
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
             // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-            G_oatot_closeBidsByIncident();
+            RPC_result result;
+            result.done = qfalse;
+            Oatot__OaCloseBidsByIncidentRequest close_bids_by_incident_arg = OATOT__OA_CLOSE_BIDS_BY_INCIDENT_REQUEST__INIT;
+            oatot__oatot__oa_close_bids_by_incident( service, &close_bids_by_incident_arg, G_oatot_CloseBidsByIncident_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
     }

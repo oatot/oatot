@@ -790,16 +790,23 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     }
 
     // oatot game stages changing logic:
+    RPC_result result;
+    result.done = qfalse;
+    Oatot__OaChangeGameStageRequest change_gs_arg = OATOT__OA_CHANGE_GAME_STAGE_REQUEST__INIT;
     if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
         // normal stage change or map change
         next_game_stage = ( g_gameStage.integer + 1 ) % 3;
         Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
         trap_Cvar_Set( "g_gameStage", next_game_stage_str );
-        G_oatot_changeGameStage( next_game_stage );
+        change_gs_arg.new_stage = next_game_stage;
+        oatot__oatot__oa_change_game_stage( service, &change_gs_arg, G_oatot_ChangeGameStage_Closure, &result );
+        waitForRPC( &(result.done) );
     } else if ( g_gameStage.integer == MAKING_BETS ) {
         // rage quit or was callvoted
         trap_Cvar_Set( "g_gameStage", "0" );
-        G_oatot_changeGameStage( FORMING_TEAMS );
+        change_gs_arg.new_stage = FORMING_TEAMS;
+        oatot__oatot__oa_change_game_stage( service, &change_gs_arg, G_oatot_ChangeGameStage_Closure, &result );
+        waitForRPC( &(result.done) );
     }
 
     trap_Cvar_Set( "g_finishedBettingN", "0" );
@@ -2145,14 +2152,21 @@ void CheckExitRules( void )
         return;
     }
 
+    Oatot__OaCloseBidsRequest close_bids_arg = OATOT__OA_CLOSE_BIDS_REQUEST__INIT;
+    RPC_result result;
+    result.done = qfalse;
     if ( g_timelimit.integer > 0 && !level.warmupTime ) {
         if ( (level.time - level.startTime)/60000 >= g_timelimit.integer ) {
             if ( level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE] ) {
                 transferPrizeMoney();
-                G_oatot_closeBids( "red" );
+                close_bids_arg.winner = "red";
+                oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+                waitForRPC( &(result.done) );
             } else {
                 transferPrizeMoney();
-                G_oatot_closeBids( "blue" );
+                close_bids_arg.winner = "blue";
+                oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+                waitForRPC( &(result.done) );
             }
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
@@ -2199,7 +2213,9 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
             transferPrizeMoney();
-            G_oatot_closeBids( "red" );
+            close_bids_arg.winner = "red";
+            oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2207,7 +2223,9 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
             transferPrizeMoney();
-            G_oatot_closeBids( "blue" );
+            close_bids_arg.winner = "blue";
+            oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
