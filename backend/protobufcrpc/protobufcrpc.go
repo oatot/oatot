@@ -36,8 +36,10 @@ func New(desc *grpc.ServiceDesc, service interface{}) (*Server, error) {
 			}
 			ctx := reflect.ValueOf(context.Background())
 			results := m.Call([]reflect.Value{ctx, req})
-			if err := results[1].Interface().(error); err != nil {
-				return nil, err
+			if results[1].Interface() != nil {
+				if err := results[1].Interface().(error); err != nil {
+					return nil, err
+				}
 			}
 			pb = results[0].Interface().(proto.Message)
 			return proto.Marshal(pb)
