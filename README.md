@@ -13,8 +13,8 @@ Just for fun and to keep the game I love alive.
 
 ```
 OaMod <-----------------> Backend
-             gRPC
-   (documented in api.proto)
+              RPC
+    (documented in api.proto)
 ```
 
 ## OpenArena mod
