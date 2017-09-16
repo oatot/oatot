@@ -59,13 +59,13 @@ message SiteMyClGuidsRequest {
   required SiteAuth site_auth = 1;
 }
 
-message ClGuid {
-  required string cl_guid = 1;
-  required google.protobuf.Timestamp added_time = 2;
-  required google.protobuf.Timestamp last_used_time = 3;
-}
-
 message SiteMyClGuidsResponse {
+  message ClGuid {
+    required string cl_guid = 1;
+    required google.protobuf.Timestamp added_time = 2;
+    required google.protobuf.Timestamp last_used_time = 3;
+  }
+
   repeated ClGuid cl_guids = 1;
 }
 
