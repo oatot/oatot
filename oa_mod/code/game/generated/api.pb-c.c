@@ -566,48 +566,11 @@ void   oatot__site_my_cl_guids_request__free_unpacked
   assert(message->base.descriptor == &oatot__site_my_cl_guids_request__descriptor);
   protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
-void   oatot__cl_guid__init
-                     (Oatot__ClGuid         *message)
+void   oatot__site_my_cl_guids_response__cl_guid__init
+                     (Oatot__SiteMyClGuidsResponse__ClGuid         *message)
 {
-  static Oatot__ClGuid init_value = OATOT__CL_GUID__INIT;
+  static Oatot__SiteMyClGuidsResponse__ClGuid init_value = OATOT__SITE_MY_CL_GUIDS_RESPONSE__CL_GUID__INIT;
   *message = init_value;
-}
-size_t oatot__cl_guid__get_packed_size
-                     (const Oatot__ClGuid *message)
-{
-  assert(message->base.descriptor == &oatot__cl_guid__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
-}
-size_t oatot__cl_guid__pack
-                     (const Oatot__ClGuid *message,
-                      uint8_t       *out)
-{
-  assert(message->base.descriptor == &oatot__cl_guid__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
-}
-size_t oatot__cl_guid__pack_to_buffer
-                     (const Oatot__ClGuid *message,
-                      ProtobufCBuffer *buffer)
-{
-  assert(message->base.descriptor == &oatot__cl_guid__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
-}
-Oatot__ClGuid *
-       oatot__cl_guid__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
-{
-  return (Oatot__ClGuid *)
-     protobuf_c_message_unpack (&oatot__cl_guid__descriptor,
-                                allocator, len, data);
-}
-void   oatot__cl_guid__free_unpacked
-                     (Oatot__ClGuid *message,
-                      ProtobufCAllocator *allocator)
-{
-  assert(message->base.descriptor == &oatot__cl_guid__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
 }
 void   oatot__site_my_cl_guids_response__init
                      (Oatot__SiteMyClGuidsResponse         *message)
@@ -2633,7 +2596,7 @@ const ProtobufCMessageDescriptor oatot__site_my_cl_guids_request__descriptor =
   (ProtobufCMessageInit) oatot__site_my_cl_guids_request__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
+static const ProtobufCFieldDescriptor oatot__site_my_cl_guids_response__cl_guid__field_descriptors[3] =
 {
   {
     "cl_guid",
@@ -2641,7 +2604,7 @@ static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
-    offsetof(Oatot__ClGuid, cl_guid),
+    offsetof(Oatot__SiteMyClGuidsResponse__ClGuid, cl_guid),
     NULL,
     NULL,
     0,             /* flags */
@@ -2653,7 +2616,7 @@ static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
-    offsetof(Oatot__ClGuid, added_time),
+    offsetof(Oatot__SiteMyClGuidsResponse__ClGuid, added_time),
     &google__protobuf__timestamp__descriptor,
     NULL,
     0,             /* flags */
@@ -2665,36 +2628,36 @@ static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
     PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
-    offsetof(Oatot__ClGuid, last_used_time),
+    offsetof(Oatot__SiteMyClGuidsResponse__ClGuid, last_used_time),
     &google__protobuf__timestamp__descriptor,
     NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
 };
-static const unsigned oatot__cl_guid__field_indices_by_name[] = {
+static const unsigned oatot__site_my_cl_guids_response__cl_guid__field_indices_by_name[] = {
   1,   /* field[1] = added_time */
   0,   /* field[0] = cl_guid */
   2,   /* field[2] = last_used_time */
 };
-static const ProtobufCIntRange oatot__cl_guid__number_ranges[1 + 1] =
+static const ProtobufCIntRange oatot__site_my_cl_guids_response__cl_guid__number_ranges[1 + 1] =
 {
   { 1, 0 },
   { 0, 3 }
 };
-const ProtobufCMessageDescriptor oatot__cl_guid__descriptor =
+const ProtobufCMessageDescriptor oatot__site_my_cl_guids_response__cl_guid__descriptor =
 {
   PROTOBUF_C__MESSAGE_DESCRIPTOR_MAGIC,
-  "oatot.ClGuid",
+  "oatot.SiteMyClGuidsResponse.ClGuid",
   "ClGuid",
-  "Oatot__ClGuid",
+  "Oatot__SiteMyClGuidsResponse__ClGuid",
   "oatot",
-  sizeof(Oatot__ClGuid),
+  sizeof(Oatot__SiteMyClGuidsResponse__ClGuid),
   3,
-  oatot__cl_guid__field_descriptors,
-  oatot__cl_guid__field_indices_by_name,
-  1,  oatot__cl_guid__number_ranges,
-  (ProtobufCMessageInit) oatot__cl_guid__init,
+  oatot__site_my_cl_guids_response__cl_guid__field_descriptors,
+  oatot__site_my_cl_guids_response__cl_guid__field_indices_by_name,
+  1,  oatot__site_my_cl_guids_response__cl_guid__number_ranges,
+  (ProtobufCMessageInit) oatot__site_my_cl_guids_response__cl_guid__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
 static const ProtobufCFieldDescriptor oatot__site_my_cl_guids_response__field_descriptors[1] =
@@ -2706,7 +2669,7 @@ static const ProtobufCFieldDescriptor oatot__site_my_cl_guids_response__field_de
     PROTOBUF_C_TYPE_MESSAGE,
     offsetof(Oatot__SiteMyClGuidsResponse, n_cl_guids),
     offsetof(Oatot__SiteMyClGuidsResponse, cl_guids),
-    &oatot__cl_guid__descriptor,
+    &oatot__site_my_cl_guids_response__cl_guid__descriptor,
     NULL,
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */

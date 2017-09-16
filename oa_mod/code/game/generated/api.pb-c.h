@@ -29,8 +29,8 @@ typedef struct _Oatot__OaLoginStep1Response Oatot__OaLoginStep1Response;
 typedef struct _Oatot__SiteOaLoginStep2Request Oatot__SiteOaLoginStep2Request;
 typedef struct _Oatot__SiteOaLoginStep2Response Oatot__SiteOaLoginStep2Response;
 typedef struct _Oatot__SiteMyClGuidsRequest Oatot__SiteMyClGuidsRequest;
-typedef struct _Oatot__ClGuid Oatot__ClGuid;
 typedef struct _Oatot__SiteMyClGuidsResponse Oatot__SiteMyClGuidsResponse;
+typedef struct _Oatot__SiteMyClGuidsResponse__ClGuid Oatot__SiteMyClGuidsResponse__ClGuid;
 typedef struct _Oatot__SiteRemoveClGuidRequest Oatot__SiteRemoveClGuidRequest;
 typedef struct _Oatot__SiteRemoveClGuidResponse Oatot__SiteRemoveClGuidResponse;
 typedef struct _Oatot__SiteDepositBtcRequest Oatot__SiteDepositBtcRequest;
@@ -205,15 +205,15 @@ struct  _Oatot__SiteMyClGuidsRequest
     , NULL }
 
 
-struct  _Oatot__ClGuid
+struct  _Oatot__SiteMyClGuidsResponse__ClGuid
 {
   ProtobufCMessage base;
   char *cl_guid;
   Google__Protobuf__Timestamp *added_time;
   Google__Protobuf__Timestamp *last_used_time;
 };
-#define OATOT__CL_GUID__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&oatot__cl_guid__descriptor) \
+#define OATOT__SITE_MY_CL_GUIDS_RESPONSE__CL_GUID__INIT \
+ { PROTOBUF_C_MESSAGE_INIT (&oatot__site_my_cl_guids_response__cl_guid__descriptor) \
     , NULL, NULL, NULL }
 
 
@@ -221,7 +221,7 @@ struct  _Oatot__SiteMyClGuidsResponse
 {
   ProtobufCMessage base;
   size_t n_cl_guids;
-  Oatot__ClGuid **cl_guids;
+  Oatot__SiteMyClGuidsResponse__ClGuid **cl_guids;
 };
 #define OATOT__SITE_MY_CL_GUIDS_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__site_my_cl_guids_response__descriptor) \
@@ -853,25 +853,9 @@ Oatot__SiteMyClGuidsRequest *
 void   oatot__site_my_cl_guids_request__free_unpacked
                      (Oatot__SiteMyClGuidsRequest *message,
                       ProtobufCAllocator *allocator);
-/* Oatot__ClGuid methods */
-void   oatot__cl_guid__init
-                     (Oatot__ClGuid         *message);
-size_t oatot__cl_guid__get_packed_size
-                     (const Oatot__ClGuid   *message);
-size_t oatot__cl_guid__pack
-                     (const Oatot__ClGuid   *message,
-                      uint8_t             *out);
-size_t oatot__cl_guid__pack_to_buffer
-                     (const Oatot__ClGuid   *message,
-                      ProtobufCBuffer     *buffer);
-Oatot__ClGuid *
-       oatot__cl_guid__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data);
-void   oatot__cl_guid__free_unpacked
-                     (Oatot__ClGuid *message,
-                      ProtobufCAllocator *allocator);
+/* Oatot__SiteMyClGuidsResponse__ClGuid methods */
+void   oatot__site_my_cl_guids_response__cl_guid__init
+                     (Oatot__SiteMyClGuidsResponse__ClGuid         *message);
 /* Oatot__SiteMyClGuidsResponse methods */
 void   oatot__site_my_cl_guids_response__init
                      (Oatot__SiteMyClGuidsResponse         *message);
@@ -1578,8 +1562,8 @@ typedef void (*Oatot__SiteOaLoginStep2Response_Closure)
 typedef void (*Oatot__SiteMyClGuidsRequest_Closure)
                  (const Oatot__SiteMyClGuidsRequest *message,
                   void *closure_data);
-typedef void (*Oatot__ClGuid_Closure)
-                 (const Oatot__ClGuid *message,
+typedef void (*Oatot__SiteMyClGuidsResponse__ClGuid_Closure)
+                 (const Oatot__SiteMyClGuidsResponse__ClGuid *message,
                   void *closure_data);
 typedef void (*Oatot__SiteMyClGuidsResponse_Closure)
                  (const Oatot__SiteMyClGuidsResponse *message,
@@ -1915,8 +1899,8 @@ extern const ProtobufCMessageDescriptor oatot__oa_login_step1_response__descript
 extern const ProtobufCMessageDescriptor oatot__site_oa_login_step2_request__descriptor;
 extern const ProtobufCMessageDescriptor oatot__site_oa_login_step2_response__descriptor;
 extern const ProtobufCMessageDescriptor oatot__site_my_cl_guids_request__descriptor;
-extern const ProtobufCMessageDescriptor oatot__cl_guid__descriptor;
 extern const ProtobufCMessageDescriptor oatot__site_my_cl_guids_response__descriptor;
+extern const ProtobufCMessageDescriptor oatot__site_my_cl_guids_response__cl_guid__descriptor;
 extern const ProtobufCMessageDescriptor oatot__site_remove_cl_guid_request__descriptor;
 extern const ProtobufCMessageDescriptor oatot__site_remove_cl_guid_response__descriptor;
 extern const ProtobufCMessageDescriptor oatot__site_deposit_btc_request__descriptor;
