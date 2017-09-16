@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef _G_LOCAL_H
 #define _G_LOCAL_H
 
+#include <protobuf-c-rpc/protobuf-c-rpc.h>
+
 #include "../qcommon/q_shared.h"
 #include "bg_public.h"
 #include "g_public.h"
@@ -230,41 +232,6 @@ typedef struct {
 #define MAX_ACTIVE_BIDS_NUMBER 5
 // number of bids in single page when showing history with `pastBids` cmd
 #define BIDS_NUMBER_IN_HISTORY_PAGE 15
-
-typedef struct bid_s bid_t;
-typedef struct fullbid_s fullbid_t;
-typedef struct currencySummary_s currencySummary_t;
-typedef struct bidsSummary_s bidsSummary_t;
-
-// structure for describing a bid (oatot)
-struct bid_s {
-    char *horse;
-    char *currency;
-    int amount;
-    qtime_t openTime;
-    int bet_ID; // Unique bet ID.
-};
-
-// structure for describing a bid and its result (oatot)
-struct fullbid_s {
-    bid_t open_bid;
-    qtime_t closeTime;
-    char *winner;
-    int prize;
-};
-
-struct currencySummary_s {
-    int total_bet;
-    int total_prize;
-    int total_lost;
-    int bets_won;
-    int bets_lost;
-};
-
-struct bidsSummary_s {
-    currencySummary_t oac_summary;
-    currencySummary_t btc_summary;
-};
 
 // the auto following clients don't follow a specific client
 // number, but instead follow the first two active players
@@ -614,7 +581,6 @@ typedef struct {
 
     int		max_humanplayers;
     int		lastActiveTime; ///< Updated as long as there are at least one human player on the server
-
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1079,6 +1045,7 @@ void BotTestAAS(vec3_t origin);
 
 extern	level_locals_t	level;
 extern	gentity_t		g_entities[MAX_GENTITIES];
+extern  ProtobufCService *service;
 
 #define	FOFS(x) ((size_t)&(((gentity_t *)0)->x))
 

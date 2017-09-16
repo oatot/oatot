@@ -8,6 +8,8 @@ COMPILE_PLATFORM=$(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]'|sed -e 
 
 COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/x86/)
 
+LDFLAGS=-lprotobuf-c-rpc -lprotobuf -lprotobuf-c
+
 ifeq ($(COMPILE_PLATFORM),sunos)
   # Solaris uname and GNU uname differ
   COMPILE_ARCH=$(shell uname -p | sed -e s/i.86/x86/)
@@ -946,15 +948,11 @@ endif
 ifneq ($(BUILD_GAME_SO),0)
   ifneq ($(BUILD_BASEGAME),0)
     TARGETS += \
-      $(B)/$(BASEGAME)/cgame$(SHLIBNAME) \
-      $(B)/$(BASEGAME)/qagame$(SHLIBNAME) \
-      $(B)/$(BASEGAME)/ui$(SHLIBNAME)
+      $(B)/$(BASEGAME)/qagame$(SHLIBNAME)
   endif
   ifneq ($(BUILD_MISSIONPACK),0)
     TARGETS += \
-      $(B)/$(MISSIONPACK)/cgame$(SHLIBNAME) \
-      $(B)/$(MISSIONPACK)/qagame$(SHLIBNAME) \
-      $(B)/$(MISSIONPACK)/ui$(SHLIBNAME)
+      $(B)/$(MISSIONPACK)/qagame$(SHLIBNAME)
   endif
 endif
 
@@ -962,13 +960,11 @@ ifneq ($(BUILD_GAME_QVM),0)
   ifneq ($(BUILD_BASEGAME),0)
     TARGETS += \
       $(B)/$(BASEGAME)/vm/cgame.qvm \
-      $(B)/$(BASEGAME)/vm/qagame.qvm \
       $(B)/$(BASEGAME)/vm/ui.qvm
   endif
   ifneq ($(BUILD_MISSIONPACK),0)
     TARGETS += \
       $(B)/$(MISSIONPACK)/vm/cgame.qvm \
-      $(B)/$(MISSIONPACK)/vm/qagame.qvm \
       $(B)/$(MISSIONPACK)/vm/ui.qvm
   endif
 endif
@@ -1297,6 +1293,9 @@ makedirs:
 	@if [ ! -d $(B)/$(BASEGAME) ];then $(MKDIR) $(B)/$(BASEGAME);fi
 	@if [ ! -d $(B)/$(BASEGAME)/cgame ];then $(MKDIR) $(B)/$(BASEGAME)/cgame;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game ];then $(MKDIR) $(B)/$(BASEGAME)/game;fi
+	@if [ ! -d $(B)/$(BASEGAME)/game/generated ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated;fi
+	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google;fi
+	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google/protobuf ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google/protobuf;fi
 	@if [ ! -d $(B)/$(BASEGAME)/ui ];then $(MKDIR) $(B)/$(BASEGAME)/ui;fi
 	@if [ ! -d $(B)/$(BASEGAME)/qcommon ];then $(MKDIR) $(B)/$(BASEGAME)/qcommon;fi
 	@if [ ! -d $(B)/$(BASEGAME)/vm ];then $(MKDIR) $(B)/$(BASEGAME)/vm;fi
@@ -2425,6 +2424,9 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_vote.o \
   $(B)/$(BASEGAME)/game/g_weapon.o \
   \
+  $(B)/$(BASEGAME)/game/generated/api.pb-c.o \
+  $(B)/$(BASEGAME)/game/generated/timestamp.pb-c.o \
+  \
   $(B)/$(BASEGAME)/qcommon/q_math.o \
   $(B)/$(BASEGAME)/qcommon/q_shared.o
 
@@ -2486,6 +2488,9 @@ MPGOBJ_ = \
   $(B)/$(MISSIONPACK)/game/g_utils.o \
   $(B)/$(MISSIONPACK)/game/g_vote.o \
   $(B)/$(MISSIONPACK)/game/g_weapon.o \
+  \
+  $(B)/$(MISSIONPACK)/game/generated/api.pb-c.o \
+  $(B)/$(MISSIONPACK)/game/generated/timestamp.pb-c.o \
   \
   $(B)/$(MISSIONPACK)/qcommon/q_math.o \
   $(B)/$(MISSIONPACK)/qcommon/q_shared.o

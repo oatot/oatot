@@ -2008,8 +2008,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
     char    arg1[MAX_STRING_TOKENS];
     char    arg2[MAX_STRING_TOKENS];
     char    arg3[MAX_STRING_TOKENS];
-    qtime_t open_time;
-    bid_t   bet;
+    Oatot__OaMyBidRequest   bet = OATOT__OA_MY_BID_REQUEST__INIT;
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1Betting not allowed now.\n\"" );
@@ -2039,13 +2038,19 @@ void Cmd_Bet_f( gentity_t *ent ) {
                 trap_SendServerCommand( ent-g_entities, "print \"^1Invalid currency.\n\"" );
                 return;
             }
-            trap_RealTime( &open_time );
-            bet.horse = arg1;
-            bet.currency = arg3;
-            bet.amount = money;
-            bet.openTime = open_time;
+            Oatot__Bid bid = OATOT__BID__INIT;
+            bid.horse = arg1;
+            bid.currency = arg3;
+            bid.amount = money;
+            Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+            oa_auth.cl_guid = client->pers.guid;
+            bet.oa_auth = &oa_auth;
+            bet.bid = &bid;
             ent->client->sess.activeBidsNumber += 1;
-            G_oatot_makeBet( client->pers.guid, bet );
+            RPC_result result;
+            result.done = qfalse;
+            oatot__oatot__oa_my_bid( service, &bet, G_oatot_MakeBet_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
@@ -2063,7 +2068,7 @@ Cmd_Unbet_f
 void Cmd_Unbet_f( gentity_t *ent ) {
     int     bet_ID;
     char    arg1[MAX_STRING_TOKENS];
-    bid_t   active_bids[MAX_ACTIVE_BIDS_NUMBER];
+    Oatot__Bid   active_bids[MAX_ACTIVE_BIDS_NUMBER];
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1You can't unbet anything now.\n\"" );
@@ -2076,31 +2081,23 @@ void Cmd_Unbet_f( gentity_t *ent ) {
             trap_SendServerCommand( ent-g_entities, "print \"^1Invalid bet ID.\n\"" );
             return;
         }
+        ent->client->sess.activeBidsNumber -= 1;
         // get bet ID
         G_oatot_getActiveBids( client->pers.guid, active_bids );
-        bet_ID = active_bids[atoi( arg1 )].bet_ID;
-        ent->client->sess.activeBidsNumber -= 1;
-        G_oatot_discardBet( client->pers.guid, bet_ID );
+        bet_ID = active_bids[atoi( arg1 )].bet_id;
+        Oatot__OaDiscardBetRequest discard_bet_arg = OATOT__OA_DISCARD_BET_REQUEST__INIT;
+        discard_bet_arg.bet_id = bet_ID;
+        Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+        oa_auth.cl_guid = client->pers.guid;
+        discard_bet_arg.oa_auth = &oa_auth;
+        RPC_result result;
+        result.done = qfalse;
+        oatot__oatot__oa_discard_bet( service, &discard_bet_arg, G_oatot_DiscardBet_Closure, &result );
+        waitForRPC( &(result.done) );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }
-}
-
-const char* qtimeToStr( qtime_t time ) {
-    static const char *months[] = {
-        "Jan", "Feb", "Mar", "Apr",
-        "May", "Jun", "Jul", "Aug",
-        "Sep", "Oct", "Nov", "Dec"
-    };
-    return va("^6%s %d %d:%d:%d %d",
-              months[time.tm_mon],
-              time.tm_mday,
-              time.tm_hour,
-              time.tm_min,
-              time.tm_sec,
-              time.tm_year + 1900
-    );
 }
 
 /*
@@ -2115,36 +2112,50 @@ void Cmd_PastBids_f( gentity_t *ent ) {
     char    bid_str[MAX_STRING_TOKENS];
     char    amount_str[MAX_STRING_TOKENS];
     char    prize_str[MAX_STRING_TOKENS];
-    fullbid_t past_bids[BIDS_NUMBER_IN_HISTORY_PAGE];
+    Oatot__Bid** past_bids;
     gclient_t *client = ent->client;
     if ( client ) {
+        RPC_result result;
+        result.done = qfalse;
+        Oatot__OaMyPastBidsRequest past_bids_arg = OATOT__OA_MY_PAST_BIDS_REQUEST__INIT;
+        Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+        oa_auth.cl_guid = client->pers.guid;
+        past_bids_arg.oa_auth = &oa_auth;
         if ( trap_Argc() == 1 || !client->pers.nextPageUsed ) {
-            bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, "", client->pers.next_page );
+            past_bids_arg.page = "";
+            oatot__oatot__oa_my_past_bids( service, &past_bids_arg, G_oatot_GetPastBids_Closure, &result );
+            waitForRPC( &(result.done) );
             client->pers.nextPageUsed = qtrue;
         } else {
-            bids_n = G_oatot_getPastBids( client->pers.guid, past_bids, client->pers.next_page, client->pers.next_page );
+            past_bids_arg.page = client->pers.next_page;
+            oatot__oatot__oa_my_past_bids( service, &past_bids_arg, G_oatot_GetPastBids_Closure, &result );
+            waitForRPC( &(result.done) );
         }
+        strcpy( client->pers.next_page, ( (Oatot__OaMyPastBidsResponse*) (result.result) )->next_page );
+        bids_n = ( (Oatot__OaMyPastBidsResponse*) (result.result) )->n_bids;
+        past_bids = ( (Oatot__OaMyPastBidsResponse*) (result.result) )->bids;
         trap_SendServerCommand( ent-g_entities, "print \"^6Bids list:\n\"" );
         for ( i = 0; i < bids_n; i++ ) {
-            fullbid_t bid = past_bids[i];
+            Oatot__Bid* bid = past_bids[i];
             bid_str[0] = 0;
             strcat( bid_str, "print \"" );
-            if ( !strcmp( bid.open_bid.horse, "red" ) ) {
+            if ( !strcmp( bid->horse, "red" ) ) {
                strcat( bid_str, "^6*^7On ^1Red^6*^7 " );
             } else {
                strcat( bid_str, "^6*^7On ^5Blue^6*^7 " );
             }
-            strcat( bid_str, ( ( bid.prize > 0 ) ? "^6Result: ^2Win^7 " : "^1Defeat^7 " ) );
-            if ( !strcmp( bid.open_bid.currency, "OAC" ) ) {
-                    Q_snprintf( amount_str, MAX_STRING_TOKENS, "^6Amount:^7 %d %s ", bid.open_bid.amount, "^3OAC");
-                    Q_snprintf( prize_str, MAX_STRING_TOKENS, "^6Prize:^7 %d %s ", bid.prize, "^3OAC");
+            strcat( bid_str, ( ( bid->prize > 0 ) ? "^6Result: ^2Win^7 " : "^1Defeat^7 " ) );
+            if ( !strcmp( bid->currency, "OAC" ) ) {
+                    Q_snprintf( amount_str, MAX_STRING_TOKENS, "^6Amount:^7 %lu %s ", bid->amount, "^3OAC");
+                    Q_snprintf( prize_str, MAX_STRING_TOKENS, "^6Prize:^7 %lu %s ", bid->prize, "^3OAC");
             } else {
-                    Q_snprintf( amount_str, MAX_STRING_TOKENS, "^6Amount:^7 %d %s ", bid.open_bid.amount, "^2BTC");
-                    Q_snprintf( prize_str, MAX_STRING_TOKENS, "^6Prize:^7 %d %s ", bid.prize, "^2BTC");
+                    Q_snprintf( amount_str, MAX_STRING_TOKENS, "^6Amount:^7 %lu %s ", bid->amount, "^2BTC");
+                    Q_snprintf( prize_str, MAX_STRING_TOKENS, "^6Prize:^7 %lu %s ", bid->prize, "^2BTC");
             }
+            time_t open_time = (time_t) bid->open_time->seconds;
             strcat( bid_str, amount_str );
             strcat( bid_str, prize_str );
-            strcat( bid_str, qtimeToStr( bid.open_bid.openTime ) );
+            strcat( bid_str, ctime( &open_time ) );
             strcat( bid_str, "\n\"" );
             printConsoleMessage( ent, bid_str );
         }
@@ -2153,7 +2164,7 @@ void Cmd_PastBids_f( gentity_t *ent ) {
     }
 }
 
-void printCurrencySummary( gentity_t *ent, currencySummary_t summary, const char* currency ) {
+void printCurrencySummary( gentity_t *ent, Oatot__CurrencySummary* summary, const char* currency ) {
     char    summary_str[MAX_STRING_TOKENS];
     char    total_bet_str[MAX_STRING_TOKENS];
     char    total_prize_str[MAX_STRING_TOKENS];
@@ -2165,15 +2176,15 @@ void printCurrencySummary( gentity_t *ent, currencySummary_t summary, const char
     strcat( summary_str, "^6Your" );
     strcat( summary_str, currency );
     strcat( summary_str, " ^6summary:\n" );
-    Q_snprintf( total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %d%s\n", summary.total_bet, currency );
+    Q_snprintf( total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %lu%s\n", summary->total_bet, currency );
     strcat( summary_str, total_bet_str );
-    Q_snprintf( total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %d%s\n", summary.total_prize, currency );
+    Q_snprintf( total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %lu%s\n", summary->total_prize, currency );
     strcat( summary_str, total_prize_str );
-    Q_snprintf( total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %d%s\n", summary.total_lost, currency );
+    Q_snprintf( total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %lu%s\n", summary->total_lost, currency );
     strcat( summary_str, total_lost_str );
-    Q_snprintf( bets_won_str, MAX_STRING_TOKENS, "^2Bets won: %d\n", summary.bets_won );
+    Q_snprintf( bets_won_str, MAX_STRING_TOKENS, "^2Bets won: %lu\n", summary->bets_won );
     strcat( summary_str, bets_won_str );
-    Q_snprintf( bets_lost_str, MAX_STRING_TOKENS, "^1Bets lost: %d\n", summary.bets_lost );
+    Q_snprintf( bets_lost_str, MAX_STRING_TOKENS, "^1Bets lost: %lu\n", summary->bets_lost );
     strcat( summary_str, bets_lost_str );
     strcat( summary_str, "\n\"" );
     printConsoleMessage( ent, summary_str );
@@ -2186,10 +2197,18 @@ Cmd_BidsSummary_f
 */
 void Cmd_BidsSummary_f( gentity_t *ent ) {
     gclient_t *client = ent->client;
+    RPC_result result;
+    result.done = qfalse;
     if ( client ) {
-        bidsSummary_t bids_summary = G_oatot_getBidsSummary( client->pers.guid );
-        printCurrencySummary( ent, bids_summary.oac_summary, " ^3OAC" );
-        printCurrencySummary( ent, bids_summary.btc_summary, " ^2BTC" );
+        Oatot__OaMyBidsSummaryRequest bids_summary_arg = OATOT__OA_MY_BIDS_SUMMARY_REQUEST__INIT;
+        Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+        oa_auth.cl_guid = client->pers.guid;
+        bids_summary_arg.oa_auth = &oa_auth;
+        oatot__oatot__oa_my_bids_summary( service, &bids_summary_arg, G_oatot_GetBidsSummary_Closure, &result );
+        waitForRPC( &(result.done) );
+        Oatot__OaMyBidsSummaryResponse* res = (Oatot__OaMyBidsSummaryResponse*) (result.result);
+        printCurrencySummary( ent, res->oac_summary, " ^3OAC" );
+        printCurrencySummary( ent, res->btc_summary, " ^2BTC" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }

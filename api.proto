@@ -1,68 +1,68 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package oatot;
 
 import "google/protobuf/timestamp.proto";
 
 message SiteAuth {
-  string btc_address = 1;
-  string session_id = 2;
+  required string btc_address = 1;
+  required string session_id = 2;
 }
 
 message OaAuth {
-  string cl_guid = 1;
+ required  string cl_guid = 1;
 }
 
 message SiteLoginStep1Request {
-  string btc_address = 1;
+  required string btc_address = 1;
 }
 
 message SiteLoginStep1Response {
-  string challenge = 1;
+  required string challenge = 1;
 }
 
 message SiteLoginStep2Request {
-  string btc_address = 1;
-  string challenge = 2;
-  string signed_text = 3;
-  string signature = 4;
+  required string btc_address = 1;
+  required string challenge = 2;
+  required string signed_text = 3;
+  required string signature = 4;
 }
 
 message SiteLoginStep2Response {
-  string session_id = 2;
+  required string session_id = 2;
 }
 
 message SiteLogoutRequest {
-  SiteAuth site_auth = 1;
+  required SiteAuth site_auth = 1;
 }
 
 message SiteLogoutResponse {
 }
 
 message OaLoginStep1Request {
-  string cl_guid = 1;
+  required string cl_guid = 1;
 }
 
 message OaLoginStep1Response {
-  string token = 1;
+  required string token = 1;
 }
 
 message SiteOaLoginStep2Request {
-  SiteAuth site_auth = 1;
-  string token = 2;
+  required SiteAuth site_auth = 1;
+  required string token = 2;
 }
 
 message SiteOaLoginStep2Response {
 }
 
 message SiteMyClGuidsRequest {
-  SiteAuth site_auth = 1;
+  required SiteAuth site_auth = 1;
 }
 
 message ClGuid {
-  string cl_guid = 1;
-  google.protobuf.Timestamp added_time = 2;
-  google.protobuf.Timestamp last_used_time = 3;
+  required string cl_guid = 1;
+  required google.protobuf.Timestamp added_time = 2;
+  required google.protobuf.Timestamp last_used_time = 3;
 }
 
 message SiteMyClGuidsResponse {
@@ -70,114 +70,114 @@ message SiteMyClGuidsResponse {
 }
 
 message SiteRemoveClGuidRequest {
-  SiteAuth site_auth = 1;
-  string cl_guid = 2;
+  required SiteAuth site_auth = 1;
+  required string cl_guid = 2;
 }
 
 message SiteRemoveClGuidResponse {
 }
 
 message SiteDepositBtcRequest {
-  SiteAuth site_auth = 1;
+  required SiteAuth site_auth = 1;
 }
 
 message SiteDepositBtcResponse {
-  string btc_address = 1;
+  required string btc_address = 1;
 }
 
 message SiteWithdrawBtcRequest {
-  SiteAuth site_auth = 1;
-  string btc_address = 2;
-  fixed64 satoshis = 3;
+  required SiteAuth site_auth = 1;
+  required string btc_address = 2;
+  required fixed64 satoshis = 3;
 }
 
 message SiteWithdrawBtcResponse {
-  string tx = 1;
+  required string tx = 1;
 }
 
 message OaDiscardBetRequest {
-  OaAuth oa_auth = 1;
+  required OaAuth oa_auth = 1;
   // Unique bet ID.
-  fixed64 bet_id = 2;
+  required fixed64 bet_id = 2;
 }
 
 message OaDiscardBetResponse {
 }
 
 message OaTransferMoneyRequest {
-  OaAuth oa_auth = 1;
-  fixed64 amount = 2; // prize
+  required OaAuth oa_auth = 1;
+  required fixed64 amount = 2; // prize
 }
 
 message OaTransferMoneyResponse {
 }
 
 message OaActiveBidsSumsRequest {
-  string horse = 1;
+  required string horse = 1;
 }
 
 message OaActiveBidsSumsResponse {
-  fixed64 oac_amount = 1;
-  fixed64 btc_amount = 2;
+  required fixed64 oac_amount = 1;
+  required fixed64 btc_amount = 2;
 }
 
 message OaChangeGameStageRequest {
   // 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
-  fixed64 new_stage = 1;
+  required fixed64 new_stage = 1;
 }
 
 message OaChangeGameStageResponse {
 }
 
 message OaIsNewRequest {
-  OaAuth oa_auth = 1;
+  required OaAuth oa_auth = 1;
 }
 
 message OaIsNewResponse {
-  bool result = 1;
+  required bool result = 1;
 }
 
 message OaRegisterRequest {
-  OaAuth oa_auth = 1;
+  required OaAuth oa_auth = 1;
 }
 
 message OaRegisterResponse {
 }
 
 message OaMyBalanceRequest {
-  OaAuth oa_auth = 1;
-  string currency = 2;
+  required OaAuth oa_auth = 1;
+  required string currency = 2;
 }
 
 message OaMyBalanceResponse {
-  fixed64 free_money = 1;
-  fixed64 money_on_bids = 2;
+  required fixed64 free_money = 1;
+  required fixed64 money_on_bids = 2;
 }
 
 message Bid {
   // Filled by the user who makes the bid.
-  string horse = 1;
-  string currency = 2;
-  fixed64 amount = 3;
+  required string horse = 1;
+  required string currency = 2;
+  required fixed64 amount = 3;
   // Filled by the system.
-  google.protobuf.Timestamp open_time = 4;
-  google.protobuf.Timestamp close_time = 5;
-  string winner = 6;
-  fixed64 prize = 7;
+  required google.protobuf.Timestamp open_time = 4;
+  required google.protobuf.Timestamp close_time = 5;
+  required string winner = 6;
+  required fixed64 prize = 7;
   // Unique bet ID.
-  fixed64 bet_id = 8;
+  required fixed64 bet_id = 8;
 }
 
 message OaMyBidRequest {
-  OaAuth oa_auth = 1;
-  Bid bid = 2;
+  required OaAuth oa_auth = 1;
+  required Bid bid = 2;
 }
 
 message OaMyBidResponse {
 }
 
 message OaCloseBidsRequest {
-  string winner = 1;
+  required string winner = 1;
 }
 
 message OaCloseBidsResponse {
@@ -190,7 +190,7 @@ message OaCloseBidsByIncidentResponse {
 }
 
 message OaMyActiveBidsRequest {
-  OaAuth oa_auth = 1;
+  required OaAuth oa_auth = 1;
 }
 
 message OaMyActiveBidsResponse {
@@ -198,32 +198,32 @@ message OaMyActiveBidsResponse {
 }
 
 message OaMyPastBidsRequest {
-  OaAuth oa_auth = 1;
+  required OaAuth oa_auth = 1;
   // 15 bids per page.
   // If page string is empty (""), return last 15 bids.
-  string page = 2;
+  required string page = 2;
 }
 
 message OaMyPastBidsResponse {
   repeated Bid bids = 1;
-  string next_page = 2;
+  required string next_page = 2;
 }
 
 message CurrencySummary {
-  fixed64 total_bet = 1;
-  fixed64 total_prize = 2;
-  fixed64 total_lost = 3;
-  fixed64 bets_won = 4;
-  fixed64 bets_lost = 5;
+  required fixed64 total_bet = 1;
+  required fixed64 total_prize = 2;
+  required fixed64 total_lost = 3;
+  required fixed64 bets_won = 4;
+  required fixed64 bets_lost = 5;
 }
 
 message OaMyBidsSummaryRequest {
-  OaAuth oa_auth = 1;
+  required OaAuth oa_auth = 1;
 }
 
 message OaMyBidsSummaryResponse {
-  CurrencySummary oac_summary = 1;
-  CurrencySummary btc_summary = 2;
+  required CurrencySummary oac_summary = 1;
+  required CurrencySummary btc_summary = 2;
 }
 
 service Oatot {

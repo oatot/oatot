@@ -21,11 +21,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 //
 
+#include <protobuf-c-rpc/protobuf-c-rpc.h>
+#include "generated/api.pb-c.h"
+
 #include "g_local.h"
 #include "bg_public.h"
 #include "g_oatot.h"
 
 level_locals_t	level;
+ProtobufCService* service;
 
 typedef struct {
     vmCvar_t	*vmCvar;
@@ -448,7 +452,7 @@ This is the only way control passes into the module.
 This must be the very first function compiled into the .q3vm file
 ================
 */
-intptr_t vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11  )
+Q_EXPORT intptr_t vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11  )
 {
     switch ( command ) {
     case GAME_INIT:
@@ -765,6 +769,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     int					i, next_game_stage;
     char	mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
 
+    ProtobufC_RPC_AddressType address_type = PROTOBUF_C_RPC_ADDRESS_TCP;
+    ProtobufC_RPC_Client* client;
 
     G_Printf ("------- Game Initialization -------\n");
     G_Printf ("gamename: %s\n", GAMEVERSION);
@@ -783,17 +789,36 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_vampire.value = 0.0f;
     }
 
+    service = protobuf_c_rpc_client_new( address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL );
+    if ( service == NULL ) {
+        G_Printf( "gRPC: Error creating client!" );
+    }
+    client = (ProtobufC_RPC_Client*) service;
+
+    G_Printf( "gRPC: Connecting..." );
+    while ( !protobuf_c_rpc_client_is_connected (client) ) {
+        protobuf_c_rpc_dispatch_run( protobuf_c_rpc_dispatch_default() );
+    }
+    G_Printf( "gRPC: done.\n");
+
     // oatot game stages changing logic:
+    RPC_result result;
+    result.done = qfalse;
+    Oatot__OaChangeGameStageRequest change_gs_arg = OATOT__OA_CHANGE_GAME_STAGE_REQUEST__INIT;
     if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
         // normal stage change or map change
         next_game_stage = ( g_gameStage.integer + 1 ) % 3;
         Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
         trap_Cvar_Set( "g_gameStage", next_game_stage_str );
-        G_oatot_changeGameStage( next_game_stage );
+        change_gs_arg.new_stage = next_game_stage;
+        oatot__oatot__oa_change_game_stage( service, &change_gs_arg, G_oatot_ChangeGameStage_Closure, &result );
+        waitForRPC( &(result.done) );
     } else if ( g_gameStage.integer == MAKING_BETS ) {
         // rage quit or was callvoted
         trap_Cvar_Set( "g_gameStage", "0" );
-        G_oatot_changeGameStage( FORMING_TEAMS );
+        change_gs_arg.new_stage = FORMING_TEAMS;
+        oatot__oatot__oa_change_game_stage( service, &change_gs_arg, G_oatot_ChangeGameStage_Closure, &result );
+        waitForRPC( &(result.done) );
     }
 
     trap_Cvar_Set( "g_finishedBettingN", "0" );
@@ -1002,6 +1027,8 @@ void G_ShutdownGame( int restart )
     if ( trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
         BotAIShutdown( restart );
     }
+
+    protobuf_c_service_destroy(service);
 }
 
 
@@ -2060,7 +2087,15 @@ void transferPrizeMoney( void ) {
     for ( i = 0; i <  g_maxclients.integer; i++ ) {
         cl = level.clients + i;
         if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
-            G_oatot_transferMoney( cl->pers.guid, cl->ps.persistant[PERS_SCORE] );
+            Oatot__OaTransferMoneyRequest transfer_money_arg = OATOT__OA_TRANSFER_MONEY_REQUEST__INIT;
+            Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+            oa_auth.cl_guid = cl->pers.guid;
+            transfer_money_arg.oa_auth = &oa_auth;
+            transfer_money_arg.amount = cl->ps.persistant[PERS_SCORE];
+            RPC_result result;
+            result.done = qfalse;
+            oatot__oatot__oa_transfer_money( service, &transfer_money_arg, G_oatot_TransferMoney_Closure, &result );
+            waitForRPC( &(result.done) );
         }
     }
 }
@@ -2117,14 +2152,21 @@ void CheckExitRules( void )
         return;
     }
 
+    Oatot__OaCloseBidsRequest close_bids_arg = OATOT__OA_CLOSE_BIDS_REQUEST__INIT;
+    RPC_result result;
+    result.done = qfalse;
     if ( g_timelimit.integer > 0 && !level.warmupTime ) {
         if ( (level.time - level.startTime)/60000 >= g_timelimit.integer ) {
             if ( level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE] ) {
                 transferPrizeMoney();
-                G_oatot_closeBids( "red" );
+                close_bids_arg.winner = "red";
+                oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+                waitForRPC( &(result.done) );
             } else {
                 transferPrizeMoney();
-                G_oatot_closeBids( "blue" );
+                close_bids_arg.winner = "blue";
+                oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+                waitForRPC( &(result.done) );
             }
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
@@ -2171,7 +2213,9 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
             transferPrizeMoney();
-            G_oatot_closeBids( "red" );
+            close_bids_arg.winner = "red";
+            oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2179,7 +2223,9 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
             transferPrizeMoney();
-            G_oatot_closeBids( "blue" );
+            close_bids_arg.winner = "blue";
+            oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;

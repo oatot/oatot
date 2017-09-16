@@ -20,6 +20,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 //
+
+#include <protobuf-c-rpc/protobuf-c-rpc-dispatch.h>
+#include <protobuf-c-rpc/protobuf-c-rpc.h>
+
+#include "generated/api.pb-c.h"
+
 #include "g_local.h"
 #include "g_oatot.h"
 
@@ -1413,8 +1419,20 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
     // don't do the "xxx connected" messages if they were caried over from previous level
     if ( firstTime ) {
         trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " connected\n\"", client->pers.netname) );
-        if ( G_oatot_isNew( client->pers.guid ) ) {
-            G_oatot_register( client->pers.guid );
+        Oatot__OaIsNewRequest is_new_arg = OATOT__OA_IS_NEW_REQUEST__INIT;
+        Oatot__OaRegisterRequest register_arg = OATOT__OA_REGISTER_REQUEST__INIT;
+        Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+        oa_auth.cl_guid = client->pers.guid;
+        is_new_arg.oa_auth = &oa_auth;
+        register_arg.oa_auth = &oa_auth;
+        RPC_result result;
+        result.done = qfalse;
+        oatot__oatot__oa_is_new( service, &is_new_arg, G_oatot_IsNew_Closure, &result );
+        waitForRPC( &(result.done) );
+        if ( ((Oatot__OaIsNewResponse*) (result.result))->result ) {
+            result.done = qfalse;
+            oatot__oatot__oa_register( service, &register_arg, G_oatot_Register_Closure, &result );
+            waitForRPC( &(result.done) );
         }
     }
 
@@ -2124,7 +2142,11 @@ void ClientDisconnect( int clientNum ) {
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
             // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-            G_oatot_closeBidsByIncident();
+            RPC_result result;
+            result.done = qfalse;
+            Oatot__OaCloseBidsByIncidentRequest close_bids_by_incident_arg = OATOT__OA_CLOSE_BIDS_BY_INCIDENT_REQUEST__INIT;
+            oatot__oatot__oa_close_bids_by_incident( service, &close_bids_by_incident_arg, G_oatot_CloseBidsByIncident_Closure, &result );
+            waitForRPC( &(result.done) );
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
     }
