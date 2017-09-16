@@ -2119,7 +2119,7 @@ static const ProtobufCFieldDescriptor oatot__site_auth__field_descriptors[2] =
   {
     "btc_address",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteAuth, btc_address),
@@ -2131,7 +2131,7 @@ static const ProtobufCFieldDescriptor oatot__site_auth__field_descriptors[2] =
   {
     "session_id",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteAuth, session_id),
@@ -2170,7 +2170,7 @@ static const ProtobufCFieldDescriptor oatot__oa_auth__field_descriptors[1] =
   {
     "cl_guid",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaAuth, cl_guid),
@@ -2208,7 +2208,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step1_request__field_des
   {
     "btc_address",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep1Request, btc_address),
@@ -2246,7 +2246,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step1_response__field_de
   {
     "challenge",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep1Response, challenge),
@@ -2284,7 +2284,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step2_request__field_des
   {
     "btc_address",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep2Request, btc_address),
@@ -2296,7 +2296,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step2_request__field_des
   {
     "challenge",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep2Request, challenge),
@@ -2308,7 +2308,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step2_request__field_des
   {
     "signed_text",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep2Request, signed_text),
@@ -2320,7 +2320,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step2_request__field_des
   {
     "signature",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep2Request, signature),
@@ -2361,7 +2361,7 @@ static const ProtobufCFieldDescriptor oatot__site_login_step2_response__field_de
   {
     "session_id",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLoginStep2Response, session_id),
@@ -2399,7 +2399,7 @@ static const ProtobufCFieldDescriptor oatot__site_logout_request__field_descript
   {
     "site_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteLogoutRequest, site_auth),
@@ -2455,7 +2455,7 @@ static const ProtobufCFieldDescriptor oatot__oa_login_step1_request__field_descr
   {
     "cl_guid",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaLoginStep1Request, cl_guid),
@@ -2493,7 +2493,7 @@ static const ProtobufCFieldDescriptor oatot__oa_login_step1_response__field_desc
   {
     "token",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaLoginStep1Response, token),
@@ -2531,7 +2531,7 @@ static const ProtobufCFieldDescriptor oatot__site_oa_login_step2_request__field_
   {
     "site_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteOaLoginStep2Request, site_auth),
@@ -2543,7 +2543,7 @@ static const ProtobufCFieldDescriptor oatot__site_oa_login_step2_request__field_
   {
     "token",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteOaLoginStep2Request, token),
@@ -2600,7 +2600,7 @@ static const ProtobufCFieldDescriptor oatot__site_my_cl_guids_request__field_des
   {
     "site_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteMyClGuidsRequest, site_auth),
@@ -2638,7 +2638,7 @@ static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
   {
     "cl_guid",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__ClGuid, cl_guid),
@@ -2650,7 +2650,7 @@ static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
   {
     "added_time",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__ClGuid, added_time),
@@ -2662,7 +2662,7 @@ static const ProtobufCFieldDescriptor oatot__cl_guid__field_descriptors[3] =
   {
     "last_used_time",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__ClGuid, last_used_time),
@@ -2740,7 +2740,7 @@ static const ProtobufCFieldDescriptor oatot__site_remove_cl_guid_request__field_
   {
     "site_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteRemoveClGuidRequest, site_auth),
@@ -2752,7 +2752,7 @@ static const ProtobufCFieldDescriptor oatot__site_remove_cl_guid_request__field_
   {
     "cl_guid",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteRemoveClGuidRequest, cl_guid),
@@ -2809,7 +2809,7 @@ static const ProtobufCFieldDescriptor oatot__site_deposit_btc_request__field_des
   {
     "site_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteDepositBtcRequest, site_auth),
@@ -2847,7 +2847,7 @@ static const ProtobufCFieldDescriptor oatot__site_deposit_btc_response__field_de
   {
     "btc_address",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteDepositBtcResponse, btc_address),
@@ -2885,7 +2885,7 @@ static const ProtobufCFieldDescriptor oatot__site_withdraw_btc_request__field_de
   {
     "site_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteWithdrawBtcRequest, site_auth),
@@ -2897,7 +2897,7 @@ static const ProtobufCFieldDescriptor oatot__site_withdraw_btc_request__field_de
   {
     "btc_address",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteWithdrawBtcRequest, btc_address),
@@ -2909,9 +2909,9 @@ static const ProtobufCFieldDescriptor oatot__site_withdraw_btc_request__field_de
   {
     "satoshis",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__SiteWithdrawBtcRequest, has_satoshis),
+    0,   /* quantifier_offset */
     offsetof(Oatot__SiteWithdrawBtcRequest, satoshis),
     NULL,
     NULL,
@@ -2949,7 +2949,7 @@ static const ProtobufCFieldDescriptor oatot__site_withdraw_btc_response__field_d
   {
     "tx",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__SiteWithdrawBtcResponse, tx),
@@ -2987,7 +2987,7 @@ static const ProtobufCFieldDescriptor oatot__oa_discard_bet_request__field_descr
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaDiscardBetRequest, oa_auth),
@@ -2999,9 +2999,9 @@ static const ProtobufCFieldDescriptor oatot__oa_discard_bet_request__field_descr
   {
     "bet_id",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaDiscardBetRequest, has_bet_id),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaDiscardBetRequest, bet_id),
     NULL,
     NULL,
@@ -3056,7 +3056,7 @@ static const ProtobufCFieldDescriptor oatot__oa_transfer_money_request__field_de
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaTransferMoneyRequest, oa_auth),
@@ -3068,9 +3068,9 @@ static const ProtobufCFieldDescriptor oatot__oa_transfer_money_request__field_de
   {
     "amount",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaTransferMoneyRequest, has_amount),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaTransferMoneyRequest, amount),
     NULL,
     NULL,
@@ -3125,7 +3125,7 @@ static const ProtobufCFieldDescriptor oatot__oa_active_bids_sums_request__field_
   {
     "horse",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaActiveBidsSumsRequest, horse),
@@ -3163,9 +3163,9 @@ static const ProtobufCFieldDescriptor oatot__oa_active_bids_sums_response__field
   {
     "oac_amount",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaActiveBidsSumsResponse, has_oac_amount),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaActiveBidsSumsResponse, oac_amount),
     NULL,
     NULL,
@@ -3175,9 +3175,9 @@ static const ProtobufCFieldDescriptor oatot__oa_active_bids_sums_response__field
   {
     "btc_amount",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaActiveBidsSumsResponse, has_btc_amount),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaActiveBidsSumsResponse, btc_amount),
     NULL,
     NULL,
@@ -3214,9 +3214,9 @@ static const ProtobufCFieldDescriptor oatot__oa_change_game_stage_request__field
   {
     "new_stage",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaChangeGameStageRequest, has_new_stage),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaChangeGameStageRequest, new_stage),
     NULL,
     NULL,
@@ -3270,7 +3270,7 @@ static const ProtobufCFieldDescriptor oatot__oa_is_new_request__field_descriptor
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaIsNewRequest, oa_auth),
@@ -3308,9 +3308,9 @@ static const ProtobufCFieldDescriptor oatot__oa_is_new_response__field_descripto
   {
     "result",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_BOOL,
-    offsetof(Oatot__OaIsNewResponse, has_result),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaIsNewResponse, result),
     NULL,
     NULL,
@@ -3346,7 +3346,7 @@ static const ProtobufCFieldDescriptor oatot__oa_register_request__field_descript
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaRegisterRequest, oa_auth),
@@ -3402,7 +3402,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_balance_request__field_descri
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBalanceRequest, oa_auth),
@@ -3414,7 +3414,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_balance_request__field_descri
   {
     "currency",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBalanceRequest, currency),
@@ -3453,9 +3453,9 @@ static const ProtobufCFieldDescriptor oatot__oa_my_balance_response__field_descr
   {
     "free_money",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaMyBalanceResponse, has_free_money),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBalanceResponse, free_money),
     NULL,
     NULL,
@@ -3465,9 +3465,9 @@ static const ProtobufCFieldDescriptor oatot__oa_my_balance_response__field_descr
   {
     "money_on_bids",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__OaMyBalanceResponse, has_money_on_bids),
+    0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBalanceResponse, money_on_bids),
     NULL,
     NULL,
@@ -3504,7 +3504,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "horse",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, horse),
@@ -3516,7 +3516,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "currency",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, currency),
@@ -3528,9 +3528,9 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "amount",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__Bid, has_amount),
+    0,   /* quantifier_offset */
     offsetof(Oatot__Bid, amount),
     NULL,
     NULL,
@@ -3540,7 +3540,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "open_time",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, open_time),
@@ -3552,7 +3552,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "close_time",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, close_time),
@@ -3564,7 +3564,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "winner",
     6,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, winner),
@@ -3576,9 +3576,9 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "prize",
     7,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__Bid, has_prize),
+    0,   /* quantifier_offset */
     offsetof(Oatot__Bid, prize),
     NULL,
     NULL,
@@ -3588,9 +3588,9 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "bet_id",
     8,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__Bid, has_bet_id),
+    0,   /* quantifier_offset */
     offsetof(Oatot__Bid, bet_id),
     NULL,
     NULL,
@@ -3633,7 +3633,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_bid_request__field_descriptor
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBidRequest, oa_auth),
@@ -3645,7 +3645,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_bid_request__field_descriptor
   {
     "bid",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBidRequest, bid),
@@ -3702,7 +3702,7 @@ static const ProtobufCFieldDescriptor oatot__oa_close_bids_request__field_descri
   {
     "winner",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaCloseBidsRequest, winner),
@@ -3794,7 +3794,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_active_bids_request__field_de
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyActiveBidsRequest, oa_auth),
@@ -3870,7 +3870,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_past_bids_request__field_desc
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyPastBidsRequest, oa_auth),
@@ -3882,7 +3882,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_past_bids_request__field_desc
   {
     "page",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyPastBidsRequest, page),
@@ -3933,7 +3933,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_past_bids_response__field_des
   {
     "next_page",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyPastBidsResponse, next_page),
@@ -3972,9 +3972,9 @@ static const ProtobufCFieldDescriptor oatot__currency_summary__field_descriptors
   {
     "total_bet",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__CurrencySummary, has_total_bet),
+    0,   /* quantifier_offset */
     offsetof(Oatot__CurrencySummary, total_bet),
     NULL,
     NULL,
@@ -3984,9 +3984,9 @@ static const ProtobufCFieldDescriptor oatot__currency_summary__field_descriptors
   {
     "total_prize",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__CurrencySummary, has_total_prize),
+    0,   /* quantifier_offset */
     offsetof(Oatot__CurrencySummary, total_prize),
     NULL,
     NULL,
@@ -3996,9 +3996,9 @@ static const ProtobufCFieldDescriptor oatot__currency_summary__field_descriptors
   {
     "total_lost",
     3,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__CurrencySummary, has_total_lost),
+    0,   /* quantifier_offset */
     offsetof(Oatot__CurrencySummary, total_lost),
     NULL,
     NULL,
@@ -4008,9 +4008,9 @@ static const ProtobufCFieldDescriptor oatot__currency_summary__field_descriptors
   {
     "bets_won",
     4,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__CurrencySummary, has_bets_won),
+    0,   /* quantifier_offset */
     offsetof(Oatot__CurrencySummary, bets_won),
     NULL,
     NULL,
@@ -4020,9 +4020,9 @@ static const ProtobufCFieldDescriptor oatot__currency_summary__field_descriptors
   {
     "bets_lost",
     5,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_FIXED64,
-    offsetof(Oatot__CurrencySummary, has_bets_lost),
+    0,   /* quantifier_offset */
     offsetof(Oatot__CurrencySummary, bets_lost),
     NULL,
     NULL,
@@ -4062,7 +4062,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_bids_summary_request__field_d
   {
     "oa_auth",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBidsSummaryRequest, oa_auth),
@@ -4100,7 +4100,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_bids_summary_response__field_
   {
     "oac_summary",
     1,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBidsSummaryResponse, oac_summary),
@@ -4112,7 +4112,7 @@ static const ProtobufCFieldDescriptor oatot__oa_my_bids_summary_response__field_
   {
     "btc_summary",
     2,
-    PROTOBUF_C_LABEL_OPTIONAL,
+    PROTOBUF_C_LABEL_REQUIRED,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__OaMyBidsSummaryResponse, btc_summary),

@@ -273,12 +273,11 @@ struct  _Oatot__SiteWithdrawBtcRequest
   ProtobufCMessage base;
   Oatot__SiteAuth *site_auth;
   char *btc_address;
-  protobuf_c_boolean has_satoshis;
   uint64_t satoshis;
 };
 #define OATOT__SITE_WITHDRAW_BTC_REQUEST__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__site_withdraw_btc_request__descriptor) \
-    , NULL, NULL, 0,0 }
+    , NULL, NULL, 0 }
 
 
 struct  _Oatot__SiteWithdrawBtcResponse
@@ -298,12 +297,11 @@ struct  _Oatot__OaDiscardBetRequest
   /*
    * Unique bet ID.
    */
-  protobuf_c_boolean has_bet_id;
   uint64_t bet_id;
 };
 #define OATOT__OA_DISCARD_BET_REQUEST__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_discard_bet_request__descriptor) \
-    , NULL, 0,0 }
+    , NULL, 0 }
 
 
 struct  _Oatot__OaDiscardBetResponse
@@ -322,12 +320,11 @@ struct  _Oatot__OaTransferMoneyRequest
   /*
    * prize
    */
-  protobuf_c_boolean has_amount;
   uint64_t amount;
 };
 #define OATOT__OA_TRANSFER_MONEY_REQUEST__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_transfer_money_request__descriptor) \
-    , NULL, 0,0 }
+    , NULL, 0 }
 
 
 struct  _Oatot__OaTransferMoneyResponse
@@ -352,14 +349,12 @@ struct  _Oatot__OaActiveBidsSumsRequest
 struct  _Oatot__OaActiveBidsSumsResponse
 {
   ProtobufCMessage base;
-  protobuf_c_boolean has_oac_amount;
   uint64_t oac_amount;
-  protobuf_c_boolean has_btc_amount;
   uint64_t btc_amount;
 };
 #define OATOT__OA_ACTIVE_BIDS_SUMS_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_active_bids_sums_response__descriptor) \
-    , 0,0, 0,0 }
+    , 0, 0 }
 
 
 struct  _Oatot__OaChangeGameStageRequest
@@ -368,12 +363,11 @@ struct  _Oatot__OaChangeGameStageRequest
   /*
    * 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
    */
-  protobuf_c_boolean has_new_stage;
   uint64_t new_stage;
 };
 #define OATOT__OA_CHANGE_GAME_STAGE_REQUEST__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_change_game_stage_request__descriptor) \
-    , 0,0 }
+    , 0 }
 
 
 struct  _Oatot__OaChangeGameStageResponse
@@ -398,12 +392,11 @@ struct  _Oatot__OaIsNewRequest
 struct  _Oatot__OaIsNewResponse
 {
   ProtobufCMessage base;
-  protobuf_c_boolean has_result;
   protobuf_c_boolean result;
 };
 #define OATOT__OA_IS_NEW_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_is_new_response__descriptor) \
-    , 0,0 }
+    , 0 }
 
 
 struct  _Oatot__OaRegisterRequest
@@ -439,14 +432,12 @@ struct  _Oatot__OaMyBalanceRequest
 struct  _Oatot__OaMyBalanceResponse
 {
   ProtobufCMessage base;
-  protobuf_c_boolean has_free_money;
   uint64_t free_money;
-  protobuf_c_boolean has_money_on_bids;
   uint64_t money_on_bids;
 };
 #define OATOT__OA_MY_BALANCE_RESPONSE__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_my_balance_response__descriptor) \
-    , 0,0, 0,0 }
+    , 0, 0 }
 
 
 struct  _Oatot__Bid
@@ -457,7 +448,6 @@ struct  _Oatot__Bid
    */
   char *horse;
   char *currency;
-  protobuf_c_boolean has_amount;
   uint64_t amount;
   /*
    * Filled by the system.
@@ -465,17 +455,15 @@ struct  _Oatot__Bid
   Google__Protobuf__Timestamp *open_time;
   Google__Protobuf__Timestamp *close_time;
   char *winner;
-  protobuf_c_boolean has_prize;
   uint64_t prize;
   /*
    * Unique bet ID.
    */
-  protobuf_c_boolean has_bet_id;
   uint64_t bet_id;
 };
 #define OATOT__BID__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__bid__descriptor) \
-    , NULL, NULL, 0,0, NULL, NULL, NULL, 0,0, 0,0 }
+    , NULL, NULL, 0, NULL, NULL, NULL, 0, 0 }
 
 
 struct  _Oatot__OaMyBidRequest
@@ -586,20 +574,15 @@ struct  _Oatot__OaMyPastBidsResponse
 struct  _Oatot__CurrencySummary
 {
   ProtobufCMessage base;
-  protobuf_c_boolean has_total_bet;
   uint64_t total_bet;
-  protobuf_c_boolean has_total_prize;
   uint64_t total_prize;
-  protobuf_c_boolean has_total_lost;
   uint64_t total_lost;
-  protobuf_c_boolean has_bets_won;
   uint64_t bets_won;
-  protobuf_c_boolean has_bets_lost;
   uint64_t bets_lost;
 };
 #define OATOT__CURRENCY_SUMMARY__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__currency_summary__descriptor) \
-    , 0,0, 0,0, 0,0, 0,0, 0,0 }
+    , 0, 0, 0, 0, 0 }
 
 
 struct  _Oatot__OaMyBidsSummaryRequest
