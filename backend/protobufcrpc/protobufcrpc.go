@@ -48,7 +48,7 @@ func New(desc *grpc.ServiceDesc, service interface{}) (*Server, error) {
 	return s, nil
 }
 
-func (s *Server) ServeRPC(conn net.Conn, server interface{}) error {
+func (s *Server) Serve(conn net.Conn) error {
 	// Read.
 	var methodIndex, messageLength, requestID int32
 	if err := binary.Read(conn, binary.LittleEndian, &methodIndex); err != nil {
