@@ -67,7 +67,10 @@ func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStage
 }
 
 func (s *Server) OaIsNew(ctx context.Context, req *g.OaIsNewRequest) (*g.OaIsNewResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "Not implemented")
+	result := true
+	return &g.OaIsNewResponse{
+		Result: &result,
+	}, nil
 }
 
 func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.OaRegisterResponse, error) {
