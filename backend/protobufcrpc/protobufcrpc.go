@@ -26,9 +26,8 @@ type Server struct {
 func New(desc *grpc.ServiceDesc, service interface{}) (*Server, error) {
 	s := &Server{}
 	for _, method := range desc.Methods {
-		ser := reflect.ValueOf(service)
-		m := ser.MethodByName(method.MethodName)
-		reqType := m.Type().In(2).Elem()
+		m := reflect.ValueOf(service).MethodByName(method.MethodName)
+		reqType := m.Type().In(1).Elem()
 		handler := func(input []byte) ([]byte, error) {
 			req := reflect.New(reqType)
 			pb := req.Interface().(proto.Message)
@@ -36,7 +35,7 @@ func New(desc *grpc.ServiceDesc, service interface{}) (*Server, error) {
 				return nil, err
 			}
 			ctx := reflect.ValueOf(context.Background())
-			results := m.Call([]reflect.Value{ser, ctx, req})
+			results := m.Call([]reflect.Value{ctx, req})
 			if err := results[1].Interface().(error); err != nil {
 				return nil, err
 			}
