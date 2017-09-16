@@ -3,6 +3,7 @@ package protobufcrpc
 import (
 	"encoding/binary"
 	"errors"
+	"log"
 	"net"
 	"reflect"
 
@@ -20,7 +21,8 @@ var (
 type Method func(input []byte) ([]byte, error)
 
 type Server struct {
-	methods []Method
+	methods      []Method
+	methodsNames []string
 }
 
 func New(desc *grpc.ServiceDesc, service interface{}) (*Server, error) {
@@ -45,6 +47,7 @@ func New(desc *grpc.ServiceDesc, service interface{}) (*Server, error) {
 			return proto.Marshal(pb)
 		}
 		s.methods = append(s.methods, handler)
+		s.methodsNames = append(s.methodsNames, method.MethodName)
 	}
 	return s, nil
 }
@@ -77,12 +80,15 @@ func (s *Server) Serve(conn net.Conn) error {
 	}
 	// Run.
 	output, err := s.methods[methodIndex](input)
+	status := int32(0)
 	if err != nil {
-		return err
+		name := s.methodsNames[methodIndex]
+		log.Printf("Method %q returned error: %v.", name, err)
+		status = 1
+		output = nil
 	}
 	// Write.
-	success := int32(0)
-	if err := binary.Write(conn, binary.LittleEndian, success); err != nil {
+	if err := binary.Write(conn, binary.LittleEndian, status); err != nil {
 		return err
 	}
 	if err := binary.Write(conn, binary.LittleEndian, methodIndex); err != nil {
