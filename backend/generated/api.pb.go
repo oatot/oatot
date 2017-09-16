@@ -1429,7 +1429,7 @@ type OatotServer interface {
 }
 
 func RegisterOatotServer(s *grpc.Server, srv OatotServer) {
-	s.RegisterService(&_Oatot_serviceDesc, srv)
+	s.RegisterService(&Oatot_serviceDesc, srv)
 }
 
 func _Oatot_SiteLoginStep1_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1828,7 +1828,7 @@ func _Oatot_OaMyBidsSummary_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Oatot_serviceDesc = grpc.ServiceDesc{
+var Oatot_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "oatot.Oatot",
 	HandlerType: (*OatotServer)(nil),
 	Methods: []grpc.MethodDesc{
