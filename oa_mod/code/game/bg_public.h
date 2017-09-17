@@ -107,6 +107,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #error overflow: (CS_MAX) > MAX_CONFIGSTRINGS
 #endif
 
+// max active bids number per client
+#define MAX_ACTIVE_BIDS_NUMBER 5
+
 // oatot game stages
 typedef enum {
     FORMING_TEAMS,
