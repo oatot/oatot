@@ -316,15 +316,19 @@ struct  _Oatot__OaDiscardBetResponse
 struct  _Oatot__OaTransferMoneyRequest
 {
   ProtobufCMessage base;
+  /*
+   * TODO: make server-wide, one RPC for all players.
+   */
   Oatot__OaAuth *oa_auth;
   /*
    * prize
    */
   uint64_t amount;
+  char *currency;
 };
 #define OATOT__OA_TRANSFER_MONEY_REQUEST__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__oa_transfer_money_request__descriptor) \
-    , NULL, 0 }
+    , NULL, 0, NULL }
 
 
 struct  _Oatot__OaTransferMoneyResponse
@@ -349,6 +353,9 @@ struct  _Oatot__OaActiveBidsSumsRequest
 struct  _Oatot__OaActiveBidsSumsResponse
 {
   ProtobufCMessage base;
+  /*
+   * TODO: one RPC for all horses.
+   */
   uint64_t oac_amount;
   uint64_t btc_amount;
 };
@@ -362,6 +369,7 @@ struct  _Oatot__OaChangeGameStageRequest
   ProtobufCMessage base;
   /*
    * 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
+   * TODO: replace with enum.
    */
   uint64_t new_stage;
 };
@@ -564,6 +572,9 @@ struct  _Oatot__OaMyPastBidsResponse
   ProtobufCMessage base;
   size_t n_bids;
   Oatot__Bid **bids;
+  /*
+   * If empty, stop.
+   */
   char *next_page;
 };
 #define OATOT__OA_MY_PAST_BIDS_RESPONSE__INIT \
@@ -598,6 +609,10 @@ struct  _Oatot__OaMyBidsSummaryRequest
 struct  _Oatot__OaMyBidsSummaryResponse
 {
   ProtobufCMessage base;
+  /*
+   * TODO: currency name as a string to support more in future.
+   * Only past bids.
+   */
   Oatot__CurrencySummary *oac_summary;
   Oatot__CurrencySummary *btc_summary;
 };
@@ -1713,38 +1728,10 @@ struct _Oatot__Oatot_Service
                             const Oatot__SiteWithdrawBtcRequest *input,
                             Oatot__SiteWithdrawBtcResponse_Closure closure,
                             void *closure_data);
-  void (*oa_discard_bet)(Oatot__Oatot_Service *service,
-                         const Oatot__OaDiscardBetRequest *input,
-                         Oatot__OaDiscardBetResponse_Closure closure,
-                         void *closure_data);
-  void (*oa_transfer_money)(Oatot__Oatot_Service *service,
-                            const Oatot__OaTransferMoneyRequest *input,
-                            Oatot__OaTransferMoneyResponse_Closure closure,
-                            void *closure_data);
-  void (*oa_active_bids_sums)(Oatot__Oatot_Service *service,
-                              const Oatot__OaActiveBidsSumsRequest *input,
-                              Oatot__OaActiveBidsSumsResponse_Closure closure,
-                              void *closure_data);
   void (*oa_change_game_stage)(Oatot__Oatot_Service *service,
                                const Oatot__OaChangeGameStageRequest *input,
                                Oatot__OaChangeGameStageResponse_Closure closure,
                                void *closure_data);
-  void (*oa_is_new)(Oatot__Oatot_Service *service,
-                    const Oatot__OaIsNewRequest *input,
-                    Oatot__OaIsNewResponse_Closure closure,
-                    void *closure_data);
-  void (*oa_register)(Oatot__Oatot_Service *service,
-                      const Oatot__OaRegisterRequest *input,
-                      Oatot__OaRegisterResponse_Closure closure,
-                      void *closure_data);
-  void (*oa_my_balance)(Oatot__Oatot_Service *service,
-                        const Oatot__OaMyBalanceRequest *input,
-                        Oatot__OaMyBalanceResponse_Closure closure,
-                        void *closure_data);
-  void (*oa_my_bid)(Oatot__Oatot_Service *service,
-                    const Oatot__OaMyBidRequest *input,
-                    Oatot__OaMyBidResponse_Closure closure,
-                    void *closure_data);
   void (*oa_close_bids)(Oatot__Oatot_Service *service,
                         const Oatot__OaCloseBidsRequest *input,
                         Oatot__OaCloseBidsResponse_Closure closure,
@@ -1753,6 +1740,34 @@ struct _Oatot__Oatot_Service
                                     const Oatot__OaCloseBidsByIncidentRequest *input,
                                     Oatot__OaCloseBidsByIncidentResponse_Closure closure,
                                     void *closure_data);
+  void (*oa_is_new)(Oatot__Oatot_Service *service,
+                    const Oatot__OaIsNewRequest *input,
+                    Oatot__OaIsNewResponse_Closure closure,
+                    void *closure_data);
+  void (*oa_register)(Oatot__Oatot_Service *service,
+                      const Oatot__OaRegisterRequest *input,
+                      Oatot__OaRegisterResponse_Closure closure,
+                      void *closure_data);
+  void (*oa_transfer_money)(Oatot__Oatot_Service *service,
+                            const Oatot__OaTransferMoneyRequest *input,
+                            Oatot__OaTransferMoneyResponse_Closure closure,
+                            void *closure_data);
+  void (*oa_active_bids_sums)(Oatot__Oatot_Service *service,
+                              const Oatot__OaActiveBidsSumsRequest *input,
+                              Oatot__OaActiveBidsSumsResponse_Closure closure,
+                              void *closure_data);
+  void (*oa_my_balance)(Oatot__Oatot_Service *service,
+                        const Oatot__OaMyBalanceRequest *input,
+                        Oatot__OaMyBalanceResponse_Closure closure,
+                        void *closure_data);
+  void (*oa_my_bid)(Oatot__Oatot_Service *service,
+                    const Oatot__OaMyBidRequest *input,
+                    Oatot__OaMyBidResponse_Closure closure,
+                    void *closure_data);
+  void (*oa_discard_bet)(Oatot__Oatot_Service *service,
+                         const Oatot__OaDiscardBetRequest *input,
+                         Oatot__OaDiscardBetResponse_Closure closure,
+                         void *closure_data);
   void (*oa_my_active_bids)(Oatot__Oatot_Service *service,
                             const Oatot__OaMyActiveBidsRequest *input,
                             Oatot__OaMyActiveBidsResponse_Closure closure,
@@ -1782,16 +1797,16 @@ void oatot__oatot__init (Oatot__Oatot_Service *service,
       function_prefix__ ## site_remove_cl_guid,\
       function_prefix__ ## site_deposit_btc,\
       function_prefix__ ## site_withdraw_btc,\
-      function_prefix__ ## oa_discard_bet,\
-      function_prefix__ ## oa_transfer_money,\
-      function_prefix__ ## oa_active_bids_sums,\
       function_prefix__ ## oa_change_game_stage,\
-      function_prefix__ ## oa_is_new,\
-      function_prefix__ ## oa_register,\
-      function_prefix__ ## oa_my_balance,\
-      function_prefix__ ## oa_my_bid,\
       function_prefix__ ## oa_close_bids,\
       function_prefix__ ## oa_close_bids_by_incident,\
+      function_prefix__ ## oa_is_new,\
+      function_prefix__ ## oa_register,\
+      function_prefix__ ## oa_transfer_money,\
+      function_prefix__ ## oa_active_bids_sums,\
+      function_prefix__ ## oa_my_balance,\
+      function_prefix__ ## oa_my_bid,\
+      function_prefix__ ## oa_discard_bet,\
       function_prefix__ ## oa_my_active_bids,\
       function_prefix__ ## oa_my_past_bids,\
       function_prefix__ ## oa_my_bids_summary  }
@@ -1831,38 +1846,10 @@ void oatot__oatot__site_withdraw_btc(ProtobufCService *service,
                                      const Oatot__SiteWithdrawBtcRequest *input,
                                      Oatot__SiteWithdrawBtcResponse_Closure closure,
                                      void *closure_data);
-void oatot__oatot__oa_discard_bet(ProtobufCService *service,
-                                  const Oatot__OaDiscardBetRequest *input,
-                                  Oatot__OaDiscardBetResponse_Closure closure,
-                                  void *closure_data);
-void oatot__oatot__oa_transfer_money(ProtobufCService *service,
-                                     const Oatot__OaTransferMoneyRequest *input,
-                                     Oatot__OaTransferMoneyResponse_Closure closure,
-                                     void *closure_data);
-void oatot__oatot__oa_active_bids_sums(ProtobufCService *service,
-                                       const Oatot__OaActiveBidsSumsRequest *input,
-                                       Oatot__OaActiveBidsSumsResponse_Closure closure,
-                                       void *closure_data);
 void oatot__oatot__oa_change_game_stage(ProtobufCService *service,
                                         const Oatot__OaChangeGameStageRequest *input,
                                         Oatot__OaChangeGameStageResponse_Closure closure,
                                         void *closure_data);
-void oatot__oatot__oa_is_new(ProtobufCService *service,
-                             const Oatot__OaIsNewRequest *input,
-                             Oatot__OaIsNewResponse_Closure closure,
-                             void *closure_data);
-void oatot__oatot__oa_register(ProtobufCService *service,
-                               const Oatot__OaRegisterRequest *input,
-                               Oatot__OaRegisterResponse_Closure closure,
-                               void *closure_data);
-void oatot__oatot__oa_my_balance(ProtobufCService *service,
-                                 const Oatot__OaMyBalanceRequest *input,
-                                 Oatot__OaMyBalanceResponse_Closure closure,
-                                 void *closure_data);
-void oatot__oatot__oa_my_bid(ProtobufCService *service,
-                             const Oatot__OaMyBidRequest *input,
-                             Oatot__OaMyBidResponse_Closure closure,
-                             void *closure_data);
 void oatot__oatot__oa_close_bids(ProtobufCService *service,
                                  const Oatot__OaCloseBidsRequest *input,
                                  Oatot__OaCloseBidsResponse_Closure closure,
@@ -1871,6 +1858,34 @@ void oatot__oatot__oa_close_bids_by_incident(ProtobufCService *service,
                                              const Oatot__OaCloseBidsByIncidentRequest *input,
                                              Oatot__OaCloseBidsByIncidentResponse_Closure closure,
                                              void *closure_data);
+void oatot__oatot__oa_is_new(ProtobufCService *service,
+                             const Oatot__OaIsNewRequest *input,
+                             Oatot__OaIsNewResponse_Closure closure,
+                             void *closure_data);
+void oatot__oatot__oa_register(ProtobufCService *service,
+                               const Oatot__OaRegisterRequest *input,
+                               Oatot__OaRegisterResponse_Closure closure,
+                               void *closure_data);
+void oatot__oatot__oa_transfer_money(ProtobufCService *service,
+                                     const Oatot__OaTransferMoneyRequest *input,
+                                     Oatot__OaTransferMoneyResponse_Closure closure,
+                                     void *closure_data);
+void oatot__oatot__oa_active_bids_sums(ProtobufCService *service,
+                                       const Oatot__OaActiveBidsSumsRequest *input,
+                                       Oatot__OaActiveBidsSumsResponse_Closure closure,
+                                       void *closure_data);
+void oatot__oatot__oa_my_balance(ProtobufCService *service,
+                                 const Oatot__OaMyBalanceRequest *input,
+                                 Oatot__OaMyBalanceResponse_Closure closure,
+                                 void *closure_data);
+void oatot__oatot__oa_my_bid(ProtobufCService *service,
+                             const Oatot__OaMyBidRequest *input,
+                             Oatot__OaMyBidResponse_Closure closure,
+                             void *closure_data);
+void oatot__oatot__oa_discard_bet(ProtobufCService *service,
+                                  const Oatot__OaDiscardBetRequest *input,
+                                  Oatot__OaDiscardBetResponse_Closure closure,
+                                  void *closure_data);
 void oatot__oatot__oa_my_active_bids(ProtobufCService *service,
                                      const Oatot__OaMyActiveBidsRequest *input,
                                      Oatot__OaMyActiveBidsResponse_Closure closure,
