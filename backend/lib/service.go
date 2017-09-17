@@ -170,7 +170,8 @@ func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStage
 func (s *Server) OaIsNew(ctx context.Context, req *g.OaIsNewRequest) (*g.OaIsNewResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	_, result := s.players[*req.OaAuth.ClGuid]
+	_, has := s.players[*req.OaAuth.ClGuid]
+	result := !has
 	return &g.OaIsNewResponse{Result: &result}, nil
 }
 
