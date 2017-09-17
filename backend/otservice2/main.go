@@ -33,8 +33,14 @@ func main() {
 		if err != nil {
 			log.Fatalf("ln.Accept: %v.", err)
 		}
-		if err := server.Serve(conn); err != nil {
-			log.Printf("server.Serve: %v.", err)
-		}
+		go func() {
+			defer conn.Close()
+			for {
+				if err := server.Serve(conn); err != nil {
+					log.Printf("server.Serve: %v.", err)
+					break
+				}
+			}
+		}()
 	}
 }
