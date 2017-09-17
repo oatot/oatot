@@ -107,7 +107,9 @@ message OaDiscardBetResponse {
 message OaTransferMoneyRequest {
   // TODO: make server-wide, one RPC for all players.
   required OaAuth oa_auth = 1;
-  required fixed64 amount = 2; // prize
+  // prize
+  required fixed64 amount = 2;
+  required string currency = 3;
 }
 
 message OaTransferMoneyResponse {
@@ -226,6 +228,7 @@ message OaMyBidsSummaryRequest {
 
 message OaMyBidsSummaryResponse {
   // TODO: currency name as a string to support more in future.
+  // Only past bids.
   required CurrencySummary oac_summary = 1;
   required CurrencySummary btc_summary = 2;
 }
