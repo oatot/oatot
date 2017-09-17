@@ -329,6 +329,12 @@ typedef struct {
     int			isDead;
 } score_t;
 
+typedef struct {
+    const char*     horse;
+    const char*     currency;
+    int             amount;
+} activeBid_t;
+
 // each client has an associated clientInfo_t
 // that contains media references necessary to present the
 // client model and other color coded effects
@@ -337,6 +343,12 @@ typedef struct {
 #define	MAX_CUSTOM_SOUNDS	32
 
 typedef struct {
+    // oatot
+    int             oac_balance;
+    int             btc_balance;
+
+    activeBid_t     activeBids[MAX_ACTIVE_BIDS_NUMBER];
+
     qboolean		infoValid;
 
     char			name[MAX_QPATH];
@@ -1233,6 +1245,10 @@ typedef struct {
 
     clientInfo_t	clientinfo[MAX_CLIENTS];
 
+    // oatot
+    betSum_t red_bids_sum;
+    betSum_t blue_bids_sum;
+
     // teamchat width is *3 because of embedded color codes
     char			teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH*3+1];
     int				teamChatMsgTimes[TEAMCHAT_HEIGHT];
@@ -1572,6 +1588,11 @@ extern	int drawTeamOverlayModificationCount;
 extern  char systemChat[256];
 extern  char teamChat1[256];
 extern  char teamChat2[256];
+
+// oatot
+void CG_DrawBalance( void );
+void CG_DrawActiveBids( void );
+void CG_DrawActiveBidsSums( void );
 
 void CG_AddLagometerFrameInfo( void );
 void CG_AddLagometerSnapshotInfo( snapshot_t *snap );
