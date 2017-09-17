@@ -178,11 +178,12 @@ func (s *Server) OaIsNew(ctx context.Context, req *g.OaIsNewRequest) (*g.OaIsNew
 func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.OaRegisterResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
+	const startMoney = 1000
 	if _, has := s.players[*req.OaAuth.ClGuid]; has {
 		return nil, status.Errorf(codes.AlreadyExists, "AlreadyExists")
 	}
 	s.players[*req.OaAuth.ClGuid] = &Player{
-		freeMoney:     make(map[string]int64),
+		freeMoney:     map[string]int64{"OAC": startMoney},
 		activeBids:    make(map[int]struct{}),
 		pastBids:      make(map[int]struct{}),
 		cancelledBids: make(map[int]struct{}),
