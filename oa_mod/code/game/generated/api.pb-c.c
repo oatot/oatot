@@ -3014,7 +3014,7 @@ const ProtobufCMessageDescriptor oatot__oa_discard_bet_response__descriptor =
   (ProtobufCMessageInit) oatot__oa_discard_bet_response__init,
   NULL,NULL,NULL    /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor oatot__oa_transfer_money_request__field_descriptors[2] =
+static const ProtobufCFieldDescriptor oatot__oa_transfer_money_request__field_descriptors[3] =
 {
   {
     "oa_auth",
@@ -3040,15 +3040,28 @@ static const ProtobufCFieldDescriptor oatot__oa_transfer_money_request__field_de
     0,             /* flags */
     0,NULL,NULL    /* reserved1,reserved2, etc */
   },
+  {
+    "currency",
+    3,
+    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_TYPE_STRING,
+    0,   /* quantifier_offset */
+    offsetof(Oatot__OaTransferMoneyRequest, currency),
+    NULL,
+    NULL,
+    0,             /* flags */
+    0,NULL,NULL    /* reserved1,reserved2, etc */
+  },
 };
 static const unsigned oatot__oa_transfer_money_request__field_indices_by_name[] = {
   1,   /* field[1] = amount */
+  2,   /* field[2] = currency */
   0,   /* field[0] = oa_auth */
 };
 static const ProtobufCIntRange oatot__oa_transfer_money_request__number_ranges[1 + 1] =
 {
   { 1, 0 },
-  { 0, 2 }
+  { 0, 3 }
 };
 const ProtobufCMessageDescriptor oatot__oa_transfer_money_request__descriptor =
 {
@@ -3058,7 +3071,7 @@ const ProtobufCMessageDescriptor oatot__oa_transfer_money_request__descriptor =
   "Oatot__OaTransferMoneyRequest",
   "oatot",
   sizeof(Oatot__OaTransferMoneyRequest),
-  2,
+  3,
   oatot__oa_transfer_money_request__field_descriptors,
   oatot__oa_transfer_money_request__field_indices_by_name,
   1,  oatot__oa_transfer_money_request__number_ranges,
@@ -4120,35 +4133,35 @@ static const ProtobufCMethodDescriptor oatot__oatot__method_descriptors[22] =
   { "SiteRemoveClGuid", &oatot__site_remove_cl_guid_request__descriptor, &oatot__site_remove_cl_guid_response__descriptor },
   { "SiteDepositBtc", &oatot__site_deposit_btc_request__descriptor, &oatot__site_deposit_btc_response__descriptor },
   { "SiteWithdrawBtc", &oatot__site_withdraw_btc_request__descriptor, &oatot__site_withdraw_btc_response__descriptor },
-  { "OaDiscardBet", &oatot__oa_discard_bet_request__descriptor, &oatot__oa_discard_bet_response__descriptor },
-  { "OaTransferMoney", &oatot__oa_transfer_money_request__descriptor, &oatot__oa_transfer_money_response__descriptor },
-  { "OaActiveBidsSums", &oatot__oa_active_bids_sums_request__descriptor, &oatot__oa_active_bids_sums_response__descriptor },
   { "OaChangeGameStage", &oatot__oa_change_game_stage_request__descriptor, &oatot__oa_change_game_stage_response__descriptor },
-  { "OaIsNew", &oatot__oa_is_new_request__descriptor, &oatot__oa_is_new_response__descriptor },
-  { "OaRegister", &oatot__oa_register_request__descriptor, &oatot__oa_register_response__descriptor },
-  { "OaMyBalance", &oatot__oa_my_balance_request__descriptor, &oatot__oa_my_balance_response__descriptor },
-  { "OaMyBid", &oatot__oa_my_bid_request__descriptor, &oatot__oa_my_bid_response__descriptor },
   { "OaCloseBids", &oatot__oa_close_bids_request__descriptor, &oatot__oa_close_bids_response__descriptor },
   { "OaCloseBidsByIncident", &oatot__oa_close_bids_by_incident_request__descriptor, &oatot__oa_close_bids_by_incident_response__descriptor },
+  { "OaIsNew", &oatot__oa_is_new_request__descriptor, &oatot__oa_is_new_response__descriptor },
+  { "OaRegister", &oatot__oa_register_request__descriptor, &oatot__oa_register_response__descriptor },
+  { "OaTransferMoney", &oatot__oa_transfer_money_request__descriptor, &oatot__oa_transfer_money_response__descriptor },
+  { "OaActiveBidsSums", &oatot__oa_active_bids_sums_request__descriptor, &oatot__oa_active_bids_sums_response__descriptor },
+  { "OaMyBalance", &oatot__oa_my_balance_request__descriptor, &oatot__oa_my_balance_response__descriptor },
+  { "OaMyBid", &oatot__oa_my_bid_request__descriptor, &oatot__oa_my_bid_response__descriptor },
+  { "OaDiscardBet", &oatot__oa_discard_bet_request__descriptor, &oatot__oa_discard_bet_response__descriptor },
   { "OaMyActiveBids", &oatot__oa_my_active_bids_request__descriptor, &oatot__oa_my_active_bids_response__descriptor },
   { "OaMyPastBids", &oatot__oa_my_past_bids_request__descriptor, &oatot__oa_my_past_bids_response__descriptor },
   { "OaMyBidsSummary", &oatot__oa_my_bids_summary_request__descriptor, &oatot__oa_my_bids_summary_response__descriptor },
 };
 const unsigned oatot__oatot__method_indices_by_name[] = {
-  11,        /* OaActiveBidsSums */
-  12,        /* OaChangeGameStage */
-  17,        /* OaCloseBids */
-  18,        /* OaCloseBidsByIncident */
-  9,        /* OaDiscardBet */
-  13,        /* OaIsNew */
+  15,        /* OaActiveBidsSums */
+  9,        /* OaChangeGameStage */
+  10,        /* OaCloseBids */
+  11,        /* OaCloseBidsByIncident */
+  18,        /* OaDiscardBet */
+  12,        /* OaIsNew */
   3,        /* OaLoginStep1 */
   19,        /* OaMyActiveBids */
-  15,        /* OaMyBalance */
-  16,        /* OaMyBid */
+  16,        /* OaMyBalance */
+  17,        /* OaMyBid */
   21,        /* OaMyBidsSummary */
   20,        /* OaMyPastBids */
-  14,        /* OaRegister */
-  10,        /* OaTransferMoney */
+  13,        /* OaRegister */
+  14,        /* OaTransferMoney */
   7,        /* SiteDepositBtc */
   0,        /* SiteLoginStep1 */
   1,        /* SiteLoginStep2 */
@@ -4241,69 +4254,13 @@ void oatot__oatot__site_withdraw_btc(ProtobufCService *service,
   assert(service->descriptor == &oatot__oatot__descriptor);
   service->invoke(service, 8, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
 }
-void oatot__oatot__oa_discard_bet(ProtobufCService *service,
-                                  const Oatot__OaDiscardBetRequest *input,
-                                  Oatot__OaDiscardBetResponse_Closure closure,
-                                  void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 9, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void oatot__oatot__oa_transfer_money(ProtobufCService *service,
-                                     const Oatot__OaTransferMoneyRequest *input,
-                                     Oatot__OaTransferMoneyResponse_Closure closure,
-                                     void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 10, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void oatot__oatot__oa_active_bids_sums(ProtobufCService *service,
-                                       const Oatot__OaActiveBidsSumsRequest *input,
-                                       Oatot__OaActiveBidsSumsResponse_Closure closure,
-                                       void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 11, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
 void oatot__oatot__oa_change_game_stage(ProtobufCService *service,
                                         const Oatot__OaChangeGameStageRequest *input,
                                         Oatot__OaChangeGameStageResponse_Closure closure,
                                         void *closure_data)
 {
   assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 12, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void oatot__oatot__oa_is_new(ProtobufCService *service,
-                             const Oatot__OaIsNewRequest *input,
-                             Oatot__OaIsNewResponse_Closure closure,
-                             void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 13, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void oatot__oatot__oa_register(ProtobufCService *service,
-                               const Oatot__OaRegisterRequest *input,
-                               Oatot__OaRegisterResponse_Closure closure,
-                               void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 14, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void oatot__oatot__oa_my_balance(ProtobufCService *service,
-                                 const Oatot__OaMyBalanceRequest *input,
-                                 Oatot__OaMyBalanceResponse_Closure closure,
-                                 void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 15, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
-}
-void oatot__oatot__oa_my_bid(ProtobufCService *service,
-                             const Oatot__OaMyBidRequest *input,
-                             Oatot__OaMyBidResponse_Closure closure,
-                             void *closure_data)
-{
-  assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 16, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+  service->invoke(service, 9, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
 }
 void oatot__oatot__oa_close_bids(ProtobufCService *service,
                                  const Oatot__OaCloseBidsRequest *input,
@@ -4311,12 +4268,68 @@ void oatot__oatot__oa_close_bids(ProtobufCService *service,
                                  void *closure_data)
 {
   assert(service->descriptor == &oatot__oatot__descriptor);
-  service->invoke(service, 17, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+  service->invoke(service, 10, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
 }
 void oatot__oatot__oa_close_bids_by_incident(ProtobufCService *service,
                                              const Oatot__OaCloseBidsByIncidentRequest *input,
                                              Oatot__OaCloseBidsByIncidentResponse_Closure closure,
                                              void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 11, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_is_new(ProtobufCService *service,
+                             const Oatot__OaIsNewRequest *input,
+                             Oatot__OaIsNewResponse_Closure closure,
+                             void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 12, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_register(ProtobufCService *service,
+                               const Oatot__OaRegisterRequest *input,
+                               Oatot__OaRegisterResponse_Closure closure,
+                               void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 13, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_transfer_money(ProtobufCService *service,
+                                     const Oatot__OaTransferMoneyRequest *input,
+                                     Oatot__OaTransferMoneyResponse_Closure closure,
+                                     void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 14, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_active_bids_sums(ProtobufCService *service,
+                                       const Oatot__OaActiveBidsSumsRequest *input,
+                                       Oatot__OaActiveBidsSumsResponse_Closure closure,
+                                       void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 15, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_my_balance(ProtobufCService *service,
+                                 const Oatot__OaMyBalanceRequest *input,
+                                 Oatot__OaMyBalanceResponse_Closure closure,
+                                 void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 16, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_my_bid(ProtobufCService *service,
+                             const Oatot__OaMyBidRequest *input,
+                             Oatot__OaMyBidResponse_Closure closure,
+                             void *closure_data)
+{
+  assert(service->descriptor == &oatot__oatot__descriptor);
+  service->invoke(service, 17, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+}
+void oatot__oatot__oa_discard_bet(ProtobufCService *service,
+                                  const Oatot__OaDiscardBetRequest *input,
+                                  Oatot__OaDiscardBetResponse_Closure closure,
+                                  void *closure_data)
 {
   assert(service->descriptor == &oatot__oatot__descriptor);
   service->invoke(service, 18, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
