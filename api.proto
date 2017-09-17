@@ -10,7 +10,7 @@ message SiteAuth {
 }
 
 message OaAuth {
- required  string cl_guid = 1;
+ required string cl_guid = 1;
 }
 
 message SiteLoginStep1Request {
@@ -105,6 +105,7 @@ message OaDiscardBetResponse {
 }
 
 message OaTransferMoneyRequest {
+  // TODO: make server-wide, one RPC for all players.
   required OaAuth oa_auth = 1;
   required fixed64 amount = 2; // prize
 }
@@ -117,12 +118,14 @@ message OaActiveBidsSumsRequest {
 }
 
 message OaActiveBidsSumsResponse {
+  // TODO: one RPC for all horses.
   required fixed64 oac_amount = 1;
   required fixed64 btc_amount = 2;
 }
 
 message OaChangeGameStageRequest {
   // 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
+  // TODO: replace with enum.
   required fixed64 new_stage = 1;
 }
 
@@ -206,7 +209,7 @@ message OaMyPastBidsRequest {
 
 message OaMyPastBidsResponse {
   repeated Bid bids = 1;
-  required string next_page = 2;
+  required string next_page = 2; // If empty, stop.
 }
 
 message CurrencySummary {
@@ -222,6 +225,7 @@ message OaMyBidsSummaryRequest {
 }
 
 message OaMyBidsSummaryResponse {
+  // TODO: currency name as a string to support more in future.
   required CurrencySummary oac_summary = 1;
   required CurrencySummary btc_summary = 2;
 }
@@ -247,30 +251,12 @@ service Oatot {
 
   rpc SiteWithdrawBtc(SiteWithdrawBtcRequest) returns (SiteWithdrawBtcResponse);
 
-  // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
-  // Completely remove it and disregard in OaActiveBidsSums, OaMyActiveBids,
-  // OaMyPastBids, ...
-  rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
-
-  // Transfer 'prize' money calculated by player score after the end of match.
-  rpc OaTransferMoney(OaTransferMoneyRequest) returns (OaTransferMoneyResponse);
-
-  // Active bids sums by horse.
-  rpc OaActiveBidsSums(OaActiveBidsSumsRequest) returns (OaActiveBidsSumsResponse);
+  //////////////////
+  // Server-wide. //
+  //////////////////
 
   // Change game stage (FORMING_TEAMS, MAKING_BETS, PLAYING).
   rpc OaChangeGameStage(OaChangeGameStageRequest) returns (OaChangeGameStageResponse);
-
-  // Check if this player hasn't appeared before.
-  rpc OaIsNew(OaIsNewRequest) returns (OaIsNewResponse);
-
-  // Register player in the database, sponsor him/her with 1000 OAC.
-  rpc OaRegister(OaRegisterRequest) returns (OaRegisterResponse);
-
-  // OaMy* - operations with the given client.
-  rpc OaMyBalance(OaMyBalanceRequest) returns (OaMyBalanceResponse);
-
-  rpc OaMyBid(OaMyBidRequest) returns (OaMyBidResponse);
 
   // For all the players, after the match is finished in an appropriate way.
   // We know the winner.
@@ -280,6 +266,36 @@ service Oatot {
   // We have to return all the money back.
   rpc OaCloseBidsByIncident(OaCloseBidsByIncidentRequest) returns (OaCloseBidsByIncidentResponse);
 
+  //////////////////////////////
+  // Initiated by the server. //
+  //////////////////////////////
+
+  // Check if this player hasn't appeared before.
+  rpc OaIsNew(OaIsNewRequest) returns (OaIsNewResponse);
+
+  // Register player in the database, sponsor them with 1000 OAC.
+  rpc OaRegister(OaRegisterRequest) returns (OaRegisterResponse);
+
+  // Transfer 'prize' money calculated by player score after the end of match.
+  rpc OaTransferMoney(OaTransferMoneyRequest) returns (OaTransferMoneyResponse);
+
+  // Active bids sums by horse.
+  rpc OaActiveBidsSums(OaActiveBidsSumsRequest) returns (OaActiveBidsSumsResponse);
+
+  //////////////////////////////
+  // Initiated by the client. //
+  //////////////////////////////
+
+  rpc OaMyBalance(OaMyBalanceRequest) returns (OaMyBalanceResponse);
+
+  rpc OaMyBid(OaMyBidRequest) returns (OaMyBidResponse);
+
+  // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
+  // Completely remove it and disregard in OaActiveBidsSums, OaMyActiveBids,
+  // OaMyPastBids, ...
+  // TODO: s/bet/bid/
+  rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
+
   // Active bids for this match. Output array MUST BE sorted by open time increase.
   // (first opened bet ALWAYS 0, second - 1... etc).
   rpc OaMyActiveBids(OaMyActiveBidsRequest) returns (OaMyActiveBidsResponse);
@@ -288,5 +304,4 @@ service Oatot {
   rpc OaMyPastBids(OaMyPastBidsRequest) returns (OaMyPastBidsResponse);
 
   rpc OaMyBidsSummary(OaMyBidsSummaryRequest) returns (OaMyBidsSummaryResponse);
-
 }
