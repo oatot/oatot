@@ -67,8 +67,13 @@ CG_ParseBalance
 */
 static void CG_ParseBalance( void ) {
     int clientNum = atoi(CG_Argv(1));
-    cgs.clientinfo[clientNum].oac_balance = atoi(CG_Argv(2));
-    cgs.clientinfo[clientNum].btc_balance = atoi(CG_Argv(3));
+    if ( CG_Argv(2) == "OAC" ) {
+        cgs.clientinfo[clientNum].oac_balance.free_money = atoi(CG_Argv(3));
+        cgs.clientinfo[clientNum].oac_balance.money_on_bids = atoi(CG_Argv(4));
+    } else if ( CG_Argv(2) == "BTC") {
+        cgs.clientinfo[clientNum].btc_balance.free_money = atoi(CG_Argv(3));
+        cgs.clientinfo[clientNum].btc_balance.money_on_bids = atoi(CG_Argv(4));
+    }
 }
 
 /*
@@ -95,10 +100,13 @@ CG_ParseActiveBidsSums
 =================
 */
 static void CG_ParseActiveBidsSums( void ) {
-    cgs.red_bids_sum.oac_amount = atoi(CG_Argv(1));
-    cgs.red_bids_sum.btc_amount = atoi(CG_Argv(2));
-    cgs.blue_bids_sum.oac_amount = atoi(CG_Argv(3));
-    cgs.blue_bids_sum.btc_amount = atoi(CG_Argv(4));
+    if ( CG_Argv(1) == "red" ) {
+        cgs.red_bids_sum.oac_amount = atoi(CG_Argv(2));
+        cgs.red_bids_sum.btc_amount = atoi(CG_Argv(3));
+    } else if ( CG_Argv(1) == "blue") {
+        cgs.blue_bids_sum.oac_amount = atoi(CG_Argv(2));
+        cgs.blue_bids_sum.btc_amount = atoi(CG_Argv(3));
+    }
 }
 
 /*

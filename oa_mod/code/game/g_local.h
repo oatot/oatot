@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define _G_LOCAL_H
 
 #include <protobuf-c-rpc/protobuf-c-rpc.h>
+#include "generated/api.pb-c.h"
 
 #include "../qcommon/q_shared.h"
 #include "bg_public.h"
@@ -887,6 +888,15 @@ void QDECL G_Error( const char *fmt, ... ) __attribute__((noreturn,format (print
 //KK-OAX Made Accessible for g_admin.c
 void LogExit( const char *string );
 void CheckTeamVote( int team );
+
+// oatot: call some certain RPCs needed
+balance_t G_GetBalance( gentity_t* ent, char* currency );
+int G_GetActiveBids( gentity_t* ent, Oatot__Bid** bids );
+
+// oatot: draw updates
+void G_UpdateBalance( int clientNum );
+void G_UpdateActiveBids( int clientNum );
+void G_UpdateActiveBidsSums( char* horse );
 
 //
 // g_client.c

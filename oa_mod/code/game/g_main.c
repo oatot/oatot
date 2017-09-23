@@ -2611,6 +2611,108 @@ void CheckTeamVote( int team )
 
 }
 
+/*
+==================
+G_GetBalance
+==================
+*/
+balance_t G_GetBalance( gentity_t* ent, char* currency )
+{
+    gclient_t* client = ent->client;
+    Oatot__OaMyBalanceRequest balance_arg = OATOT__OA_MY_BALANCE_REQUEST__INIT;
+    Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+    oa_auth.cl_guid = client->pers.guid;
+    balance_arg.oa_auth = &oa_auth;
+    balance_arg.currency = currency;
+    RPC_result result;
+    result.done = qfalse;
+    oatot__oatot__oa_my_balance( service, &balance_arg, G_oatot_GetBalance_Closure, &result );
+    waitForRPC( &(result.done) );
+    balance_t balance;
+    balance.free_money = ( (Oatot__OaMyBalanceResponse*) result.result)->free_money;
+    balance.money_on_bids = ( (Oatot__OaMyBalanceResponse*) result.result)->money_on_bids;
+    return balance;
+}
+
+/*
+==================
+G_GetActiveBids
+==================
+*/
+int G_GetActiveBids( gentity_t* ent, Oatot__Bid** bids )
+{
+    gclient_t* client = ent->client;
+    Oatot__OaMyActiveBidsRequest arg = OATOT__OA_MY_ACTIVE_BIDS_REQUEST__INIT;
+    Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+    oa_auth.cl_guid = client->pers.guid;
+    arg.oa_auth = &oa_auth;
+    RPC_result result;
+    result.done = qfalse;
+    oatot__oatot__oa_my_active_bids( service, &arg, G_oatot_GetActiveBids_Closure, &result );
+    waitForRPC( &(result.done) );
+    bids  = ( (Oatot__OaMyActiveBidsResponse*) result.result)->bids;
+    int bids_n = ( (Oatot__OaMyActiveBidsResponse*) result.result)->n_bids;
+    if ( bids_n != client->sess.activeBidsNumber ) {
+        return -1;
+    } else if (bids_n < 0 || bids_n > MAX_ACTIVE_BIDS_NUMBER) {
+        return -1;
+    }
+    return bids_n;
+}
+
+/*
+==================
+G_UpdateBalance
+==================
+*/
+void G_UpdateBalance( int clientNum )
+{
+    gentity_t* ent = &g_entities[clientNum];
+    balance_t btc_balance = G_GetBalance( ent, "BTC" );
+    balance_t oac_balance = G_GetBalance( ent, "OAC" );
+    trap_SendServerCommand( -1, va("updateBalance \%d %s %d %d\"", ent->s.number, "OAC", oac_balance.free_money, oac_balance.money_on_bids) );
+    trap_SendServerCommand( -1, va("updateBalance \%d %s %d %d\"", ent->s.number, "BTC", btc_balance.free_money, btc_balance.money_on_bids) );
+}
+
+/*
+==================
+G_UpdateActiveBids
+==================
+*/
+void G_UpdateActiveBids( int clientNum )
+{
+    int i;
+    char cmd_str[MAX_STRING_TOKENS];
+    Oatot__Bid* bids[MAX_ACTIVE_BIDS_NUMBER];
+    gentity_t* ent = &g_entities[clientNum];
+    int n_bids = G_GetActiveBids( ent, bids );
+    cmd_str[0] = 0;
+    strcat( cmd_str, va("updateActiveBids \"%d %d ", ent->s.number, n_bids) );
+    for (i = 0; i < n_bids; i++) {
+        strcat( cmd_str, va("%s %s %ld ", bids[i]->horse, bids[i]->currency, bids[i]->amount) );
+    }
+    strcat( cmd_str, "\n\"" );
+    trap_SendServerCommand( -1, cmd_str );
+}
+
+/*
+==================
+G_UpdateActiveBidsSums
+==================
+*/
+void G_UpdateActiveBidsSums( char* horse )
+{
+    Oatot__OaActiveBidsSumsRequest active_bids_arg = OATOT__OA_ACTIVE_BIDS_SUMS_REQUEST__INIT;
+    active_bids_arg.horse = horse;
+    RPC_result result;
+    result.done = qfalse;
+    oatot__oatot__oa_active_bids_sums( service, &active_bids_arg, G_oatot_GetActiveBidsSums_Closure, &result );
+    waitForRPC( &(result.done) );
+    int oac = ( (Oatot__OaActiveBidsSumsResponse*) result.result)->oac_amount;
+    int btc = ( (Oatot__OaActiveBidsSumsResponse*) result.result)->btc_amount;
+    trap_SendServerCommand( -1, va("updateBalance \%s %d %d\"", horse, oac, btc) );
+}
+
 static void CheckEmpty ( void )
 {
     if (!g_emptyTime.integer ) {

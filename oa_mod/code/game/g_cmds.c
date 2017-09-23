@@ -2028,7 +2028,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
                 return;
             }
             money = atoi( arg2 );
-            if ( money <= 0 || money > G_oatot_getBalance( client->pers.guid, arg3 ) ) {
+            if ( money <= 0 || money > G_GetBalance( ent, arg3 ).free_money ) {
                 trap_SendServerCommand( ent-g_entities, "print \"^1Invalid amount of money.\n\"" );
                 return;
             }
@@ -2068,7 +2068,7 @@ Cmd_Unbet_f
 void Cmd_Unbet_f( gentity_t *ent ) {
     int     bet_ID;
     char    arg1[MAX_STRING_TOKENS];
-    Oatot__Bid   active_bids[MAX_ACTIVE_BIDS_NUMBER];
+    Oatot__Bid*   active_bids[MAX_ACTIVE_BIDS_NUMBER];
     gclient_t *client = ent->client;
     if ( g_gameStage.integer != MAKING_BETS ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1You can't unbet anything now.\n\"" );
@@ -2083,8 +2083,11 @@ void Cmd_Unbet_f( gentity_t *ent ) {
         }
         ent->client->sess.activeBidsNumber -= 1;
         // get bet ID
-        G_oatot_getActiveBids( client->pers.guid, active_bids );
-        bet_ID = active_bids[atoi( arg1 )].bet_id;
+        if ( G_GetActiveBids( ent, active_bids ) == -1 ) {
+            trap_SendServerCommand( ent-g_entities, "print \"^1ActiveBidsNumber is incorrect!\n\"" );
+            return;
+        }
+        bet_ID = active_bids[atoi( arg1 )]->bet_id;
         Oatot__OaDiscardBetRequest discard_bet_arg = OATOT__OA_DISCARD_BET_REQUEST__INIT;
         discard_bet_arg.bet_id = bet_ID;
         Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
