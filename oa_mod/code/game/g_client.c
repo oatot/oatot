@@ -1419,21 +1419,6 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
     // don't do the "xxx connected" messages if they were caried over from previous level
     if ( firstTime ) {
         trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " connected\n\"", client->pers.netname) );
-        Oatot__OaIsNewRequest is_new_arg = OATOT__OA_IS_NEW_REQUEST__INIT;
-        Oatot__OaRegisterRequest register_arg = OATOT__OA_REGISTER_REQUEST__INIT;
-        Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
-        oa_auth.cl_guid = client->pers.guid;
-        is_new_arg.oa_auth = &oa_auth;
-        register_arg.oa_auth = &oa_auth;
-        RPC_result result;
-        result.done = qfalse;
-        oatot__oatot__oa_is_new( service, &is_new_arg, G_oatot_IsNew_Closure, &result );
-        waitForRPC( &(result.done) );
-        if ( ((Oatot__OaIsNewResponse*) (result.result))->result ) {
-            result.done = qfalse;
-            oatot__oatot__oa_register( service, &register_arg, G_oatot_Register_Closure, &result );
-            waitForRPC( &(result.done) );
-        }
     }
 
     if ( g_gametype.integer >= GT_TEAM &&
@@ -1585,6 +1570,22 @@ void ClientBegin( int clientNum ) {
 
     // locate ent at a spawn point
     ClientSpawn( ent );
+
+    Oatot__OaIsNewRequest is_new_arg = OATOT__OA_IS_NEW_REQUEST__INIT;
+    Oatot__OaRegisterRequest register_arg = OATOT__OA_REGISTER_REQUEST__INIT;
+    Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
+    oa_auth.cl_guid = client->pers.guid;
+    is_new_arg.oa_auth = &oa_auth;
+    register_arg.oa_auth = &oa_auth;
+    RPC_result result;
+    result.done = qfalse;
+    oatot__oatot__oa_is_new( service, &is_new_arg, G_oatot_IsNew_Closure, &result );
+    waitForRPC( &(result.done) );
+    if ( ((Oatot__OaIsNewResponse*) (result.result))->result ) {
+        result.done = qfalse;
+        oatot__oatot__oa_register( service, &register_arg, G_oatot_Register_Closure, &result );
+        waitForRPC( &(result.done) );
+    }
 
     if( ( client->sess.sessionTeam != TEAM_SPECTATOR ) &&
             ( ( !( client->isEliminated ) /*&&
