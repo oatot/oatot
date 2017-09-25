@@ -813,12 +813,20 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         change_gs_arg.new_stage = next_game_stage;
         oatot__oatot__oa_change_game_stage( service, &change_gs_arg, G_oatot_ChangeGameStage_Closure, &result );
         waitForRPC( &(result.done) );
+        if ( !checkRPCResponse( result.result ) ) {
+            G_LogPrintf( "WARNING: oa_change_game_stage RPC failed!\n" );
+            return;
+        }
     } else if ( g_gameStage.integer == MAKING_BETS ) {
         // rage quit or was callvoted
         trap_Cvar_Set( "g_gameStage", "0" );
         change_gs_arg.new_stage = FORMING_TEAMS;
         oatot__oatot__oa_change_game_stage( service, &change_gs_arg, G_oatot_ChangeGameStage_Closure, &result );
         waitForRPC( &(result.done) );
+        if ( !checkRPCResponse( result.result ) ) {
+            G_LogPrintf( "WARNING: oa_change_game_stage RPC failed!\n" );
+            return;
+        }
     }
 
     trap_Cvar_Set( "g_finishedBettingN", "0" );
@@ -2096,6 +2104,10 @@ void transferPrizeMoney( void ) {
             result.done = qfalse;
             oatot__oatot__oa_transfer_money( service, &transfer_money_arg, G_oatot_TransferMoney_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_transfer_money RPC failed!\n" );
+                return;
+            }
         }
     }
 }
@@ -2162,11 +2174,19 @@ void CheckExitRules( void )
                 close_bids_arg.winner = "red";
                 oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
                 waitForRPC( &(result.done) );
+                if ( !checkRPCResponse( result.result ) ) {
+                    G_LogPrintf( "WARNING: oa_close_bids RPC failed!\n" );
+                    return;
+                }
             } else {
                 transferPrizeMoney();
                 close_bids_arg.winner = "blue";
                 oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
                 waitForRPC( &(result.done) );
+                if ( !checkRPCResponse( result.result ) ) {
+                    G_LogPrintf( "WARNING: oa_close_bids RPC failed!\n" );
+                    return;
+                }
             }
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
@@ -2216,6 +2236,10 @@ void CheckExitRules( void )
             close_bids_arg.winner = "red";
             oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_close_bids RPC failed!\n" );
+                return;
+            }
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2226,6 +2250,11 @@ void CheckExitRules( void )
             close_bids_arg.winner = "blue";
             oatot__oatot__oa_close_bids( service, &close_bids_arg, G_oatot_CloseBids_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_close_bids RPC failed!\n" );
+                return;
+            }
+
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2629,6 +2658,10 @@ balance_t G_GetBalance( gentity_t* ent, char* currency )
     oatot__oatot__oa_my_balance( service, &balance_arg, G_oatot_GetBalance_Closure, &result );
     waitForRPC( &(result.done) );
     balance_t balance;
+    if ( !checkRPCResponse( result.result ) ) {
+        G_LogPrintf( "WARNING: oa_my_balance RPC failed!\n" );
+        return balance;
+    }
     balance.free_money = ( (Oatot__OaMyBalanceResponse*) result.result)->free_money;
     balance.money_on_bids = ( (Oatot__OaMyBalanceResponse*) result.result)->money_on_bids;
     return balance;
@@ -2650,6 +2683,10 @@ int G_GetActiveBids( gentity_t* ent, Oatot__Bid** bids )
     result.done = qfalse;
     oatot__oatot__oa_my_active_bids( service, &arg, G_oatot_GetActiveBids_Closure, &result );
     waitForRPC( &(result.done) );
+    if ( !checkRPCResponse( result.result ) ) {
+        G_LogPrintf( "WARNING: oa_my_active_bids RPC failed!\n" );
+        return -1;
+    }
     bids  = ( (Oatot__OaMyActiveBidsResponse*) result.result)->bids;
     int bids_n = ( (Oatot__OaMyActiveBidsResponse*) result.result)->n_bids;
     if ( bids_n != client->sess.activeBidsNumber ) {
@@ -2708,6 +2745,10 @@ void G_UpdateActiveBidsSums( char* horse )
     result.done = qfalse;
     oatot__oatot__oa_active_bids_sums( service, &active_bids_arg, G_oatot_GetActiveBidsSums_Closure, &result );
     waitForRPC( &(result.done) );
+    if ( !checkRPCResponse( result.result ) ) {
+        G_LogPrintf( "WARNING: oa_active_bids_sums RPC failed!\n" );
+        return;
+    }
     int oac = ( (Oatot__OaActiveBidsSumsResponse*) result.result)->oac_amount;
     int btc = ( (Oatot__OaActiveBidsSumsResponse*) result.result)->btc_amount;
     trap_SendServerCommand( -1, va("updateBalance \%s %d %d\"", horse, oac, btc) );

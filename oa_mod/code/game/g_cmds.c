@@ -2051,6 +2051,11 @@ void Cmd_Bet_f( gentity_t *ent ) {
             result.done = qfalse;
             oatot__oatot__oa_my_bid( service, &bet, G_oatot_MakeBet_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_my_bid RPC failed!\n" );
+                return;
+            }
+
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
@@ -2096,6 +2101,10 @@ void Cmd_Unbet_f( gentity_t *ent ) {
         RPC_result result;
         result.done = qfalse;
         oatot__oatot__oa_discard_bet( service, &discard_bet_arg, G_oatot_DiscardBet_Closure, &result );
+        if ( !checkRPCResponse( result.result ) ) {
+            G_LogPrintf( "WARNING: oa_discard_bet RPC failed!\n" );
+            return;
+        }
         waitForRPC( &(result.done) );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
@@ -2128,11 +2137,19 @@ void Cmd_PastBids_f( gentity_t *ent ) {
             past_bids_arg.page = "";
             oatot__oatot__oa_my_past_bids( service, &past_bids_arg, G_oatot_GetPastBids_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_my_past_bids RPC failed!\n" );
+                return;
+            }
             client->pers.nextPageUsed = qtrue;
         } else {
             past_bids_arg.page = client->pers.next_page;
             oatot__oatot__oa_my_past_bids( service, &past_bids_arg, G_oatot_GetPastBids_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_my_bid RPC failed!\n" );
+                return;
+            }
         }
         strcpy( client->pers.next_page, ( (Oatot__OaMyPastBidsResponse*) (result.result) )->next_page );
         bids_n = ( (Oatot__OaMyPastBidsResponse*) (result.result) )->n_bids;
@@ -2209,6 +2226,10 @@ void Cmd_BidsSummary_f( gentity_t *ent ) {
         bids_summary_arg.oa_auth = &oa_auth;
         oatot__oatot__oa_my_bids_summary( service, &bids_summary_arg, G_oatot_GetBidsSummary_Closure, &result );
         waitForRPC( &(result.done) );
+        if ( !checkRPCResponse( result.result ) ) {
+            G_LogPrintf( "WARNING: oa_my_bids_summary RPC failed!\n" );
+            return;
+        }
         Oatot__OaMyBidsSummaryResponse* res = (Oatot__OaMyBidsSummaryResponse*) (result.result);
         printCurrencySummary( ent, res->oac_summary, " ^3OAC" );
         printCurrencySummary( ent, res->btc_summary, " ^2BTC" );

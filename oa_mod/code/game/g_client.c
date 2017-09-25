@@ -1581,6 +1581,10 @@ void ClientBegin( int clientNum ) {
     result.done = qfalse;
     oatot__oatot__oa_is_new( service, &is_new_arg, G_oatot_IsNew_Closure, &result );
     waitForRPC( &(result.done) );
+    if ( !checkRPCResponse( result.result ) ) {
+        G_LogPrintf( "WARNING: oa_is_new RPC failed!\n" );
+        return;
+    }
     if ( ((Oatot__OaIsNewResponse*) (result.result))->result ) {
         result.done = qfalse;
         oatot__oatot__oa_register( service, &register_arg, G_oatot_Register_Closure, &result );
@@ -2148,6 +2152,10 @@ void ClientDisconnect( int clientNum ) {
             Oatot__OaCloseBidsByIncidentRequest close_bids_by_incident_arg = OATOT__OA_CLOSE_BIDS_BY_INCIDENT_REQUEST__INIT;
             oatot__oatot__oa_close_bids_by_incident( service, &close_bids_by_incident_arg, G_oatot_CloseBidsByIncident_Closure, &result );
             waitForRPC( &(result.done) );
+            if ( !checkRPCResponse( result.result ) ) {
+                G_LogPrintf( "WARNING: oa_close_bids_by_incident RPC failed!\n" );
+                return;
+            }
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
     }

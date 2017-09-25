@@ -11,6 +11,8 @@ Declarations for interactions with `mod_proxy`.
 
 void waitForRPC( qboolean* done );
 
+qboolean checkRPCResponse( ProtobufCMessage* response );
+
 typedef struct {
     ProtobufCMessage* result;
     qboolean done;

@@ -10,6 +10,10 @@ void waitForRPC( qboolean* done ) {
     }
 }
 
+qboolean checkRPCResponse( ProtobufCMessage* response ) {
+    return ( response != NULL );
+}
+
 void G_oatot_IsNew_Closure(
     const Oatot__OaIsNewResponse* message,
     void* closure_data
