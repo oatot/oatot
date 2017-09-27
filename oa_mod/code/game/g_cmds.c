@@ -2155,7 +2155,7 @@ void Cmd_PastBids_f( gentity_t *ent ) {
             oatot__oatot__oa_my_past_bids( service, &past_bids_arg, G_oatot_GetPastBids_Closure, &result );
             waitForRPC( &(result.done) );
             if ( !checkRPCResponse( result.result ) ) {
-                G_LogPrintf( "WARNING: oa_my_bid RPC failed!\n" );
+                G_LogPrintf( "WARNING: oa_my_past_bids RPC failed!\n" );
                 return;
             }
         }
