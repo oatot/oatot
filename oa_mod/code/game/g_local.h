@@ -894,8 +894,8 @@ balance_t G_GetBalance( gentity_t* ent, char* currency );
 int G_GetActiveBids( gentity_t* ent, Oatot__Bid** bids );
 
 // oatot: draw updates
-void G_UpdateBalance( int clientNum );
-void G_UpdateActiveBids( int clientNum );
+void G_UpdateBalance( gentity_t* ent );
+void G_UpdateActiveBids( gentity_t* ent );
 void G_UpdateActiveBidsSums( char* horse );
 
 //

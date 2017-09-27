@@ -2188,6 +2188,9 @@ void CheckExitRules( void )
                     return;
                 }
             }
+            G_UpdateActiveBidsSums( "red" );
+            G_UpdateActiveBidsSums( "blue" );
+
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
             return;
@@ -2240,6 +2243,8 @@ void CheckExitRules( void )
                 G_LogPrintf( "WARNING: oa_close_bids RPC failed!\n" );
                 return;
             }
+            G_UpdateActiveBidsSums( "red" );
+            G_UpdateActiveBidsSums( "blue" );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2254,7 +2259,8 @@ void CheckExitRules( void )
                 G_LogPrintf( "WARNING: oa_close_bids RPC failed!\n" );
                 return;
             }
-
+            G_UpdateActiveBidsSums( "red" );
+            G_UpdateActiveBidsSums( "blue" );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2702,9 +2708,8 @@ int G_GetActiveBids( gentity_t* ent, Oatot__Bid** bids )
 G_UpdateBalance
 ==================
 */
-void G_UpdateBalance( int clientNum )
+void G_UpdateBalance( gentity_t* ent )
 {
-    gentity_t* ent = &g_entities[clientNum];
     balance_t btc_balance = G_GetBalance( ent, "BTC" );
     balance_t oac_balance = G_GetBalance( ent, "OAC" );
     trap_SendServerCommand( -1, va("updateBalance \%d %s %d %d\"", ent->s.number, "OAC", oac_balance.free_money, oac_balance.money_on_bids) );
@@ -2716,12 +2721,11 @@ void G_UpdateBalance( int clientNum )
 G_UpdateActiveBids
 ==================
 */
-void G_UpdateActiveBids( int clientNum )
+void G_UpdateActiveBids( gentity_t* ent )
 {
     int i;
     char cmd_str[MAX_STRING_TOKENS];
     Oatot__Bid* bids[MAX_ACTIVE_BIDS_NUMBER];
-    gentity_t* ent = &g_entities[clientNum];
     int n_bids = G_GetActiveBids( ent, bids );
     cmd_str[0] = 0;
     strcat( cmd_str, va("updateActiveBids \"%d %d ", ent->s.number, n_bids) );

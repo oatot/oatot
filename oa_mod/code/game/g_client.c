@@ -1625,6 +1625,9 @@ void ClientBegin( int clientNum ) {
     if(strlen(custom_vote_info)) {
         SendCustomVoteCommands(clientNum);
     }
+
+    G_UpdateBalance( ent );
+    G_UpdateActiveBids( ent );
 }
 
 /*

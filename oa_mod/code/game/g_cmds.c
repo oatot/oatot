@@ -2056,6 +2056,9 @@ void Cmd_Bet_f( gentity_t *ent ) {
                 return;
             }
 
+            G_UpdateBalance( ent );
+            G_UpdateActiveBids( ent );
+            G_UpdateActiveBidsSums( arg1 );
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
@@ -2106,6 +2109,11 @@ void Cmd_Unbet_f( gentity_t *ent ) {
             G_LogPrintf( "WARNING: oa_discard_bet RPC failed!\n" );
             return;
         }
+
+        G_UpdateBalance( ent );
+        G_UpdateActiveBids( ent );
+        G_UpdateActiveBidsSums( "red" );
+        G_UpdateActiveBidsSums( "blue" );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
