@@ -463,15 +463,17 @@ struct  _Oatot__Bid
   Google__Protobuf__Timestamp *open_time;
   Google__Protobuf__Timestamp *close_time;
   char *winner;
+  protobuf_c_boolean has_prize;
   uint64_t prize;
   /*
    * Unique bet ID.
    */
+  protobuf_c_boolean has_bet_id;
   uint64_t bet_id;
 };
 #define OATOT__BID__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&oatot__bid__descriptor) \
-    , NULL, NULL, 0, NULL, NULL, NULL, 0, 0 }
+    , NULL, NULL, 0, NULL, NULL, NULL, 0,0, 0,0 }
 
 
 struct  _Oatot__OaMyBidRequest

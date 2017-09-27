@@ -165,12 +165,12 @@ message Bid {
   required string currency = 2;
   required fixed64 amount = 3;
   // Filled by the system.
-  required google.protobuf.Timestamp open_time = 4;
-  required google.protobuf.Timestamp close_time = 5;
-  required string winner = 6;
-  required fixed64 prize = 7;
+  optional google.protobuf.Timestamp open_time = 4;
+  optional google.protobuf.Timestamp close_time = 5;
+  optional string winner = 6;
+  optional fixed64 prize = 7;
   // Unique bet ID.
-  required fixed64 bet_id = 8;
+  optional fixed64 bet_id = 8;
 }
 
 message OaMyBidRequest {
