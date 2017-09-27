@@ -2101,11 +2101,11 @@ void Cmd_Unbet_f( gentity_t *ent ) {
         RPC_result result;
         result.done = qfalse;
         oatot__oatot__oa_discard_bet( service, &discard_bet_arg, G_oatot_DiscardBet_Closure, &result );
+        waitForRPC( &(result.done) );
         if ( !checkRPCResponse( result.result ) ) {
             G_LogPrintf( "WARNING: oa_discard_bet RPC failed!\n" );
             return;
         }
-        waitForRPC( &(result.done) );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
