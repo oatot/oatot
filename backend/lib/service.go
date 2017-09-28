@@ -365,12 +365,27 @@ func (s *Server) OaMyPastBids(ctx context.Context, req *g.OaMyPastBidsRequest) (
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyPastBidsResponse{}
+	// TODO: Implement next page logic.
+	nextPage := ""
+	res := &g.OaMyPastBidsResponse{
+		NextPage: &nextPage,
+	}
 	for bidID := range player.activeBids {
 		bid := s.bids[bidID]
 		res.Bids = append(res.Bids, bidToPb(bid, bidID))
 	}
 	return res, nil
+}
+
+func defaultCurrencySummary() *g.CurrencySummary {
+	var totalBet, totalPrize, totalLost, betsWon, betsLost uint64
+	return &g.CurrencySummary{
+		TotalBet: &totalBet,
+		TotalPrize: &totalPrize,
+		TotalLost: &totalLost,
+		BetsWon: &betsWon,
+		BetsLost: &betsLost,
+	}
 }
 
 func (s *Server) OaMyBidsSummary(ctx context.Context, req *g.OaMyBidsSummaryRequest) (*g.OaMyBidsSummaryResponse, error) {
@@ -380,7 +395,10 @@ func (s *Server) OaMyBidsSummary(ctx context.Context, req *g.OaMyBidsSummaryRequ
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyBidsSummaryResponse{}
+	res := &g.OaMyBidsSummaryResponse{
+		OacSummary: defaultCurrencySummary(),
+		BtcSummary: defaultCurrencySummary(),
+	}
 	for bidID := range player.pastBids {
 		bid := s.bids[bidID]
 		var s *g.CurrencySummary
