@@ -141,19 +141,22 @@ func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequ
 func (s *Server) OaActiveBidsSums(ctx context.Context, req *g.OaActiveBidsSumsRequest) (*g.OaActiveBidsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	res := &g.OaActiveBidsSumsResponse{}
+	var oacAmount, btcAmount uint64
 	for bidID := range s.activeBids {
 		bid := s.bids[bidID]
 		if bid.horse != *req.Horse {
 			continue
 		}
 		if bid.currency == "OAC" {
-			*res.OacAmount += uint64(bid.amount)
+			oacAmount += uint64(bid.amount)
 		} else if bid.currency == "BTC" {
-			*res.BtcAmount += uint64(bid.amount)
+			btcAmount += uint64(bid.amount)
 		}
 	}
-	return res, nil
+	return &g.OaActiveBidsSumsResponse{
+		OacAmount: &oacAmount,
+		BtcAmount: &btcAmount,
+	}, nil
 }
 
 func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStageRequest) (*g.OaChangeGameStageResponse, error) {
