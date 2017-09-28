@@ -107,6 +107,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #error overflow: (CS_MAX) > MAX_CONFIGSTRINGS
 #endif
 
+// max active bids number per client
+#define MAX_ACTIVE_BIDS_NUMBER 5
+
 // oatot game stages
 typedef enum {
     FORMING_TEAMS,
@@ -115,11 +118,17 @@ typedef enum {
 } gameStage_t;
 
 typedef struct betSum_s betSum_t;
+typedef struct balance_s balance_t;
 
 // Total amount bet on some horse.
 struct betSum_s {
     int oac_amount;
     int btc_amount;
+};
+
+struct balance_s {
+    int free_money;
+    int money_on_bids;
 };
 
 typedef enum {

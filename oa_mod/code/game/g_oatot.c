@@ -10,6 +10,10 @@ void waitForRPC( qboolean* done ) {
     }
 }
 
+qboolean checkRPCResponse( ProtobufCMessage* response ) {
+    return ( response != NULL );
+}
+
 void G_oatot_IsNew_Closure(
     const Oatot__OaIsNewResponse* message,
     void* closure_data
@@ -90,18 +94,26 @@ void G_oatot_GetBidsSummary_Closure(
     (((RPC_result*) closure_data)->done) = qtrue;
 }
 
-betSum_t G_oatot_getActiveBidsSums( const char* horse ) {
-    betSum_t bet_sum;
-    bet_sum.oac_amount = 1000;
-    bet_sum.btc_amount = 1000;
-    return bet_sum;
+void G_oatot_GetActiveBidsSums_Closure(
+    const Oatot__OaActiveBidsSumsResponse* message,
+    void* closure_data
+) {
+    ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
+    (((RPC_result*) closure_data)->done) = qtrue;
 }
 
-int G_oatot_getBalance( const char* cl_guid, const char* currency ) {
-    // TODO dummy, no implementation yet.
-    return 999999;
+void G_oatot_GetBalance_Closure(
+    const Oatot__OaMyBalanceResponse* message,
+    void* closure_data
+) {
+    ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
+    (((RPC_result*) closure_data)->done) = qtrue;
 }
 
-int G_oatot_getActiveBids( const char* cl_guid, Oatot__Bid* bids_arr ) {
-    return 0;
+void G_oatot_GetActiveBids_Closure(
+    const Oatot__OaMyActiveBidsResponse* message,
+    void* closure_data
+) {
+    ((RPC_result*) closure_data)->result = (ProtobufCMessage*) message;
+    (((RPC_result*) closure_data)->done) = qtrue;
 }

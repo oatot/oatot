@@ -11,6 +11,8 @@ Declarations for interactions with `mod_proxy`.
 
 void waitForRPC( qboolean* done );
 
+qboolean checkRPCResponse( ProtobufCMessage* response );
+
 typedef struct {
     ProtobufCMessage* result;
     qboolean done;
@@ -66,8 +68,19 @@ void G_oatot_GetBidsSummary_Closure(
     void* closure_data
 );
 
-betSum_t G_oatot_getActiveBidsSums( const char* horse ); // postponed
-int G_oatot_getBalance( const char* cl_guid, const char* currency ); // postponed
-int G_oatot_getActiveBids( const char* cl_guid, Oatot__Bid* bids_arr ); // postponed
+void G_oatot_GetActiveBidsSums_Closure(
+    const Oatot__OaActiveBidsSumsResponse* message,
+    void* closure_data
+);
+
+void G_oatot_GetBalance_Closure(
+    const Oatot__OaMyBalanceResponse* message,
+    void* closure_data
+);
+
+void G_oatot_GetActiveBids_Closure(
+    const Oatot__OaMyActiveBidsResponse* message,
+    void* closure_data
+);
 
 #endif /* ifndef _G_OATOT_H */

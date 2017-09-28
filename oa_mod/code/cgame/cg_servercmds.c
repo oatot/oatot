@@ -61,6 +61,56 @@ static int CG_ValidOrder(const char *p) {
 
 /*
 =================
+CG_ParseBalance
+
+=================
+*/
+static void CG_ParseBalance( void ) {
+    int clientNum = atoi(CG_Argv(1));
+    if ( CG_Argv(2) == "OAC" ) {
+        cgs.clientinfo[clientNum].oac_balance.free_money = atoi(CG_Argv(3));
+        cgs.clientinfo[clientNum].oac_balance.money_on_bids = atoi(CG_Argv(4));
+    } else if ( CG_Argv(2) == "BTC") {
+        cgs.clientinfo[clientNum].btc_balance.free_money = atoi(CG_Argv(3));
+        cgs.clientinfo[clientNum].btc_balance.money_on_bids = atoi(CG_Argv(4));
+    }
+}
+
+/*
+=================
+CG_ParseActiveBids
+
+=================
+*/
+static void CG_ParseActiveBids( void ) {
+    int clientNum = atoi(CG_Argv(1));
+    int bids_n = atoi(CG_Argv(2));
+    int i;
+    for (i = 0; i < bids_n; i++) {
+        cgs.clientinfo[clientNum].activeBids[i].horse = CG_Argv(i * 3 + 3);
+        cgs.clientinfo[clientNum].activeBids[i].currency = CG_Argv(i * 3 + 4);
+        cgs.clientinfo[clientNum].activeBids[i].amount = atoi(CG_Argv(i * 3 + 5));
+    }
+}
+
+/*
+=================
+CG_ParseActiveBidsSums
+
+=================
+*/
+static void CG_ParseActiveBidsSums( void ) {
+    if ( CG_Argv(1) == "red" ) {
+        cgs.red_bids_sum.oac_amount = atoi(CG_Argv(2));
+        cgs.red_bids_sum.btc_amount = atoi(CG_Argv(3));
+    } else if ( CG_Argv(1) == "blue") {
+        cgs.blue_bids_sum.oac_amount = atoi(CG_Argv(2));
+        cgs.blue_bids_sum.btc_amount = atoi(CG_Argv(3));
+    }
+}
+
+/*
+=================
 CG_ParseScores
 
 =================
@@ -1210,6 +1260,21 @@ static void CG_ServerCommand( void ) {
 
     if ( !cmd[0] ) {
         // server claimed the command
+        return;
+    }
+
+    if ( strequals( cmd, "updateBalance" ) ) {
+        CG_ParseBalance();
+        return;
+    }
+
+    if ( strequals( cmd, "updateActiveBids" ) ) {
+        CG_ParseActiveBids();
+        return;
+    }
+
+    if ( strequals( cmd, "updateActiveBidsSums" ) ) {
+        CG_ParseActiveBidsSums();
         return;
     }
 

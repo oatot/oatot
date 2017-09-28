@@ -141,19 +141,22 @@ func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequ
 func (s *Server) OaActiveBidsSums(ctx context.Context, req *g.OaActiveBidsSumsRequest) (*g.OaActiveBidsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	res := &g.OaActiveBidsSumsResponse{}
+	var oacAmount, btcAmount uint64
 	for bidID := range s.activeBids {
 		bid := s.bids[bidID]
 		if bid.horse != *req.Horse {
 			continue
 		}
 		if bid.currency == "OAC" {
-			*res.OacAmount += uint64(bid.amount)
+			oacAmount += uint64(bid.amount)
 		} else if bid.currency == "BTC" {
-			*res.BtcAmount += uint64(bid.amount)
+			btcAmount += uint64(bid.amount)
 		}
 	}
-	return res, nil
+	return &g.OaActiveBidsSumsResponse{
+		OacAmount: &oacAmount,
+		BtcAmount: &btcAmount,
+	}, nil
 }
 
 func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStageRequest) (*g.OaChangeGameStageResponse, error) {
@@ -362,12 +365,27 @@ func (s *Server) OaMyPastBids(ctx context.Context, req *g.OaMyPastBidsRequest) (
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyPastBidsResponse{}
+	// TODO: Implement next page logic.
+	nextPage := ""
+	res := &g.OaMyPastBidsResponse{
+		NextPage: &nextPage,
+	}
 	for bidID := range player.activeBids {
 		bid := s.bids[bidID]
 		res.Bids = append(res.Bids, bidToPb(bid, bidID))
 	}
 	return res, nil
+}
+
+func defaultCurrencySummary() *g.CurrencySummary {
+	var totalBet, totalPrize, totalLost, betsWon, betsLost uint64
+	return &g.CurrencySummary{
+		TotalBet: &totalBet,
+		TotalPrize: &totalPrize,
+		TotalLost: &totalLost,
+		BetsWon: &betsWon,
+		BetsLost: &betsLost,
+	}
 }
 
 func (s *Server) OaMyBidsSummary(ctx context.Context, req *g.OaMyBidsSummaryRequest) (*g.OaMyBidsSummaryResponse, error) {
@@ -377,7 +395,10 @@ func (s *Server) OaMyBidsSummary(ctx context.Context, req *g.OaMyBidsSummaryRequ
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyBidsSummaryResponse{}
+	res := &g.OaMyBidsSummaryResponse{
+		OacSummary: defaultCurrencySummary(),
+		BtcSummary: defaultCurrencySummary(),
+	}
 	for bidID := range player.pastBids {
 		bid := s.bids[bidID]
 		var s *g.CurrencySummary

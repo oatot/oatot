@@ -2971,6 +2971,30 @@ static void CG_DrawGameStageInfo(void) {
 
 /*
 =================
+CG_DrawBalance
+=================
+ */
+void CG_DrawBalance(void) {
+}
+
+/*
+=================
+CG_DrawActiveBidsSums
+=================
+ */
+void CG_DrawActiveBidsSums(void) {
+}
+
+/*
+=================
+CG_DrawActiveBids
+=================
+ */
+void CG_DrawActiveBids(void) {
+}
+
+/*
+=================
 CG_DrawSpectator
 =================
  */
@@ -3574,6 +3598,9 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
         if (!cg.scoreBoardShowing) {
             if ( !cg.loading && !cg.warmup ) {
                 CG_DrawGameStageInfo();
+                CG_DrawBalance();
+                CG_DrawActiveBidsSums();
+                CG_DrawActiveBids();
             }
         }
     }

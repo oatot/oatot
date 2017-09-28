@@ -3516,7 +3516,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "open_time",
     4,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, open_time),
@@ -3528,7 +3528,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "close_time",
     5,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_MESSAGE,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, close_time),
@@ -3540,7 +3540,7 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "winner",
     6,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_STRING,
     0,   /* quantifier_offset */
     offsetof(Oatot__Bid, winner),
@@ -3552,9 +3552,9 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "prize",
     7,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_FIXED64,
-    0,   /* quantifier_offset */
+    offsetof(Oatot__Bid, has_prize),
     offsetof(Oatot__Bid, prize),
     NULL,
     NULL,
@@ -3564,9 +3564,9 @@ static const ProtobufCFieldDescriptor oatot__bid__field_descriptors[8] =
   {
     "bet_id",
     8,
-    PROTOBUF_C_LABEL_REQUIRED,
+    PROTOBUF_C_LABEL_OPTIONAL,
     PROTOBUF_C_TYPE_FIXED64,
-    0,   /* quantifier_offset */
+    offsetof(Oatot__Bid, has_bet_id),
     offsetof(Oatot__Bid, bet_id),
     NULL,
     NULL,
