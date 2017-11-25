@@ -14,8 +14,8 @@ var (
 	client     g.OatotClient
 )
 
-//export InitializeClient
-func InitializeClient() {
+//export GInitializeClient
+func GInitializeClient() {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(grpcAddr, grpc.WithInsecure())
 	if err != nil {

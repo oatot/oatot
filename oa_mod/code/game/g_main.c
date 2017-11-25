@@ -791,7 +791,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_vampire.value = 0.0f;
     }
 
-    InitializeClient();
+    GInitializeClient();
     service = protobuf_c_rpc_client_new( address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL );
     if ( service == NULL ) {
         G_Printf( "gRPC: Error creating client!" );
