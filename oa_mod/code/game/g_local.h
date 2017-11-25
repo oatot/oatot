@@ -1000,6 +1000,41 @@ void ClientLeaving(int clientNumber);
 qboolean checkForRestart( void );
 const char* qtimeToStr( qtime_t time );
 
+typedef struct bid_s bid_t;
+typedef struct fullbid_s fullbid_t;
+typedef struct currencySummary_s currencySummary_t;
+typedef struct bidsSummary_s bidsSummary_t;
+
+// structure for describing a bid (oatot)
+struct bid_s {
+    char *horse;
+    char *currency;
+    int amount;
+    qtime_t openTime;
+    int bet_ID; // Unique bet ID.
+};
+
+// structure for describing a bid and its result (oatot)
+struct fullbid_s {
+    bid_t open_bid;
+    qtime_t closeTime;
+    char *winner;
+    int prize;
+};
+
+struct currencySummary_s {
+    int total_bet;
+    int total_prize;
+    int total_lost;
+    int bets_won;
+    int bets_lost;
+};
+
+struct bidsSummary_s {
+    currencySummary_t oac_summary;
+    currencySummary_t btc_summary;
+};
+
 #define MAX_MAPNAME 32
 #define MAPS_PER_PAGE 10
 #define MAX_MAPNAME_BUFFER MAX_MAPNAME*600
