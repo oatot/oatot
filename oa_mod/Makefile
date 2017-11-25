@@ -241,6 +241,7 @@ SDLDIR=$(MOUNT_DIR)/sdl
 ASMDIR=$(MOUNT_DIR)/asm
 SYSDIR=$(MOUNT_DIR)/sys
 GDIR=$(MOUNT_DIR)/game
+GODIR=$(MOUNT_DIR)/go-client
 CGDIR=$(MOUNT_DIR)/cgame
 BLIBDIR=$(MOUNT_DIR)/botlib
 NDIR=$(MOUNT_DIR)/null
@@ -1136,6 +1137,12 @@ $(Q)$(CC) $(BASEGAME_CFLAGS) -DQAGAME $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o 
 $(Q)$(DO_QVM_DEP)
 endef
 
+define DO_GOCLIENT_CC
+$(echo_cmd) "GOCLIENT_CC $<"
+go build -buildmode=c-archive -o $@ $<
+cp $(B)/$(BASEGAME)/go-client/*.h $(GDIR)/
+endef
+
 define DO_CGAME_CC
 $(echo_cmd) "CGAME_CC $<"
 $(Q)$(CC) $(BASEGAME_CFLAGS) -DCGAME $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o $@ -c $<
@@ -1293,6 +1300,7 @@ makedirs:
 	@if [ ! -d $(B)/$(BASEGAME) ];then $(MKDIR) $(B)/$(BASEGAME);fi
 	@if [ ! -d $(B)/$(BASEGAME)/cgame ];then $(MKDIR) $(B)/$(BASEGAME)/cgame;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game ];then $(MKDIR) $(B)/$(BASEGAME)/game;fi
+	@if [ ! -d $(B)/$(BASEGAME)/go-client ];then $(MKDIR) $(B)/$(BASEGAME)/go-client;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game/generated ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google/protobuf ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google/protobuf;fi
@@ -2380,6 +2388,9 @@ $(B)/$(MISSIONPACK)/vm/cgame.qvm: $(MPCGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 ## BASEQ3 GAME
 #############################################################################
 
+GOOBJ = \
+  $(B)/$(BASEGAME)/go-client/client.o
+
 Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_chat.o \
@@ -2433,9 +2444,9 @@ Q3GOBJ_ = \
 Q3GOBJ = $(Q3GOBJ_) $(B)/$(BASEGAME)/game/g_syscalls.o
 Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
-$(B)/$(BASEGAME)/qagame$(SHLIBNAME): $(Q3GOBJ)
+$(B)/$(BASEGAME)/qagame$(SHLIBNAME): $(GOOBJ) $(Q3GOBJ)
 	$(echo_cmd) "LD $@"
-	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ)
+	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ) $(GOOBJ)
 
 $(B)/$(BASEGAME)/vm/qagame.qvm: $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
@@ -2775,6 +2786,9 @@ $(B)/$(MISSIONPACK)/cgame/%.asm: $(CGDIR)/%.c $(Q3LCC)
 
 $(B)/$(BASEGAME)/game/%.o: $(GDIR)/%.c
 	$(DO_GAME_CC)
+
+$(B)/$(BASEGAME)/go-client/%.o: $(GODIR)/%.go
+	$(DO_GOCLIENT_CC)
 
 $(B)/$(BASEGAME)/game/%.asm: $(GDIR)/%.c $(Q3LCC)
 	$(DO_GAME_Q3LCC)

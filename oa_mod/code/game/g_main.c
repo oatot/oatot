@@ -24,6 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <protobuf-c-rpc/protobuf-c-rpc.h>
 #include "generated/api.pb-c.h"
 
+#include "client.h"
+
 #include "g_local.h"
 #include "bg_public.h"
 #include "g_oatot.h"
@@ -789,6 +791,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_vampire.value = 0.0f;
     }
 
+    InitializeClient();
     service = protobuf_c_rpc_client_new( address_type, "127.0.0.1:13283", &oatot__oatot__descriptor, NULL );
     if ( service == NULL ) {
         G_Printf( "gRPC: Error creating client!" );
