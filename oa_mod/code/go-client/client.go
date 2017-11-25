@@ -23,7 +23,6 @@ func GInitializeClient() {
 	if err != nil {
 		log.Fatalf("Did not connect: %v", err)
 	}
-	defer conn.Close()
 	client = g.NewOatotClient(conn)
 }
 
