@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	g "github.com/oatot/oatot/backend/generated"
+	g "github.com/oatot/oatot/generated"
 	"github.com/oatot/oatot/backend/lib"
 	"github.com/oatot/oatot/backend/protobufcrpc"
 )

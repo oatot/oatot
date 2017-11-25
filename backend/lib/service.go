@@ -4,7 +4,7 @@ import (
 	"math/big"
 	"sync"
 
-	g "github.com/oatot/oatot/backend/generated"
+	g "github.com/oatot/oatot/generated"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkdir -p backend/generated
+mkdir -p generated
 protoc \
-    --go_out=plugins=grpc:backend/generated \
+    --go_out=plugins=grpc:generated \
     api.proto
 
 mkdir -p oa_mod/code/game/generated
@@ -11,4 +11,4 @@ protoc-c \
     api.proto
 
 sed 's/\<_Oatot_serviceDesc\>/Oatot_serviceDesc/g' \
-    -i backend/generated/api.pb.go
+    -i generated/api.pb.go
