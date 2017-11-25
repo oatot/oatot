@@ -26,6 +26,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "generated/api.pb-c.h"
 
+#include "client.h"
+
 #include "g_local.h"
 #include "g_oatot.h"
 
@@ -1570,6 +1572,8 @@ void ClientBegin( int clientNum ) {
 
     // locate ent at a spawn point
     ClientSpawn( ent );
+
+    GOaRegister(client->pers.guid);
 
     Oatot__OaIsNewRequest is_new_arg = OATOT__OA_IS_NEW_REQUEST__INIT;
     Oatot__OaRegisterRequest register_arg = OATOT__OA_REGISTER_REQUEST__INIT;
