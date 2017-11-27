@@ -32,15 +32,46 @@ func GOaChangeGameStage(newStage C.gameStage_t) {
 
 //export GOaCloseBids
 func GOaCloseBids(winner *C.char) {
+	winnerStr := C.GoString(winner)
+	_, err := client.OaCloseBids(
+		context.Background(),
+		&g.OaCloseBidsRequest{
+			Winner: &winnerStr,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaCloseBids: %v", err)
+	}
 }
 
 //export GOaCloseBidsByIncident
 func GOaCloseBidsByIncident() {
+	_, err := client.OaCloseBidsByIncident(
+		context.Background(),
+		&g.OaCloseBidsByIncidentRequest{},
+	)
+	if err != nil {
+		log.Fatalf("OaCloseBidsByIncident: %v", err)
+	}
 }
 
 //export GOaIsNew
 func GOaIsNew(clGuid *C.char) C.int {
-	return C.int(0)
+	clGuidStr := C.GoString(clGuid)
+	res, err := client.OaIsNew(
+		context.Background(),
+		&g.OaIsNewRequest{
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaIsNew: %v", err)
+	}
+	if *res.Result {
+		return C.int(1)
+	} else {
+		return C.int(0)
+	}
 }
 
 //export GOaRegister
@@ -58,7 +89,21 @@ func GOaRegister(clGuid *C.char) {
 }
 
 //export GOaTransferMoney
-func GOaTransferMoney(clGuid *C.char, amount C.int) {
+func GOaTransferMoney(clGuid *C.char, amount C.int, currency *C.char) {
+	clGuidStr := C.GoString(clGuid)
+	currencyStr := C.GoString(currency)
+	amountVal := uint64(amount)
+	_, err := client.OaTransferMoney(
+		context.Background(),
+		&g.OaTransferMoneyRequest{
+			Amount:   &amountVal,
+			OaAuth:   &g.OaAuth{ClGuid: &clGuidStr},
+			Currency: &currencyStr,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaTransferMoney: %v", err)
+	}
 }
 
 //export GOaActiveBidsSums
@@ -76,7 +121,19 @@ func GOaMyBid(clGuid *C.char, bid C.bid_t) {
 }
 
 //export GOaDiscardBet
-func GOaDiscardBet(clGuid *C.char, betId int) {
+func GOaDiscardBet(clGuid *C.char, betId C.int) {
+	clGuidStr := C.GoString(clGuid)
+	betIdVal := uint64(betId)
+	_, err := client.OaDiscardBet(
+		context.Background(),
+		&g.OaDiscardBetRequest{
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
+			BetId:  &betIdVal,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaDiscardBet: %v", err)
+	}
 }
 
 //export GOaMyActiveBids
