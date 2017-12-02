@@ -72,7 +72,17 @@ func GInitializeClient() {
 }
 
 //export GOaChangeGameStage
-func GOaChangeGameStage(newStage C.gameStage_t) {
+func GOaChangeGameStage(newStage C.int) {
+	newStageVal := uint64(newStage)
+	_, err := client.OaChangeGameStage(
+		context.Background(),
+		&g.OaChangeGameStageRequest{
+			NewStage: &newStageVal,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaChangeGameStage: %v", err)
+	}
 }
 
 //export GOaCloseBids
@@ -153,16 +163,59 @@ func GOaTransferMoney(clGuid *C.char, amount C.int, currency *C.char) {
 
 //export GOaActiveBidsSums
 func GOaActiveBidsSums(horse *C.char) C.betSum_t {
-	return C.betSum_t{1, 2}
+	horseStr := C.GoString(horse)
+	res, err := client.OaActiveBidsSums(
+		context.Background(),
+		&g.OaActiveBidsSumsRequest{
+			Horse: &horseStr,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaActiveBidsSums: %v", err)
+	}
+	return C.betSum_t{C.int(*res.OacAmount), C.int(*res.BtcAmount)}
 }
 
 //export GOaMyBalance
 func GOaMyBalance(clGuid *C.char, currency *C.char) C.balance_t {
-	return C.balance_t{1, 2}
+	clGuidStr := C.GoString(clGuid)
+	currencyStr := C.GoString(currency)
+	res, err := client.OaMyBalance(
+		context.Background(),
+		&g.OaMyBalanceRequest{
+			OaAuth:   &g.OaAuth{ClGuid: &clGuidStr},
+			Currency: &currencyStr,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaMyBalance: %v", err)
+	}
+	return C.balance_t{C.int(*res.FreeMoney), C.int(*res.MoneyOnBids)}
 }
 
 //export GOaMyBid
 func GOaMyBid(clGuid *C.char, bid C.bid_t) {
+	clGuidStr := C.GoString(clGuid)
+	horseStr := C.GoString(&(bid.horse[0]))
+	currencyStr := C.GoString(&(bid.currency[0]))
+	amountVal := uint64(bid.amount)
+	betId := uint64(bid.bet_ID)
+	bidN := &g.Bid{
+		Horse:    &horseStr,
+		Currency: &currencyStr,
+		Amount:   &amountVal,
+		BetId:    &betId,
+	}
+	_, err := client.OaMyBid(
+		context.Background(),
+		&g.OaMyBidRequest{
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
+			Bid:    bidN,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaMyBid: %v", err)
+	}
 }
 
 //export GOaDiscardBet
@@ -183,17 +236,70 @@ func GOaDiscardBet(clGuid *C.char, betId C.int) {
 
 //export GOaMyActiveBids
 func GOaMyActiveBids(clGuid *C.char, activeBids *C.bid_t) C.int {
-	return 0
+	clGuidStr := C.GoString(clGuid)
+	res, err := client.OaMyActiveBids(
+		context.Background(),
+		&g.OaMyActiveBidsRequest{
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaMyActiveBids: %v", err)
+	}
+	size := len(res.Bids)
+	var bids []C.bid_t
+	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bids)))
+	sliceHeader.Cap = maxActiveBidsN
+	sliceHeader.Len = maxActiveBidsN
+	sliceHeader.Data = uintptr(unsafe.Pointer(activeBids))
+	for i := 0; i < size; i++ {
+		CBidFromGo(res.Bids[i], &bids[i])
+	}
+	return C.int(size)
 }
 
 //export GOaMyPastBids
 func GOaMyPastBids(clGuid *C.char, page *C.char, nextPage *C.char, pastBids *C.fullbid_t) C.int {
+	clGuidStr := C.GoString(clGuid)
+	pageStr := C.GoString(page)
+	res, err := client.OaMyPastBids(
+		context.Background(),
+		&g.OaMyPastBidsRequest{
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
+			Page:   &pageStr,
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaMyPastBids: %v", err)
+	}
+	size := len(res.Bids)
+	var bids []C.fullbid_t
+	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bids)))
+	sliceHeader.Cap = bidsPerPageN
+	sliceHeader.Len = bidsPerPageN
+	sliceHeader.Data = uintptr(unsafe.Pointer(pastBids))
+	for i := 0; i < size; i++ {
+		CFullbidFromGo(res.Bids[i], &bids[i])
+	}
+	return C.int(size)
 	return 0
 }
 
 //export GOaMyBidsSummary
 func GOaMyBidsSummary(clGuid *C.char) C.bidsSummary_t {
-	return C.bidsSummary_t{C.currencySummary_t{0, 0, 0, 0, 0}, C.currencySummary_t{0, 0, 0, 0, 0}}
+	clGuidStr := C.GoString(clGuid)
+	res, err := client.OaMyBidsSummary(
+		context.Background(),
+		&g.OaMyBidsSummaryRequest{
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
+		},
+	)
+	if err != nil {
+		log.Fatalf("OaMyBidsSummary: %v", err)
+	}
+	oacSummary := CCurrencySummaryFromGo(res.OacSummary)
+	btcSummary := CCurrencySummaryFromGo(res.BtcSummary)
+	return C.bidsSummary_t{oacSummary, btcSummary}
 }
 
 func main() {}
