@@ -998,7 +998,6 @@ void ClientLeaving(int clientNumber);
 
 // oatot
 qboolean checkForRestart( void );
-const char* qtimeToStr( qtime_t time );
 
 typedef struct bid_s bid_t;
 typedef struct fullbid_s fullbid_t;
@@ -1010,14 +1009,14 @@ struct bid_s {
     char *horse;
     char *currency;
     int amount;
-    qtime_t openTime;
+    char *open_time;
     int bet_ID; // Unique bet ID.
 };
 
 // structure for describing a bid and its result (oatot)
 struct fullbid_s {
     bid_t open_bid;
-    qtime_t closeTime;
+    char* close_time;
     char *winner;
     int prize;
 };
