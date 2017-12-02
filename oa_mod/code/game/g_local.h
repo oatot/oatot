@@ -1006,18 +1006,18 @@ typedef struct bidsSummary_s bidsSummary_t;
 
 // structure for describing a bid (oatot)
 struct bid_s {
-    char *horse;
-    char *currency;
+    char horse[MAX_STRING_CHARS];
+    char currency[MAX_STRING_CHARS];
     int amount;
-    char *open_time;
+    char open_time[MAX_STRING_CHARS];
     int bet_ID; // Unique bet ID.
 };
 
 // structure for describing a bid and its result (oatot)
 struct fullbid_s {
     bid_t open_bid;
-    char* close_time;
-    char *winner;
+    char close_time[MAX_STRING_CHARS];
+    char winner[MAX_STRING_CHARS];
     int prize;
 };
 
