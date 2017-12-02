@@ -13,6 +13,10 @@ import (
 // #include "../game/bg_public.h"
 import "C"
 
+const maxActiveBidsN = 5
+const bidsPerPageN = 15
+const maxCStrLen = 1024
+
 var (
 	grpcAddr = "127.0.0.1:13283"
 	client   g.OatotClient
