@@ -5,6 +5,8 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"log"
+	"reflect"
+	"unsafe"
 )
 
 // #include "../game/g_local.h"
@@ -15,6 +17,45 @@ var (
 	grpcAddr = "127.0.0.1:13283"
 	client   g.OatotClient
 )
+
+func StringToC(str string, cStr *C.char) {
+	size := len(str)
+	var slice []C.char
+	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&slice)))
+	sliceHeader.Cap = maxCStrLen
+	sliceHeader.Len = maxCStrLen
+	sliceHeader.Data = uintptr(unsafe.Pointer(cStr))
+	for i := 0; i < size; i++ {
+		slice[i] = C.char(str[i])
+	}
+}
+
+func CBidFromGo(in *g.Bid, out *C.bid_t) {
+	timeStr := (*in.OpenTime).String()
+	out.amount = C.int(*in.Amount)
+	out.bet_ID = C.int(*in.BetId)
+	StringToC(*in.Horse, &(out.horse[0]))
+	StringToC(*in.Currency, &(out.currency[0]))
+	StringToC(timeStr, &(out.open_time[0]))
+}
+
+func CFullbidFromGo(in *g.Bid, out *C.fullbid_t) {
+	timeStr := (*in.CloseTime).String()
+	CBidFromGo(in, &out.open_bid)
+	out.prize = C.int(*in.Prize)
+	StringToC(*in.Winner, &(out.winner[0]))
+	StringToC(timeStr, &(out.close_time[0]))
+}
+
+func CCurrencySummaryFromGo(in *g.CurrencySummary) C.currencySummary_t {
+	return C.currencySummary_t{
+		total_bet:   C.int(*in.TotalBet),
+		total_prize: C.int(*in.TotalPrize),
+		total_lost:  C.int(*in.TotalLost),
+		bets_won:    C.int(*in.BetsWon),
+		bets_lost:   C.int(*in.BetsLost),
+	}
+}
 
 //export GInitializeClient
 func GInitializeClient() {
