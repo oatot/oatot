@@ -8,8 +8,6 @@ COMPILE_PLATFORM=$(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]'|sed -e 
 
 COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/x86/)
 
-LDFLAGS=-lprotobuf-c-rpc -lprotobuf -lprotobuf-c
-
 ifeq ($(COMPILE_PLATFORM),sunos)
   # Solaris uname and GNU uname differ
   COMPILE_ARCH=$(shell uname -p | sed -e s/i.86/x86/)
@@ -1301,9 +1299,6 @@ makedirs:
 	@if [ ! -d $(B)/$(BASEGAME)/cgame ];then $(MKDIR) $(B)/$(BASEGAME)/cgame;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game ];then $(MKDIR) $(B)/$(BASEGAME)/game;fi
 	@if [ ! -d $(B)/$(BASEGAME)/go-client ];then $(MKDIR) $(B)/$(BASEGAME)/go-client;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game/generated ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google/protobuf ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google/protobuf;fi
 	@if [ ! -d $(B)/$(BASEGAME)/ui ];then $(MKDIR) $(B)/$(BASEGAME)/ui;fi
 	@if [ ! -d $(B)/$(BASEGAME)/qcommon ];then $(MKDIR) $(B)/$(BASEGAME)/qcommon;fi
 	@if [ ! -d $(B)/$(BASEGAME)/vm ];then $(MKDIR) $(B)/$(BASEGAME)/vm;fi
@@ -2420,7 +2415,6 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_misc.o \
   $(B)/$(BASEGAME)/game/g_missile.o \
   $(B)/$(BASEGAME)/game/g_mover.o \
-  $(B)/$(BASEGAME)/game/g_oatot.o \
   $(B)/$(BASEGAME)/game/g_playerstore.o \
   $(B)/$(BASEGAME)/game/g_possession.o \
   $(B)/$(BASEGAME)/game/g_session.o \
@@ -2434,9 +2428,6 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_utils.o \
   $(B)/$(BASEGAME)/game/g_vote.o \
   $(B)/$(BASEGAME)/game/g_weapon.o \
-  \
-  $(B)/$(BASEGAME)/game/generated/api.pb-c.o \
-  $(B)/$(BASEGAME)/game/generated/timestamp.pb-c.o \
   \
   $(B)/$(BASEGAME)/qcommon/q_math.o \
   $(B)/$(BASEGAME)/qcommon/q_shared.o
@@ -2485,7 +2476,6 @@ MPGOBJ_ = \
   $(B)/$(MISSIONPACK)/game/g_misc.o \
   $(B)/$(MISSIONPACK)/game/g_missile.o \
   $(B)/$(MISSIONPACK)/game/g_mover.o \
-  $(B)/$(MISSIONPACK)/game/g_oatot.o \
   $(B)/$(MISSIONPACK)/game/g_playerstore.o \
   $(B)/$(MISSIONPACK)/game/g_possession.o \
   $(B)/$(MISSIONPACK)/game/g_session.o \
@@ -2499,9 +2489,6 @@ MPGOBJ_ = \
   $(B)/$(MISSIONPACK)/game/g_utils.o \
   $(B)/$(MISSIONPACK)/game/g_vote.o \
   $(B)/$(MISSIONPACK)/game/g_weapon.o \
-  \
-  $(B)/$(MISSIONPACK)/game/generated/api.pb-c.o \
-  $(B)/$(MISSIONPACK)/game/generated/timestamp.pb-c.o \
   \
   $(B)/$(MISSIONPACK)/qcommon/q_math.o \
   $(B)/$(MISSIONPACK)/qcommon/q_shared.o

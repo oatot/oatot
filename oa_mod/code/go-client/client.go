@@ -281,6 +281,7 @@ func GOaMyPastBids(clGuid *C.char, page *C.char, nextPage *C.char, pastBids *C.f
 	for i := 0; i < size; i++ {
 		CFullbidFromGo(res.Bids[i], &bids[i])
 	}
+	StringToC(*res.NextPage, nextPage)
 	return C.int(size)
 	return 0
 }
