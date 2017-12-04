@@ -2275,8 +2275,8 @@ Cmd_Help_f
 ==================
 */
 void Cmd_Help_f( gentity_t *ent ) {
-    char            help_message[MAX_STRING_TOKENS];
-    char            buffer[MAX_STRING_TOKENS];
+    char            help_message[MAX_ARENAS_TEXT];
+    char            buffer[MAX_ARENAS_TEXT];
     fileHandle_t    file;
     gclient_t *client = ent->client;
     if ( client ) {
@@ -2288,8 +2288,8 @@ void Cmd_Help_f( gentity_t *ent ) {
             trap_FS_FOpenFile( "texts/help_message_playing.txt", &file, FS_READ );
         }
         if ( file ) {
-            trap_FS_Read( &help_message, sizeof( help_message ), file );
-            Q_snprintf( buffer, MAX_STRING_TOKENS, "print \"%s\n\"", help_message );
+            trap_FS_Read( &help_message, MAX_ARENAS_TEXT, file );
+            Q_snprintf( buffer, MAX_ARENAS_TEXT, "print \"%s\n\"", help_message );
             trap_SendServerCommand( ent-g_entities, buffer );
             trap_FS_FCloseFile( file );
         }
