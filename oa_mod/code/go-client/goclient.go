@@ -201,12 +201,10 @@ func GOaMyBid(clGuid *C.char, bid C.bid_t) {
 	horseStr := C.GoString(&(bid.horse[0]))
 	currencyStr := C.GoString(&(bid.currency[0]))
 	amountVal := uint64(bid.amount)
-	betId := uint64(bid.bet_ID)
 	bidN := &g.Bid{
 		Horse:    &horseStr,
 		Currency: &currencyStr,
 		Amount:   &amountVal,
-		BetId:    &betId,
 	}
 	_, err := client.OaMyBid(
 		context.Background(),
