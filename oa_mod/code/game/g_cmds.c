@@ -2277,21 +2277,20 @@ Cmd_Help_f
 */
 void Cmd_Help_f( gentity_t *ent ) {
     char            help_message[MAX_ARENAS_TEXT];
-    char            buffer[MAX_ARENAS_TEXT];
+    int             len;
     fileHandle_t    file;
     gclient_t *client = ent->client;
     if ( client ) {
         if ( g_gameStage.integer == FORMING_TEAMS ) {
-            trap_FS_FOpenFile( "texts/help_message_forming_teams.txt", &file, FS_READ );
+            len = trap_FS_FOpenFile( "texts/help_message_forming_teams.txt", &file, FS_READ );
         } else if ( g_gameStage.integer == MAKING_BETS ) {
-            trap_FS_FOpenFile( "texts/help_message_making_bets.txt", &file, FS_READ );
+            len = trap_FS_FOpenFile( "texts/help_message_making_bets.txt", &file, FS_READ );
         } else {
-            trap_FS_FOpenFile( "texts/help_message_playing.txt", &file, FS_READ );
+            len = trap_FS_FOpenFile( "texts/help_message_playing.txt", &file, FS_READ );
         }
         if ( file ) {
-            trap_FS_Read( &help_message, MAX_ARENAS_TEXT, file );
-            Q_snprintf( buffer, MAX_ARENAS_TEXT, "print \"%s\n\"", help_message );
-            trap_SendServerCommand( ent-g_entities, buffer );
+            trap_FS_Read( &help_message, len, file );
+            trap_SendServerCommand( ent-g_entities, va( "print \"%s\n\"", help_message ) );
             trap_FS_FCloseFile( file );
         }
     } else {
