@@ -63,12 +63,14 @@ func CCurrencySummaryFromGo(in *g.CurrencySummary) C.currencySummary_t {
 
 //export GInitializeClient
 func GInitializeClient() {
-	// Set up a connection to the server.
-	conn, err := grpc.Dial(grpcAddr, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("Did not connect: %v", err)
+	if client == nil {
+		// Set up a connection to the server.
+		conn, err := grpc.Dial(grpcAddr, grpc.WithInsecure())
+		if err != nil {
+			log.Fatalf("Did not connect: %v", err)
+		}
+		client = g.NewOatotClient(conn)
 	}
-	client = g.NewOatotClient(conn)
 }
 
 //export GOaChangeGameStage

@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 //
 
+#include <dlfcn.h>
+
 #include "client.h"
 
 #include "g_local.h"
@@ -756,6 +758,19 @@ static int G_CheckGametypeScripts( void )
 }
 
 /*
+For Go module separated shared library.
+Survive dlclose(qagame.so) initiated by openarena-server executable.
+We also link with this Go .so to use its header.
+*/
+void G_LoadGoClientSo( void ) {
+    void* handle = dlopen( "go-client/libgoclient.so", RTLD_NOW );
+    if ( !handle ) {
+        G_Printf( "dlopen: %s\n", dlerror() );
+        return;
+    }
+}
+
+/*
 ============
 G_InitGame
 
@@ -782,7 +797,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_rockets.integer = 0;
         g_vampire.value = 0.0f;
     }
-
+    G_LoadGoClientSo();
     GInitializeClient();
     // oatot game stages changing logic:
     if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {

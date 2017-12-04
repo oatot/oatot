@@ -8,8 +8,6 @@ COMPILE_PLATFORM=$(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]'|sed -e 
 
 COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/x86/)
 
-LDFLAGS=-lpthread
-
 ifeq ($(COMPILE_PLATFORM),sunos)
   # Solaris uname and GNU uname differ
   COMPILE_ARCH=$(shell uname -p | sed -e s/i.86/x86/)
@@ -1139,8 +1137,9 @@ endef
 
 define DO_GOCLIENT_CC
 $(echo_cmd) "GOCLIENT_CC $<"
-go build -buildmode=c-archive -o $@ $<
-cp $(B)/$(BASEGAME)/go-client/*.h $(GDIR)/
+go build -buildmode=c-shared -o $@ $<
+cp $(B)/$(BASEGAME)/go-client/goclient.h $(GDIR)/client.h
+mv $(B)/$(BASEGAME)/go-client/goclient.so $(B)/$(BASEGAME)/go-client/libgoclient.so
 endef
 
 define DO_CGAME_CC
@@ -2386,7 +2385,7 @@ $(B)/$(MISSIONPACK)/vm/cgame.qvm: $(MPCGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 #############################################################################
 
 GOOBJ = \
-  $(B)/$(BASEGAME)/go-client/client.o
+  $(B)/$(BASEGAME)/go-client/goclient.so
 
 Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_main.o \
@@ -2437,9 +2436,11 @@ Q3GOBJ_ = \
 Q3GOBJ = $(Q3GOBJ_) $(B)/$(BASEGAME)/game/g_syscalls.o
 Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
+GOCLIENT_PATH=$(shell readlink -f $(B)/$(BASEGAME)/go-client/)
+
 $(B)/$(BASEGAME)/qagame$(SHLIBNAME): $(GOOBJ) $(Q3GOBJ)
 	$(echo_cmd) "LD $@"
-	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ) $(GOOBJ)
+	$(Q)$(CC) $(CFLAGS) -L$(GOCLIENT_PATH) -lgoclient $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ)
 
 $(B)/$(BASEGAME)/vm/qagame.qvm: $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
@@ -2776,7 +2777,7 @@ $(B)/$(MISSIONPACK)/cgame/%.asm: $(CGDIR)/%.c $(Q3LCC)
 $(B)/$(BASEGAME)/game/%.o: $(GDIR)/%.c
 	$(DO_GAME_CC)
 
-$(B)/$(BASEGAME)/go-client/%.o: $(GODIR)/%.go
+$(B)/$(BASEGAME)/go-client/%.so: $(GODIR)/%.go
 	$(DO_GOCLIENT_CC)
 
 $(B)/$(BASEGAME)/game/%.asm: $(GDIR)/%.c $(Q3LCC)
