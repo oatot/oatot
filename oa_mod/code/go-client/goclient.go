@@ -35,20 +35,22 @@ func StringToC(str string, cStr *C.char) {
 }
 
 func CBidFromGo(in *g.Bid, out *C.bid_t) {
-	timeStr := (*in.OpenTime).String()
+	//TODO: implement time storage in backend.
+	//timeStr := (*in.OpenTime).String()
 	out.amount = C.int(*in.Amount)
 	out.bet_ID = C.int(*in.BetId)
 	StringToC(*in.Horse, &(out.horse[0]))
 	StringToC(*in.Currency, &(out.currency[0]))
-	StringToC(timeStr, &(out.open_time[0]))
+	//StringToC(timeStr, &(out.open_time[0]))
 }
 
 func CFullbidFromGo(in *g.Bid, out *C.fullbid_t) {
-	timeStr := (*in.CloseTime).String()
+	//TODO: implement time storage in backend.
+	//timeStr := (*in.CloseTime).String()
 	CBidFromGo(in, &out.open_bid)
 	out.prize = C.int(*in.Prize)
 	StringToC(*in.Winner, &(out.winner[0]))
-	StringToC(timeStr, &(out.close_time[0]))
+	//StringToC(timeStr, &(out.close_time[0]))
 }
 
 func CCurrencySummaryFromGo(in *g.CurrencySummary) C.currencySummary_t {

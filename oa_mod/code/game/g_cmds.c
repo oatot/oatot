@@ -2138,7 +2138,8 @@ void Cmd_PastBids_f( gentity_t *ent ) {
             }
             strcat( bid_str, amount_str );
             strcat( bid_str, prize_str );
-            strcat( bid_str, bid.open_bid.open_time );
+            // TODO: implement time storage in backend.
+            //strcat( bid_str, bid.open_bid.open_time );
             strcat( bid_str, "\n\"" );
             printConsoleMessage( ent, bid_str );
         }
