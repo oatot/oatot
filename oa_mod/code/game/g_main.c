@@ -2657,7 +2657,7 @@ G_UpdateActiveBidsSums
 void G_UpdateActiveBidsSums( char* horse )
 {
     betSum_t bet_sum = GOaActiveBidsSums( horse );
-    trap_SendServerCommand( -1, va("updateBalance \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+    trap_SendServerCommand( -1, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
 }
 
 static void CheckEmpty ( void )
