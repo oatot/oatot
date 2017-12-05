@@ -1312,6 +1312,7 @@ restarts.
 ============
 */
 char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
+    bid_t       bids[MAX_ACTIVE_BIDS_NUMBER];
     char		*value;
 //	char		*areabits;
     gclient_t	*client;
@@ -1331,8 +1332,9 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
     value = Info_ValueForKey( userinfo, "cl_guid" );
     Q_strncpyz( client->pers.guid, value, sizeof( client->pers.guid ) );
 
-
-    if ( g_gameStage.integer != PLAYING ) {
+    if (!GOaIsNew(client->pers.guid)) {
+        client->sess.activeBidsNumber = GOaMyActiveBids(client->pers.guid, bids);
+    } else {
         client->sess.activeBidsNumber = 0;
     }
 

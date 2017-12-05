@@ -2078,7 +2078,6 @@ void Cmd_Unbet_f( gentity_t *ent ) {
             trap_SendServerCommand( ent-g_entities, "print \"^1Invalid bet ID.\n\"" );
             return;
         }
-        ent->client->sess.activeBidsNumber -= 1;
         // get bet ID
         if ( G_GetActiveBids( ent, active_bids ) == -1 ) {
             trap_SendServerCommand( ent-g_entities, "print \"^1ActiveBidsNumber is incorrect!\n\"" );
@@ -2086,6 +2085,7 @@ void Cmd_Unbet_f( gentity_t *ent ) {
         }
         bet_ID = active_bids[atoi( arg1 )].bet_ID;
         GOaDiscardBet(client->pers.guid, bet_ID);
+        ent->client->sess.activeBidsNumber -= 1;
 
         G_UpdateBalance( ent );
         G_UpdateActiveBids( ent );
