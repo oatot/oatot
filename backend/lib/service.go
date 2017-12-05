@@ -370,7 +370,7 @@ func (s *Server) OaMyPastBids(ctx context.Context, req *g.OaMyPastBidsRequest) (
 	res := &g.OaMyPastBidsResponse{
 		NextPage: &nextPage,
 	}
-	for bidID := range player.activeBids {
+	for bidID := range player.pastBids {
 		bid := s.bids[bidID]
 		res.Bids = append(res.Bids, bidToPb(bid, bidID))
 	}

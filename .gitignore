@@ -2,10 +2,14 @@
 *.o
 *.a
 *.so
+otservice
+otservice2
+openarena-server
 
 # Folders
 _obj
 _test
+build
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -25,3 +29,6 @@ _testmain.go
 
 # Astyle
 *.orig
+
+# Vim
+*.swp

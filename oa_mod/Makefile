@@ -8,8 +8,6 @@ COMPILE_PLATFORM=$(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]'|sed -e 
 
 COMPILE_ARCH=$(shell uname -m | sed -e s/i.86/x86/)
 
-LDFLAGS=-lprotobuf-c-rpc -lprotobuf -lprotobuf-c
-
 ifeq ($(COMPILE_PLATFORM),sunos)
   # Solaris uname and GNU uname differ
   COMPILE_ARCH=$(shell uname -p | sed -e s/i.86/x86/)
@@ -241,6 +239,7 @@ SDLDIR=$(MOUNT_DIR)/sdl
 ASMDIR=$(MOUNT_DIR)/asm
 SYSDIR=$(MOUNT_DIR)/sys
 GDIR=$(MOUNT_DIR)/game
+GODIR=$(MOUNT_DIR)/go-client
 CGDIR=$(MOUNT_DIR)/cgame
 BLIBDIR=$(MOUNT_DIR)/botlib
 NDIR=$(MOUNT_DIR)/null
@@ -1136,6 +1135,13 @@ $(Q)$(CC) $(BASEGAME_CFLAGS) -DQAGAME $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o 
 $(Q)$(DO_QVM_DEP)
 endef
 
+define DO_GOCLIENT_CC
+$(echo_cmd) "GOCLIENT_CC $<"
+go build -buildmode=c-shared -o $@ $<
+cp $(B)/$(BASEGAME)/go-client/goclient.h $(GDIR)/client.h
+mv $(B)/$(BASEGAME)/go-client/goclient.so $(B)/$(BASEGAME)/go-client/libgoclient.so
+endef
+
 define DO_CGAME_CC
 $(echo_cmd) "CGAME_CC $<"
 $(Q)$(CC) $(BASEGAME_CFLAGS) -DCGAME $(SHLIBCFLAGS) $(CFLAGS) $(OPTIMIZEVM) -o $@ -c $<
@@ -1293,9 +1299,7 @@ makedirs:
 	@if [ ! -d $(B)/$(BASEGAME) ];then $(MKDIR) $(B)/$(BASEGAME);fi
 	@if [ ! -d $(B)/$(BASEGAME)/cgame ];then $(MKDIR) $(B)/$(BASEGAME)/cgame;fi
 	@if [ ! -d $(B)/$(BASEGAME)/game ];then $(MKDIR) $(B)/$(BASEGAME)/game;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game/generated ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google;fi
-	@if [ ! -d $(B)/$(BASEGAME)/game/generated/google/protobuf ];then $(MKDIR) $(B)/$(BASEGAME)/game/generated/google/protobuf;fi
+	@if [ ! -d $(B)/$(BASEGAME)/go-client ];then $(MKDIR) $(B)/$(BASEGAME)/go-client;fi
 	@if [ ! -d $(B)/$(BASEGAME)/ui ];then $(MKDIR) $(B)/$(BASEGAME)/ui;fi
 	@if [ ! -d $(B)/$(BASEGAME)/qcommon ];then $(MKDIR) $(B)/$(BASEGAME)/qcommon;fi
 	@if [ ! -d $(B)/$(BASEGAME)/vm ];then $(MKDIR) $(B)/$(BASEGAME)/vm;fi
@@ -2380,6 +2384,9 @@ $(B)/$(MISSIONPACK)/vm/cgame.qvm: $(MPCGVMOBJ) $(CGDIR)/cg_syscalls.asm $(Q3ASM)
 ## BASEQ3 GAME
 #############################################################################
 
+GOOBJ = \
+  $(B)/$(BASEGAME)/go-client/goclient.so
+
 Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_chat.o \
@@ -2409,7 +2416,6 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_misc.o \
   $(B)/$(BASEGAME)/game/g_missile.o \
   $(B)/$(BASEGAME)/game/g_mover.o \
-  $(B)/$(BASEGAME)/game/g_oatot.o \
   $(B)/$(BASEGAME)/game/g_playerstore.o \
   $(B)/$(BASEGAME)/game/g_possession.o \
   $(B)/$(BASEGAME)/game/g_session.o \
@@ -2424,18 +2430,17 @@ Q3GOBJ_ = \
   $(B)/$(BASEGAME)/game/g_vote.o \
   $(B)/$(BASEGAME)/game/g_weapon.o \
   \
-  $(B)/$(BASEGAME)/game/generated/api.pb-c.o \
-  $(B)/$(BASEGAME)/game/generated/timestamp.pb-c.o \
-  \
   $(B)/$(BASEGAME)/qcommon/q_math.o \
   $(B)/$(BASEGAME)/qcommon/q_shared.o
 
 Q3GOBJ = $(Q3GOBJ_) $(B)/$(BASEGAME)/game/g_syscalls.o
 Q3GVMOBJ = $(Q3GOBJ_:%.o=%.asm)
 
-$(B)/$(BASEGAME)/qagame$(SHLIBNAME): $(Q3GOBJ)
+GOCLIENT_PATH=$(shell readlink -f $(B)/$(BASEGAME)/go-client/)
+
+$(B)/$(BASEGAME)/qagame$(SHLIBNAME): $(GOOBJ) $(Q3GOBJ)
 	$(echo_cmd) "LD $@"
-	$(Q)$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ)
+	$(Q)$(CC) $(CFLAGS) -L$(GOCLIENT_PATH) -lgoclient $(SHLIBLDFLAGS) -o $@ $(Q3GOBJ)
 
 $(B)/$(BASEGAME)/vm/qagame.qvm: $(Q3GVMOBJ) $(GDIR)/g_syscalls.asm $(Q3ASM)
 	$(echo_cmd) "Q3ASM $@"
@@ -2474,7 +2479,6 @@ MPGOBJ_ = \
   $(B)/$(MISSIONPACK)/game/g_misc.o \
   $(B)/$(MISSIONPACK)/game/g_missile.o \
   $(B)/$(MISSIONPACK)/game/g_mover.o \
-  $(B)/$(MISSIONPACK)/game/g_oatot.o \
   $(B)/$(MISSIONPACK)/game/g_playerstore.o \
   $(B)/$(MISSIONPACK)/game/g_possession.o \
   $(B)/$(MISSIONPACK)/game/g_session.o \
@@ -2488,9 +2492,6 @@ MPGOBJ_ = \
   $(B)/$(MISSIONPACK)/game/g_utils.o \
   $(B)/$(MISSIONPACK)/game/g_vote.o \
   $(B)/$(MISSIONPACK)/game/g_weapon.o \
-  \
-  $(B)/$(MISSIONPACK)/game/generated/api.pb-c.o \
-  $(B)/$(MISSIONPACK)/game/generated/timestamp.pb-c.o \
   \
   $(B)/$(MISSIONPACK)/qcommon/q_math.o \
   $(B)/$(MISSIONPACK)/qcommon/q_shared.o
@@ -2775,6 +2776,9 @@ $(B)/$(MISSIONPACK)/cgame/%.asm: $(CGDIR)/%.c $(Q3LCC)
 
 $(B)/$(BASEGAME)/game/%.o: $(GDIR)/%.c
 	$(DO_GAME_CC)
+
+$(B)/$(BASEGAME)/go-client/%.so: $(GODIR)/%.go
+	$(DO_GOCLIENT_CC)
 
 $(B)/$(BASEGAME)/game/%.asm: $(GDIR)/%.c $(Q3LCC)
 	$(DO_GAME_Q3LCC)

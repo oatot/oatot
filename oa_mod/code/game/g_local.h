@@ -25,9 +25,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef _G_LOCAL_H
 #define _G_LOCAL_H
 
-#include <protobuf-c-rpc/protobuf-c-rpc.h>
-#include "generated/api.pb-c.h"
-
 #include "../qcommon/q_shared.h"
 #include "bg_public.h"
 #include "g_public.h"
@@ -889,15 +886,6 @@ void QDECL G_Error( const char *fmt, ... ) __attribute__((noreturn,format (print
 void LogExit( const char *string );
 void CheckTeamVote( int team );
 
-// oatot: call some certain RPCs needed
-balance_t G_GetBalance( gentity_t* ent, char* currency );
-int G_GetActiveBids( gentity_t* ent, Oatot__Bid** bids );
-
-// oatot: draw updates
-void G_UpdateBalance( gentity_t* ent );
-void G_UpdateActiveBids( gentity_t* ent );
-void G_UpdateActiveBidsSums( char* horse );
-
 //
 // g_client.c
 //
@@ -998,7 +986,41 @@ void ClientLeaving(int clientNumber);
 
 // oatot
 qboolean checkForRestart( void );
-const char* qtimeToStr( qtime_t time );
+
+typedef struct bid_s bid_t;
+typedef struct fullbid_s fullbid_t;
+typedef struct currencySummary_s currencySummary_t;
+typedef struct bidsSummary_s bidsSummary_t;
+
+// structure for describing a bid (oatot)
+struct bid_s {
+    char horse[MAX_STRING_CHARS];
+    char currency[MAX_STRING_CHARS];
+    int amount;
+    char open_time[MAX_STRING_CHARS];
+    int bet_ID; // Unique bet ID.
+};
+
+// structure for describing a bid and its result (oatot)
+struct fullbid_s {
+    bid_t open_bid;
+    char close_time[MAX_STRING_CHARS];
+    char winner[MAX_STRING_CHARS];
+    int prize;
+};
+
+struct currencySummary_s {
+    int total_bet;
+    int total_prize;
+    int total_lost;
+    int bets_won;
+    int bets_lost;
+};
+
+struct bidsSummary_s {
+    currencySummary_t oac_summary;
+    currencySummary_t btc_summary;
+};
 
 #define MAX_MAPNAME 32
 #define MAPS_PER_PAGE 10
@@ -1029,6 +1051,15 @@ extern int allowedFraglimit(int limit);
 extern int VoteParseCustomVotes( void );
 extern t_customvote getCustomVote(char* votecommand);
 
+// oatot: call some certain RPCs needed
+balance_t G_GetBalance( gentity_t* ent, char* currency );
+int G_GetActiveBids( gentity_t* ent, bid_t* bids );
+
+// oatot: draw updates
+void G_UpdateBalance( gentity_t* ent );
+void G_UpdateActiveBids( gentity_t* ent );
+void G_UpdateActiveBidsSums( char* horse );
+
 // ai_main.c
 #define MAX_FILEPATH			144
 
@@ -1053,7 +1084,6 @@ void BotTestAAS(vec3_t origin);
 
 extern	level_locals_t	level;
 extern	gentity_t		g_entities[MAX_GENTITIES];
-extern  ProtobufCService *service;
 
 #define	FOFS(x) ((size_t)&(((gentity_t *)0)->x))
 

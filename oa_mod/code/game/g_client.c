@@ -21,13 +21,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 //
 
-#include <protobuf-c-rpc/protobuf-c-rpc-dispatch.h>
-#include <protobuf-c-rpc/protobuf-c-rpc.h>
-
-#include "generated/api.pb-c.h"
+#include "client.h"
 
 #include "g_local.h"
-#include "g_oatot.h"
 
 // g_client.c -- client functions that don't happen every frame
 
@@ -1316,6 +1312,7 @@ restarts.
 ============
 */
 char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
+    bid_t       bids[MAX_ACTIVE_BIDS_NUMBER];
     char		*value;
 //	char		*areabits;
     gclient_t	*client;
@@ -1335,8 +1332,9 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
     value = Info_ValueForKey( userinfo, "cl_guid" );
     Q_strncpyz( client->pers.guid, value, sizeof( client->pers.guid ) );
 
-
-    if ( g_gameStage.integer != PLAYING ) {
+    if (!GOaIsNew(client->pers.guid)) {
+        client->sess.activeBidsNumber = GOaMyActiveBids(client->pers.guid, bids);
+    } else {
         client->sess.activeBidsNumber = 0;
     }
 
@@ -1571,26 +1569,9 @@ void ClientBegin( int clientNum ) {
     // locate ent at a spawn point
     ClientSpawn( ent );
 
-    Oatot__OaIsNewRequest is_new_arg = OATOT__OA_IS_NEW_REQUEST__INIT;
-    Oatot__OaRegisterRequest register_arg = OATOT__OA_REGISTER_REQUEST__INIT;
-    Oatot__OaAuth oa_auth = OATOT__OA_AUTH__INIT;
-    oa_auth.cl_guid = client->pers.guid;
-    is_new_arg.oa_auth = &oa_auth;
-    register_arg.oa_auth = &oa_auth;
-    RPC_result result;
-    result.done = qfalse;
-    oatot__oatot__oa_is_new( service, &is_new_arg, G_oatot_IsNew_Closure, &result );
-    waitForRPC( &(result.done) );
-    if ( !checkRPCResponse( result.result ) ) {
-        G_LogPrintf( "WARNING: oa_is_new RPC failed!\n" );
-        return;
+    if (GOaIsNew(client->pers.guid)) {
+        GOaRegister(client->pers.guid);
     }
-    if ( ((Oatot__OaIsNewResponse*) (result.result))->result ) {
-        result.done = qfalse;
-        oatot__oatot__oa_register( service, &register_arg, G_oatot_Register_Closure, &result );
-        waitForRPC( &(result.done) );
-    }
-
     if( ( client->sess.sessionTeam != TEAM_SPECTATOR ) &&
             ( ( !( client->isEliminated ) /*&&
 		( ( !client->ps.pm_type ) == PM_SPECTATOR ) */ ) || //Sago: Yes, it made no sense
@@ -2150,15 +2131,7 @@ void ClientDisconnect( int clientNum ) {
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
             // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-            RPC_result result;
-            result.done = qfalse;
-            Oatot__OaCloseBidsByIncidentRequest close_bids_by_incident_arg = OATOT__OA_CLOSE_BIDS_BY_INCIDENT_REQUEST__INIT;
-            oatot__oatot__oa_close_bids_by_incident( service, &close_bids_by_incident_arg, G_oatot_CloseBidsByIncident_Closure, &result );
-            waitForRPC( &(result.done) );
-            if ( !checkRPCResponse( result.result ) ) {
-                G_LogPrintf( "WARNING: oa_close_bids_by_incident RPC failed!\n" );
-                return;
-            }
+            GOaCloseBidsByIncident();
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
     }
