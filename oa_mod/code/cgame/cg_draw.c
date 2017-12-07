@@ -2974,7 +2974,11 @@ static void CG_DrawGameStageInfo(void) {
 CG_DrawBalance
 =================
  */
-void CG_DrawBalance(void) {
+void CG_DrawBalance( void ) {
+    char* oac_s = va( "%d %s\n", cgs.clientinfo[cg.clientNum].oac_balance.free_money, "OAC" );
+    char* btc_s = va( "%d %s\n", cgs.clientinfo[cg.clientNum].btc_balance.free_money, "BTC" );
+    CG_DrawBigString(400, 240, oac_s, 1.0F);
+    CG_DrawBigString(400, 240, btc_s, 1.0F);
 }
 
 /*
