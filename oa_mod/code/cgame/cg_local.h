@@ -347,6 +347,7 @@ typedef struct {
     balance_t       oac_balance;
     balance_t       btc_balance;
     activeBid_t     activeBids[MAX_ACTIVE_BIDS_NUMBER];
+    int             bids_n;
 
     qboolean		infoValid;
 
