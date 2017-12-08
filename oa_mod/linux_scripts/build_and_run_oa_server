@@ -23,9 +23,13 @@ mkdir -p ~/.openarena/$MODNAME
 mkdir -p ../build/release-linux-$ARCH/oatot/texts
 cp ../text/help_message*.txt ../build/release-linux-$ARCH/oatot/texts
 
+#Copy images from repo to build dir
+mkdir -p ../build/release-linux-$ARCH/oatot/images
+cp ../images/*.jpg ../build/release-linux-$ARCH/oatot/images
+
 pushd ..
 #Build, pak it and start
-make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts && $BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port 27963 +exec server.cfg
+make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images && $BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port 27963 +exec server.cfg
 
 
 
