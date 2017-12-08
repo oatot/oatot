@@ -752,6 +752,10 @@ typedef struct {
 // Other media that can be tied to clients, weapons, or items are
 // stored in the clientInfo_t, itemInfo_t, weaponInfo_t, and powerupInfo_t
 typedef struct {
+    // oatot
+    qhandle_t   btcShader;
+    qhandle_t   oacShader;
+
     qhandle_t	charsetShader;
     qhandle_t	charsetProp;
     qhandle_t	charsetPropGlow;
