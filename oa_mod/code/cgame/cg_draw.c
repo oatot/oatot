@@ -2975,10 +2975,13 @@ CG_DrawBalance
 =================
  */
 void CG_DrawBalance( void ) {
-    char* oac_s = va( "%d %s\n", cgs.clientinfo[cg.clientNum].oac_balance.free_money, "OAC" );
-    char* btc_s = va( "%d %s\n", cgs.clientinfo[cg.clientNum].btc_balance.free_money, "BTC" );
-    CG_DrawBigString(400, 240, oac_s, 1.0F);
-    //CG_DrawBigString(400, 240, btc_s, 1.0F);
+    char* oac_s = va( "%d\n", cgs.clientinfo[cg.clientNum].oac_balance.free_money );
+    char* btc_s = va( "%d\n", cgs.clientinfo[cg.clientNum].btc_balance.free_money );
+    CG_DrawBigString(530, 180, "^2Your balance:", 1.0F);
+    CG_DrawBigString(530, 200, oac_s, 1.0F);
+    CG_DrawPic( 590, 200, ICON_SIZE * 2, ICON_SIZE * 2, cgs.media.oacShader );
+    CG_DrawBigString(530, 220, btc_s, 1.0F);
+    CG_DrawPic( 590, 220, ICON_SIZE * 2, ICON_SIZE * 2, cgs.media.btcShader );
 }
 
 /*
