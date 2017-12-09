@@ -25,7 +25,7 @@ cp ../text/help_message*.txt ../build/release-linux-$ARCH/oatot/texts
 
 #Copy images from repo to build dir
 mkdir -p ../build/release-linux-$ARCH/oatot/images
-cp ../images/*.jpg ../build/release-linux-$ARCH/oatot/images
+cp ../images/*.png ../build/release-linux-$ARCH/oatot/images
 
 pushd ..
 #Build, pak it and start
