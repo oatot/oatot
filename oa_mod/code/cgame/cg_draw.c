@@ -2975,13 +2975,13 @@ CG_DrawBalance
 =================
  */
 void CG_DrawBalance( void ) {
-    char* oac_s = va( "%d\n", cgs.clientinfo[cg.clientNum].oac_balance.free_money );
-    char* btc_s = va( "%d\n", cgs.clientinfo[cg.clientNum].btc_balance.free_money );
-    CG_DrawBigString(530, 180, "^2Your balance:", 1.0F);
-    CG_DrawBigString(530, 200, oac_s, 1.0F);
-    CG_DrawPic( 590, 200, ICON_SIZE * 2, ICON_SIZE * 2, cgs.media.oacShader );
-    CG_DrawBigString(530, 220, btc_s, 1.0F);
-    CG_DrawPic( 590, 220, ICON_SIZE * 2, ICON_SIZE * 2, cgs.media.btcShader );
+    char* oac_s = va( "%d", cgs.clientinfo[cg.clientNum].oac_balance.free_money );
+    char* btc_s = va( "%d", cgs.clientinfo[cg.clientNum].btc_balance.free_money );
+    CG_DrawBigString( 480, 170, "^2Balance", 1.0F );
+    CG_DrawBigString( 480, 220, oac_s, 1.0F );
+    CG_DrawPic( 585, 205, ICON_SIZE, ICON_SIZE, cgs.media.oacShader );
+    CG_DrawBigString( 480, 270, btc_s, 1.0F );
+    CG_DrawPic( 585, 255, ICON_SIZE, ICON_SIZE, cgs.media.btcShader );
 }
 
 /*
@@ -2989,7 +2989,8 @@ void CG_DrawBalance( void ) {
 CG_DrawActiveBidsSums
 =================
  */
-void CG_DrawActiveBidsSums(void) {
+void CG_DrawActiveBidsSums( void ) {
+    //CG_DrawPic( x, y, w, h, cgs.media.deferShader );
 }
 
 /*
@@ -2997,7 +2998,7 @@ void CG_DrawActiveBidsSums(void) {
 CG_DrawActiveBids
 =================
  */
-void CG_DrawActiveBids(void) {
+void CG_DrawActiveBids( void ) {
 }
 
 /*
