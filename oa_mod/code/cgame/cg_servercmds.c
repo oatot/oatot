@@ -87,8 +87,8 @@ static void CG_ParseActiveBids( void ) {
     int bids_n = atoi(CG_Argv(2));
     int i;
     for (i = 0; i < bids_n; i++) {
-        cgs.clientinfo[clientNum].activeBids[i].horse = CG_Argv(i * 3 + 3);
-        cgs.clientinfo[clientNum].activeBids[i].currency = CG_Argv(i * 3 + 4);
+        strcpy(cgs.clientinfo[clientNum].activeBids[i].horse, CG_Argv(i * 3 + 3));
+        strcpy(cgs.clientinfo[clientNum].activeBids[i].currency, CG_Argv(i * 3 + 4));
         cgs.clientinfo[clientNum].activeBids[i].amount = atoi(CG_Argv(i * 3 + 5));
     }
     cgs.clientinfo[clientNum].bids_n = bids_n;

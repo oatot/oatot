@@ -330,9 +330,9 @@ typedef struct {
 } score_t;
 
 typedef struct {
-    const char*     horse;
-    const char*     currency;
-    int             amount;
+    char     horse[MAX_STRING_CHARS];
+    char     currency[MAX_STRING_CHARS];
+    int      amount;
 } activeBid_t;
 
 // each client has an associated clientInfo_t

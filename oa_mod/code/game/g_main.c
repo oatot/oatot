@@ -2641,11 +2641,11 @@ void G_UpdateActiveBids( gentity_t* ent )
     bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
     int n_bids = G_GetActiveBids( ent, bids );
     cmd_str[0] = 0;
-    strcat( cmd_str, va("updateActiveBids \"%d %d ", ent->s.number, n_bids) );
+    strcat( cmd_str, va("updateActiveBids \%d %d ", ent->s.number, n_bids) );
     for (i = 0; i < n_bids; i++) {
         strcat( cmd_str, va("%s %s %d ", bids[i].horse, bids[i].currency, bids[i].amount) );
     }
-    strcat( cmd_str, "\n\"" );
+    strcat( cmd_str, "\"" );
     trap_SendServerCommand( -1, cmd_str );
 }
 
