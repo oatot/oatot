@@ -2984,9 +2984,9 @@ CG_DrawBid
  */
 static void CG_DrawBid( int x, int y, activeBid_t bid ) {
     if ( !strcmp( bid.horse, "red" ) ) {
-        CG_DrawPic( x, y + 10, BIGCHAR_HEIGHT + 8, BIGCHAR_HEIGHT + 8, cgs.media.redFlagShader[cgs.redflag] );
+        CG_DrawPic( x, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.redFlagShader[cgs.redflag] );
     } else if ( !strcmp( bid.horse, "blue" ) ) {
-        CG_DrawPic( x, y + 10, BIGCHAR_HEIGHT + 8, BIGCHAR_HEIGHT + 8, cgs.media.blueFlagShader[cgs.blueflag] );
+        CG_DrawPic( x, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.blueFlagShader[cgs.blueflag] );
     }
     CG_DrawValue( x + ICON_SIZE + VALUE_SPACE_LEN, y, bid.amount, bid.currency );
 }
@@ -3040,10 +3040,10 @@ CG_DrawActiveBids
  */
 void CG_DrawActiveBids( void ) {
     int i = 0;
-    int init_y = 210;
+    int init_y = 190;
     for ( i = 0; i < cgs.clientinfo[cg.clientNum].bids_n; i++ ) {
-        CG_DrawBigString( 0, init_y + 35 * i, va( "%d", i ), 1.0F );
-        CG_DrawBid( 10, init_y + 35 * i, cgs.clientinfo[cg.clientNum].activeBids[i] );
+        CG_DrawBigString( 0, init_y + 60 * i, va( "%d", i ), 1.0F );
+        CG_DrawBid( 30, init_y + 60 * i, cgs.clientinfo[cg.clientNum].activeBids[i] );
     }
 }
 
