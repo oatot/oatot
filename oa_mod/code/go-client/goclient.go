@@ -32,6 +32,7 @@ func StringToC(str string, cStr *C.char) {
 	for i := 0; i < size; i++ {
 		slice[i] = C.char(str[i])
 	}
+	slice[size] = C.char(byte('\x00'))
 }
 
 func CBidFromGo(in *g.Bid, out *C.bid_t) {
