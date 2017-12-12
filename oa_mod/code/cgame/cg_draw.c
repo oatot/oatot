@@ -2951,21 +2951,58 @@ static void CG_DrawCrosshairNames(void) {
     trap_R_SetColor(NULL);
 }
 
+// space between value and currency coin image
+#define VALUE_SPACE_LEN 20
+
+int GetValueLength( int amount) {
+    int val_len = strlen( va( "%d", amount) ) * BIGCHAR_WIDTH;
+    int coin_len = ICON_SIZE;
+    return val_len + VALUE_SPACE_LEN + coin_len;
+}
 
 //==============================================================================
+
+/*
+=================
+CG_DrawValue
+=================
+ */
+static void CG_DrawValue( int x, int y, int amount, const char* currency ) {
+    char* val_str = va( "%d", amount );
+    CG_DrawBigString( x, y, val_str, 1.0F );
+    if ( !strcmp( currency, "OAC") ) {
+        CG_DrawPic( x + strlen(val_str) * BIGCHAR_WIDTH + VALUE_SPACE_LEN, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.oacShader );
+    } else if ( !strcmp( currency, "BTC" ) ) {
+        CG_DrawPic( x + strlen(val_str) * BIGCHAR_WIDTH + VALUE_SPACE_LEN, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.btcShader );
+    }
+}
+
+/*
+=================
+CG_DrawBid
+=================
+ */
+static void CG_DrawBid( int x, int y, activeBid_t bid ) {
+    if ( !strcmp( bid.horse, "red" ) ) {
+        CG_DrawPic( x, y + 10, BIGCHAR_HEIGHT + 8, BIGCHAR_HEIGHT + 8, cgs.media.redFlagShader[cgs.redflag] );
+    } else if ( !strcmp( bid.horse, "blue" ) ) {
+        CG_DrawPic( x, y + 10, BIGCHAR_HEIGHT + 8, BIGCHAR_HEIGHT + 8, cgs.media.blueFlagShader[cgs.blueflag] );
+    }
+    CG_DrawValue( x + ICON_SIZE + VALUE_SPACE_LEN, y, bid.amount, bid.currency );
+}
 
 /*
 =================
 CG_DrawGameStageInfo
 =================
  */
-static void CG_DrawGameStageInfo(void) {
+static void CG_DrawGameStageInfo( void ) {
     if ( cgs.gameStage == FORMING_TEAMS ) {
-        CG_DrawBigString(320 - 13 * 8, 40, "^2FORMING TEAMS", 1.0F);
+        CG_DrawBigString(320 - 7 * BIGCHAR_WIDTH, 40, "^2FORMING TEAMS", 1.0F);
     } else if ( cgs.gameStage == MAKING_BETS ) {
-        CG_DrawBigString(320 - 11 * 8, 40, "^1MAKING BETS", 1.0F);
+        CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 40, "^1MAKING BETS", 1.0F);
     } else if ( cgs.gameStage == PLAYING) {
-        CG_DrawBigString(320 - 7 * 8, 40, "^3PLAYING", 1.0F);
+        CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 40, "^3PLAYING", 1.0F);
     }
 }
 
@@ -2975,13 +3012,11 @@ CG_DrawBalance
 =================
  */
 void CG_DrawBalance( void ) {
-    char* oac_s = va( "%d", cgs.clientinfo[cg.clientNum].oac_balance.free_money );
-    char* btc_s = va( "%d", cgs.clientinfo[cg.clientNum].btc_balance.free_money );
-    CG_DrawBigString( 480, 170, "^2Balance", 1.0F );
-    CG_DrawBigString( 480, 220, oac_s, 1.0F );
-    CG_DrawPic( 585, 205, ICON_SIZE, ICON_SIZE, cgs.media.oacShader );
-    CG_DrawBigString( 480, 270, btc_s, 1.0F );
-    CG_DrawPic( 585, 255, ICON_SIZE, ICON_SIZE, cgs.media.btcShader );
+    int oac_val = cgs.clientinfo[cg.clientNum].oac_balance.free_money;
+    int btc_val = cgs.clientinfo[cg.clientNum].btc_balance.free_money;
+    CG_DrawBigString( 640 - 7 * BIGCHAR_WIDTH, 170, "^2Balance", 1.0F );
+    CG_DrawValue( 640 - GetValueLength( oac_val ), 220, oac_val, "OAC" );
+    CG_DrawValue( 640 - GetValueLength( btc_val ), 270, btc_val, "BTC" );
 }
 
 /*
@@ -2990,7 +3025,12 @@ CG_DrawActiveBidsSums
 =================
  */
 void CG_DrawActiveBidsSums( void ) {
-    //CG_DrawPic( x, y, w, h, cgs.media.deferShader );
+    int red_amount = cgs.red_bids_sum.oac_amount;
+    int blue_amount = cgs.blue_bids_sum.oac_amount;
+    CG_DrawBigString( 640 - 7 * BIGCHAR_WIDTH, 40, "^4On Blue", 1.0F );
+    CG_DrawBigString( 0, 40, "^1On Red", 1.0F );
+    CG_DrawValue( 640 - GetValueLength( blue_amount ), 70, blue_amount, "OAC" );
+    CG_DrawValue( 0, 70, red_amount, "OAC" );
 }
 
 /*
@@ -2999,6 +3039,12 @@ CG_DrawActiveBids
 =================
  */
 void CG_DrawActiveBids( void ) {
+    int i = 0;
+    int init_y = 210;
+    for ( i = 0; i < cgs.clientinfo[cg.clientNum].bids_n; i++ ) {
+        CG_DrawBigString( 0, init_y + 35 * i, va( "%d", i ), 1.0F );
+        CG_DrawBid( 10, init_y + 35 * i, cgs.clientinfo[cg.clientNum].activeBids[i] );
+    }
 }
 
 /*
@@ -3007,12 +3053,6 @@ CG_DrawSpectator
 =================
  */
 static void CG_DrawSpectator(void) {
-    CG_DrawBigString(320 - 9 * 8, 440, "SPECTATOR", 1.0F);
-    if (cgs.gametype == GT_TOURNAMENT) {
-        CG_DrawBigString(320 - 15 * 8, 460, "waiting to play", 1.0F);
-    } else if (cgs.gametype >= GT_TEAM && cgs.ffa_gt != 1) {
-        CG_DrawBigString(320 - 39 * 8, 460, "press ESC and use the JOIN menu to play", 1.0F);
-    }
 }
 
 /*
