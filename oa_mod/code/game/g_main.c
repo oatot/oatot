@@ -2076,7 +2076,9 @@ void transferPrizeMoney( void ) {
     for ( i = 0; i <  g_maxclients.integer; i++ ) {
         cl = level.clients + i;
         if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
-            GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+            if ( g_gameStage.integer == PLAYING ) {
+                GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+            }
         }
     }
 }
