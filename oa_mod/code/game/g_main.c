@@ -2607,11 +2607,15 @@ G_GetActiveBids
 int G_GetActiveBids( gentity_t* ent, bid_t* bids )
 {
     gclient_t* client = ent->client;
+    int i = 0;
     int bids_n = GOaMyActiveBids(client->pers.guid, bids);
     if ( bids_n != client->sess.activeBidsNumber ) {
         return -1;
     } else if (bids_n < 0 || bids_n > MAX_ACTIVE_BIDS_NUMBER) {
         return -1;
+    }
+    for ( i = 0; i < bids_n; i++ ) {
+        client->pers.activeBidsIds[i] = bids[i].bet_ID;
     }
     return bids_n;
 }
