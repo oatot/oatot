@@ -3028,7 +3028,16 @@ CG_DrawBalance
 void CG_DrawBalance( void ) {
     int oac_val = cgs.clientinfo[cg.clientNum].oac_balance.free_money;
     int btc_val = cgs.clientinfo[cg.clientNum].btc_balance.free_money;
-    CG_DrawBigString( 640 - 7 * BIGCHAR_WIDTH, 170, "^2Balance", 1.0F );
+    int max_val = oac_val;
+    int string_pos = 0;
+    if ( btc_val > max_val ) {
+        max_val = btc_val;
+    }
+    string_pos = 640 - ( GetValueLength( max_val ) / 2 ) - 3 * BIGCHAR_WIDTH;
+    if ( ( string_pos + 7 * BIGCHAR_WIDTH ) > 640 ) {
+        string_pos = 640 - 7 * BIGCHAR_WIDTH;
+    }
+    CG_DrawBigString( string_pos, 170, "^2Balance", 1.0F );
     CG_DrawValue( 640 - GetValueLength( oac_val ), 220, oac_val, -1, "OAC" );
     CG_DrawValue( 640 - GetValueLength( btc_val ), 270, btc_val, -1, "BTC" );
 }
@@ -3041,8 +3050,16 @@ CG_DrawActiveBidsSums
 void CG_DrawActiveBidsSums( void ) {
     int red_amount = cgs.red_bids_sum.oac_amount;
     int blue_amount = cgs.blue_bids_sum.oac_amount;
-    CG_DrawBigString( 640 - 7 * BIGCHAR_WIDTH, 40, "^4On Blue", 1.0F );
-    CG_DrawBigString( 0, 40, "^1On Red", 1.0F );
+    int red_str_pos = ( GetValueLength( red_amount ) / 2 ) - 3 * BIGCHAR_WIDTH;
+    int blue_str_pos = 640 - ( GetValueLength( blue_amount ) / 2 ) - 3 * BIGCHAR_WIDTH;
+    if ( red_str_pos < 0 ) {
+        red_str_pos = 0;
+    }
+    if ( ( blue_str_pos + 7 * BIGCHAR_WIDTH ) > 640 ) {
+        blue_str_pos = 640 - 7 * BIGCHAR_WIDTH;
+    }
+    CG_DrawBigString( blue_str_pos, 40, "^4On Blue", 1.0F );
+    CG_DrawBigString( red_str_pos, 40, "^1On Red", 1.0F );
     CG_DrawValue( 640 - GetValueLength( blue_amount ), 70, blue_amount, -1, "OAC" );
     CG_DrawValue( 0, 70, red_amount, -1, "OAC" );
 }
