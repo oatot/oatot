@@ -2951,6 +2951,17 @@ static void CG_DrawCrosshairNames(void) {
     trap_R_SetColor(NULL);
 }
 
+float* GetGameStageColor( void ) {
+    if ( cgs.gameStage == FORMING_TEAMS ) {
+        return colorGreen;
+    } else if ( cgs.gameStage == MAKING_BETS ) {
+        return colorRed;
+    } else if ( cgs.gameStage == PLAYING) {
+        return colorYellow;
+    }
+    return NULL;
+}
+
 // space between value and currency coin image
 #define VALUE_SPACE_LEN 15
 
@@ -3022,6 +3033,15 @@ static void CG_DrawGameStageInfo( void ) {
 
 /*
 =================
+CG_DrawBalanceBar
+=================
+ */
+void CG_DrawBalanceBar( int left_side ) {
+    CG_DrawRect( left_side, 160, 640 - left_side, 125, 2, GetGameStageColor() );
+}
+
+/*
+=================
 CG_DrawBalance
 =================
  */
@@ -3030,6 +3050,9 @@ void CG_DrawBalance( void ) {
     int btc_val = cgs.clientinfo[cg.clientNum].btc_balance.free_money;
     int max_val = oac_val;
     int string_pos = 0;
+    int oac_pos = 640 - GetValueLength( oac_val );
+    int btc_pos = 640 - GetValueLength( btc_val );
+    int left_side = 0;
     if ( btc_val > max_val ) {
         max_val = btc_val;
     }
@@ -3037,9 +3060,17 @@ void CG_DrawBalance( void ) {
     if ( ( string_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
         string_pos = 640 - 7 * SMALLCHAR_WIDTH;
     }
-    CG_DrawSmallString( string_pos, 170, "^2Balance", 1.0F );
-    CG_DrawValue( 640 - GetValueLength( oac_val ), 220, oac_val, -1, "OAC" );
-    CG_DrawValue( 640 - GetValueLength( btc_val ), 270, btc_val, -1, "BTC" );
+    left_side = string_pos - 5;
+    if ( oac_pos < left_side ) {
+        left_side = oac_pos - 5;
+    }
+    if ( btc_pos < left_side ) {
+        left_side = btc_pos - 5;
+    }
+    CG_DrawBalanceBar( left_side );
+    CG_DrawSmallStringColor( string_pos, 170, "^2Balance", GetGameStageColor() );
+    CG_DrawValue( oac_pos, 210, oac_val, -1, "OAC" );
+    CG_DrawValue( btc_pos, 255, btc_val, -1, "BTC" );
 }
 
 /*
@@ -3073,9 +3104,14 @@ void CG_DrawActiveBids( void ) {
     int i = 0;
     int init_y = 190;
     int shift = GetMaxAmountLength();
-    for ( i = 0; i < cgs.clientinfo[cg.clientNum].bids_n; i++ ) {
-        CG_DrawSmallString( 0, init_y + 60 * i, va( "%d", i ), 1.0F );
-        CG_DrawBid( 20, init_y + 60 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
+    int max_len = 20 + shift + CHAR_WIDTH * 2 + VALUE_SPACE_LEN * 2;
+    int bids_n = cgs.clientinfo[cg.clientNum].bids_n;
+    for ( i = 0; i < bids_n; i++ ) {
+        if ( bids_n > 1 ) {
+            CG_DrawRect( 0, init_y + 30 * i - 10, max_len, 30, 2, GetGameStageColor() );
+        }
+        CG_DrawSmallString( 0, init_y + 30 * i, va( "^2%d", i ), 1.0F );
+        CG_DrawBid( 20, init_y + 30 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
     }
 }
 
