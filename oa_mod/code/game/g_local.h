@@ -81,6 +81,44 @@ extern int enableq;
 typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
 
+// oatot
+qboolean checkForRestart( void );
+
+typedef struct bid_s bid_t;
+typedef struct fullbid_s fullbid_t;
+typedef struct currencySummary_s currencySummary_t;
+typedef struct bidsSummary_s bidsSummary_t;
+
+// structure for describing a bid (oatot)
+struct bid_s {
+    char horse[MAX_STRING_CHARS];
+    char currency[MAX_STRING_CHARS];
+    int amount;
+    char open_time[MAX_STRING_CHARS];
+    int bet_ID; // Unique bet ID.
+};
+
+// structure for describing a bid and its result (oatot)
+struct fullbid_s {
+    bid_t open_bid;
+    char close_time[MAX_STRING_CHARS];
+    char winner[MAX_STRING_CHARS];
+    int prize;
+};
+
+struct currencySummary_s {
+    int total_bet;
+    int total_prize;
+    int total_lost;
+    int bets_won;
+    int bets_lost;
+};
+
+struct bidsSummary_s {
+    currencySummary_t oac_summary;
+    currencySummary_t btc_summary;
+};
+
 struct gentity_s {
     entityState_t	s;				// communicated by server to clients
     entityShared_t	r;				// shared by both the server system and game
@@ -323,6 +361,7 @@ typedef struct {
     qboolean    finishedBetting;
     qboolean    nextPageUsed; // shows if next_page is initialized
     char        next_page[MAX_STRING_CHARS]; // next page ID for pastBids()
+    int         activeBidsIds[MAX_ACTIVE_BIDS_NUMBER];
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1
@@ -983,44 +1022,6 @@ int allowedVote(const char *commandStr);
 void CheckVote( void );
 void CountVotes( void );
 void ClientLeaving(int clientNumber);
-
-// oatot
-qboolean checkForRestart( void );
-
-typedef struct bid_s bid_t;
-typedef struct fullbid_s fullbid_t;
-typedef struct currencySummary_s currencySummary_t;
-typedef struct bidsSummary_s bidsSummary_t;
-
-// structure for describing a bid (oatot)
-struct bid_s {
-    char horse[MAX_STRING_CHARS];
-    char currency[MAX_STRING_CHARS];
-    int amount;
-    char open_time[MAX_STRING_CHARS];
-    int bet_ID; // Unique bet ID.
-};
-
-// structure for describing a bid and its result (oatot)
-struct fullbid_s {
-    bid_t open_bid;
-    char close_time[MAX_STRING_CHARS];
-    char winner[MAX_STRING_CHARS];
-    int prize;
-};
-
-struct currencySummary_s {
-    int total_bet;
-    int total_prize;
-    int total_lost;
-    int bets_won;
-    int bets_lost;
-};
-
-struct bidsSummary_s {
-    currencySummary_t oac_summary;
-    currencySummary_t btc_summary;
-};
 
 #define MAX_MAPNAME 32
 #define MAPS_PER_PAGE 10

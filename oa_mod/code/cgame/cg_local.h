@@ -330,9 +330,9 @@ typedef struct {
 } score_t;
 
 typedef struct {
-    const char*     horse;
-    const char*     currency;
-    int             amount;
+    char     horse[MAX_STRING_CHARS];
+    char     currency[MAX_STRING_CHARS];
+    int      amount;
 } activeBid_t;
 
 // each client has an associated clientInfo_t
@@ -347,6 +347,7 @@ typedef struct {
     balance_t       oac_balance;
     balance_t       btc_balance;
     activeBid_t     activeBids[MAX_ACTIVE_BIDS_NUMBER];
+    int             bids_n;
 
     qboolean		infoValid;
 
@@ -751,6 +752,10 @@ typedef struct {
 // Other media that can be tied to clients, weapons, or items are
 // stored in the clientInfo_t, itemInfo_t, weaponInfo_t, and powerupInfo_t
 typedef struct {
+    // oatot
+    qhandle_t   btcShader;
+    qhandle_t   oacShader;
+
     qhandle_t	charsetShader;
     qhandle_t	charsetProp;
     qhandle_t	charsetPropGlow;
@@ -1589,6 +1594,8 @@ extern  char teamChat1[256];
 extern  char teamChat2[256];
 
 // oatot
+void CG_DrawOatotStuff( void );
+void CG_DrawBalanceBar( int left_side );
 void CG_DrawBalance( void );
 void CG_DrawActiveBids( void );
 void CG_DrawActiveBidsSums( void );

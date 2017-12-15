@@ -2076,7 +2076,9 @@ void transferPrizeMoney( void ) {
     for ( i = 0; i <  g_maxclients.integer; i++ ) {
         cl = level.clients + i;
         if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
-            GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+            if ( g_gameStage.integer == PLAYING ) {
+                GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+            }
         }
     }
 }
@@ -2133,7 +2135,7 @@ void CheckExitRules( void )
         return;
     }
 
-    if ( g_timelimit.integer > 0 && !level.warmupTime ) {
+    if ( g_timelimit.integer > 0 && !level.warmupTime && ( g_gameStage.integer == PLAYING ) ) {
         if ( (level.time - level.startTime)/60000 >= g_timelimit.integer ) {
             if ( level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE] ) {
                 transferPrizeMoney();
@@ -2607,11 +2609,15 @@ G_GetActiveBids
 int G_GetActiveBids( gentity_t* ent, bid_t* bids )
 {
     gclient_t* client = ent->client;
+    int i = 0;
     int bids_n = GOaMyActiveBids(client->pers.guid, bids);
     if ( bids_n != client->sess.activeBidsNumber ) {
         return -1;
     } else if (bids_n < 0 || bids_n > MAX_ACTIVE_BIDS_NUMBER) {
         return -1;
+    }
+    for ( i = 0; i < bids_n; i++ ) {
+        client->pers.activeBidsIds[i] = bids[i].bet_ID;
     }
     return bids_n;
 }
@@ -2641,11 +2647,11 @@ void G_UpdateActiveBids( gentity_t* ent )
     bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
     int n_bids = G_GetActiveBids( ent, bids );
     cmd_str[0] = 0;
-    strcat( cmd_str, va("updateActiveBids \"%d %d ", ent->s.number, n_bids) );
+    strcat( cmd_str, va("updateActiveBids \%d %d ", ent->s.number, n_bids) );
     for (i = 0; i < n_bids; i++) {
         strcat( cmd_str, va("%s %s %d ", bids[i].horse, bids[i].currency, bids[i].amount) );
     }
-    strcat( cmd_str, "\n\"" );
+    strcat( cmd_str, "\"" );
     trap_SendServerCommand( -1, cmd_str );
 }
 

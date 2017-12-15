@@ -2951,22 +2951,93 @@ static void CG_DrawCrosshairNames(void) {
     trap_R_SetColor(NULL);
 }
 
+float* GetGameStageColor( void ) {
+    if ( cgs.gameStage == FORMING_TEAMS ) {
+        return colorGreen;
+    } else if ( cgs.gameStage == MAKING_BETS ) {
+        return colorRed;
+    } else if ( cgs.gameStage == PLAYING) {
+        return colorYellow;
+    }
+    return NULL;
+}
+
+// space between value and currency coin image
+#define VALUE_SPACE_LEN 15
+
+int GetValueLength( int amount) {
+    int val_len = strlen( va( "%d", amount) ) * SMALLCHAR_WIDTH;
+    int coin_len = CHAR_WIDTH;
+    return val_len + VALUE_SPACE_LEN + coin_len;
+}
+
+int GetMaxAmountLength( void ) {
+    int max_len = 0, len = 0, i = 0;
+    for ( i = 0; i < cgs.clientinfo[cg.clientNum].bids_n; i++ ) {
+        len = strlen( va( "%d", cgs.clientinfo[cg.clientNum].activeBids[i].amount ) );
+        if ( len > max_len ) {
+            max_len = len;
+        }
+    }
+    return max_len * SMALLCHAR_WIDTH;
+}
 
 //==============================================================================
+
+/*
+=================
+CG_DrawValue
+=================
+ */
+static void CG_DrawValue( int x, int y, int amount, int shift, const char* currency ) {
+    char* val_str = va( "%d", amount );
+    CG_DrawSmallString( x, y, val_str, 1.0F );
+    if ( shift == -1 ) {
+        shift = strlen(val_str) * SMALLCHAR_WIDTH;
+    }
+    if ( !strcmp( currency, "OAC") ) {
+        CG_DrawPic( x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.oacShader );
+    } else if ( !strcmp( currency, "BTC" ) ) {
+        CG_DrawPic( x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.btcShader );
+    }
+}
+
+/*
+=================
+CG_DrawBid
+=================
+ */
+static void CG_DrawBid( int x, int y, int shift, activeBid_t bid ) {
+    if ( !strcmp( bid.horse, "red" ) ) {
+        CG_DrawPic( x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.redFlagShader[cgs.redflag] );
+    } else if ( !strcmp( bid.horse, "blue" ) ) {
+        CG_DrawPic( x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.blueFlagShader[cgs.blueflag] );
+    }
+    CG_DrawValue( x + CHAR_WIDTH + VALUE_SPACE_LEN, y, bid.amount, shift, bid.currency );
+}
 
 /*
 =================
 CG_DrawGameStageInfo
 =================
  */
-static void CG_DrawGameStageInfo(void) {
+static void CG_DrawGameStageInfo( void ) {
     if ( cgs.gameStage == FORMING_TEAMS ) {
-        CG_DrawBigString(320 - 13 * 8, 40, "^2FORMING TEAMS", 1.0F);
+        CG_DrawBigString(320 - 7 * BIGCHAR_WIDTH, 40, "^2FORMING TEAMS", 1.0F);
     } else if ( cgs.gameStage == MAKING_BETS ) {
-        CG_DrawBigString(320 - 11 * 8, 40, "^1MAKING BETS", 1.0F);
+        CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 40, "^1MAKING BETS", 1.0F);
     } else if ( cgs.gameStage == PLAYING) {
-        CG_DrawBigString(320 - 7 * 8, 40, "^3PLAYING", 1.0F);
+        CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 40, "^3PLAYING", 1.0F);
     }
+}
+
+/*
+=================
+CG_DrawBalanceBar
+=================
+ */
+void CG_DrawBalanceBar( int left_side ) {
+    CG_DrawRect( left_side, 160, 640 - left_side, 125, 2, GetGameStageColor() );
 }
 
 /*
@@ -2974,7 +3045,32 @@ static void CG_DrawGameStageInfo(void) {
 CG_DrawBalance
 =================
  */
-void CG_DrawBalance(void) {
+void CG_DrawBalance( void ) {
+    int oac_val = cgs.clientinfo[cg.clientNum].oac_balance.free_money;
+    int btc_val = cgs.clientinfo[cg.clientNum].btc_balance.free_money;
+    int max_val = oac_val;
+    int string_pos = 0;
+    int oac_pos = 640 - GetValueLength( oac_val );
+    int btc_pos = 640 - GetValueLength( btc_val );
+    int left_side = 0;
+    if ( btc_val > max_val ) {
+        max_val = btc_val;
+    }
+    string_pos = 640 - ( GetValueLength( max_val ) / 2 ) - 3 * SMALLCHAR_WIDTH;
+    if ( ( string_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
+        string_pos = 640 - 7 * SMALLCHAR_WIDTH;
+    }
+    left_side = string_pos - 5;
+    if ( oac_pos < left_side ) {
+        left_side = oac_pos - 5;
+    }
+    if ( btc_pos < left_side ) {
+        left_side = btc_pos - 5;
+    }
+    CG_DrawBalanceBar( left_side );
+    CG_DrawSmallStringColor( string_pos, 170, "^2Balance", GetGameStageColor() );
+    CG_DrawValue( oac_pos, 210, oac_val, -1, "OAC" );
+    CG_DrawValue( btc_pos, 255, btc_val, -1, "BTC" );
 }
 
 /*
@@ -2982,7 +3078,21 @@ void CG_DrawBalance(void) {
 CG_DrawActiveBidsSums
 =================
  */
-void CG_DrawActiveBidsSums(void) {
+void CG_DrawActiveBidsSums( void ) {
+    int red_amount = cgs.red_bids_sum.oac_amount;
+    int blue_amount = cgs.blue_bids_sum.oac_amount;
+    int red_str_pos = ( GetValueLength( red_amount ) / 2 ) - 3 * SMALLCHAR_WIDTH;
+    int blue_str_pos = 640 - ( GetValueLength( blue_amount ) / 2 ) - 3 * SMALLCHAR_WIDTH;
+    if ( red_str_pos < 0 ) {
+        red_str_pos = 0;
+    }
+    if ( ( blue_str_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
+        blue_str_pos = 640 - 7 * SMALLCHAR_WIDTH;
+    }
+    CG_DrawSmallString( blue_str_pos, 40, "^4On Blue", 1.0F );
+    CG_DrawSmallString( red_str_pos, 40, "^1On Red", 1.0F );
+    CG_DrawValue( 640 - GetValueLength( blue_amount ), 70, blue_amount, -1, "OAC" );
+    CG_DrawValue( 0, 70, red_amount, -1, "OAC" );
 }
 
 /*
@@ -2990,7 +3100,31 @@ void CG_DrawActiveBidsSums(void) {
 CG_DrawActiveBids
 =================
  */
-void CG_DrawActiveBids(void) {
+void CG_DrawActiveBids( void ) {
+    int i = 0;
+    int init_y = 190;
+    int shift = GetMaxAmountLength();
+    int max_len = 20 + shift + CHAR_WIDTH * 2 + VALUE_SPACE_LEN * 2;
+    int bids_n = cgs.clientinfo[cg.clientNum].bids_n;
+    for ( i = 0; i < bids_n; i++ ) {
+        if ( bids_n > 1 ) {
+            CG_DrawRect( 0, init_y + 40 * i - 15, max_len, 40, 2, GetGameStageColor() );
+        }
+        CG_DrawSmallString( 3, init_y + 40 * i, va( "^2%d", i ), 1.0F );
+        CG_DrawBid( 20, init_y + 40 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
+    }
+}
+
+/*
+=================
+CG_DrawOatotStuff
+=================
+ */
+void CG_DrawOatotStuff( void ) {
+    CG_DrawGameStageInfo();
+    CG_DrawBalance();
+    CG_DrawActiveBidsSums();
+    CG_DrawActiveBids();
 }
 
 /*
@@ -2999,12 +3133,6 @@ CG_DrawSpectator
 =================
  */
 static void CG_DrawSpectator(void) {
-    CG_DrawBigString(320 - 9 * 8, 440, "SPECTATOR", 1.0F);
-    if (cgs.gametype == GT_TOURNAMENT) {
-        CG_DrawBigString(320 - 15 * 8, 460, "waiting to play", 1.0F);
-    } else if (cgs.gametype >= GT_TEAM && cgs.ffa_gt != 1) {
-        CG_DrawBigString(320 - 39 * 8, 460, "press ESC and use the JOIN menu to play", 1.0F);
-    }
 }
 
 /*
@@ -3597,10 +3725,11 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
         CG_DrawWarmup();
         if (!cg.scoreBoardShowing) {
             if ( !cg.loading && !cg.warmup ) {
-                CG_DrawGameStageInfo();
-                CG_DrawBalance();
-                CG_DrawActiveBidsSums();
-                CG_DrawActiveBids();
+                if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
+                    CG_DrawOatotStuff();
+                } else if ( cgs.gameStage != PLAYING ) {
+                    CG_DrawOatotStuff();
+                }
             }
         }
     }
