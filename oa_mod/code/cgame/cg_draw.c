@@ -3023,11 +3023,11 @@ CG_DrawGameStageInfo
  */
 static void CG_DrawGameStageInfo( void ) {
     if ( cgs.gameStage == FORMING_TEAMS ) {
-        CG_DrawBigString(320 - 7 * BIGCHAR_WIDTH, 40, "^2FORMING TEAMS", 1.0F);
+        CG_DrawBigString(320 - 7 * BIGCHAR_WIDTH, 50, "^2FORMING TEAMS", 1.0F);
     } else if ( cgs.gameStage == MAKING_BETS ) {
-        CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 40, "^1MAKING BETS", 1.0F);
+        CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 50, "^1MAKING BETS", 1.0F);
     } else if ( cgs.gameStage == PLAYING) {
-        CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 40, "^3PLAYING", 1.0F);
+        CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 50, "^3PLAYING", 1.0F);
     }
 }
 
@@ -3089,10 +3089,10 @@ void CG_DrawActiveBidsSums( void ) {
     if ( ( blue_str_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
         blue_str_pos = 640 - 7 * SMALLCHAR_WIDTH;
     }
-    CG_DrawSmallString( blue_str_pos, 40, "^4On Blue", 1.0F );
-    CG_DrawSmallString( red_str_pos, 40, "^1On Red", 1.0F );
-    CG_DrawValue( 640 - GetValueLength( blue_amount ), 70, blue_amount, -1, "OAC" );
-    CG_DrawValue( 0, 70, red_amount, -1, "OAC" );
+    CG_DrawSmallString( blue_str_pos, 50, "^4On Blue", 1.0F );
+    CG_DrawSmallString( red_str_pos, 50, "^1On Red", 1.0F );
+    CG_DrawValue( 640 - GetValueLength( blue_amount ), 80, blue_amount, -1, "OAC" );
+    CG_DrawValue( 0, 80, red_amount, -1, "OAC" );
 }
 
 /*
