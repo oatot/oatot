@@ -12,12 +12,14 @@ Just for fun and to keep the game I love alive.
 ## Architecture of the project
 
 ```
-OaMod <-----------------> Backend
-              RPC
-    (documented in api.proto)
+OaMod <-----------> gRPC client (Go) <-------------> Backend (Go)
+           Cgo                             gRPC
+                                  (documented in api.proto)
 ```
 
 ## OpenArena mod
+
+Modified OAX.
 
 *New console commands*:
 
