@@ -2135,7 +2135,7 @@ void CheckExitRules( void )
         return;
     }
 
-    if ( g_timelimit.integer > 0 && !level.warmupTime ) {
+    if ( g_timelimit.integer > 0 && !level.warmupTime && ( g_gameStage.integer == PLAYING ) ) {
         if ( (level.time - level.startTime)/60000 >= g_timelimit.integer ) {
             if ( level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE] ) {
                 transferPrizeMoney();
