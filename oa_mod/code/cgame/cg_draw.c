@@ -3117,6 +3117,18 @@ void CG_DrawActiveBids( void ) {
 
 /*
 =================
+CG_DrawOatotStuff
+=================
+ */
+void CG_DrawOatotStuff( void ) {
+    CG_DrawGameStageInfo();
+    CG_DrawBalance();
+    CG_DrawActiveBidsSums();
+    CG_DrawActiveBids();
+}
+
+/*
+=================
 CG_DrawSpectator
 =================
  */
@@ -3713,10 +3725,11 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
         CG_DrawWarmup();
         if (!cg.scoreBoardShowing) {
             if ( !cg.loading && !cg.warmup ) {
-                CG_DrawGameStageInfo();
-                CG_DrawBalance();
-                CG_DrawActiveBidsSums();
-                CG_DrawActiveBids();
+                if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
+                    CG_DrawOatotStuff();
+                } else if ( cgs.gameStage != PLAYING ) {
+                    CG_DrawOatotStuff();
+                }
             }
         }
     }

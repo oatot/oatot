@@ -1594,6 +1594,8 @@ extern  char teamChat1[256];
 extern  char teamChat2[256];
 
 // oatot
+void CG_DrawOatotStuff( void );
+void CG_DrawBalanceBar( int left_side );
 void CG_DrawBalance( void );
 void CG_DrawActiveBids( void );
 void CG_DrawActiveBidsSums( void );
