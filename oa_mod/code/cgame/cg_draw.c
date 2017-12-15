@@ -3108,10 +3108,10 @@ void CG_DrawActiveBids( void ) {
     int bids_n = cgs.clientinfo[cg.clientNum].bids_n;
     for ( i = 0; i < bids_n; i++ ) {
         if ( bids_n > 1 ) {
-            CG_DrawRect( 0, init_y + 30 * i - 10, max_len, 30, 2, GetGameStageColor() );
+            CG_DrawRect( 0, init_y + 40 * i - 15, max_len, 40, 2, GetGameStageColor() );
         }
-        CG_DrawSmallString( 0, init_y + 30 * i, va( "^2%d", i ), 1.0F );
-        CG_DrawBid( 20, init_y + 30 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
+        CG_DrawSmallString( 3, init_y + 40 * i, va( "^2%d", i ), 1.0F );
+        CG_DrawBid( 20, init_y + 40 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
     }
 }
 
