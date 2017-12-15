@@ -2952,11 +2952,11 @@ static void CG_DrawCrosshairNames(void) {
 }
 
 // space between value and currency coin image
-#define VALUE_SPACE_LEN 20
+#define VALUE_SPACE_LEN 15
 
 int GetValueLength( int amount) {
-    int val_len = strlen( va( "%d", amount) ) * BIGCHAR_WIDTH;
-    int coin_len = ICON_SIZE;
+    int val_len = strlen( va( "%d", amount) ) * SMALLCHAR_WIDTH;
+    int coin_len = CHAR_WIDTH;
     return val_len + VALUE_SPACE_LEN + coin_len;
 }
 
@@ -2968,7 +2968,7 @@ int GetMaxAmountLength( void ) {
             max_len = len;
         }
     }
-    return max_len * BIGCHAR_WIDTH;
+    return max_len * SMALLCHAR_WIDTH;
 }
 
 //==============================================================================
@@ -2980,14 +2980,14 @@ CG_DrawValue
  */
 static void CG_DrawValue( int x, int y, int amount, int shift, const char* currency ) {
     char* val_str = va( "%d", amount );
-    CG_DrawBigString( x, y, val_str, 1.0F );
+    CG_DrawSmallString( x, y, val_str, 1.0F );
     if ( shift == -1 ) {
-        shift = strlen(val_str) * BIGCHAR_WIDTH;
+        shift = strlen(val_str) * SMALLCHAR_WIDTH;
     }
     if ( !strcmp( currency, "OAC") ) {
-        CG_DrawPic( x + shift + VALUE_SPACE_LEN, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.oacShader );
+        CG_DrawPic( x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.oacShader );
     } else if ( !strcmp( currency, "BTC" ) ) {
-        CG_DrawPic( x + shift + VALUE_SPACE_LEN, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.btcShader );
+        CG_DrawPic( x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.btcShader );
     }
 }
 
@@ -2998,11 +2998,11 @@ CG_DrawBid
  */
 static void CG_DrawBid( int x, int y, int shift, activeBid_t bid ) {
     if ( !strcmp( bid.horse, "red" ) ) {
-        CG_DrawPic( x, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.redFlagShader[cgs.redflag] );
+        CG_DrawPic( x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.redFlagShader[cgs.redflag] );
     } else if ( !strcmp( bid.horse, "blue" ) ) {
-        CG_DrawPic( x, y - 15, ICON_SIZE, ICON_SIZE, cgs.media.blueFlagShader[cgs.blueflag] );
+        CG_DrawPic( x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.blueFlagShader[cgs.blueflag] );
     }
-    CG_DrawValue( x + ICON_SIZE + VALUE_SPACE_LEN, y, bid.amount, shift, bid.currency );
+    CG_DrawValue( x + CHAR_WIDTH + VALUE_SPACE_LEN, y, bid.amount, shift, bid.currency );
 }
 
 /*
@@ -3033,11 +3033,11 @@ void CG_DrawBalance( void ) {
     if ( btc_val > max_val ) {
         max_val = btc_val;
     }
-    string_pos = 640 - ( GetValueLength( max_val ) / 2 ) - 3 * BIGCHAR_WIDTH;
-    if ( ( string_pos + 7 * BIGCHAR_WIDTH ) > 640 ) {
-        string_pos = 640 - 7 * BIGCHAR_WIDTH;
+    string_pos = 640 - ( GetValueLength( max_val ) / 2 ) - 3 * SMALLCHAR_WIDTH;
+    if ( ( string_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
+        string_pos = 640 - 7 * SMALLCHAR_WIDTH;
     }
-    CG_DrawBigString( string_pos, 170, "^2Balance", 1.0F );
+    CG_DrawSmallString( string_pos, 170, "^2Balance", 1.0F );
     CG_DrawValue( 640 - GetValueLength( oac_val ), 220, oac_val, -1, "OAC" );
     CG_DrawValue( 640 - GetValueLength( btc_val ), 270, btc_val, -1, "BTC" );
 }
@@ -3050,16 +3050,16 @@ CG_DrawActiveBidsSums
 void CG_DrawActiveBidsSums( void ) {
     int red_amount = cgs.red_bids_sum.oac_amount;
     int blue_amount = cgs.blue_bids_sum.oac_amount;
-    int red_str_pos = ( GetValueLength( red_amount ) / 2 ) - 3 * BIGCHAR_WIDTH;
-    int blue_str_pos = 640 - ( GetValueLength( blue_amount ) / 2 ) - 3 * BIGCHAR_WIDTH;
+    int red_str_pos = ( GetValueLength( red_amount ) / 2 ) - 3 * SMALLCHAR_WIDTH;
+    int blue_str_pos = 640 - ( GetValueLength( blue_amount ) / 2 ) - 3 * SMALLCHAR_WIDTH;
     if ( red_str_pos < 0 ) {
         red_str_pos = 0;
     }
-    if ( ( blue_str_pos + 7 * BIGCHAR_WIDTH ) > 640 ) {
-        blue_str_pos = 640 - 7 * BIGCHAR_WIDTH;
+    if ( ( blue_str_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
+        blue_str_pos = 640 - 7 * SMALLCHAR_WIDTH;
     }
-    CG_DrawBigString( blue_str_pos, 40, "^4On Blue", 1.0F );
-    CG_DrawBigString( red_str_pos, 40, "^1On Red", 1.0F );
+    CG_DrawSmallString( blue_str_pos, 40, "^4On Blue", 1.0F );
+    CG_DrawSmallString( red_str_pos, 40, "^1On Red", 1.0F );
     CG_DrawValue( 640 - GetValueLength( blue_amount ), 70, blue_amount, -1, "OAC" );
     CG_DrawValue( 0, 70, red_amount, -1, "OAC" );
 }
@@ -3074,8 +3074,8 @@ void CG_DrawActiveBids( void ) {
     int init_y = 190;
     int shift = GetMaxAmountLength();
     for ( i = 0; i < cgs.clientinfo[cg.clientNum].bids_n; i++ ) {
-        CG_DrawBigString( 0, init_y + 60 * i, va( "%d", i ), 1.0F );
-        CG_DrawBid( 30, init_y + 60 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
+        CG_DrawSmallString( 0, init_y + 60 * i, va( "%d", i ), 1.0F );
+        CG_DrawBid( 20, init_y + 60 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
     }
 }
 
