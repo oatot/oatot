@@ -2597,6 +2597,12 @@ G_GetBalance
 */
 balance_t G_GetBalance( gentity_t* ent, char* currency )
 {
+    balance_t empty;
+    empty.free_money = 0;
+    empty.money_on_bids = 0;
+    if ( GOaIsNew( ent->client->pers.guid ) ) {
+        return empty;
+    }
     gclient_t* client = ent->client;
     return GOaMyBalance(client->pers.guid, currency);
 }
@@ -2610,7 +2616,11 @@ int G_GetActiveBids( gentity_t* ent, bid_t* bids )
 {
     gclient_t* client = ent->client;
     int i = 0;
-    int bids_n = GOaMyActiveBids(client->pers.guid, bids);
+    int bids_n = 0;
+    if ( GOaIsNew( client->pers.guid ) ) {
+        return bids_n;
+    }
+    bids_n = GOaMyActiveBids(client->pers.guid, bids);
     if ( bids_n != client->sess.activeBidsNumber ) {
         return -1;
     } else if (bids_n < 0 || bids_n > MAX_ACTIVE_BIDS_NUMBER) {
