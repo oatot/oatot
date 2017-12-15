@@ -757,7 +757,9 @@ void SetTeam( gentity_t *ent, char *s ) {
     client = ent->client;
 
     if ( g_gameStage.integer != FORMING_TEAMS ) {
-        return;
+        if ( !(( client->sess.sessionTeam == TEAM_SPECTATOR ) && ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) )) ) {
+            return;
+        }
     }
 
     clientNum = client - level.clients;
