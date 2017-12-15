@@ -1286,6 +1286,11 @@ void ClientUserinfoChanged( int clientNum ) {
 
     trap_SetConfigstring( CS_PLAYERS+clientNum, s );
 
+    G_UpdateBalance( ent );
+    G_UpdateActiveBids( ent );
+    G_UpdateActiveBidsSums( "red" );
+    G_UpdateActiveBidsSums( "blue" );
+
     // this is not the userinfo, more like the configstring actually
     G_LogPrintf( "ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid") );
 }

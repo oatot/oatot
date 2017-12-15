@@ -757,7 +757,9 @@ void SetTeam( gentity_t *ent, char *s ) {
     client = ent->client;
 
     if ( g_gameStage.integer != FORMING_TEAMS ) {
-        return;
+        if ( !(( client->sess.sessionTeam == TEAM_SPECTATOR ) && ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) )) ) {
+            return;
+        }
     }
 
     clientNum = client - level.clients;
@@ -2294,6 +2296,50 @@ void Cmd_Help_f( gentity_t *ent ) {
 
 /*
 ==================
+Cmd_UpdateBalance_f
+==================
+*/
+void Cmd_UpdateBalance_f( gentity_t *ent ) {
+    gclient_t *client = ent->client;
+    if ( client ) {
+        G_UpdateBalance( ent );
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+/*
+==================
+Cmd_UpdateActiveBids_f
+==================
+*/
+void Cmd_UpdateActiveBids_f( gentity_t *ent ) {
+    gclient_t *client = ent->client;
+    if ( client ) {
+        G_UpdateActiveBids( ent );
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+/*
+==================
+Cmd_UpdateActiveBidsSums_f
+==================
+*/
+void Cmd_UpdateActiveBidsSums_f( gentity_t *ent ) {
+    char    arg1[MAX_STRING_TOKENS];
+    gclient_t *client = ent->client;
+    if ( client ) {
+        trap_Argv( 1, arg1, sizeof( arg1 ) );
+        G_UpdateActiveBidsSums( arg1 );
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+/*
+==================
 Cmd_CallTeamVote_f
 ==================
 */
@@ -2539,6 +2585,9 @@ commands_t cmds[ ] =
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
     { "help", 0, Cmd_Help_f },
+    { "updateBalance", 0, Cmd_UpdateBalance_f },
+    { "updateActiveBids", 0, Cmd_UpdateActiveBids_f },
+    { "updateActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },
