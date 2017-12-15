@@ -2465,6 +2465,12 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
 
     CG_ParseServerinfo();
 
+    // oatot
+    trap_SendClientCommand( va( "updateActiveBidsSums %s\n", "red" ) );
+    trap_SendClientCommand( va( "updateActiveBidsSums %s\n", "blue" ) );
+    trap_SendClientCommand( "updateActiveBids" );
+    trap_SendClientCommand( "updateBalance" );
+
     // load the new map
     // load the new map
 #ifndef SCRIPTHUD
