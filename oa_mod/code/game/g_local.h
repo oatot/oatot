@@ -362,6 +362,7 @@ typedef struct {
     qboolean    nextPageUsed; // shows if next_page is initialized
     char        next_page[MAX_STRING_CHARS]; // next page ID for pastBids()
     int         activeBidsIds[MAX_ACTIVE_BIDS_NUMBER];
+    qboolean    welcomed;
 } clientPersistant_t;
 
 //unlagged - backward reconciliation #1
