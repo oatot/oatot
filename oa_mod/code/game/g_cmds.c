@@ -2307,13 +2307,13 @@ void Cmd_ShareBalance_f( gentity_t *ent ) {
             oac_balance = G_GetBalance( ent, "OAC" );
             btc_balance = G_GetBalance( ent, "BTC" );
             if ( trap_Argc() == 1 ) {
-                 Com_Printf( "^5%s ^5has ^3%d OAC ^5and ^3%d BTC ^6:p", client->pers.netname, oac_balance.free_money, btc_balance.free_money );
+                trap_SendServerCommand( -1, va( "print \"^5%s ^5has ^3%d OAC ^5and ^3%d BTC ^6:p\n\"", client->pers.netname, oac_balance.free_money, btc_balance.free_money ) );
             } else {
                 trap_Argv( 1, arg1, sizeof( arg1 ) );
                 if ( Q_strequal( arg1, "BTC" ) ) {
-                    Com_Printf( "^5%s ^5has ^3%d BTC ^6:p", client->pers.netname, btc_balance.free_money );
+                    trap_SendServerCommand( -1, va( "print \"^5%s ^5has ^3%d BTC ^6:p\n\"", client->pers.netname, btc_balance.free_money) );
                 } else if ( Q_strequal( arg1, "OAC" ) ) {
-                    Com_Printf( "^5%s ^5has ^3%d OAC ^6:p", client->pers.netname, oac_balance.free_money );
+                    trap_SendServerCommand( -1, va( "print \"^5%s ^5has ^3%d OAC ^6:p\n\"", client->pers.netname, oac_balance.free_money ) );
                 } else {
                     trap_SendServerCommand( ent-g_entities, "print \"^1Invalid currency.\n\"" );
                     return;

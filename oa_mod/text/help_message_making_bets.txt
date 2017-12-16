@@ -8,6 +8,6 @@ to make a bet.
 ^6Type ^1/pastBids^6 to get last 15 closed bets, type ^1/pastBids elder^6
 to get previous 15 bets.
 ^6Type ^1/bidsSummary^6 to get info on your total lose/win stats for all the bets.
-^6Type ^1/shareBalance^6 to share your balance with everyone, type^6
-^1/shareBalance <currency>[^3OAC^1, ^2BTC]^6 to share balance in certain currency.
+^6Type ^1/shareBalance^6 to share your balance with everyone.
+^6Type ^1/shareBalance^6 <currency>[^3OAC^1, ^2BTC]^6 to share balance in certain currency.
 ^1Mail ^5dio@guild-oa.com ^1for any suggestions, bug reports and other stuff.
