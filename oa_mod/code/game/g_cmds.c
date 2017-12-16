@@ -2286,6 +2286,7 @@ void Cmd_Help_f( gentity_t *ent ) {
         }
         if ( file ) {
             trap_FS_Read( &help_message, len, file );
+            help_message[len] = '\0';
             trap_SendServerCommand( ent-g_entities, va( "print \"%s\n\"", help_message ) );
             trap_FS_FCloseFile( file );
         }
