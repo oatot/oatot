@@ -2286,6 +2286,7 @@ void Cmd_Help_f( gentity_t *ent ) {
         }
         if ( file ) {
             trap_FS_Read( &help_message, len, file );
+            help_message[len] = '\0';
             trap_SendServerCommand( ent-g_entities, va( "print \"%s\n\"", help_message ) );
             trap_FS_FCloseFile( file );
         }
@@ -2293,6 +2294,37 @@ void Cmd_Help_f( gentity_t *ent ) {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }
 }
+
+/*
+==================
+Cmd_ShareBalance_f
+==================
+*/
+void Cmd_ShareBalance_f( gentity_t *ent ) {
+    char    arg1[MAX_STRING_TOKENS];
+    gclient_t *client = ent->client;
+    balance_t oac_balance, btc_balance;
+    if ( client ) {
+            oac_balance = G_GetBalance( ent, "OAC" );
+            btc_balance = G_GetBalance( ent, "BTC" );
+            if ( trap_Argc() == 1 ) {
+                trap_SendServerCommand( -1, va( "print \"^5%s ^5has ^3%d OAC ^5and ^3%d BTC ^6:p\n\"", client->pers.netname, oac_balance.free_money, btc_balance.free_money ) );
+            } else {
+                trap_Argv( 1, arg1, sizeof( arg1 ) );
+                if ( Q_strequal( arg1, "BTC" ) ) {
+                    trap_SendServerCommand( -1, va( "print \"^5%s ^5has ^3%d BTC ^6:p\n\"", client->pers.netname, btc_balance.free_money) );
+                } else if ( Q_strequal( arg1, "OAC" ) ) {
+                    trap_SendServerCommand( -1, va( "print \"^5%s ^5has ^3%d OAC ^6:p\n\"", client->pers.netname, oac_balance.free_money ) );
+                } else {
+                    trap_SendServerCommand( ent-g_entities, "print \"^1Invalid currency.\n\"" );
+                    return;
+                }
+            }
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
 
 /*
 ==================
@@ -2585,6 +2617,7 @@ commands_t cmds[ ] =
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
     { "help", 0, Cmd_Help_f },
+    { "shareBalance", 0, Cmd_ShareBalance_f },
     { "updateBalance", 0, Cmd_UpdateBalance_f },
     { "updateActiveBids", 0, Cmd_UpdateActiveBids_f },
     { "updateActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },

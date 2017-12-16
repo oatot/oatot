@@ -1622,7 +1622,10 @@ void ClientBegin( int clientNum ) {
         SendCustomVoteCommands(clientNum);
     }
 
-    printWelcomeMessage( clientNum );
+    if ( !client->pers.welcomed ) {
+        client->pers.welcomed = qtrue;
+        printWelcomeMessage( clientNum );
+    }
     G_UpdateBalance( ent );
     G_UpdateActiveBids( ent );
 }

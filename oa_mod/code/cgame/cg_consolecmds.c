@@ -685,4 +685,5 @@ void CG_InitConsoleCommands(void) {
     trap_AddCommand("readyToBet"); // oatot
     trap_AddCommand("finishedBetting"); // oatot
     trap_AddCommand("help"); // oatot
+    trap_AddCommand("shareBalance"); // oatot
 }
