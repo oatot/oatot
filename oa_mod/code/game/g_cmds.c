@@ -2296,6 +2296,37 @@ void Cmd_Help_f( gentity_t *ent ) {
 
 /*
 ==================
+Cmd_ShareBalance_f
+==================
+*/
+void Cmd_ShareBalance_f( gentity_t *ent ) {
+    char    arg1[MAX_STRING_TOKENS];
+    gclient_t *client = ent->client;
+    balance_t oac_balance, btc_balance;
+    if ( client ) {
+            oac_balance = G_GetBalance( ent, "OAC" );
+            btc_balance = G_GetBalance( ent, "BTC" );
+            if ( trap_Argc() == 1 ) {
+                 Com_Printf( "^5%s ^5has ^3%d OAC ^5and ^3%d BTC ^6:p", client->pers.netname, oac_balance.free_money, btc_balance.free_money );
+            } else {
+                trap_Argv( 1, arg1, sizeof( arg1 ) );
+                if ( Q_strequal( arg1, "BTC" ) ) {
+                    Com_Printf( "^5%s ^5has ^3%d BTC ^6:p", client->pers.netname, btc_balance.free_money );
+                } else if ( Q_strequal( arg1, "OAC" ) ) {
+                    Com_Printf( "^5%s ^5has ^3%d OAC ^6:p", client->pers.netname, oac_balance.free_money );
+                } else {
+                    trap_SendServerCommand( ent-g_entities, "print \"^1Invalid currency.\n\"" );
+                    return;
+                }
+            }
+    } else {
+        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
+    }
+}
+
+
+/*
+==================
 Cmd_UpdateBalance_f
 ==================
 */
@@ -2585,6 +2616,7 @@ commands_t cmds[ ] =
     { "readyToBet", 0, Cmd_ReadyToBet_f },
     { "finishedBetting", 0, Cmd_FinishedBetting_f },
     { "help", 0, Cmd_Help_f },
+    { "shareBalance", 0, Cmd_ShareBalance_f },
     { "updateBalance", 0, Cmd_UpdateBalance_f },
     { "updateActiveBids", 0, Cmd_UpdateActiveBids_f },
     { "updateActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },
