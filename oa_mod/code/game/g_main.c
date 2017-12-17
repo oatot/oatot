@@ -2641,8 +2641,8 @@ void G_UpdateBalance( gentity_t* ent )
 {
     balance_t btc_balance = G_GetBalance( ent, "BTC" );
     balance_t oac_balance = G_GetBalance( ent, "OAC" );
-    trap_SendServerCommand( -1, va("updateBalance \%d %s %d %d\"", ent->s.number, "OAC", oac_balance.free_money, oac_balance.money_on_bids) );
-    trap_SendServerCommand( -1, va("updateBalance \%d %s %d %d\"", ent->s.number, "BTC", btc_balance.free_money, btc_balance.money_on_bids) );
+    trap_SendServerCommand( ent - g_entities, va("updateBalance \%s %d %d\"", "OAC", oac_balance.free_money, oac_balance.money_on_bids) );
+    trap_SendServerCommand( ent - g_entities, va("updateBalance \%s %d %d\"", "BTC", btc_balance.free_money, btc_balance.money_on_bids) );
 }
 
 /*
@@ -2657,12 +2657,12 @@ void G_UpdateActiveBids( gentity_t* ent )
     bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
     int n_bids = G_GetActiveBids( ent, bids );
     cmd_str[0] = 0;
-    strcat( cmd_str, va("updateActiveBids \%d %d ", ent->s.number, n_bids) );
+    strcat( cmd_str, va("updateActiveBids \%d ", n_bids) );
     for (i = 0; i < n_bids; i++) {
         strcat( cmd_str, va("%s %s %d ", bids[i].horse, bids[i].currency, bids[i].amount) );
     }
     strcat( cmd_str, "\"" );
-    trap_SendServerCommand( -1, cmd_str );
+    trap_SendServerCommand( ent - g_entities, cmd_str );
 }
 
 /*
