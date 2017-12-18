@@ -2073,11 +2073,13 @@ void transferPrizeMoney( void ) {
     gclient_t	*cl;
     int         i;
     // Amount of "prize" is equal to player score.
-    for ( i = 0; i <  g_maxclients.integer; i++ ) {
+    for ( i = 0; i < g_maxclients.integer; i++ ) {
         cl = level.clients + i;
         if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
             if ( g_gameStage.integer == PLAYING ) {
-                GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+                if ( !GOaIsNew(cl->pers.guid) ) {
+                    GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+                }
             }
         }
     }
