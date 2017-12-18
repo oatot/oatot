@@ -66,13 +66,12 @@ CG_ParseBalance
 =================
 */
 static void CG_ParseBalance( void ) {
-    int clientNum = atoi(CG_Argv(1));
-    if ( !strcmp(CG_Argv(2), "OAC") ) {
-        cgs.clientinfo[clientNum].oac_balance.free_money = atoi(CG_Argv(3));
-        cgs.clientinfo[clientNum].oac_balance.money_on_bids = atoi(CG_Argv(4));
-    } else if ( !strcmp(CG_Argv(2), "BTC") ) {
-        cgs.clientinfo[clientNum].btc_balance.free_money = atoi(CG_Argv(3));
-        cgs.clientinfo[clientNum].btc_balance.money_on_bids = atoi(CG_Argv(4));
+    if ( !strcmp(CG_Argv(1), "OAC") ) {
+        cgs.clientinfo[cg.clientNum].oac_balance.free_money = atoi(CG_Argv(2));
+        cgs.clientinfo[cg.clientNum].oac_balance.money_on_bids = atoi(CG_Argv(3));
+    } else if ( !strcmp(CG_Argv(1), "BTC") ) {
+        cgs.clientinfo[cg.clientNum].btc_balance.free_money = atoi(CG_Argv(2));
+        cgs.clientinfo[cg.clientNum].btc_balance.money_on_bids = atoi(CG_Argv(3));
     }
 }
 
@@ -83,15 +82,14 @@ CG_ParseActiveBids
 =================
 */
 static void CG_ParseActiveBids( void ) {
-    int clientNum = atoi(CG_Argv(1));
-    int bids_n = atoi(CG_Argv(2));
+    int bids_n = atoi(CG_Argv(1));
     int i;
     for (i = 0; i < bids_n; i++) {
-        strcpy(cgs.clientinfo[clientNum].activeBids[i].horse, CG_Argv(i * 3 + 3));
-        strcpy(cgs.clientinfo[clientNum].activeBids[i].currency, CG_Argv(i * 3 + 4));
-        cgs.clientinfo[clientNum].activeBids[i].amount = atoi(CG_Argv(i * 3 + 5));
+        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].horse, CG_Argv(i * 3 + 2));
+        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].currency, CG_Argv(i * 3 + 3));
+        cgs.clientinfo[cg.clientNum].activeBids[i].amount = atoi(CG_Argv(i * 3 + 4));
     }
-    cgs.clientinfo[clientNum].bids_n = bids_n;
+    cgs.clientinfo[cg.clientNum].bids_n = bids_n;
 }
 
 /*
