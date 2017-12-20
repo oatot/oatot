@@ -107,6 +107,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #error overflow: (CS_MAX) > MAX_CONFIGSTRINGS
 #endif
 
+void StrToUpper( char *str );
+
 // max active bids number per client
 #define MAX_ACTIVE_BIDS_NUMBER 5
 
