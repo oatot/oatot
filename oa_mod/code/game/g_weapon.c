@@ -548,7 +548,7 @@ void weapon_railgun_fire (gentity_t *ent)
     int			passent;
     gentity_t	*unlinkedEntities[MAX_RAIL_HITS];
 
-    damage = 100 * s_quadFactor;
+    damage = 80 * s_quadFactor;
     if(g_instantgib.integer)
         damage = 800;
 
@@ -724,7 +724,7 @@ void Weapon_LightningFire( gentity_t *ent )
     gentity_t	*traceEnt, *tent;
     int			damage, i, passent;
 
-    damage = 8 * s_quadFactor;
+    damage = 7 * s_quadFactor;
 
     passent = ent->s.number;
     for (i = 0; i < 10; i++) {
