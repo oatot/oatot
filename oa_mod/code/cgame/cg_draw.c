@@ -1603,7 +1603,8 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
         y = CG_DrawSnapshot(y);
     }
     if (cg_drawFPS.integer && (stereoFrame == STEREO_CENTER || stereoFrame == STEREO_RIGHT)) {
-        y = CG_DrawFPS(y);
+        // TODO find another position for FPS, Timer and SpeedMeter.
+        //y = CG_DrawFPS(y);
     }
     if (cgs.gametype == GT_ELIMINATION || cgs.gametype == GT_CTF_ELIMINATION || cgs.gametype == GT_LMS) {
         y = CG_DrawEliminationTimer(y);
@@ -1614,13 +1615,13 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     y = CG_DrawFollowMessage(y);
 
     if (cg_drawTimer.integer) {
-        y = CG_DrawTimer(y);
+        //y = CG_DrawTimer(y);
     }
     if (cg_drawAttacker.integer) {
         y = CG_DrawAttacker(y);
     }
     if (cg_drawSpeed.integer) {
-        y = CG_DrawSpeedMeter(y);
+        //y = CG_DrawSpeedMeter(y);
     }
 
 }
