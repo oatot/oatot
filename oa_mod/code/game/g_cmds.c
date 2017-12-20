@@ -2001,6 +2001,13 @@ void printConsoleMessage( gentity_t *ent, const char* message ) {
     trap_SendServerCommand( ent-g_entities, "print \"^3============\n\"" );
 }
 
+void StrToUpper( char *str ) {
+    int i;
+    for ( i = 0; i < strlen( str ); i++ ) {
+        str[i] = toupper( str[i] );
+    }
+}
+
 /*
 ==================
 Cmd_Bet_f
@@ -2029,15 +2036,19 @@ void Cmd_Bet_f( gentity_t *ent ) {
                 trap_SendServerCommand( ent-g_entities, "print \"^1Invalid horse.\n\"" );
                 return;
             }
-            money = atoi( arg2 );
-            if ( money <= 0 || money > G_GetBalance( ent, arg3 ).free_money ) {
-                trap_SendServerCommand( ent-g_entities, "print \"^1Invalid amount of money.\n\"" );
-                return;
-            }
             if ( Q_strequal( arg3, "BTC" ) ) {
             } else if ( Q_strequal( arg3, "OAC" ) ) {
             } else {
                 trap_SendServerCommand( ent-g_entities, "print \"^1Invalid currency.\n\"" );
+                return;
+            }
+            // --> "red", "blue".
+            Q_StrToLower( arg1 );
+            // --> "OAC", "BTC".
+            StrToUpper( arg3 );
+            money = atoi( arg2 );
+            if ( money <= 0 || money > G_GetBalance( ent, arg3 ).free_money ) {
+                trap_SendServerCommand( ent-g_entities, "print \"^1Invalid amount of money.\n\"" );
                 return;
             }
             bid_t bid;
