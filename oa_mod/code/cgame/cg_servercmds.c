@@ -1276,6 +1276,10 @@ static void CG_ServerCommand( void ) {
         CG_ParseActiveBidsSums();
         return;
     }
+    if ( strequals( cmd, "showResults" ) ) {
+        CG_DrawResults( atoi( CG_Argv( 1 ) ), atoi( CG_Argv( 2 ) ) );
+        return;
+    }
 
     if ( strequals( cmd, "cp" ) ) {
         CG_CenterPrint( CG_Argv(1), SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
