@@ -2069,20 +2069,45 @@ qboolean ScoreIsTied( void )
     return a == b;
 }
 
-void transferPrizeMoney( void ) {
+void getClientsBalances( int* money ) {
+    gclient_t *cl;
+    int i;
+    for ( i = 0; i < g_maxclients.integer; i++ ) {
+        cl = level.clients + i;
+        if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
+            money[i] = G_GetBalance( g_entities + i, "OAC" ).free_money;
+        }
+    }
+}
+
+void transferPrizeMoney( int* balances_before, int* balances_after ) {
     gclient_t	*cl;
-    int         i;
+    int         i, score, change;
     // Amount of "prize" is equal to player score.
     for ( i = 0; i < g_maxclients.integer; i++ ) {
         cl = level.clients + i;
         if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
             if ( g_gameStage.integer == PLAYING ) {
-                if ( !GOaIsNew(cl->pers.guid) ) {
-                    GOaTransferMoney(cl->pers.guid, cl->ps.persistant[PERS_SCORE], "OAC");
+                if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
+                    score = cl->ps.persistant[PERS_SCORE];
+                    change = balances_after[i] - balances_before[i];
+                    GOaTransferMoney( cl->pers.guid, score, "OAC" );
+                    trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
                 }
             }
         }
     }
+}
+
+
+void endOfMatchLogic( char* winner ) {
+    int balances_before[MAX_GENTITIES];
+    int balances_after[MAX_GENTITIES];
+    getClientsBalances( balances_before );
+    GOaCloseBids( winner );
+    getClientsBalances( balances_after );
+    transferPrizeMoney( balances_before, balances_after );
+
 }
 
 /*
@@ -2140,11 +2165,9 @@ void CheckExitRules( void )
     if ( g_timelimit.integer > 0 && !level.warmupTime && ( g_gameStage.integer == PLAYING ) ) {
         if ( (level.time - level.startTime)/60000 >= g_timelimit.integer ) {
             if ( level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE] ) {
-                transferPrizeMoney();
-                GOaCloseBids("red");
+                endOfMatchLogic( "red" );
             } else {
-                transferPrizeMoney();
-                GOaCloseBids("blue");
+                endOfMatchLogic( "blue" );
             }
             G_UpdateActiveBidsSums( "red" );
             G_UpdateActiveBidsSums( "blue" );
@@ -2193,8 +2216,7 @@ void CheckExitRules( void )
     if ( (g_gametype.integer >= GT_CTF && g_ffa_gt<1) && g_capturelimit.integer ) {
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
-            transferPrizeMoney();
-            GOaCloseBids("red");
+            endOfMatchLogic( "red" );
             G_UpdateActiveBidsSums( "red" );
             G_UpdateActiveBidsSums( "blue" );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
@@ -2203,8 +2225,7 @@ void CheckExitRules( void )
         }
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
-            transferPrizeMoney();
-            GOaCloseBids("blue");
+            endOfMatchLogic( "blue" );
             G_UpdateActiveBidsSums( "red" );
             G_UpdateActiveBidsSums( "blue" );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );

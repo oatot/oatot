@@ -3121,6 +3121,19 @@ void CG_DrawActiveBids( void ) {
 
 /*
 =================
+CG_DrawResults
+=================
+ */
+void CG_DrawResults( int prize, int balance_change ) {
+    if ( balance_change > 0 ) {
+        CG_CenterPrint( va( "^6Congrats! You won ^3%d OAC^6!\n^2Score prize is ^3%d OAC^6.", balance_change, prize ), SCREEN_HEIGHT * 0.50, BIGCHAR_WIDTH );
+    } else {
+        CG_CenterPrint( va( "^6Maybe next time...\n^2Score prize is ^3%d OAC^6.", prize ), SCREEN_HEIGHT * 0.50, BIGCHAR_WIDTH );
+    }
+}
+
+/*
+=================
 CG_DrawOatotStuff
 =================
  */

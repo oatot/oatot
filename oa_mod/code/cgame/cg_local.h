@@ -1599,6 +1599,7 @@ void CG_DrawBalanceBar( int left_side );
 void CG_DrawBalance( void );
 void CG_DrawActiveBids( void );
 void CG_DrawActiveBidsSums( void );
+void CG_DrawResults( int prize, int balance_change );
 
 void CG_AddLagometerFrameInfo( void );
 void CG_AddLagometerSnapshotInfo( snapshot_t *snap );

@@ -43,7 +43,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define	CARNAGE_REWARD_TIME	3000
 #define REWARD_SPRITE_TIME	2000
 
-#define	INTERMISSION_DELAY_TIME	1000
+#define	INTERMISSION_DELAY_TIME	4000
 #define	SP_INTERMISSION_DELAY_TIME	5000
 
 //Domination how many seconds between awarded a point (multiplied by two if more than 3 points)
