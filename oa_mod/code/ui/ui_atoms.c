@@ -404,8 +404,7 @@ void UI_AdjustFrom640( float *x, float *y, float *w, float *h ) {
     *h *= uiInfo.uiDC.scale;
 #endif
 
-//	*x *= uiInfo.uiDC.xscale;
-    *x = *x * uiInfo.uiDC.xscale + uiInfo.uiDC.bias;		// leilei - widescreen adjust
+    *x *= uiInfo.uiDC.xscale;
     *y *= uiInfo.uiDC.yscale;
     *w *= uiInfo.uiDC.xscale;
     *h *= uiInfo.uiDC.yscale;
