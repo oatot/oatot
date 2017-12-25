@@ -64,6 +64,26 @@ func New() (*Server, error) {
 	}, nil
 }
 
+func Load(data []byte) (*Server, error) {
+	s := &Server{}
+	if err := json.Unmarshal(data, &s.data); err != nil {
+		return nil, err
+	}
+	if s.data.Players == nil {
+		s.data.Players = make(map[string]*Player)
+	}
+	if s.data.ActiveBids == nil {
+		s.data.ActiveBids = make(map[int]struct{})
+	}
+	return s, nil
+}
+
+func (s *Server) Save() ([]byte, error) {
+	s.m.Lock()
+	defer s.m.Unlock()
+	return json.Marshal(&s.data)
+}
+
 func (s *Server) SiteLoginStep1(ctx context.Context, req *g.SiteLoginStep1Request) (*g.SiteLoginStep1Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "Not implemented")
 }
