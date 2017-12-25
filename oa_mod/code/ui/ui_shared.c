@@ -702,32 +702,8 @@ void Window_Paint(Window *w, float fadeAmount, float fadeClamp, float fadeCycle)
     }
 
 }
-//extern vmCvar_t  ui_leidebug;
-extern int realVidWidth;
-extern int realVidHeight;
-
-// leilei - widescreen adjust
-// no KM code was used in the end as that applied to renderer
 
 void Item_SetScreenCoords(itemDef_t *item, float x, float y) {
-
-    float resbias;
-    float rex, rey;
-    int newresx, newresy;
-    float adjustx;
-    float adjusty = 0.0f;
-
-    rex = 640.0f / realVidWidth;
-    rey = 480.0f / realVidHeight;
-
-    newresx = 640.0f * (rex);
-    newresy = 480.0f * (rey);
-
-    newresx = realVidWidth * rey;
-    newresy = realVidHeight * rey;
-
-    resbias = 0.5 * (newresx - (newresy * (640.0 / 480.0)));
-
 
     if (item == NULL) {
         return;

@@ -6218,12 +6218,6 @@ static void UI_BuildQ3Model_List( void )
 
 }
 
-int realVidWidth;
-int realVidHeight;
-int wideAdjustX; // leilei - dirty widescreen hack
-
-float realxscale, realyscale;
-
 /*
 =================
 UI_Init
@@ -6251,40 +6245,9 @@ void _UI_Init( qboolean inGameLoad )
     uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
     uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
 
-    realxscale = uiInfo.uiDC.xscale;
-    realyscale = uiInfo.uiDC.yscale;
-
-    realVidWidth = uiInfo.uiDC.glconfig.vidWidth;
-    realVidHeight = uiInfo.uiDC.glconfig.vidHeight;
-
-    // leilei - wide adjust calculation for things!!!
-
-
-    {
-        float resbias;
-        float rex, rey;
-        int newresx, newresy;
-
-        rex = 640.0f / realVidWidth;
-        rey = 480.0f / realVidHeight;
-
-        newresx = 640.0f * (rex);
-        newresy = 480.0f * (rey);
-
-        newresx = realVidWidth * rey;
-        newresy = realVidHeight * rey;
-
-        resbias  = 0.5 * ( newresx -  ( newresy * (640.0/480.0) ) );
-
-        wideAdjustX = resbias;
-
-    }
-
-
     if ( uiInfo.uiDC.glconfig.vidWidth * 480 > uiInfo.uiDC.glconfig.vidHeight * 640 ) {
         // wide screen
         uiInfo.uiDC.bias = 0.5 * ( uiInfo.uiDC.glconfig.vidWidth - ( uiInfo.uiDC.glconfig.vidHeight * (640.0/480.0) ) );
-        uiInfo.uiDC.xscale = uiInfo.uiDC.yscale;	 // leilei - widescreen adjust
     }
     else {
         // no wide screen
