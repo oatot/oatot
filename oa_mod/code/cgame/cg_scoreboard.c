@@ -50,14 +50,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SB_BOTICON_X  (SCOREBOARD_X+32)
 #define SB_HEAD_X   (SCOREBOARD_X+64)
 
-#define SB_SCORELINE_X  112
+#define SB_SCORELINE_X  45
 
 #define SB_RATING_WIDTH     (6 * BIGCHAR_WIDTH) // width 6
 #define SB_SCORE_X   (SB_SCORELINE_X + BIGCHAR_WIDTH) // width 6
 #define SB_RATING_X   (SB_SCORELINE_X + 6 * BIGCHAR_WIDTH) // width 6
 #define SB_PING_X   (SB_SCORELINE_X + 12 * BIGCHAR_WIDTH + 8) // width 5
 #define SB_TIME_X   (SB_SCORELINE_X + 17 * BIGCHAR_WIDTH + 8) // width 5
-#define SB_NAME_X   (SB_SCORELINE_X + 22 * BIGCHAR_WIDTH) // width 15
+#define SB_NAME_X   (SB_SCORELINE_X + 22 * BIGCHAR_WIDTH + 8) // width 15
+#define SB_ACC_X   (SB_SCORELINE_X + 27 * BIGCHAR_WIDTH) // width 5
+#define SB_KDR_X   (SB_SCORELINE_X + 32 * BIGCHAR_WIDTH) // width 5
+#define SB_DMG_X   (SB_SCORELINE_X + 37 * BIGCHAR_WIDTH + 8) // width 15
 
 // The new and improved score board
 //
@@ -351,10 +354,13 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
 
-    CG_DrawPic(SB_SCORE_X + (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardScore);
-    CG_DrawPic(SB_PING_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardPing);
-    CG_DrawPic(SB_TIME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardTime);
-    CG_DrawPic(SB_NAME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardName);
+    CG_DrawSmallString(SB_SCORE_X + (SB_RATING_WIDTH / 2), y, "^1Score", 1.0F);
+    CG_DrawSmallString(SB_PING_X - (SB_RATING_WIDTH / 2), y, "^1Ping", 1.0F);
+    CG_DrawSmallString(SB_TIME_X - (SB_RATING_WIDTH / 2), y, "^1Time", 1.0F);
+    CG_DrawSmallString(SB_NAME_X - (SB_RATING_WIDTH / 2), y, "^1Name", 1.0F);
+    CG_DrawSmallString(SB_ACC_X - (SB_RATING_WIDTH / 2), y, "^1Acc", 1.0F);
+    CG_DrawSmallString(SB_KDR_X - (SB_RATING_WIDTH / 2), y, "^1K/D", 1.0F);
+    CG_DrawSmallString(SB_DMG_X - (SB_RATING_WIDTH / 2), y, "^1Dmg", 1.0F);
 
     y = SB_TOP;
 
