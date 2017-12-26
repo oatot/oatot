@@ -47,8 +47,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SB_RIGHT_BOTICON_X (SCOREBOARD_X+64)
 #define SB_RIGHT_HEAD_X  (SCOREBOARD_X+96)
 // Normal
-#define SB_BOTICON_X  (SCOREBOARD_X+32)
-#define SB_HEAD_X   (SCOREBOARD_X+64)
+#define SB_BOTICON_X  (SCOREBOARD_X)
+#define SB_HEAD_X   (SCOREBOARD_X+32)
 
 #define SB_SCORELINE_X  45
 
@@ -182,7 +182,10 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         		"%5i %4i %4i %s *DEAD*", score->score, score->ping, score->time, ci->name);
         else*/
         Com_sprintf(string, sizeof (string),
-                    "%5i %4i %4i %s", score->score, score->ping, score->time, ci->name);
+                    "%5i %4i %4i %s %5i %4i/%4i %4i %4i",
+                    score->score, score->ping,
+                    score->time, ci->name, score->accuracy,
+                    score->kills, score->deaths, score->damageGiven, score->damageTaken);
     }
 
     // highlight your position

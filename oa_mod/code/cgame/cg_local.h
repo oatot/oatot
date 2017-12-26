@@ -315,6 +315,10 @@ typedef struct {
     int				score;
     int				ping;
     int				time;
+    int				kills;
+    int				deaths;
+    int				damageTaken;
+    int				damageGiven;
     int				scoreFlags;
     int				powerUps;
     int				accuracy;

@@ -71,8 +71,10 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 
         if(g_gametype.integer == GT_LMS) {
             Com_sprintf (entry, sizeof(entry),
-                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
-                         cl->ps.persistant[PERS_SCORE], ping, (level.time - cl->pers.enterTime)/60000,
+                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                         cl->ps.persistant[PERS_SCORE], ping,
+                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
+                         (level.time - cl->pers.enterTime)/60000,
                          scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                          cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
                          cl->ps.persistant[PERS_EXCELLENT_COUNT],
@@ -85,8 +87,10 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
         }
         else {
             Com_sprintf (entry, sizeof(entry),
-                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
-                         cl->ps.persistant[PERS_SCORE], ping, (level.time - cl->pers.enterTime)/60000,
+                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                         cl->ps.persistant[PERS_SCORE], ping,
+                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
+                         (level.time - cl->pers.enterTime)/60000,
                          scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                          cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
                          cl->ps.persistant[PERS_EXCELLENT_COUNT],

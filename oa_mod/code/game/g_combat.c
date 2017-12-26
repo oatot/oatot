@@ -497,6 +497,12 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
         return;
     }
 
+    // global stats
+    self->client->pers.deaths += 1;
+    if ( attacker->client ) {
+        attacker->client->pers.kills += 1;
+    }
+
 //unlagged - backward reconciliation #2
     // make sure the body shows up in the client's current position
     G_UnTimeShiftClient( self );
@@ -1302,6 +1308,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
         client->damage_armor += asave;
         client->damage_blood += take;
         client->damage_knockback += knockback;
+        // global stats
+        client->pers.damageTaken += take;
+        if ( attacker->client ) {
+            attacker->client->pers.damageGiven += take;
+        }
         if ( dir ) {
             VectorCopy ( dir, client->damage_from );
             client->damage_fromWorld = qfalse;

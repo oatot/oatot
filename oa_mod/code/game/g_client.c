@@ -1523,6 +1523,12 @@ void ClientBegin( int clientNum ) {
     ent->pain = 0;
     ent->client = client;
 
+    // more detailed global stats
+    client->pers.kills = 0;
+    client->pers.deaths = 0;
+    client->pers.damageGiven = 0;
+    client->pers.damageTaken = 0;
+
     // oatot
     client->pers.readyToBet = qfalse;
     client->pers.finishedBetting = qfalse;
