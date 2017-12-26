@@ -38,40 +38,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SB_MAXCLIENTS_NORMAL  ((SB_STATUSBAR - SB_TOP) / SB_NORMAL_HEIGHT)
 #define SB_MAXCLIENTS_INTER   ((SB_STATUSBAR - SB_TOP) / SB_INTER_HEIGHT - 1)
 
-// Used when interleaved
-
-
-
-#define SB_LEFT_BOTICON_X (SCOREBOARD_X+0)
-#define SB_LEFT_HEAD_X  (SCOREBOARD_X+32)
-#define SB_RIGHT_BOTICON_X (SCOREBOARD_X+64)
-#define SB_RIGHT_HEAD_X  (SCOREBOARD_X+96)
 // Normal
 #define SB_BOTICON_X  (SCOREBOARD_X)
-#define SB_HEAD_X   (SCOREBOARD_X+32)
+#define SB_HEAD_X   (SCOREBOARD_X+16)
 
-#define SB_SCORELINE_X  0
-
-#define SB_RATING_WIDTH     (6 * BIGCHAR_WIDTH) // width 6
-#define SB_SCORE_X   (SB_SCORELINE_X + BIGCHAR_WIDTH) // width 6
-#define SB_RATING_X   (SB_SCORELINE_X + 6 * BIGCHAR_WIDTH) // width 6
-#define SB_PING_X   (SB_SCORELINE_X + 12 * BIGCHAR_WIDTH + 8) // width 5
-#define SB_TIME_X   (SB_SCORELINE_X + 17 * BIGCHAR_WIDTH + 8) // width 5
-#define SB_NAME_X   (SB_SCORELINE_X + 22 * BIGCHAR_WIDTH + 8) // width 15
-#define SB_ACC_X   (SB_SCORELINE_X + 27 * BIGCHAR_WIDTH) // width 5
-#define SB_KDR_X   (SB_SCORELINE_X + 32 * BIGCHAR_WIDTH) // width 5
-#define SB_DMG_X   (SB_SCORELINE_X + 37 * BIGCHAR_WIDTH + 8) // width 15
-
-// The new and improved score board
-//
-// In cases where the number of clients is high, the score board heads are interleaved
-// here's the layout
-
-//
-//	0   32   80  112  144   240  320  400   <-- pixel position
-//  bot head bot head score ping time name
-//
-//  wins/losses are drawn on bot icon now
+#define SB_SCORELINE_X  34
 
 static qboolean localClient; // true if local client has been displayed
 
@@ -93,8 +64,8 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
 
     ci = &cgs.clientinfo[score->client];
 
-    iconx = SB_BOTICON_X + (SB_RATING_WIDTH / 2);
-    headx = SB_HEAD_X + (SB_RATING_WIDTH / 2);
+    iconx = SB_BOTICON_X;
+    headx = SB_HEAD_X;
 
     // draw the handicap or bot skill marker (unless player has flag)
     if (ci->powerups & (1 << PW_NEUTRALFLAG)) {
@@ -161,7 +132,7 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         		"%5i %4i %4i %s *DEAD*", score->score, score->ping, score->time, ci->name);
         else*/
         Com_sprintf(string, sizeof (string),
-                    "%5i %4i %4i %s %2i %3i/%i %3i %3i",
+                    "%5i %4i %4i %s %5i %4i/%i ^2+%4i ^1-%4i",
                     score->score, score->ping,
                     score->time, ci->name, score->accuracy,
                     score->kills, score->deaths, score->damageGiven, score->damageTaken);
@@ -202,10 +173,10 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
 
         hcolor[3] = fade * 0.7;
         CG_FillRect(SB_SCORELINE_X, y,
-                    640 - SB_SCORELINE_X - BIGCHAR_WIDTH, BIGCHAR_HEIGHT + 1, hcolor);
+                    640 - SB_SCORELINE_X - SMALLCHAR_WIDTH, BIGCHAR_HEIGHT + 1, hcolor);
     }
 
-    CG_DrawBigString(SB_SCORELINE_X + 24, y, string, fade);
+    CG_DrawSmallString(SB_SCORELINE_X, y, string, fade);
 
     // add the "ready" marker for intermission exiting
     if (cg.snap->ps.stats[ STAT_CLIENTS_READY ] & (1 << score->client)) {
@@ -336,13 +307,7 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
 
-    CG_DrawSmallString(SB_SCORE_X + (SB_RATING_WIDTH / 2), y, "^1Score", 1.0F);
-    CG_DrawSmallString(SB_PING_X - (SB_RATING_WIDTH / 2), y, "^1Ping", 1.0F);
-    CG_DrawSmallString(SB_TIME_X - (SB_RATING_WIDTH / 2), y, "^1Time", 1.0F);
-    CG_DrawSmallString(SB_NAME_X - (SB_RATING_WIDTH / 2), y, "^1Name", 1.0F);
-    CG_DrawSmallString(SB_ACC_X - (SB_RATING_WIDTH / 2), y, "^1Acc", 1.0F);
-    CG_DrawSmallString(SB_KDR_X - (SB_RATING_WIDTH / 2), y, "^1K/D", 1.0F);
-    CG_DrawSmallString(SB_DMG_X - (SB_RATING_WIDTH / 2), y, "^1Dmg", 1.0F);
+    CG_DrawSmallString(SB_SCORELINE_X, y, "^1Score   ^1Ping   ^1Time          ^1Name   ^1Acc      ^1K/D        ^1Dmg", 1.0F);
 
     y = SB_TOP;
 
