@@ -50,7 +50,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SB_BOTICON_X  (SCOREBOARD_X)
 #define SB_HEAD_X   (SCOREBOARD_X+32)
 
-#define SB_SCORELINE_X  45
+#define SB_SCORELINE_X  0
 
 #define SB_RATING_WIDTH     (6 * BIGCHAR_WIDTH) // width 6
 #define SB_SCORE_X   (SB_SCORELINE_X + BIGCHAR_WIDTH) // width 6
@@ -98,31 +98,15 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
 
     // draw the handicap or bot skill marker (unless player has flag)
     if (ci->powerups & (1 << PW_NEUTRALFLAG)) {
-        if (largeFormat) {
-            CG_DrawFlagModel(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, TEAM_FREE, qfalse);
-        } else {
             CG_DrawFlagModel(iconx, y, 16, 16, TEAM_FREE, qfalse);
-        }
     } else if (ci->powerups & (1 << PW_REDFLAG)) {
-        if (largeFormat) {
-            CG_DrawFlagModel(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, TEAM_RED, qfalse);
-        } else {
             CG_DrawFlagModel(iconx, y, 16, 16, TEAM_RED, qfalse);
-        }
     } else if (ci->powerups & (1 << PW_BLUEFLAG)) {
-        if (largeFormat) {
-            CG_DrawFlagModel(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, TEAM_BLUE, qfalse);
-        } else {
             CG_DrawFlagModel(iconx, y, 16, 16, TEAM_BLUE, qfalse);
-        }
     } else {
         if (ci->botSkill > 0 && ci->botSkill <= 5) {
             if (cg_drawIcons.integer) {
-                if (largeFormat) {
-                    CG_DrawPic(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
-                } else {
                     CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
-                }
             }
         } else if (ci->handicap < 100) {
             Com_sprintf(string, sizeof ( string), "%i", ci->handicap);
@@ -146,12 +130,7 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
     // draw the face
     VectorClear(headAngles);
     headAngles[YAW] = 180;
-    if (largeFormat) {
-        CG_DrawHead(headx, y - (ICON_SIZE - BIGCHAR_HEIGHT) / 2, ICON_SIZE, ICON_SIZE,
-                    score->client, headAngles);
-    } else {
-        CG_DrawHead(headx, y, 16, 16, score->client, headAngles);
-    }
+    CG_DrawHead(headx, y, 16, 16, score->client, headAngles);
 
 #ifdef MISSIONPACK
     // draw the team task
@@ -182,7 +161,7 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         		"%5i %4i %4i %s *DEAD*", score->score, score->ping, score->time, ci->name);
         else*/
         Com_sprintf(string, sizeof (string),
-                    "%5i %4i %4i %s %5i %4i/%4i %4i %4i",
+                    "%5i %4i %4i %s %2i %3i/%i %3i %3i",
                     score->score, score->ping,
                     score->time, ci->name, score->accuracy,
                     score->kills, score->deaths, score->damageGiven, score->damageTaken);
@@ -222,11 +201,11 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         }
 
         hcolor[3] = fade * 0.7;
-        CG_FillRect(SB_SCORELINE_X + BIGCHAR_WIDTH + (SB_RATING_WIDTH / 2), y,
+        CG_FillRect(SB_SCORELINE_X, y,
                     640 - SB_SCORELINE_X - BIGCHAR_WIDTH, BIGCHAR_HEIGHT + 1, hcolor);
     }
 
-    CG_DrawBigString(SB_SCORELINE_X + (SB_RATING_WIDTH / 2), y, string, fade);
+    CG_DrawBigString(SB_SCORELINE_X + 24, y, string, fade);
 
     // add the "ready" marker for intermission exiting
     if (cg.snap->ps.stats[ STAT_CLIENTS_READY ] & (1 << score->client)) {
