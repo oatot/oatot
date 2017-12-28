@@ -17,6 +17,7 @@ var (
 	grpcAddr   = flag.String("grpc-addr", "127.0.0.1:13283", "grpc addr")
 	database   = flag.String("database", "", "Path to database")
 	dumpPeriod = flag.Duration("dump-period", time.Second, "Database dump period")
+	startMoney = flag.Int64("start-money", 1000, "Start money (OAC)")
 )
 
 func main() {
@@ -56,6 +57,7 @@ func main() {
 			}
 		}()
 	}
+	server.SetStartMoney(*startMoney)
 	grpcServer := grpc.NewServer()
 	g.RegisterOatotServer(grpcServer, server)
 	conn, err := net.Listen("tcp", *grpcAddr)
