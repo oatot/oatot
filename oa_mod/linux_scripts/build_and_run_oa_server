@@ -20,12 +20,12 @@ fi
 mkdir -p ~/.openarena/$MODNAME
 
 #Copy texts from repo to build dir
-mkdir -p ../build/release-linux-$ARCH/oatot/texts
-cp ../text/help_message*.txt ../build/release-linux-$ARCH/oatot/texts
+mkdir -p ../build/release-linux-$ARCH/$MODNAME/texts
+cp ../text/help_message*.txt ../build/release-linux-$ARCH/$MODNAME/texts
 
 #Copy images from repo to build dir
-mkdir -p ../build/release-linux-$ARCH/oatot/images
-cp ../images/*.png ../build/release-linux-$ARCH/oatot/images
+mkdir -p ../build/release-linux-$ARCH/$MODNAME/images
+cp ../images/*.png ../build/release-linux-$ARCH/$MODNAME/images
 
 pushd ..
 #Build, pak it and start
