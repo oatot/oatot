@@ -1086,6 +1086,8 @@ static void CG_RegisterGraphics(void) {
     // oatot
     cgs.media.btcShader = trap_R_RegisterShader("images/btc.png");
     cgs.media.oacShader = trap_R_RegisterShader("images/oac.png");
+    cgs.media.snowShader1 = trap_R_RegisterShader("images/snowflake1.png");
+    cgs.media.snowShader2 = trap_R_RegisterShader("images/snowflake2.png");
 
     cgs.media.botSkillShaders[0] = trap_R_RegisterShader("menu/art/skill1.tga");
     cgs.media.botSkillShaders[1] = trap_R_RegisterShader("menu/art/skill2.tga");

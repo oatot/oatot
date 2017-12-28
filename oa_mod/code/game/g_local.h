@@ -356,6 +356,13 @@ typedef struct {
     int         nameChanges;
 
     qboolean    cannotWin; // Set to true if the players joins a leading team or the team with the most players
+
+    // more detailed global stats
+    int         kills;
+    int         deaths;
+    int         damageGiven;
+    int         damageTaken;
+
     // oatot
     qboolean    readyToBet;
     qboolean    finishedBetting;

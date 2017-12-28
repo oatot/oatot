@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SCOREBOARD_X  (0)
 
 #define SB_HEADER   86
-#define SB_TOP    (SB_HEADER+32)
+#define SB_TOP    (SB_HEADER+36)
 
 // Where the status bar starts, so we don't overwrite it
 #define SB_STATUSBAR  420
@@ -38,37 +38,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SB_MAXCLIENTS_NORMAL  ((SB_STATUSBAR - SB_TOP) / SB_NORMAL_HEIGHT)
 #define SB_MAXCLIENTS_INTER   ((SB_STATUSBAR - SB_TOP) / SB_INTER_HEIGHT - 1)
 
-// Used when interleaved
-
-
-
-#define SB_LEFT_BOTICON_X (SCOREBOARD_X+0)
-#define SB_LEFT_HEAD_X  (SCOREBOARD_X+32)
-#define SB_RIGHT_BOTICON_X (SCOREBOARD_X+64)
-#define SB_RIGHT_HEAD_X  (SCOREBOARD_X+96)
 // Normal
-#define SB_BOTICON_X  (SCOREBOARD_X+32)
-#define SB_HEAD_X   (SCOREBOARD_X+64)
+#define SB_BOTICON_X  (SCOREBOARD_X)
+#define SB_HEAD_X   (SCOREBOARD_X+16)
 
-#define SB_SCORELINE_X  112
-
-#define SB_RATING_WIDTH     (6 * BIGCHAR_WIDTH) // width 6
-#define SB_SCORE_X   (SB_SCORELINE_X + BIGCHAR_WIDTH) // width 6
-#define SB_RATING_X   (SB_SCORELINE_X + 6 * BIGCHAR_WIDTH) // width 6
-#define SB_PING_X   (SB_SCORELINE_X + 12 * BIGCHAR_WIDTH + 8) // width 5
-#define SB_TIME_X   (SB_SCORELINE_X + 17 * BIGCHAR_WIDTH + 8) // width 5
-#define SB_NAME_X   (SB_SCORELINE_X + 22 * BIGCHAR_WIDTH) // width 15
-
-// The new and improved score board
-//
-// In cases where the number of clients is high, the score board heads are interleaved
-// here's the layout
-
-//
-//	0   32   80  112  144   240  320  400   <-- pixel position
-//  bot head bot head score ping time name
-//
-//  wins/losses are drawn on bot icon now
+#define SB_SCORELINE_X  34
 
 static qboolean localClient; // true if local client has been displayed
 
@@ -79,9 +53,15 @@ CG_DrawScoreboard
  */
 static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, qboolean largeFormat) {
     char string[1024];
+    char dmg_str[1024];
+    char kdr_str[1024];
+    const char* info;
     vec3_t headAngles;
     clientInfo_t *ci;
     int iconx, headx;
+
+    // to detect insta
+    info = CG_ConfigString( CS_SERVERINFO );
 
     if (score->client < 0 || score->client >= cgs.maxclients) {
         Com_Printf("Bad score->client: %i\n", score->client);
@@ -90,36 +70,20 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
 
     ci = &cgs.clientinfo[score->client];
 
-    iconx = SB_BOTICON_X + (SB_RATING_WIDTH / 2);
-    headx = SB_HEAD_X + (SB_RATING_WIDTH / 2);
+    iconx = SB_BOTICON_X;
+    headx = SB_HEAD_X;
 
     // draw the handicap or bot skill marker (unless player has flag)
     if (ci->powerups & (1 << PW_NEUTRALFLAG)) {
-        if (largeFormat) {
-            CG_DrawFlagModel(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, TEAM_FREE, qfalse);
-        } else {
             CG_DrawFlagModel(iconx, y, 16, 16, TEAM_FREE, qfalse);
-        }
     } else if (ci->powerups & (1 << PW_REDFLAG)) {
-        if (largeFormat) {
-            CG_DrawFlagModel(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, TEAM_RED, qfalse);
-        } else {
             CG_DrawFlagModel(iconx, y, 16, 16, TEAM_RED, qfalse);
-        }
     } else if (ci->powerups & (1 << PW_BLUEFLAG)) {
-        if (largeFormat) {
-            CG_DrawFlagModel(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, TEAM_BLUE, qfalse);
-        } else {
             CG_DrawFlagModel(iconx, y, 16, 16, TEAM_BLUE, qfalse);
-        }
     } else {
         if (ci->botSkill > 0 && ci->botSkill <= 5) {
             if (cg_drawIcons.integer) {
-                if (largeFormat) {
-                    CG_DrawPic(iconx, y - (32 - BIGCHAR_HEIGHT) / 2, 32, 32, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
-                } else {
                     CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
-                }
             }
         } else if (ci->handicap < 100) {
             Com_sprintf(string, sizeof ( string), "%i", ci->handicap);
@@ -143,12 +107,7 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
     // draw the face
     VectorClear(headAngles);
     headAngles[YAW] = 180;
-    if (largeFormat) {
-        CG_DrawHead(headx, y - (ICON_SIZE - BIGCHAR_HEIGHT) / 2, ICON_SIZE, ICON_SIZE,
-                    score->client, headAngles);
-    } else {
-        CG_DrawHead(headx, y, 16, 16, score->client, headAngles);
-    }
+    CG_DrawHead(headx, y, 16, 16, score->client, headAngles);
 
 #ifdef MISSIONPACK
     // draw the team task
@@ -162,26 +121,6 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         }
     }
 #endif
-    // draw the score line
-    if (score->ping == -1) {
-        Com_sprintf(string, sizeof (string),
-                    " connecting    %s", ci->name);
-    } else if (ci->team == TEAM_SPECTATOR) {
-        Com_sprintf(string, sizeof (string),
-                    " SPECT %3i %4i %s", score->ping, score->time, ci->name);
-    } else {
-        /*if(cgs.gametype == GT_LMS)
-        	Com_sprintf(string, sizeof(string),
-        		"%5i %4i %4i %s *%i*", score->score, score->ping, score->time, ci->name, ci->isDead);
-        else*/
-        /*if(ci->isDead)
-        	Com_sprintf(string, sizeof(string),
-        		"%5i %4i %4i %s *DEAD*", score->score, score->ping, score->time, ci->name);
-        else*/
-        Com_sprintf(string, sizeof (string),
-                    "%5i %4i %4i %s", score->score, score->ping, score->time, ci->name);
-    }
-
     // highlight your position
     if (score->client == cg.snap->ps.clientNum) {
         float hcolor[4];
@@ -216,11 +155,34 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         }
 
         hcolor[3] = fade * 0.7;
-        CG_FillRect(SB_SCORELINE_X + BIGCHAR_WIDTH + (SB_RATING_WIDTH / 2), y,
-                    640 - SB_SCORELINE_X - BIGCHAR_WIDTH, BIGCHAR_HEIGHT + 1, hcolor);
+        CG_FillRect(SB_SCORELINE_X, y,
+                    640 - SB_SCORELINE_X - SMALLCHAR_WIDTH, BIGCHAR_HEIGHT + 1, hcolor);
     }
 
-    CG_DrawBigString(SB_SCORELINE_X + (SB_RATING_WIDTH / 2), y, string, fade);
+    if (score->ping == -1) {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " connecting", fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+    } else if (ci->team == TEAM_SPECTATOR) {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " SPECT", fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+    } else {
+        Com_sprintf(kdr_str, sizeof (kdr_str), "^2%i^4/^1%i", score->kills, score->deaths);
+        Com_sprintf(dmg_str, sizeof (dmg_str), "^2%.1fK^4/^1%.1fK", score->damageGiven / 1000.0, score->damageTaken / 1000.0);
+        CG_DrawSmallString(SB_SCORELINE_X, y, va(" ^5%i", score->score), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 38 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 44 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade);
+        if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
+            CG_DrawSmallString(SB_SCORELINE_X + 53 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 66 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+        } else {
+            CG_DrawSmallString(SB_SCORELINE_X + 53 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+        }
+    }
 
     // add the "ready" marker for intermission exiting
     if (cg.snap->ps.stats[ STAT_CLIENTS_READY ] & (1 << score->client)) {
@@ -229,6 +191,20 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         CG_DrawBigStringColor(iconx - 50, y, va("*%i*", ci->isDead), color);
     } else if (ci->isDead) {
         CG_DrawBigStringColor(iconx - 60, y, "DEAD", color);
+    }
+}
+
+void CG_DrawSnow(int x, int y) {
+    int shift = 24;
+    int type = 0;
+    for ( x; x < 640; x += shift) {
+        if (type == 0) {
+            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader1);
+            type += 1;
+        } else {
+            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader2);
+            type -= 1;
+        }
     }
 }
 
@@ -276,9 +252,13 @@ qboolean CG_DrawOldScoreboard(void) {
     float fade;
     float *fadeColor;
     char *s;
+    const char *info;
     int maxClients;
     int lineHeight;
     int topBorderSize, bottomBorderSize;
+
+    // to detect insta
+    info = CG_ConfigString( CS_SERVERINFO );
 
     // don't draw amuthing if the menu or console is up
     if (cg_paused.integer) {
@@ -351,10 +331,13 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
 
-    CG_DrawPic(SB_SCORE_X + (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardScore);
-    CG_DrawPic(SB_PING_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardPing);
-    CG_DrawPic(SB_TIME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardTime);
-    CG_DrawPic(SB_NAME_X - (SB_RATING_WIDTH / 2), y, 64, 32, cgs.media.scoreboardName);
+    if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Dmg          ^1Caps", 1.0F);
+        CG_DrawSnow(0, y + 14);
+    } else {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Caps", 1.0F);
+        CG_DrawSnow(0, y + 14);
+    }
 
     y = SB_TOP;
 
@@ -400,6 +383,7 @@ qboolean CG_DrawOldScoreboard(void) {
         }
         n1 = CG_TeamScoreboard(y, TEAM_SPECTATOR, fade, maxClients, lineHeight);
         y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
+        CG_DrawSnow(0, y - BIGCHAR_WIDTH + 6);
 
     } else {
         //
