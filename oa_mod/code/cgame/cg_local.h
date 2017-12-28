@@ -759,6 +759,8 @@ typedef struct {
     // oatot
     qhandle_t   btcShader;
     qhandle_t   oacShader;
+    qhandle_t   snowShader1;
+    qhandle_t   snowShader2;
 
     qhandle_t	charsetShader;
     qhandle_t	charsetProp;

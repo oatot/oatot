@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SCOREBOARD_X  (0)
 
 #define SB_HEADER   86
-#define SB_TOP    (SB_HEADER+32)
+#define SB_TOP    (SB_HEADER+36)
 
 // Where the status bar starts, so we don't overwrite it
 #define SB_STATUSBAR  420
@@ -194,6 +194,20 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
     }
 }
 
+void CG_DrawSnow(int x, int y) {
+    int shift = 24;
+    int type = 0;
+    for ( x; x < 640; x += shift) {
+        if (type == 0) {
+            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader1);
+            type += 1;
+        } else {
+            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader2);
+            type -= 1;
+        }
+    }
+}
+
 /*
 =================
 CG_TeamScoreboard
@@ -319,8 +333,10 @@ qboolean CG_DrawOldScoreboard(void) {
 
     if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Dmg          ^1Caps", 1.0F);
+        CG_DrawSnow(0, y + 14);
     } else {
         CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Caps", 1.0F);
+        CG_DrawSnow(0, y + 14);
     }
 
     y = SB_TOP;
@@ -367,6 +383,7 @@ qboolean CG_DrawOldScoreboard(void) {
         }
         n1 = CG_TeamScoreboard(y, TEAM_SPECTATOR, fade, maxClients, lineHeight);
         y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
+        CG_DrawSnow(0, y - BIGCHAR_WIDTH + 6);
 
     } else {
         //
