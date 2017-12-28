@@ -2080,7 +2080,7 @@ void getClientsBalances( int* money ) {
     }
 }
 
-void transferPrizeMoney( int* balances_before, int* balances_after ) {
+void transferPrizeMoney( int* balances_before, int* balances_after, char* winner ) {
     gclient_t	*cl;
     int         i, score, change;
     // Amount of "prize" is equal to player score.
@@ -2091,8 +2091,15 @@ void transferPrizeMoney( int* balances_before, int* balances_after ) {
                 if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
                     score = cl->ps.persistant[PERS_SCORE];
                     change = balances_after[i] - balances_before[i];
-                    GOaTransferMoney( cl->pers.guid, score, "OAC" );
-                    trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
+                    if ( Q_strequal( winner, "red" ) && ( cl->sess.sessionTeam == TEAM_RED ) ){
+                        GOaTransferMoney( cl->pers.guid, score, "OAC" );
+                        trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
+                    } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
+                        GOaTransferMoney( cl->pers.guid, score, "OAC" );
+                        trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
+                    } else {
+                        trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
+                    }
                 }
             }
         }
@@ -2106,7 +2113,7 @@ void endOfMatchLogic( char* winner ) {
     getClientsBalances( balances_before );
     GOaCloseBids( winner );
     getClientsBalances( balances_after );
-    transferPrizeMoney( balances_before, balances_after );
+    transferPrizeMoney( balances_before, balances_after, winner );
 
 }
 
