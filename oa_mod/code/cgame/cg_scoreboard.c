@@ -53,9 +53,15 @@ CG_DrawScoreboard
  */
 static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, qboolean largeFormat) {
     char string[1024];
+    char dmg_str[1024];
+    char kdr_str[1024];
+    const char* info;
     vec3_t headAngles;
     clientInfo_t *ci;
     int iconx, headx;
+
+    // to detect insta
+    info = CG_ConfigString( CS_SERVERINFO );
 
     if (score->client < 0 || score->client >= cgs.maxclients) {
         Com_Printf("Bad score->client: %i\n", score->client);
@@ -115,29 +121,6 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         }
     }
 #endif
-    // draw the score line
-    if (score->ping == -1) {
-        Com_sprintf(string, sizeof (string),
-                    " connecting    %s", ci->name);
-    } else if (ci->team == TEAM_SPECTATOR) {
-        Com_sprintf(string, sizeof (string),
-                    " SPECT %3i %4i %s", score->ping, score->time, ci->name);
-    } else {
-        /*if(cgs.gametype == GT_LMS)
-        	Com_sprintf(string, sizeof(string),
-        		"%5i %4i %4i %s *%i*", score->score, score->ping, score->time, ci->name, ci->isDead);
-        else*/
-        /*if(ci->isDead)
-        	Com_sprintf(string, sizeof(string),
-        		"%5i %4i %4i %s *DEAD*", score->score, score->ping, score->time, ci->name);
-        else*/
-        Com_sprintf(string, sizeof (string),
-                    "%5i %4i %4i %s %5i %4i/%i ^2+%4i ^1-%4i",
-                    score->score, score->ping,
-                    score->time, ci->name, score->accuracy,
-                    score->kills, score->deaths, score->damageGiven, score->damageTaken);
-    }
-
     // highlight your position
     if (score->client == cg.snap->ps.clientNum) {
         float hcolor[4];
@@ -176,7 +159,30 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
                     640 - SB_SCORELINE_X - SMALLCHAR_WIDTH, BIGCHAR_HEIGHT + 1, hcolor);
     }
 
-    CG_DrawSmallString(SB_SCORELINE_X, y, string, fade);
+    if (score->ping == -1) {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " connecting", fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+    } else if (ci->team == TEAM_SPECTATOR) {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " SPECT", fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+    } else {
+        Com_sprintf(kdr_str, sizeof (kdr_str), "^2%i^4/^1%i", score->kills, score->deaths);
+        Com_sprintf(dmg_str, sizeof (dmg_str), "^2%.1fK^4/^1%.1fK", score->damageGiven / 1000.0, score->damageTaken / 1000.0);
+        CG_DrawSmallString(SB_SCORELINE_X, y, va(" ^5%i", score->score), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 38 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 44 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade);
+        if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
+            CG_DrawSmallString(SB_SCORELINE_X + 53 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 66 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+        } else {
+            CG_DrawSmallString(SB_SCORELINE_X + 53 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+        }
+    }
 
     // add the "ready" marker for intermission exiting
     if (cg.snap->ps.stats[ STAT_CLIENTS_READY ] & (1 << score->client)) {
@@ -232,9 +238,13 @@ qboolean CG_DrawOldScoreboard(void) {
     float fade;
     float *fadeColor;
     char *s;
+    const char *info;
     int maxClients;
     int lineHeight;
     int topBorderSize, bottomBorderSize;
+
+    // to detect insta
+    info = CG_ConfigString( CS_SERVERINFO );
 
     // don't draw amuthing if the menu or console is up
     if (cg_paused.integer) {
@@ -307,7 +317,11 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
 
-    CG_DrawSmallString(SB_SCORELINE_X, y, "^1Score   ^1Ping   ^1Time          ^1Name   ^1Acc      ^1K/D        ^1Dmg", 1.0F);
+    if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Dmg          ^1Caps", 1.0F);
+    } else {
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Caps", 1.0F);
+    }
 
     y = SB_TOP;
 
