@@ -53,6 +53,8 @@ type Server struct {
 	m sync.Mutex
 
 	data Data
+
+	startMoney int64
 }
 
 func New() (*Server, error) {
@@ -61,6 +63,7 @@ func New() (*Server, error) {
 			Players:    make(map[string]*Player),
 			ActiveBids: make(map[int]struct{}),
 		},
+		startMoney: 1000,
 	}, nil
 }
 
@@ -82,6 +85,12 @@ func (s *Server) Save() ([]byte, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	return json.Marshal(&s.data)
+}
+
+func (s *Server) SetStartMoney(startMoney int64) {
+	s.m.Lock()
+	defer s.m.Unlock()
+	s.startMoney = startMoney
 }
 
 func (s *Server) SiteLoginStep1(ctx context.Context, req *g.SiteLoginStep1Request) (*g.SiteLoginStep1Response, error) {
@@ -207,12 +216,11 @@ func (s *Server) OaIsNew(ctx context.Context, req *g.OaIsNewRequest) (*g.OaIsNew
 func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.OaRegisterResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	const startMoney = 1000
 	if _, has := s.data.Players[*req.OaAuth.ClGuid]; has {
 		return nil, status.Errorf(codes.AlreadyExists, "AlreadyExists")
 	}
 	s.data.Players[*req.OaAuth.ClGuid] = &Player{
-		FreeMoney:     map[string]int64{"OAC": startMoney},
+		FreeMoney:     map[string]int64{"OAC": s.startMoney},
 		ActiveBids:    make(map[int]struct{}),
 		PastBids:      make(map[int]struct{}),
 		CancelledBids: make(map[int]struct{}),
