@@ -276,7 +276,8 @@ service Oatot {
   // Check if this player hasn't appeared before.
   rpc OaIsNew(OaIsNewRequest) returns (OaIsNewResponse);
 
-  // Register player in the database, sponsor them with 1000 OAC.
+  // Register player in the database, sponsor them with the amount of money specified
+  // by backend option.
   rpc OaRegister(OaRegisterRequest) returns (OaRegisterResponse);
 
   // Transfer 'prize' money calculated by player score after the end of match.

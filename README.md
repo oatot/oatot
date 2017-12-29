@@ -34,7 +34,7 @@ You will need: Go, grpc-go.
 ```
 cd /path/to/backend/otservice/
 go build
-./otservice -database '/path/to/storage_file'
+./otservice -database '/path/to/storage_file' -start-money 0
 ```
 
 ## OpenArena mod
