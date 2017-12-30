@@ -3073,7 +3073,7 @@ void CG_DrawBalance( void ) {
     }
     string_pos = 640 - ( GetValueLength( max_val ) / 2 ) - 3 * SMALLCHAR_WIDTH;
     if ( ( string_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
-        string_pos = 640 - 7 * SMALLCHAR_WIDTH;
+        string_pos = 640 - 8 * SMALLCHAR_WIDTH;
     }
     left_side = string_pos - 5;
     if ( oac_pos < left_side ) {
@@ -3083,7 +3083,7 @@ void CG_DrawBalance( void ) {
         left_side = btc_pos - 5;
     }
     CG_DrawBalanceBar( left_side );
-    CG_DrawSmallStringColor( string_pos, 170, "^2Balance", GetGameStageColor() );
+    CG_DrawSmallStringColor( string_pos, 170, "^2Balance ", GetGameStageColor() );
     CG_DrawValue( oac_pos, 210, oac_val, -1, "OAC" );
     CG_DrawValue( btc_pos, 255, btc_val, -1, "BTC" );
 }
