@@ -44,6 +44,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #define SB_SCORELINE_X  34
 
+#define MAX_NAME_LEN 15
+
 static qboolean localClient; // true if local client has been displayed
 
 /*
@@ -161,26 +163,26 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
 
     if (score->ping == -1) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " connecting", fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
     } else if (ci->team == TEAM_SPECTATOR) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " SPECT", fade);
         CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
         CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
     } else {
         Com_sprintf(kdr_str, sizeof (kdr_str), "^2%i^4/^1%i", score->kills, score->deaths);
         Com_sprintf(dmg_str, sizeof (dmg_str), "^2%.1fK^4/^1%.1fK", score->damageGiven / 1000.0, score->damageTaken / 1000.0);
         CG_DrawSmallString(SB_SCORELINE_X, y, va(" ^5%i", score->score), fade);
         CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
         CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 38 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 44 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 39 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 45 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade);
         if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
-            CG_DrawSmallString(SB_SCORELINE_X + 53 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade);
-            CG_DrawSmallString(SB_SCORELINE_X + 66 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 67 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
         } else {
-            CG_DrawSmallString(SB_SCORELINE_X + 53 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
         }
     }
 
@@ -332,10 +334,10 @@ qboolean CG_DrawOldScoreboard(void) {
     y = SB_HEADER;
 
     if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Dmg          ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg          ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     } else {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name           ^1Acc   ^1K/D      ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     }
 

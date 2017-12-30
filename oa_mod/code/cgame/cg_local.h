@@ -1573,6 +1573,7 @@ void CG_DrawStringExt( int x, int y, const char *string, const float *setColor,
 void CG_DrawBigString( int x, int y, const char *s, float alpha );
 void CG_DrawBigStringColor( int x, int y, const char *s, vec4_t color );
 void CG_DrawSmallString( int x, int y, const char *s, float alpha );
+void CG_DrawSmallStringLen( int x, int y, const char *s, float alpha, int len );
 void CG_DrawSmallStringColor( int x, int y, const char *s, vec4_t color );
 
 int CG_DrawStrlen( const char *str );
