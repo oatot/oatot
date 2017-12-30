@@ -2240,7 +2240,9 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
             trap_Cvar_Set( "g_readyToBetN", new_val_str );
             G_UpdateCvars();
             if ( checkForRestart() ) {
-                trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+                if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
+                    trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+                }
             }
         }
     } else {
@@ -2273,7 +2275,9 @@ void Cmd_FinishedBetting_f( gentity_t *ent ) {
             trap_Cvar_Set( "g_finishedBettingN", new_val_str );
             G_UpdateCvars();
             if ( checkForRestart() ) {
-                trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+                if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
+                    trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+                }
             }
         }
     } else {

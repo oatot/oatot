@@ -1008,6 +1008,7 @@ qboolean G_BotConnect( int clientNum, qboolean restart );
 void Svcmd_AddBot_f( void );
 void Svcmd_BotList_f( void );
 void BotInterbreedEndMatch( void );
+int G_CountHumanPlayers( int team );
 
 //
 // g_playerstore.c
