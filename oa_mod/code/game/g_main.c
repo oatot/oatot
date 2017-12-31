@@ -289,9 +289,9 @@ static cvarTable_t		gameCvarTable[] = {
     //oatot
     { &g_gameStage, "g_gameStage", "0", 0, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
-    { &g_readyN, "g_rageQuit", "0", 0, 0, qfalse },
+    { &g_rageQuit, "g_rageQuit", "0", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
-    { &g_readyN, "g_betsMade", "0", 0, 0, qfalse },
+    { &g_betsMade, "g_betsMade", "0", 0, 0, qfalse },
 
     //Votes start:
     { &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
