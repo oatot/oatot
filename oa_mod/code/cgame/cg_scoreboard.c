@@ -82,10 +82,12 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
                     CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
             }
         } else {
-            if ( score->ready ) {
-                CG_DrawPic(iconx, y, 16, 16, cgs.media.readyShader);
-            } else {
-                CG_DrawPic(iconx, y, 16, 16, cgs.media.notReadyShader);
+            if (ci->team != TEAM_SPECTATOR) {
+                if ( score->ready ) {
+                    CG_DrawPic(iconx, y, 16, 16, cgs.media.readyShader);
+                } else {
+                    CG_DrawPic(iconx, y, 16, 16, cgs.media.notReadyShader);
+                }
             }
         }
     } else {
