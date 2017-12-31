@@ -761,6 +761,8 @@ typedef struct {
     qhandle_t   oacShader;
     qhandle_t   snowShader1;
     qhandle_t   snowShader2;
+    qhandle_t   readyShader;
+    qhandle_t   notReadyShader;
 
     qhandle_t	charsetShader;
     qhandle_t	charsetProp;
