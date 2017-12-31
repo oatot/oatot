@@ -319,6 +319,7 @@ typedef struct {
     int				deaths;
     int				damageTaken;
     int				damageGiven;
+    qboolean		ready;
     int				scoreFlags;
     int				powerUps;
     int				accuracy;
@@ -328,9 +329,9 @@ typedef struct {
     int				defendCount;
     int				assistCount;
     int				captures;
-    qboolean	perfect;
+    qboolean		perfect;
     int				team;
-    int			isDead;
+    int				isDead;
 } score_t;
 
 typedef struct {

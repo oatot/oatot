@@ -3036,10 +3036,10 @@ CG_DrawGameStageInfo
 static void CG_DrawGameStageInfo( void ) {
     if ( cgs.gameStage == FORMING_TEAMS ) {
         CG_DrawBigString(320 - 7 * BIGCHAR_WIDTH, 50, "^2FORMING TEAMS", 1.0F);
-        CG_DrawSmallString(320 - 27 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help, ^2/readyToBet ^7to start betting.", 1.0F);
+        CG_DrawSmallString(320 - 24 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help, ^2/ready ^7to start betting.", 1.0F);
     } else if ( cgs.gameStage == MAKING_BETS ) {
         CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 50, "^1MAKING BETS", 1.0F);
-        CG_DrawSmallString(320 - 30 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help, ^2/finishedBetting ^7to start the match.", 1.0F);
+        CG_DrawSmallString(320 - 12 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help.", 1.0F);
     } else if ( cgs.gameStage == PLAYING) {
         CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 50, "^3PLAYING", 1.0F);
         CG_DrawSmallString(320 - 12 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help.", 1.0F);

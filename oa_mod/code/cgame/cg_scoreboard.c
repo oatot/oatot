@@ -76,23 +76,37 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
     headx = SB_HEAD_X;
 
     // draw the handicap or bot skill marker (unless player has flag)
-    if (ci->powerups & (1 << PW_NEUTRALFLAG)) {
-            CG_DrawFlagModel(iconx, y, 16, 16, TEAM_FREE, qfalse);
-    } else if (ci->powerups & (1 << PW_REDFLAG)) {
-            CG_DrawFlagModel(iconx, y, 16, 16, TEAM_RED, qfalse);
-    } else if (ci->powerups & (1 << PW_BLUEFLAG)) {
-            CG_DrawFlagModel(iconx, y, 16, 16, TEAM_BLUE, qfalse);
-    } else {
+    if (cgs.gameStage == FORMING_TEAMS) {
         if (ci->botSkill > 0 && ci->botSkill <= 5) {
             if (cg_drawIcons.integer) {
                     CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
             }
-        } else if (ci->handicap < 100) {
-            Com_sprintf(string, sizeof ( string), "%i", ci->handicap);
-            if (cgs.gametype == GT_TOURNAMENT)
-                CG_DrawSmallStringColor(iconx, y - SMALLCHAR_HEIGHT / 2, string, color);
-            else
-                CG_DrawSmallStringColor(iconx, y, string, color);
+        } else {
+            if ( score->ready ) {
+                CG_DrawPic(iconx, y, 16, 16, cgs.media.readyShader);
+            } else {
+                CG_DrawPic(iconx, y, 16, 16, cgs.media.notReadyShader);
+            }
+        }
+    } else {
+        if (ci->powerups & (1 << PW_NEUTRALFLAG)) {
+                CG_DrawFlagModel(iconx, y, 16, 16, TEAM_FREE, qfalse);
+        } else if (ci->powerups & (1 << PW_REDFLAG)) {
+                CG_DrawFlagModel(iconx, y, 16, 16, TEAM_RED, qfalse);
+        } else if (ci->powerups & (1 << PW_BLUEFLAG)) {
+                CG_DrawFlagModel(iconx, y, 16, 16, TEAM_BLUE, qfalse);
+        } else {
+            if (ci->botSkill > 0 && ci->botSkill <= 5) {
+                if (cg_drawIcons.integer) {
+                        CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
+                }
+            } else if (ci->handicap < 100) {
+                Com_sprintf(string, sizeof ( string), "%i", ci->handicap);
+                if (cgs.gametype == GT_TOURNAMENT)
+                    CG_DrawSmallStringColor(iconx, y - SMALLCHAR_HEIGHT / 2, string, color);
+                else
+                    CG_DrawSmallStringColor(iconx, y, string, color);
+            }
         }
 
         // draw the wins / losses

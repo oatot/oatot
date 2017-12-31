@@ -71,10 +71,10 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 
         if(g_gametype.integer == GT_LMS) {
             Com_sprintf (entry, sizeof(entry),
-                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                          cl->ps.persistant[PERS_SCORE], ping,
                          cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
-                         (level.time - cl->pers.enterTime)/60000,
+                         cl->pers.ready, (level.time - cl->pers.enterTime)/60000,
                          scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                          cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
                          cl->ps.persistant[PERS_EXCELLENT_COUNT],
@@ -87,10 +87,10 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
         }
         else {
             Com_sprintf (entry, sizeof(entry),
-                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                          cl->ps.persistant[PERS_SCORE], ping,
                          cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
-                         (level.time - cl->pers.enterTime)/60000,
+                         cl->pers.ready, (level.time - cl->pers.enterTime)/60000,
                          scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                          cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
                          cl->ps.persistant[PERS_EXCELLENT_COUNT],
@@ -2203,12 +2203,12 @@ void Cmd_BidsSummary_f( gentity_t *ent ) {
 
 qboolean checkForRestart( void ) {
     if ( g_gameStage.integer == FORMING_TEAMS ) {
-        if ( g_readyToBetN.integer > ( level.numConnectedClients / 2 ) ) {
+        if ( g_readyN.integer > ( level.numPlayingClients / 2 ) ) {
             return qtrue;
         }
     }
     if ( g_gameStage.integer == MAKING_BETS ) {
-        if ( g_finishedBettingN.integer > ( level.numConnectedClients / 2 ) ) {
+        if ( g_betsMade.integer ) {
             return qtrue;
         }
     }
@@ -2217,10 +2217,10 @@ qboolean checkForRestart( void ) {
 
 /*
 ==================
-Cmd_ReadyToBet_f
+Cmd_Ready_f
 ==================
 */
-void Cmd_ReadyToBet_f( gentity_t *ent ) {
+void Cmd_Ready_f( gentity_t *ent ) {
     int new_val;
     char new_val_str[MAX_CVAR_VALUE_STRING];
     gclient_t *client = ent->client;
@@ -2233,52 +2233,32 @@ void Cmd_ReadyToBet_f( gentity_t *ent ) {
         return;
     }
     if ( client ) {
-        if ( !client->pers.readyToBet ) {
-            client->pers.readyToBet = qtrue;
-            new_val = g_readyToBetN.integer + 1;
+        if ( client->sess.sessionTeam == TEAM_SPECTATOR ) {
+            trap_SendServerCommand( ent-g_entities, "print \"^1Specs can't ^2/ready.\n\"" );
+            return;
+        } else if ( !client->pers.ready ) {
+            client->pers.ready = qtrue;
+            new_val = g_readyN.integer + 1;
             Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
-            trap_Cvar_Set( "g_readyToBetN", new_val_str );
+            trap_Cvar_Set( "g_readyN", new_val_str );
             G_UpdateCvars();
+            trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_GREEN " is ready.\n\"",
+                                           client->pers.netname) );
+            trap_SendServerCommand( ent-g_entities, "cp \"^2You are ready.\n\"");
             if ( checkForRestart() ) {
                 if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
                     trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
                 }
             }
-        }
-    } else {
-        trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
-    }
-}
-
-/*
-==================
-Cmd_FinishedBetting_f
-==================
-*/
-void Cmd_FinishedBetting_f( gentity_t *ent ) {
-    int new_val;
-    char new_val_str[MAX_CVAR_VALUE_STRING];
-    gclient_t *client = ent->client;
-    if ( g_gameStage.integer == FORMING_TEAMS ) {
-        trap_SendServerCommand( ent-g_entities, "print \"^1We haven't started to make bets yet, you stupid!\n\"" );
-        return;
-    }
-    if ( g_gameStage.integer == PLAYING ) {
-        trap_SendServerCommand( ent-g_entities, "print \"^1Too slow, they are playing already.\n\"" );
-        return;
-    }
-    if ( client ) {
-        if ( !client->pers.finishedBetting ) {
-            client->pers.finishedBetting = qtrue;
-            new_val = g_finishedBettingN.integer + 1;
+        } else if ( client->pers.ready ) {
+            client->pers.ready = qfalse;
+            new_val = g_readyN.integer - 1;
             Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
-            trap_Cvar_Set( "g_finishedBettingN", new_val_str );
+            trap_Cvar_Set( "g_readyN", new_val_str );
             G_UpdateCvars();
-            if ( checkForRestart() ) {
-                if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
-                    trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-                }
-            }
+            trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_RED " is not ready.\n\"",
+                                           client->pers.netname) );
+            trap_SendServerCommand( ent-g_entities, "cp \"^1You are not ready.\n\"");
         }
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
@@ -2633,8 +2613,7 @@ commands_t cmds[ ] =
     { "unbet", 0, Cmd_Unbet_f },
     { "pastBids", 0, Cmd_PastBids_f },
     { "bidsSummary", 0, Cmd_BidsSummary_f },
-    { "readyToBet", 0, Cmd_ReadyToBet_f },
-    { "finishedBetting", 0, Cmd_FinishedBetting_f },
+    { "ready", 0, Cmd_Ready_f },
     { "help", 0, Cmd_Help_f },
     { "shareBalance", 0, Cmd_ShareBalance_f },
     { "updateBalance", 0, Cmd_UpdateBalance_f },

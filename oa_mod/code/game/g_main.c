@@ -142,8 +142,10 @@ vmCvar_t	g_rockets;
 
 //oatot
 vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
-vmCvar_t	g_readyToBetN;
-vmCvar_t	g_finishedBettingN;
+vmCvar_t	g_readyN;
+vmCvar_t	g_rageQuit;
+vmCvar_t	g_makingBetsTime; // time for making bets & warmup before match (in mins)
+vmCvar_t	g_betsMade;
 
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
@@ -285,9 +287,11 @@ static cvarTable_t		gameCvarTable[] = {
     { &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
     //oatot
-    { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
-    { &g_readyToBetN, "g_readyToBetN", "0", CVAR_SERVERINFO, 0, qfalse },
-    { &g_finishedBettingN, "g_finishedBettingN", "0", CVAR_SERVERINFO, 0, qfalse },
+    { &g_gameStage, "g_gameStage", "0", 0, 0, qfalse },
+    { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
+    { &g_readyN, "g_rageQuit", "0", 0, 0, qfalse },
+    { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
+    { &g_readyN, "g_betsMade", "0", 0, 0, qfalse },
 
     //Votes start:
     { &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
@@ -797,23 +801,32 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_rockets.integer = 0;
         g_vampire.value = 0.0f;
     }
+
+    // oatot: load shared object for Go client
     G_LoadGoClientSo();
+    // oatot: tell the backend that we exist and initialize Go client
     GInitializeClient();
-    // oatot game stages changing logic:
-    if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+
+    // oatot game stages changing logic
+    if ( g_rageQuit.integer == 1 ) {
+        // rage quit
+        trap_Cvar_Set( "g_gameStage", "0" );
+        GOaChangeGameStage( FORMING_TEAMS );
+    } else if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
         // normal stage change or map change
         next_game_stage = ( g_gameStage.integer + 1 ) % 3;
         Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
         trap_Cvar_Set( "g_gameStage", next_game_stage_str );
         GOaChangeGameStage( next_game_stage );
     } else if ( g_gameStage.integer == MAKING_BETS ) {
-        // rage quit or was callvoted
+        // was callvoted
         trap_Cvar_Set( "g_gameStage", "0" );
         GOaChangeGameStage( FORMING_TEAMS );
     }
 
-    trap_Cvar_Set( "g_finishedBettingN", "0" );
-    trap_Cvar_Set( "g_readyToBetN", "0" );
+    trap_Cvar_Set( "g_readyN", "0" );
+    trap_Cvar_Set( "g_rageQuit", "0" );
+    trap_Cvar_Set( "g_betsMade", "0" );
 
     G_ProcessIPBans();
 
@@ -2363,6 +2376,29 @@ void CheckDomination(void)
 
 /*
 =============
+CheckOatotStageUpdate
+=============
+*/
+void CheckOatotStageUpdate( void )
+{
+    if ( g_gameStage.integer == MAKING_BETS ) {
+        if ( level.time > ( g_makingBetsTime.integer * 60000 ) ) {
+            trap_Cvar_Set( "g_betsMade", "1" );
+            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+        } else if ( ( level.time - g_makingBetsTime.integer * 60000 ) < 30000 ) {
+            if ( !level.timeWarningPrinted ) {
+                level.timeWarningPrinted = qtrue;
+                trap_SendServerCommand( -1, "cp \"^130 seconds before the start!!!\"" );
+            }
+        } else if ( !level.betsGreetingPrinted ) {
+                level.betsGreetingPrinted = qtrue;
+                trap_SendServerCommand( -1, "cp \"^22 minutes to make bets and warm up, come on! \"" );
+        }
+    }
+}
+
+/*
+=============
 CheckTournament
 
 Once a frame, check for changes in tournement player state
@@ -2917,6 +2953,8 @@ void G_RunFrame( int levelTime )
 
     // see if it is time to do a tournement restart
     CheckTournament();
+
+    CheckOatotStageUpdate();
 
     //Check Elimination state
     CheckElimination();
