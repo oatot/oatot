@@ -802,32 +802,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_vampire.value = 0.0f;
     }
 
-    // oatot: load shared object for Go client
-    G_LoadGoClientSo();
-    // oatot: tell the backend that we exist and initialize Go client
-    GInitializeClient();
-
-    // oatot game stages changing logic
-    if ( g_rageQuit.integer == 1 ) {
-        // rage quit
-        trap_Cvar_Set( "g_gameStage", "0" );
-        GOaChangeGameStage( FORMING_TEAMS );
-    } else if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
-        // normal stage change or map change
-        next_game_stage = ( g_gameStage.integer + 1 ) % 3;
-        Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
-        trap_Cvar_Set( "g_gameStage", next_game_stage_str );
-        GOaChangeGameStage( next_game_stage );
-    } else if ( g_gameStage.integer == MAKING_BETS ) {
-        // was callvoted
-        trap_Cvar_Set( "g_gameStage", "0" );
-        GOaChangeGameStage( FORMING_TEAMS );
-    }
-
-    trap_Cvar_Set( "g_readyN", "0" );
-    trap_Cvar_Set( "g_rageQuit", "0" );
-    trap_Cvar_Set( "g_betsMade", "0" );
-
     G_ProcessIPBans();
 
     //KK-OAX Changed to Tremulous's BG_InitMemory
@@ -932,6 +906,32 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         BotAILoadMap( restart );
         G_InitBots( restart );
     }
+
+    // oatot: load shared object for Go client
+    G_LoadGoClientSo();
+    // oatot: tell the backend that we exist and initialize Go client
+    GInitializeClient();
+
+    // oatot game stages changing logic
+    if ( g_rageQuit.integer == 1 ) {
+        // rage quit
+        trap_Cvar_Set( "g_gameStage", "0" );
+        GOaChangeGameStage( FORMING_TEAMS );
+    } else if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+        // normal stage change or map change
+        next_game_stage = ( g_gameStage.integer + 1 ) % 3;
+        Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
+        trap_Cvar_Set( "g_gameStage", next_game_stage_str );
+        GOaChangeGameStage( next_game_stage );
+    } else if ( g_gameStage.integer == MAKING_BETS ) {
+        // was callvoted
+        trap_Cvar_Set( "g_gameStage", "0" );
+        GOaChangeGameStage( FORMING_TEAMS );
+    }
+
+    trap_Cvar_Set( "g_readyN", "0" );
+    trap_Cvar_Set( "g_rageQuit", "0" );
+    trap_Cvar_Set( "g_betsMade", "0" );
 
     G_RemapTeamShaders();
 
