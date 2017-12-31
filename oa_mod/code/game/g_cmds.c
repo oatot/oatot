@@ -2203,7 +2203,8 @@ void Cmd_BidsSummary_f( gentity_t *ent ) {
 
 qboolean checkForRestart( void ) {
     if ( g_gameStage.integer == FORMING_TEAMS ) {
-        if ( g_readyN.integer > ( level.numPlayingClients / 2 ) ) {
+        int total_players = G_CountHumanPlayers( TEAM_RED ) + G_CountHumanPlayers( TEAM_BLUE );
+        if ( g_readyN.integer > ( total_players / 2 ) ) {
             return qtrue;
         }
     }
