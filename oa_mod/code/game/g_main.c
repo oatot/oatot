@@ -287,7 +287,7 @@ static cvarTable_t		gameCvarTable[] = {
     { &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
     //oatot
-    { &g_gameStage, "g_gameStage", "0", 0, 0, qfalse },
+    { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
     { &g_rageQuit, "g_rageQuit", "0", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
@@ -2381,18 +2381,22 @@ CheckOatotStageUpdate
 */
 void CheckOatotStageUpdate( void )
 {
+    int duration = level.time - level.startTime;
     if ( g_gameStage.integer == MAKING_BETS ) {
-        if ( level.time > ( g_makingBetsTime.integer * 60000 ) ) {
+        if ( duration > ( g_makingBetsTime.integer * 60000 ) ) {
+            // time is up
             trap_Cvar_Set( "g_betsMade", "1" );
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-        } else if ( ( level.time - g_makingBetsTime.integer * 60000 ) < 30000 ) {
+        } else if ( ( g_makingBetsTime.integer * 60000 - duration ) < 30000 ) {
+            // 30 seconds left
             if ( !level.timeWarningPrinted ) {
                 level.timeWarningPrinted = qtrue;
                 trap_SendServerCommand( -1, "cp \"^130 seconds before the start!!!\"" );
             }
         } else if ( !level.betsGreetingPrinted ) {
-                level.betsGreetingPrinted = qtrue;
-                trap_SendServerCommand( -1, "cp \"^22 minutes to make bets and warm up, come on! \"" );
+            // info which is printed once at the beginning
+            level.betsGreetingPrinted = qtrue;
+            trap_SendServerCommand( -1, "cp \"^22 minutes to make bets and warm up, come on! \"" );
         }
     }
 }

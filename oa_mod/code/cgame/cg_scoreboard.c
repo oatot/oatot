@@ -215,7 +215,7 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
 void CG_DrawSnow(int x, int y) {
     int shift = 24;
     int type = 0;
-    for ( x; x < 640; x += shift) {
+    for ( ; x < 640; x += shift) {
         if (type == 0) {
             CG_DrawPic(x, y, 24, 24, cgs.media.snowShader1);
             type += 1;
