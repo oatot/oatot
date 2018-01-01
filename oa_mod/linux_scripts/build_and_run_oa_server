@@ -19,6 +19,7 @@ fi
 mkdir -p ~/.openarena/$MODNAME
 
 #Copy all the resources needed
+mkdir -p ../build/release-linux-$ARCH/$MODNAME
 cp -r ../resources/* ../build/release-linux-$ARCH/$MODNAME
 
 pushd ..
