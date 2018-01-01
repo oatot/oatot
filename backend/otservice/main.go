@@ -51,8 +51,12 @@ func main() {
 				if err != nil {
 					log.Fatalf("server.Save: %v.", err)
 				}
-				if err := ioutil.WriteFile(*database, data, 0600); err != nil {
+				tmp := *database + ".new"
+				if err := ioutil.WriteFile(tmp, data, 0600); err != nil {
 					log.Fatalf("ioutil.WriteFile: %v.", err)
+				}
+				if err := os.Rename(tmp, *database); err != nil {
+					log.Fatalf("os.Rename: %v.", err)
 				}
 			}
 		}()
