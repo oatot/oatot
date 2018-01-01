@@ -1,4 +1,3 @@
-
 #Tip: You can create a supermake.local file and this script will get the variable from there!
 BINNAME=openarena-server
 MODNAME=oatot
@@ -19,19 +18,12 @@ fi
 #Create the mod dir
 mkdir -p ~/.openarena/$MODNAME
 
-#Copy texts from repo to build dir
-mkdir -p ../build/release-linux-$ARCH/$MODNAME/texts
-cp ../text/help_message*.txt ../build/release-linux-$ARCH/$MODNAME/texts
-
-#Copy images from repo to build dir
-mkdir -p ../build/release-linux-$ARCH/$MODNAME/images
-cp ../images/*.png ../build/release-linux-$ARCH/$MODNAME/images
+#Copy all the resources needed
+cp -r ../resources/* ../build/release-linux-$ARCH/$MODNAME
 
 pushd ..
 #Build, pak it and start
 make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images && $BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port 27963 +exec server.cfg
 
 
-
 popd
-
