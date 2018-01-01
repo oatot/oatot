@@ -2387,16 +2387,21 @@ void CheckOatotStageUpdate( void )
             // time is up
             trap_Cvar_Set( "g_betsMade", "1" );
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-        } else if ( ( g_makingBetsTime.integer * 60000 - duration ) < 30000 ) {
+        }
+        if ( ( g_makingBetsTime.integer * 60000 - duration ) < 30000 ) {
             // 30 seconds left
             if ( !level.timeWarningPrinted ) {
                 level.timeWarningPrinted = qtrue;
                 trap_SendServerCommand( -1, "cp \"^130 seconds before the start!!!\"" );
             }
-        } else if ( !level.betsGreetingPrinted ) {
-            // info which is printed once at the beginning
-            level.betsGreetingPrinted = qtrue;
-            trap_SendServerCommand( -1, "cp \"^22 minutes to make bets and warm up, come on! \"" );
+        }
+        if ( duration > 5000 ) {
+            // wait 5 secs before printing info to make sure everyone is able to see it
+            if ( !level.betsGreetingPrinted ) {
+                // info which is printed once at the beginning
+                level.betsGreetingPrinted = qtrue;
+                trap_SendServerCommand( -1, "cp \"^22 minutes to make bets and warm up, come on! \"" );
+            }
         }
     }
 }
