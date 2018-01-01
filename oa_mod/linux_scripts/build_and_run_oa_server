@@ -23,7 +23,7 @@ cp -r ../resources/* ../build/release-linux-$ARCH/$MODNAME
 
 pushd ..
 #Build, pak it and start
-make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images && $BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port 27963 +exec server.cfg
+make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images models scripts gfx && $BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port 27963 +exec server.cfg
 
 
 popd
