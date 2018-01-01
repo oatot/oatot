@@ -998,11 +998,15 @@ void Cmd_Team_f( gentity_t *ent ) {
     SetTeam( ent, s );
 
     if ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) ) {
-        ent->client->pers.ready = qfalse;
-        new_val = g_readyN.integer - 1;
-        Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
-        trap_Cvar_Set( "g_readyN", new_val_str );
-        G_UpdateCvars();
+        if ( g_gameStage.integer == FORMING_TEAMS ) {
+            if ( ent->client->pers.ready ) {
+                ent->client->pers.ready = qfalse;
+                new_val = g_readyN.integer - 1;
+                Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
+                trap_Cvar_Set( "g_readyN", new_val_str );
+                G_UpdateCvars();
+            }
+        }
     }
 
     ent->client->switchTeamTime = level.time + 5000;
