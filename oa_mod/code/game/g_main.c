@@ -2400,7 +2400,7 @@ void CheckOatotStageUpdate( void )
             if ( !level.betsGreetingPrinted ) {
                 // info which is printed once at the beginning
                 level.betsGreetingPrinted = qtrue;
-                trap_SendServerCommand( -1, "cp \"^22 minutes to make bets and warm up, come on! \"" );
+                trap_SendServerCommand( -1, va( "cp \"^2%d mins to make bets & warm up :) \"", g_makingBetsTime.integer ) );
             }
         }
     }
