@@ -345,9 +345,6 @@ func (s *Server) OaCloseBids(ctx context.Context, req *g.OaCloseBidsRequest) (*g
 func (s *Server) OaCloseBidsByIncident(ctx context.Context, req *g.OaCloseBidsByIncidentRequest) (*g.OaCloseBidsByIncidentResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != PLAYING && s.data.Stage != MAKING_BETS {
-		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
-	}
 	var bidIDs []int
 	for bidID := range s.data.ActiveBids {
 		bid := s.data.Bids[bidID]
