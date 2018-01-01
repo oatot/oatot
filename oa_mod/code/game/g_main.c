@@ -933,6 +933,13 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     trap_Cvar_Set( "g_rageQuit", "0" );
     trap_Cvar_Set( "g_betsMade", "0" );
 
+    if ( g_gameStage.integer == FORMING_TEAMS ) {
+        // at this stage, no bids should be active
+        // but if the map was callvot'ed, it is still possible,
+        // hence let's clear them.
+        GOaCloseBidsByIncident();
+    }
+
     G_RemapTeamShaders();
 
     //elimination:
