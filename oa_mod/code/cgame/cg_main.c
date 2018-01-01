@@ -1090,6 +1090,7 @@ static void CG_RegisterGraphics(void) {
     cgs.media.snowShader2 = trap_R_RegisterShader("images/snowflake2.png");
     cgs.media.readyShader = trap_R_RegisterShader("images/ready.png");
     cgs.media.notReadyShader = trap_R_RegisterShader("images/not_ready.png");
+    cgs.media.lockShader = trap_R_RegisterShader("images/lock.png");
 
     cgs.media.botSkillShaders[0] = trap_R_RegisterShader("menu/art/skill1.tga");
     cgs.media.botSkillShaders[1] = trap_R_RegisterShader("menu/art/skill2.tga");

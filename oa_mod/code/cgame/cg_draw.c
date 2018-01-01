@@ -3040,9 +3040,11 @@ static void CG_DrawGameStageInfo( void ) {
     } else if ( cgs.gameStage == MAKING_BETS ) {
         CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 50, "^1MAKING BETS", 1.0F);
         CG_DrawSmallString(320 - 12 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help.", 1.0F);
+        CG_DrawPic(320, 75, 50, 50, cgs.media.lockShader);
     } else if ( cgs.gameStage == PLAYING) {
         CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 50, "^3PLAYING", 1.0F);
         CG_DrawSmallString(320 - 12 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help.", 1.0F);
+        CG_DrawPic(320, 75, 50, 50, cgs.media.lockShader);
     }
 }
 

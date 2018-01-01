@@ -764,6 +764,7 @@ typedef struct {
     qhandle_t   snowShader2;
     qhandle_t   readyShader;
     qhandle_t   notReadyShader;
+    qhandle_t   lockShader;
 
     qhandle_t	charsetShader;
     qhandle_t	charsetProp;
