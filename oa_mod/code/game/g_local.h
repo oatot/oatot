@@ -364,8 +364,7 @@ typedef struct {
     int         damageTaken;
 
     // oatot
-    qboolean    readyToBet;
-    qboolean    finishedBetting;
+    qboolean    ready;
     qboolean    nextPageUsed; // shows if next_page is initialized
     char        next_page[MAX_STRING_CHARS]; // next page ID for pastBids()
     int         activeBidsIds[MAX_ACTIVE_BIDS_NUMBER];
@@ -624,6 +623,9 @@ typedef struct {
 
     int		max_humanplayers;
     int		lastActiveTime; ///< Updated as long as there are at least one human player on the server
+
+    qboolean    timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match
+    qboolean    betsGreetingPrinted; // oatot: print info about 2 mins to make bets
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1008,6 +1010,7 @@ qboolean G_BotConnect( int clientNum, qboolean restart );
 void Svcmd_AddBot_f( void );
 void Svcmd_BotList_f( void );
 void BotInterbreedEndMatch( void );
+int G_CountHumanPlayers( int team );
 
 //
 // g_playerstore.c
@@ -1163,9 +1166,11 @@ extern	vmCvar_t	g_music;
 extern  vmCvar_t        g_spawnprotect;
 
 //oatot
-extern	vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
-extern	vmCvar_t	g_readyToBetN;
-extern	vmCvar_t	g_finishedBettingN;
+extern	vmCvar_t	g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing
+extern	vmCvar_t	g_readyN;
+extern	vmCvar_t	g_rageQuit;
+extern	vmCvar_t	g_makingBetsTime;
+extern	vmCvar_t	g_betsMade;
 
 //elimination:
 extern	vmCvar_t	g_elimination_selfdamage;

@@ -142,8 +142,10 @@ vmCvar_t	g_rockets;
 
 //oatot
 vmCvar_t	g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
-vmCvar_t	g_readyToBetN;
-vmCvar_t	g_finishedBettingN;
+vmCvar_t	g_readyN;
+vmCvar_t	g_rageQuit;
+vmCvar_t	g_makingBetsTime; // time for making bets & warmup before match (in mins)
+vmCvar_t	g_betsMade;
 
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
@@ -286,8 +288,10 @@ static cvarTable_t		gameCvarTable[] = {
 
     //oatot
     { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
-    { &g_readyToBetN, "g_readyToBetN", "0", CVAR_SERVERINFO, 0, qfalse },
-    { &g_finishedBettingN, "g_finishedBettingN", "0", CVAR_SERVERINFO, 0, qfalse },
+    { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
+    { &g_rageQuit, "g_rageQuit", "0", 0, 0, qfalse },
+    { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
+    { &g_betsMade, "g_betsMade", "0", 0, 0, qfalse },
 
     //Votes start:
     { &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
@@ -797,23 +801,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         g_rockets.integer = 0;
         g_vampire.value = 0.0f;
     }
-    G_LoadGoClientSo();
-    GInitializeClient();
-    // oatot game stages changing logic:
-    if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
-        // normal stage change or map change
-        next_game_stage = ( g_gameStage.integer + 1 ) % 3;
-        Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
-        trap_Cvar_Set( "g_gameStage", next_game_stage_str );
-        GOaChangeGameStage( next_game_stage );
-    } else if ( g_gameStage.integer == MAKING_BETS ) {
-        // rage quit or was callvoted
-        trap_Cvar_Set( "g_gameStage", "0" );
-        GOaChangeGameStage( FORMING_TEAMS );
-    }
-
-    trap_Cvar_Set( "g_finishedBettingN", "0" );
-    trap_Cvar_Set( "g_readyToBetN", "0" );
 
     G_ProcessIPBans();
 
@@ -918,6 +905,41 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         BotAISetup( restart );
         BotAILoadMap( restart );
         G_InitBots( restart );
+    }
+
+    // oatot: load shared object for Go client
+    G_LoadGoClientSo();
+    // oatot: tell the backend that we exist and initialize Go client
+    GInitializeClient();
+
+    // oatot game stages changing logic
+    if ( g_rageQuit.integer == 1 ) {
+        // rage quit
+        trap_Cvar_Set( "g_gameStage", "0" );
+        GOaChangeGameStage( FORMING_TEAMS );
+    } else if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+        // normal stage change or map change
+        next_game_stage = ( g_gameStage.integer + 1 ) % 3;
+        Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
+        trap_Cvar_Set( "g_gameStage", next_game_stage_str );
+        GOaChangeGameStage( next_game_stage );
+    } else if ( g_gameStage.integer == MAKING_BETS ) {
+        // was callvoted
+        trap_Cvar_Set( "g_gameStage", "0" );
+        GOaChangeGameStage( FORMING_TEAMS );
+    }
+
+    trap_Cvar_Set( "g_readyN", "0" );
+    trap_Cvar_Set( "g_rageQuit", "0" );
+    trap_Cvar_Set( "g_betsMade", "0" );
+
+    G_UpdateCvars();
+
+    if ( g_gameStage.integer == FORMING_TEAMS ) {
+        // at this stage, no bids should be active
+        // but if the map was callvot'ed, it is still possible,
+        // hence let's clear them.
+        GOaCloseBidsByIncident();
     }
 
     G_RemapTeamShaders();
@@ -2363,6 +2385,38 @@ void CheckDomination(void)
 
 /*
 =============
+CheckOatotStageUpdate
+=============
+*/
+void CheckOatotStageUpdate( void )
+{
+    int duration = level.time - level.startTime;
+    if ( g_gameStage.integer == MAKING_BETS ) {
+        if ( duration > ( g_makingBetsTime.integer * 60000 ) ) {
+            // time is up
+            trap_Cvar_Set( "g_betsMade", "1" );
+            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+        }
+        if ( ( g_makingBetsTime.integer * 60000 - duration ) < 30000 ) {
+            // 30 seconds left
+            if ( !level.timeWarningPrinted ) {
+                level.timeWarningPrinted = qtrue;
+                trap_SendServerCommand( -1, "cp \"^130 seconds before the start!!!\"" );
+            }
+        }
+        if ( duration > 5000 ) {
+            // wait 5 secs before printing info to make sure everyone is able to see it
+            if ( !level.betsGreetingPrinted ) {
+                // info which is printed once at the beginning
+                level.betsGreetingPrinted = qtrue;
+                trap_SendServerCommand( -1, va( "cp \"^2%d mins to make bets & warm up :) \"", g_makingBetsTime.integer ) );
+            }
+        }
+    }
+}
+
+/*
+=============
 CheckTournament
 
 Once a frame, check for changes in tournement player state
@@ -2917,6 +2971,8 @@ void G_RunFrame( int levelTime )
 
     // see if it is time to do a tournement restart
     CheckTournament();
+
+    CheckOatotStageUpdate();
 
     //Check Elimination state
     CheckElimination();

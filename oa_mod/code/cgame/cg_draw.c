@@ -1603,8 +1603,11 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
         y = CG_DrawSnapshot(y);
     }
     if (cg_drawFPS.integer && (stereoFrame == STEREO_CENTER || stereoFrame == STEREO_RIGHT)) {
-        // TODO find another position for FPS, Timer and SpeedMeter.
-        //y = CG_DrawFPS(y);
+        if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR ) {
+            if ( cgs.gameStage == PLAYING ) {
+                y = CG_DrawFPS(y);
+            }
+        }
     }
     if (cgs.gametype == GT_ELIMINATION || cgs.gametype == GT_CTF_ELIMINATION || cgs.gametype == GT_LMS) {
         y = CG_DrawEliminationTimer(y);
@@ -1615,13 +1618,21 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     y = CG_DrawFollowMessage(y);
 
     if (cg_drawTimer.integer) {
-        //y = CG_DrawTimer(y);
+        if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR ) {
+            if ( cgs.gameStage == PLAYING ) {
+                y = CG_DrawTimer(y);
+            }
+        }
     }
     if (cg_drawAttacker.integer) {
         y = CG_DrawAttacker(y);
     }
     if (cg_drawSpeed.integer) {
-        //y = CG_DrawSpeedMeter(y);
+        if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR ) {
+            if ( cgs.gameStage == PLAYING ) {
+                y = CG_DrawSpeedMeter(y);
+            }
+        }
     }
 
 }
@@ -3025,11 +3036,13 @@ CG_DrawGameStageInfo
 static void CG_DrawGameStageInfo( void ) {
     if ( cgs.gameStage == FORMING_TEAMS ) {
         CG_DrawBigString(320 - 7 * BIGCHAR_WIDTH, 50, "^2FORMING TEAMS", 1.0F);
-        CG_DrawSmallString(320 - 27 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help, ^2/readyToBet ^7to start betting.", 1.0F);
+        CG_DrawSmallString(320 - 24 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help, ^2/ready ^7to start betting.", 1.0F);
     } else if ( cgs.gameStage == MAKING_BETS ) {
+        CG_DrawPic(270, 0, 100, 100, cgs.media.lockShader);
         CG_DrawBigString(320 - 6 * BIGCHAR_WIDTH, 50, "^1MAKING BETS", 1.0F);
-        CG_DrawSmallString(320 - 30 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help, ^2/finishedBetting ^7to start the match.", 1.0F);
+        CG_DrawSmallString(320 - 12 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help.", 1.0F);
     } else if ( cgs.gameStage == PLAYING) {
+        CG_DrawPic(270, 0, 100, 100, cgs.media.lockShader);
         CG_DrawBigString(320 - 4 * BIGCHAR_WIDTH, 50, "^3PLAYING", 1.0F);
         CG_DrawSmallString(320 - 12 * SMALLCHAR_WIDTH, 100, "Type ^2/help ^7to get help.", 1.0F);
     }
@@ -3062,7 +3075,7 @@ void CG_DrawBalance( void ) {
     }
     string_pos = 640 - ( GetValueLength( max_val ) / 2 ) - 3 * SMALLCHAR_WIDTH;
     if ( ( string_pos + 7 * SMALLCHAR_WIDTH ) > 640 ) {
-        string_pos = 640 - 7 * SMALLCHAR_WIDTH;
+        string_pos = 640 - 8 * SMALLCHAR_WIDTH;
     }
     left_side = string_pos - 5;
     if ( oac_pos < left_side ) {
@@ -3072,7 +3085,7 @@ void CG_DrawBalance( void ) {
         left_side = btc_pos - 5;
     }
     CG_DrawBalanceBar( left_side );
-    CG_DrawSmallStringColor( string_pos, 170, "^2Balance", GetGameStageColor() );
+    CG_DrawSmallStringColor( string_pos, 170, "^2Balance ", GetGameStageColor() );
     CG_DrawValue( oac_pos, 210, oac_val, -1, "OAC" );
     CG_DrawValue( btc_pos, 255, btc_val, -1, "BTC" );
 }

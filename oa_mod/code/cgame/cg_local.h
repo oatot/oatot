@@ -319,6 +319,7 @@ typedef struct {
     int				deaths;
     int				damageTaken;
     int				damageGiven;
+    qboolean		ready;
     int				scoreFlags;
     int				powerUps;
     int				accuracy;
@@ -328,9 +329,9 @@ typedef struct {
     int				defendCount;
     int				assistCount;
     int				captures;
-    qboolean	perfect;
+    qboolean		perfect;
     int				team;
-    int			isDead;
+    int				isDead;
 } score_t;
 
 typedef struct {
@@ -761,6 +762,9 @@ typedef struct {
     qhandle_t   oacShader;
     qhandle_t   snowShader1;
     qhandle_t   snowShader2;
+    qhandle_t   readyShader;
+    qhandle_t   notReadyShader;
+    qhandle_t   lockShader;
 
     qhandle_t	charsetShader;
     qhandle_t	charsetProp;
@@ -1573,6 +1577,7 @@ void CG_DrawStringExt( int x, int y, const char *string, const float *setColor,
 void CG_DrawBigString( int x, int y, const char *s, float alpha );
 void CG_DrawBigStringColor( int x, int y, const char *s, vec4_t color );
 void CG_DrawSmallString( int x, int y, const char *s, float alpha );
+void CG_DrawSmallStringLen( int x, int y, const char *s, float alpha, int len );
 void CG_DrawSmallStringColor( int x, int y, const char *s, vec4_t color );
 
 int CG_DrawStrlen( const char *str );

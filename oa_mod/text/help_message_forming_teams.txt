@@ -1,6 +1,6 @@
 ^2Help
 ^1----
-^6Type ^1/readyToBet^6 if you think that teams are already formed.
+^6Type ^1/ready^6 if you think that teams are already formed.
 ^6Type ^1/pastBids^6 to get last 15 closed bets, type ^1/pastBids elder^6
 to get previous 15 bets.
 ^6Type ^1/bidsSummary^6 to get info on your total lose/win stats for all the bets.

@@ -759,7 +759,7 @@ qboolean	BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 
 //g_videoflags->integer
 #define VF_LOCK_CVARS_BASIC             1
-#define VF_LOCK_CVARS_EXTENDED          2
+#define VF_LOCK_CVARS_EXTENDED          0
 #define VF_LOCK_VERTEX                  4
 
 // g_elimflags->integer

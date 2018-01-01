@@ -1530,8 +1530,7 @@ void ClientBegin( int clientNum ) {
     client->pers.damageTaken = 0;
 
     // oatot
-    client->pers.readyToBet = qfalse;
-    client->pers.finishedBetting = qfalse;
+    client->pers.ready = qfalse;
     client->pers.nextPageUsed = qfalse;
 
     client->pers.connected = CON_CONNECTED;
@@ -2132,18 +2131,10 @@ void ClientDisconnect( int clientNum ) {
     }
 
     if ( g_gameStage.integer == FORMING_TEAMS ) {
-        if ( ent->client->pers.readyToBet ) {
-            new_val = g_readyToBetN.integer - 1;
+        if ( ent->client->pers.ready ) {
+            new_val = g_readyN.integer - 1;
             Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
-            trap_Cvar_Set( "g_readyToBetN", new_val_str );
-        }
-    }
-
-    if ( g_gameStage.integer == MAKING_BETS ) {
-        if ( ent->client->pers.finishedBetting ) {
-            new_val = g_finishedBettingN.integer - 1;
-            Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
-            trap_Cvar_Set( "g_finishedBettingN", new_val_str );
+            trap_Cvar_Set( "g_readyN", new_val_str );
         }
     }
 
@@ -2151,11 +2142,15 @@ void ClientDisconnect( int clientNum ) {
 
     if ( checkForRestart() ) {
         // perhaps the majority is ready now
-        trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+        if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
+            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+        }
     }
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
             // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
+            trap_SendServerCommand( -1, "cp \"^1We got rage-quitter! Restart!\n\"");
+            trap_Cvar_Set( "g_rageQuit", "1" );
             GOaCloseBidsByIncident();
             trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
         }
