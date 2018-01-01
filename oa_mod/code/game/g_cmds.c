@@ -954,8 +954,9 @@ Cmd_Team_f
 =================
 */
 void Cmd_Team_f( gentity_t *ent ) {
-    int			oldTeam;
+    int			oldTeam, new_val;
     char		s[MAX_TOKEN_CHARS];
+    char        new_val_str[MAX_CVAR_VALUE_STRING];
     qboolean    force;
 
     if ( trap_Argc() != 2 ) {
@@ -995,6 +996,14 @@ void Cmd_Team_f( gentity_t *ent ) {
     trap_Argv( 1, s, sizeof( s ) );
 
     SetTeam( ent, s );
+
+    else if ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) ) {
+        ent->client->pers.ready = qfalse;
+        new_val = g_readyN.integer - 1;
+        Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
+        trap_Cvar_Set( "g_readyN", new_val_str );
+        G_UpdateCvars();
+    }
 
     ent->client->switchTeamTime = level.time + 5000;
 }
@@ -2226,11 +2235,11 @@ void Cmd_Ready_f( gentity_t *ent ) {
     char new_val_str[MAX_CVAR_VALUE_STRING];
     gclient_t *client = ent->client;
     if ( g_gameStage.integer == MAKING_BETS ) {
-        trap_SendServerCommand( ent-g_entities, "print \"^2You can do it already.\n\"" );
+        trap_SendServerCommand( ent-g_entities, "print \"^2You can make bets now.\n\"" );
         return;
     }
     if ( g_gameStage.integer == PLAYING ) {
-        trap_SendServerCommand( ent-g_entities, "print \"^1Too slow, they are playing already.\n\"" );
+        trap_SendServerCommand( ent-g_entities, "print \"^1Too slow, they are already playing.\n\"" );
         return;
     }
     if ( client ) {
