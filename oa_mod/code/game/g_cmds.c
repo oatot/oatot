@@ -995,8 +995,6 @@ void Cmd_Team_f( gentity_t *ent ) {
 
     trap_Argv( 1, s, sizeof( s ) );
 
-    SetTeam( ent, s );
-
     if ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) ) {
         if ( g_gameStage.integer == FORMING_TEAMS ) {
             if ( ent->client->pers.ready ) {
@@ -1008,6 +1006,8 @@ void Cmd_Team_f( gentity_t *ent ) {
             }
         }
     }
+
+    SetTeam( ent, s );
 
     ent->client->switchTeamTime = level.time + 5000;
 }
