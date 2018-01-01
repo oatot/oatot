@@ -997,7 +997,7 @@ void Cmd_Team_f( gentity_t *ent ) {
 
     SetTeam( ent, s );
 
-    else if ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) ) {
+    if ( Q_strequal( s, "spectator" ) || Q_strequal( s, "s" ) ) {
         ent->client->pers.ready = qfalse;
         new_val = g_readyN.integer - 1;
         Q_snprintf( new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val );
