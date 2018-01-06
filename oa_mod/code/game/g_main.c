@@ -2108,20 +2108,26 @@ void transferPrizeMoney( int* balances_before, int* balances_after, char* winner
     // Amount of "prize" is equal to player score.
     for ( i = 0; i < g_maxclients.integer; i++ ) {
         cl = level.clients + i;
-        if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
-            if ( g_gameStage.integer == PLAYING ) {
-                if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
-                    score = cl->ps.persistant[PERS_SCORE];
-                    change = balances_after[i] - balances_before[i];
-                    if ( Q_strequal( winner, "red" ) && ( cl->sess.sessionTeam == TEAM_RED ) ){
-                        GOaTransferMoney( cl->pers.guid, score, "OAC" );
-                        trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
+        if ( g_gameStage.integer == PLAYING ) {
+            if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
+                score = cl->ps.persistant[PERS_SCORE];
+                change = balances_after[i] - balances_before[i];
+                if ( Q_strequal( winner, "red" ) && ( cl->sess.sessionTeam == TEAM_RED ) ) {
+                    if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
                         GOaTransferMoney( cl->pers.guid, score, "OAC" );
                         trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
                     } else {
                         trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                     }
+                } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
+                    if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
+                        GOaTransferMoney( cl->pers.guid, score, "OAC" );
+                        trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
+                    } else {
+                        trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
+                    }
+                } else {
+                    trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                 }
             }
         }
