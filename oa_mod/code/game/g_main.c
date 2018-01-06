@@ -2198,8 +2198,8 @@ void CheckExitRules( void )
             } else {
                 endOfMatchLogic( "blue" );
             }
-            G_UpdateActiveBidsSums( "red" );
-            G_UpdateActiveBidsSums( "blue" );
+            G_UpdateActiveBidsSums( "red", 0 );
+            G_UpdateActiveBidsSums( "blue", 0 );
 
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
@@ -2246,8 +2246,8 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
             endOfMatchLogic( "red" );
-            G_UpdateActiveBidsSums( "red" );
-            G_UpdateActiveBidsSums( "blue" );
+            G_UpdateActiveBidsSums( "red", 0 );
+            G_UpdateActiveBidsSums( "blue", 0 );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2255,8 +2255,8 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
             endOfMatchLogic( "blue" );
-            G_UpdateActiveBidsSums( "red" );
-            G_UpdateActiveBidsSums( "blue" );
+            G_UpdateActiveBidsSums( "red", 0 );
+            G_UpdateActiveBidsSums( "blue", 0 );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2754,10 +2754,15 @@ void G_UpdateActiveBids( gentity_t* ent )
 G_UpdateActiveBidsSums
 ==================
 */
-void G_UpdateActiveBidsSums( char* horse )
+void G_UpdateActiveBidsSums( char* horse, gentity_t* ent )
 {
     betSum_t bet_sum = GOaActiveBidsSums( horse );
-    trap_SendServerCommand( -1, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+    if ( !ent) {
+        trap_SendServerCommand( -1, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+    } else {
+        trap_SendServerCommand( ent - g_entities, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+
+    }
 }
 
 static void CheckEmpty ( void )

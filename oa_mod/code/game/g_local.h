@@ -1070,7 +1070,7 @@ int G_GetActiveBids( gentity_t* ent, bid_t* bids );
 // oatot: draw updates
 void G_UpdateBalance( gentity_t* ent );
 void G_UpdateActiveBids( gentity_t* ent );
-void G_UpdateActiveBidsSums( char* horse );
+void G_UpdateActiveBidsSums( char* horse, gentity_t* ent );
 
 // ai_main.c
 #define MAX_FILEPATH			144

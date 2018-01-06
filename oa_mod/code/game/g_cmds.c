@@ -2077,7 +2077,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
 
             G_UpdateBalance( ent );
             G_UpdateActiveBids( ent );
-            G_UpdateActiveBidsSums( arg1 );
+            G_UpdateActiveBidsSums( arg1, 0 );
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
@@ -2113,8 +2113,8 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 
         G_UpdateBalance( ent );
         G_UpdateActiveBids( ent );
-        G_UpdateActiveBidsSums( "red" );
-        G_UpdateActiveBidsSums( "blue" );
+        G_UpdateActiveBidsSums( "red", 0 );
+        G_UpdateActiveBidsSums( "blue", 0 );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
@@ -2377,7 +2377,7 @@ void Cmd_UpdateActiveBidsSums_f( gentity_t *ent ) {
     gclient_t *client = ent->client;
     if ( client ) {
         trap_Argv( 1, arg1, sizeof( arg1 ) );
-        G_UpdateActiveBidsSums( arg1 );
+        G_UpdateActiveBidsSums( arg1, ent );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }
