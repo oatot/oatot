@@ -196,9 +196,9 @@ static void CG_DrawClientScore(int y, score_t *score, float *color, float fade, 
         CG_DrawSmallString(SB_SCORELINE_X + 45 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade);
         if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
             CG_DrawSmallString(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade);
-            CG_DrawSmallString(SB_SCORELINE_X + 67 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 68 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
         } else {
-            CG_DrawSmallString(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 55 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
         }
     }
 
@@ -350,10 +350,10 @@ qboolean CG_DrawOldScoreboard(void) {
     y = SB_HEADER;
 
     if (!atoi( Info_ValueForKey( info, "g_instantgib" ) )) {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg          ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg           ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     } else {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D       ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     }
 
