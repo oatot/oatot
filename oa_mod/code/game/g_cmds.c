@@ -2065,7 +2065,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
             StrToUpper( arg3 );
             money = atoi( arg2 );
             if ( money <= 0 || money > G_GetBalance( ent, arg3 ).free_money ) {
-                trap_SendServerCommand( ent-g_entities, "print \"^1Invalid amount of money.\n\"" );
+                trap_SendServerCommand( ent-g_entities, "print \"^1Insufficient amount of money.\n\"" );
                 return;
             }
             bid_t bid;
