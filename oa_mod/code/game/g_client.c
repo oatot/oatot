@@ -1487,7 +1487,7 @@ void printWelcomeMessage( int clientNum ) {
     trap_SendServerCommand( clientNum, "print \"^4> ^3Welcome to ^6OATOT ^3mod.\n\"" );
     trap_SendServerCommand( clientNum, "print \"^4> ^3New OpenArena mod for making bets in-game!\n\"" );
     trap_SendServerCommand( clientNum, "print \"^4> ^3Read more: ^1<link to guild-oa.com section>\n\"" );
-    trap_SendServerCommand( clientNum, "print \"^4> ^3Source code is also available: ^1https://github.com/OaGuild/oatot\n\"" );
+    trap_SendServerCommand( clientNum, "print \"^4> ^3Source code is also available: ^1github.com/OaGuild/oatot\n\"" );
     trap_SendServerCommand( clientNum, "print \"^4> ^3Enjoy!\n\"" );
     trap_SendServerCommand( clientNum, "print \"^2==========================================================\n\"" );
 }
