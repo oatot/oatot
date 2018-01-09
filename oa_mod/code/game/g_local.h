@@ -82,6 +82,7 @@ typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
 
 // oatot
+qboolean needToUpdateGameStage( void );
 qboolean checkForRestart( void );
 
 typedef struct bid_s bid_t;
@@ -1170,7 +1171,8 @@ extern	vmCvar_t	g_gameStage; // 0 for forming teams, 1 for making bets, 2 for pl
 extern	vmCvar_t	g_readyN;
 extern	vmCvar_t	g_rageQuit;
 extern	vmCvar_t	g_makingBetsTime;
-extern	vmCvar_t	g_betsMade;
+extern	vmCvar_t	g_betsMade; // set to 1 after restart at MAKING_BETS
+extern	vmCvar_t	g_readyToBet; // set to 1 after restart at FORMING_TEAMS
 
 //elimination:
 extern	vmCvar_t	g_elimination_selfdamage;

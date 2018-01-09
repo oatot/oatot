@@ -2142,6 +2142,7 @@ void ClientDisconnect( int clientNum ) {
 
     if ( checkForRestart() ) {
         // perhaps the majority is ready now
+        trap_Cvar_Set( "g_readyToBet", "1" );
         trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
     }
     if ( g_gameStage.integer != FORMING_TEAMS ) {

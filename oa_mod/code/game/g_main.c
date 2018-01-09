@@ -146,6 +146,7 @@ vmCvar_t	g_readyN;
 vmCvar_t	g_rageQuit;
 vmCvar_t	g_makingBetsTime; // time for making bets & warmup before match (in mins)
 vmCvar_t	g_betsMade;
+vmCvar_t	g_readyToBet;
 
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
@@ -292,6 +293,7 @@ static cvarTable_t		gameCvarTable[] = {
     { &g_rageQuit, "g_rageQuit", "0", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
     { &g_betsMade, "g_betsMade", "0", 0, 0, qfalse },
+    { &g_readyToBet, "g_readyToBet", "0", 0, 0, qfalse },
 
     //Votes start:
     { &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
@@ -917,7 +919,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         // rage quit
         trap_Cvar_Set( "g_gameStage", "0" );
         GOaChangeGameStage( FORMING_TEAMS );
-    } else if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+    } else if ( needToUpdateGameStage() || ( g_gameStage.integer == PLAYING ) ) {
         // normal stage change or map change
         next_game_stage = ( g_gameStage.integer + 1 ) % 3;
         Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
@@ -932,6 +934,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     trap_Cvar_Set( "g_readyN", "0" );
     trap_Cvar_Set( "g_rageQuit", "0" );
     trap_Cvar_Set( "g_betsMade", "0" );
+    trap_Cvar_Set( "g_readyToBet", "0" );
 
     G_UpdateCvars();
 
