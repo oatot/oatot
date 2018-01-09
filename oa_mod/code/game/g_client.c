@@ -2142,9 +2142,7 @@ void ClientDisconnect( int clientNum ) {
 
     if ( checkForRestart() ) {
         // perhaps the majority is ready now
-        if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
-            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-        }
+        trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
     }
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {

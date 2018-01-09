@@ -2216,9 +2216,12 @@ void Cmd_BidsSummary_f( gentity_t *ent ) {
 
 qboolean checkForRestart( void ) {
     if ( g_gameStage.integer == FORMING_TEAMS ) {
-        int total_players = G_CountHumanPlayers( TEAM_RED ) + G_CountHumanPlayers( TEAM_BLUE );
-        if ( g_readyN.integer > ( total_players / 2 ) ) {
-            return qtrue;
+        int red_players = G_CountHumanPlayers( TEAM_RED );
+        int blue_players = G_CountHumanPlayers( TEAM_BLUE );
+        if ( ( red_players >= 1 ) && ( blue_players >= 1 ) ) {
+            if ( g_readyN.integer > ( ( red_players + blue_players ) / 2 ) ) {
+                return qtrue;
+            }
         }
     }
     if ( g_gameStage.integer == MAKING_BETS ) {
@@ -2260,9 +2263,7 @@ void Cmd_Ready_f( gentity_t *ent ) {
                                            client->pers.netname) );
             trap_SendServerCommand( ent-g_entities, "cp \"^2You are ready.\n\"");
             if ( checkForRestart() ) {
-                if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
-                    trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-                }
+                trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
             }
         } else if ( client->pers.ready ) {
             client->pers.ready = qfalse;
