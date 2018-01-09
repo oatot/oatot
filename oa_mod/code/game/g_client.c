@@ -2148,11 +2148,13 @@ void ClientDisconnect( int clientNum ) {
     }
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
-            // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-            trap_SendServerCommand( -1, "cp \"^1We got rage-quitter! Restart!\n\"");
-            trap_Cvar_Set( "g_rageQuit", "1" );
-            GOaCloseBidsByIncident();
-            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+            if ( !level.intermissiontime ) {
+                // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
+                trap_SendServerCommand( -1, "cp \"^1We got rage-quitter! Restart!\n\"");
+                trap_Cvar_Set( "g_rageQuit", "1" );
+                GOaCloseBidsByIncident();
+                trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+            }
         }
     }
 }
