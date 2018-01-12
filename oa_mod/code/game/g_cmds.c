@@ -2644,9 +2644,9 @@ commands_t cmds[ ] =
     { "ready", 0, Cmd_Ready_f },
     { "help", 0, Cmd_Help_f },
     { "shareBalance", 0, Cmd_ShareBalance_f },
-    { "updateBalance", 0, Cmd_UpdateBalance_f },
-    { "updateActiveBids", 0, Cmd_UpdateActiveBids_f },
-    { "updateActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },
+    { "getBalance", 0, Cmd_UpdateBalance_f },
+    { "getActiveBids", 0, Cmd_UpdateActiveBids_f },
+    { "getActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },
