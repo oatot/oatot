@@ -1288,8 +1288,8 @@ void ClientUserinfoChanged( int clientNum ) {
 
     G_UpdateBalance( ent );
     G_UpdateActiveBids( ent );
-    G_UpdateActiveBidsSums( "red" );
-    G_UpdateActiveBidsSums( "blue" );
+    G_UpdateActiveBidsSums( "red", ent );
+    G_UpdateActiveBidsSums( "blue", ent );
 
     // this is not the userinfo, more like the configstring actually
     G_LogPrintf( "ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid") );
@@ -1487,7 +1487,7 @@ void printWelcomeMessage( int clientNum ) {
     trap_SendServerCommand( clientNum, "print \"^4> ^3Welcome to ^6OATOT ^3mod.\n\"" );
     trap_SendServerCommand( clientNum, "print \"^4> ^3New OpenArena mod for making bets in-game!\n\"" );
     trap_SendServerCommand( clientNum, "print \"^4> ^3Read more: ^1<link to guild-oa.com section>\n\"" );
-    trap_SendServerCommand( clientNum, "print \"^4> ^3Source code is also available: ^1https://github.com/OaGuild/oatot\n\"" );
+    trap_SendServerCommand( clientNum, "print \"^4> ^3Source code is also available: ^1github.com/OaGuild/oatot\n\"" );
     trap_SendServerCommand( clientNum, "print \"^4> ^3Enjoy!\n\"" );
     trap_SendServerCommand( clientNum, "print \"^2==========================================================\n\"" );
 }
@@ -2142,17 +2142,18 @@ void ClientDisconnect( int clientNum ) {
 
     if ( checkForRestart() ) {
         // perhaps the majority is ready now
-        if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
-            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-        }
+        trap_Cvar_Set( "g_readyToBet", "1" );
+        trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
     }
     if ( g_gameStage.integer != FORMING_TEAMS ) {
         if ( cl_team != TEAM_SPECTATOR ) {
-            // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-            trap_SendServerCommand( -1, "cp \"^1We got rage-quitter! Restart!\n\"");
-            trap_Cvar_Set( "g_rageQuit", "1" );
-            GOaCloseBidsByIncident();
-            trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+            if ( !level.intermissiontime ) {
+                // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
+                trap_SendServerCommand( -1, "cp \"^1We got rage-quitter! Restart!\n\"");
+                trap_Cvar_Set( "g_rageQuit", "1" );
+                GOaCloseBidsByIncident();
+                trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
+            }
         }
     }
 }

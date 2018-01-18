@@ -2065,7 +2065,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
             StrToUpper( arg3 );
             money = atoi( arg2 );
             if ( money <= 0 || money > G_GetBalance( ent, arg3 ).free_money ) {
-                trap_SendServerCommand( ent-g_entities, "print \"^1Invalid amount of money.\n\"" );
+                trap_SendServerCommand( ent-g_entities, "print \"^1Insufficient amount of money.\n\"" );
                 return;
             }
             bid_t bid;
@@ -2077,7 +2077,7 @@ void Cmd_Bet_f( gentity_t *ent ) {
 
             G_UpdateBalance( ent );
             G_UpdateActiveBids( ent );
-            G_UpdateActiveBidsSums( arg1 );
+            G_UpdateActiveBidsSums( arg1, 0 );
             trap_SendServerCommand( ent-g_entities, "print \"^2Your bet is made.\n\"" );
         } else {
             trap_SendServerCommand( ent-g_entities, "print \"^1You can't make so many bets, sorry!\n\"" );
@@ -2113,8 +2113,8 @@ void Cmd_Unbet_f( gentity_t *ent ) {
 
         G_UpdateBalance( ent );
         G_UpdateActiveBids( ent );
-        G_UpdateActiveBidsSums( "red" );
-        G_UpdateActiveBidsSums( "blue" );
+        G_UpdateActiveBidsSums( "red", 0 );
+        G_UpdateActiveBidsSums( "blue", 0 );
         trap_SendServerCommand( ent-g_entities, "print \"^2Bet was discarded.\n\"" );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
@@ -2214,16 +2214,31 @@ void Cmd_BidsSummary_f( gentity_t *ent ) {
     }
 }
 
-qboolean checkForRestart( void ) {
+/* Use this function in G_Init() only. */
+qboolean needToUpdateGameStage( void ) {
     if ( g_gameStage.integer == FORMING_TEAMS ) {
-        int total_players = G_CountHumanPlayers( TEAM_RED ) + G_CountHumanPlayers( TEAM_BLUE );
-        if ( g_readyN.integer > ( total_players / 2 ) ) {
+        if ( g_readyToBet.integer ) {
             return qtrue;
         }
     }
     if ( g_gameStage.integer == MAKING_BETS ) {
         if ( g_betsMade.integer ) {
             return qtrue;
+        }
+    }
+    return qfalse;
+}
+
+/* Just check if the majority is now ready to bet. */
+qboolean checkForRestart( void ) {
+    if ( g_gameStage.integer == FORMING_TEAMS ) {
+        int red_players = G_CountHumanPlayers( TEAM_RED );
+        int blue_players = G_CountHumanPlayers( TEAM_BLUE );
+        if ( ( red_players >= 1 ) && ( blue_players >= 1 ) ) {
+            // At least 1v1 is needed to start.
+            if ( g_readyN.integer > ( ( red_players + blue_players ) / 2 ) ) {
+                return qtrue;
+            }
         }
     }
     return qfalse;
@@ -2260,9 +2275,8 @@ void Cmd_Ready_f( gentity_t *ent ) {
                                            client->pers.netname) );
             trap_SendServerCommand( ent-g_entities, "cp \"^2You are ready.\n\"");
             if ( checkForRestart() ) {
-                if ( ( G_CountHumanPlayers( TEAM_RED ) >= 1 ) && ( G_CountHumanPlayers( TEAM_BLUE ) >= 1 ) ) {
-                    trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
-                }
+                trap_Cvar_Set( "g_readyToBet", "1" );
+                trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
             }
         } else if ( client->pers.ready ) {
             client->pers.ready = qfalse;
@@ -2377,7 +2391,7 @@ void Cmd_UpdateActiveBidsSums_f( gentity_t *ent ) {
     gclient_t *client = ent->client;
     if ( client ) {
         trap_Argv( 1, arg1, sizeof( arg1 ) );
-        G_UpdateActiveBidsSums( arg1 );
+        G_UpdateActiveBidsSums( arg1, ent );
     } else {
         trap_SendServerCommand( ent-g_entities, "print \"^1You aren't a client!\n\"" );
     }
@@ -2630,9 +2644,9 @@ commands_t cmds[ ] =
     { "ready", 0, Cmd_Ready_f },
     { "help", 0, Cmd_Help_f },
     { "shareBalance", 0, Cmd_ShareBalance_f },
-    { "updateBalance", 0, Cmd_UpdateBalance_f },
-    { "updateActiveBids", 0, Cmd_UpdateActiveBids_f },
-    { "updateActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },
+    { "getBalance", 0, Cmd_UpdateBalance_f },
+    { "getActiveBids", 0, Cmd_UpdateActiveBids_f },
+    { "getActiveBidsSums", 0, Cmd_UpdateActiveBidsSums_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },

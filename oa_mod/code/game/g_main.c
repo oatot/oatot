@@ -146,6 +146,7 @@ vmCvar_t	g_readyN;
 vmCvar_t	g_rageQuit;
 vmCvar_t	g_makingBetsTime; // time for making bets & warmup before match (in mins)
 vmCvar_t	g_betsMade;
+vmCvar_t	g_readyToBet;
 
 //dmn_clowns suggestions (with my idea of implementing):
 vmCvar_t	g_instantgib;
@@ -292,6 +293,7 @@ static cvarTable_t		gameCvarTable[] = {
     { &g_rageQuit, "g_rageQuit", "0", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
     { &g_betsMade, "g_betsMade", "0", 0, 0, qfalse },
+    { &g_readyToBet, "g_readyToBet", "0", 0, 0, qfalse },
 
     //Votes start:
     { &g_allowVote, "g_allowVote", "1", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qfalse },
@@ -917,7 +919,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
         // rage quit
         trap_Cvar_Set( "g_gameStage", "0" );
         GOaChangeGameStage( FORMING_TEAMS );
-    } else if ( checkForRestart() || ( g_gameStage.integer == PLAYING ) ) {
+    } else if ( needToUpdateGameStage() || ( g_gameStage.integer == PLAYING ) ) {
         // normal stage change or map change
         next_game_stage = ( g_gameStage.integer + 1 ) % 3;
         Q_snprintf( next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage );
@@ -932,6 +934,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     trap_Cvar_Set( "g_readyN", "0" );
     trap_Cvar_Set( "g_rageQuit", "0" );
     trap_Cvar_Set( "g_betsMade", "0" );
+    trap_Cvar_Set( "g_readyToBet", "0" );
 
     G_UpdateCvars();
 
@@ -2108,20 +2111,26 @@ void transferPrizeMoney( int* balances_before, int* balances_after, char* winner
     // Amount of "prize" is equal to player score.
     for ( i = 0; i < g_maxclients.integer; i++ ) {
         cl = level.clients + i;
-        if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
-            if ( g_gameStage.integer == PLAYING ) {
-                if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
-                    score = cl->ps.persistant[PERS_SCORE];
-                    change = balances_after[i] - balances_before[i];
-                    if ( Q_strequal( winner, "red" ) && ( cl->sess.sessionTeam == TEAM_RED ) ){
+        if ( g_gameStage.integer == PLAYING ) {
+            if ( !GOaIsNew( cl->pers.guid ) && ( cl->pers.connected == CON_CONNECTED ) ) {
+                score = cl->ps.persistant[PERS_SCORE];
+                change = balances_after[i] - balances_before[i];
+                if ( Q_strequal( winner, "red" ) && ( cl->sess.sessionTeam == TEAM_RED ) ) {
+                    if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
                         GOaTransferMoney( cl->pers.guid, score, "OAC" );
                         trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
-                        GOaTransferMoney( cl->pers.guid, score, "OAC" );
-                        trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else {
+                    } else if ( cl->sess.activeBidsNumber != 0 ) {
                         trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                     }
+                } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
+                    if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
+                        GOaTransferMoney( cl->pers.guid, score, "OAC" );
+                        trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
+                    } else if ( cl->sess.activeBidsNumber != 0 ) {
+                        trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
+                    }
+                } else if ( cl->sess.activeBidsNumber != 0 ) {
+                    trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                 }
             }
         }
@@ -2198,8 +2207,8 @@ void CheckExitRules( void )
             } else {
                 endOfMatchLogic( "blue" );
             }
-            G_UpdateActiveBidsSums( "red" );
-            G_UpdateActiveBidsSums( "blue" );
+            G_UpdateActiveBidsSums( "red", 0 );
+            G_UpdateActiveBidsSums( "blue", 0 );
 
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
@@ -2246,8 +2255,8 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
             endOfMatchLogic( "red" );
-            G_UpdateActiveBidsSums( "red" );
-            G_UpdateActiveBidsSums( "blue" );
+            G_UpdateActiveBidsSums( "red", 0 );
+            G_UpdateActiveBidsSums( "blue", 0 );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2255,8 +2264,8 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
             endOfMatchLogic( "blue" );
-            G_UpdateActiveBidsSums( "red" );
-            G_UpdateActiveBidsSums( "blue" );
+            G_UpdateActiveBidsSums( "red", 0 );
+            G_UpdateActiveBidsSums( "blue", 0 );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2754,10 +2763,15 @@ void G_UpdateActiveBids( gentity_t* ent )
 G_UpdateActiveBidsSums
 ==================
 */
-void G_UpdateActiveBidsSums( char* horse )
+void G_UpdateActiveBidsSums( char* horse, gentity_t* ent )
 {
     betSum_t bet_sum = GOaActiveBidsSums( horse );
-    trap_SendServerCommand( -1, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+    if ( !ent) {
+        trap_SendServerCommand( -1, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+    } else {
+        trap_SendServerCommand( ent - g_entities, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+
+    }
 }
 
 static void CheckEmpty ( void )
