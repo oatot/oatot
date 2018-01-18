@@ -2119,17 +2119,17 @@ void transferPrizeMoney( int* balances_before, int* balances_after, char* winner
                     if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
                         GOaTransferMoney( cl->pers.guid, score, "OAC" );
                         trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else {
+                    } else if ( cl->sess.activeBidsNumber != 0 ) {
                         trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                     }
                 } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
                     if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
                         GOaTransferMoney( cl->pers.guid, score, "OAC" );
                         trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else {
+                    } else if ( cl->sess.activeBidsNumber != 0 ) {
                         trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                     }
-                } else {
+                } else if ( cl->sess.activeBidsNumber != 0 ) {
                     trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                 }
             }
