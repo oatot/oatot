@@ -997,7 +997,7 @@ UI_ConsoleCommand
 */
 qboolean UI_ConsoleCommand( int realTime ) {
     char	*cmd;
-
+    int     i;
     uis.frametime = realTime - uis.realtime;
     uis.realtime = realTime;
 
@@ -1065,6 +1065,16 @@ qboolean UI_ConsoleCommand( int realTime ) {
 
     if ( Q_strequal(cmd, "ui_writemappools") ) {
         WriteMapList();
+        return qtrue;
+    }
+
+    if ( Q_strequal(cmd, "ui_updateactivebids") ) {
+        activebids.bids_n = atoi(UI_Argv(1));
+        for (i = 0; i < activebids.bids_n; i++) {
+            strcpy(activebids.bids[i].horse, UI_Argv(i * 3 + 2));
+            strcpy(activebids.bids[i].currency, UI_Argv(i * 3 + 3));
+            activebids.bids[i].amount = atoi(UI_Argv(i * 3 + 4));
+        }
         return qtrue;
     }
 

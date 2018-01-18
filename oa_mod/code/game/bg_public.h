@@ -133,6 +133,14 @@ struct balance_s {
     int money_on_bids;
 };
 
+typedef struct {
+    char     horse[MAX_STRING_CHARS];
+    char     currency[MAX_STRING_CHARS];
+    int      amount;
+    int      id;
+} activeBid_t;
+
+
 typedef enum {
     GT_FFA,				// free for all
     GT_TOURNAMENT,		// one on one tournament

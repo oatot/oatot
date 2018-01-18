@@ -304,6 +304,11 @@ typedef struct {
     char mapname[10][MAX_MAPNAME_LENGTH];
 } t_mappage;
 
+typedef struct {
+    int         bids_n;
+    activeBid_t bids[MAX_ACTIVE_BIDS_NUMBER];
+} t_activebids;
+
 #define MAX_NAMELENGTH_INFO 20
 
 typedef struct {
@@ -312,6 +317,7 @@ typedef struct {
 } t_mapinfo;
 
 extern t_mappage mappage;
+extern t_activebids activebids;
 
 extern void			Menu_Cache( void );
 extern void			Menu_Focus( menucommon_s *m );

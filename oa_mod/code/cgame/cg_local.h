@@ -334,12 +334,6 @@ typedef struct {
     int				isDead;
 } score_t;
 
-typedef struct {
-    char     horse[MAX_STRING_CHARS];
-    char     currency[MAX_STRING_CHARS];
-    int      amount;
-} activeBid_t;
-
 // each client has an associated clientInfo_t
 // that contains media references necessary to present the
 // client model and other color coded effects

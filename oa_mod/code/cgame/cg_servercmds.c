@@ -82,14 +82,25 @@ CG_ParseActiveBids
 =================
 */
 static void CG_ParseActiveBids( void ) {
-    int bids_n = atoi(CG_Argv(1));
+    char command[MAX_STRING_TOKENS];
+    activeBid_t* bids;
     int i;
+    int bids_n = atoi(CG_Argv(1));
+    // set cgame data
     for (i = 0; i < bids_n; i++) {
         strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].horse, CG_Argv(i * 3 + 2));
         strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].currency, CG_Argv(i * 3 + 3));
         cgs.clientinfo[cg.clientNum].activeBids[i].amount = atoi(CG_Argv(i * 3 + 4));
     }
     cgs.clientinfo[cg.clientNum].bids_n = bids_n;
+    // send the data to UI
+    command[0] = 0;
+    bids = cgs.clientinfo[cg.clientNum].activeBids;
+    strcat(command, va("ui_updateactivebids %d ", bids_n));
+    for (i = 0; i < bids_n; i++) {
+        strcat(command, va("%s %s %d ", bids[i].horse, bids[i].currency, bids[i].amount));
+    }
+    trap_SendConsoleCommand(command);
 }
 
 /*
