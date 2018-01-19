@@ -305,9 +305,10 @@ typedef struct {
 } t_mappage;
 
 typedef struct {
-    int         bids_n;
-    activeBid_t bids[MAX_ACTIVE_BIDS_NUMBER];
-} t_activebids;
+    int         bids_n; // The actual number of active bids.
+    int         balance; // Is needed to limit bet amount menu field.
+    activeBid_t bids[MAX_ACTIVE_BIDS_NUMBER]; // Active bids.
+} t_oatotinfo;
 
 #define MAX_NAMELENGTH_INFO 20
 
@@ -317,7 +318,7 @@ typedef struct {
 } t_mapinfo;
 
 extern t_mappage mappage;
-extern t_activebids activebids;
+extern t_oatotinfo oatotinfo;
 
 extern void			Menu_Cache( void );
 extern void			Menu_Focus( menucommon_s *m );

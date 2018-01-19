@@ -34,7 +34,7 @@
 #define OATOT_MENU_VERTICAL_SPACING 20
 #define BUTTON_HORIZONTAL_SPACING 100
 
-t_activebids activebids;
+t_oatotinfo oatotinfo;
 
 typedef struct {
     menuframework_s menu;
@@ -81,9 +81,9 @@ DiscardSelectedBid
 static int DiscardSelectedBid(void) {
     int bet_index, bet_id;
     bet_index = GetSelectedBidIndex();
-    if (bet_index >= 0 && bet_index < activebids.bids_n) {
+    if (bet_index >= 0 && bet_index < oatotinfo.bids_n) {
         // get bet_id using bet_index
-        bet_id = activebids.bids[bet_index].id;
+        bet_id = oatotinfo.bids[bet_index].id;
         trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet_id));
         return 0;
     }
@@ -99,7 +99,7 @@ MakeSelectedBid
 static int MakeSelectedBid(void) {
     int bet_index;
     bet_index = GetSelectedBidIndex();
-    if (bet_index >= 0 && bet_index < activebids.bids_n) {
+    if (bet_index >= 0 && bet_index < oatotinfo.bids_n) {
         // break your head reading the code below:
         trap_Cmd_ExecuteText(EXEC_APPEND, va(
                                  "bet %s %s %s",
@@ -354,10 +354,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.banner.style          = UI_CENTER;
     // Initialize horse, amount and currency menu components.
     y = 98;
-    for (i = 0; i < activebids.bids_n; i++) {
-        setBidHorse(&s_oatotmenu.bidHorses[i], y, i * 3, activebids.bids[i].horse);
-        setBidAmount(&s_oatotmenu.bidAmounts[i], y, i * 3 + 1, activebids.bids[i].amount);
-        setBidCurrency(&s_oatotmenu.bidCurrencies[i], y, i * 3 + 2, activebids.bids[i].currency);
+    for (i = 0; i < oatotinfo.bids_n; i++) {
+        setBidHorse(&s_oatotmenu.bidHorses[i], y, i * 3, oatotinfo.bids[i].horse);
+        setBidAmount(&s_oatotmenu.bidAmounts[i], y, i * 3 + 1, oatotinfo.bids[i].amount);
+        setBidCurrency(&s_oatotmenu.bidCurrencies[i], y, i * 3 + 2, oatotinfo.bids[i].currency);
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.
@@ -408,7 +408,7 @@ void UI_OatotMenu(void) {
     trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBids");
     UI_OatotMenuInternal();
     // We need to initialize the bids list or it will be impossible to click on the items.
-    for (i = 0; i < activebids.bids_n; i++) {
+    for (i = 0; i < oatotinfo.bids_n; i++) {
         //Q_strncpyz(mappage.mapname[i],"----",5);
     }
     trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
@@ -416,7 +416,7 @@ void UI_OatotMenu(void) {
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.makeBet);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.discardBet);
-    for (i = 0; i < activebids.bids_n; i++) {
+    for (i = 0; i < oatotinfo.bids_n; i++) {
         Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.bidHorses[i]);
         Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.bidAmounts[i]);
         Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.bidCurrencies[i]);
