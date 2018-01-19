@@ -268,7 +268,6 @@ void UI_VoteMapMenuInternal( void )
 }
 
 t_mappage mappage;
-t_activebids activebids;
 
 /*
 =================

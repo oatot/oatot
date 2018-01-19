@@ -46,7 +46,8 @@ INGAME MENU
 #define ID_QUIT					17
 #define ID_RESUME				18
 #define ID_TEAMORDERS			19
-#define ID_VOTE                         20
+#define ID_VOTE                 20
+#define ID_OATOT                21
 
 
 typedef struct {
@@ -63,7 +64,8 @@ typedef struct {
     menutext_s		teamorders;
     menutext_s		quit;
     menutext_s		resume;
-    menutext_s              vote;
+    menutext_s      vote;
+    menutext_s      oatot;
 } ingamemenu_t;
 
 static ingamemenu_t	s_ingame;
@@ -152,6 +154,9 @@ void InGame_Event( void *ptr, int notification ) {
 
     case ID_VOTE:
         UI_VoteMenuMenu();
+        break;
+    case ID_OATOT:
+        UI_OatotMenu();
         break;
     }
 }
@@ -264,6 +269,17 @@ void InGame_MenuInit( void ) {
     }
 
     y += INGAME_MENU_VERTICAL_SPACING;
+    s_ingame.oatot.generic.type		= MTYPE_PTEXT;
+    s_ingame.oatot.generic.flags		= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
+    s_ingame.oatot.generic.x			= 320;
+    s_ingame.oatot.generic.y			= y;
+    s_ingame.oatot.generic.id			= ID_VOTE;
+    s_ingame.oatot.generic.callback	= InGame_Event;
+    s_ingame.oatot.string				= "OATOT MENU";
+    s_ingame.oatot.color				= color_red;
+    s_ingame.oatot.style				= UI_CENTER|UI_SMALLFONT;
+
+    y += INGAME_MENU_VERTICAL_SPACING;
     s_ingame.setup.generic.type			= MTYPE_PTEXT;
     s_ingame.setup.generic.flags		= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
     s_ingame.setup.generic.x			= 320;
@@ -338,6 +354,7 @@ void InGame_MenuInit( void ) {
     Menu_AddItem( &s_ingame.menu, &s_ingame.removebots );
     Menu_AddItem( &s_ingame.menu, &s_ingame.teamorders );
     Menu_AddItem( &s_ingame.menu, &s_ingame.vote );
+    Menu_AddItem( &s_ingame.menu, &s_ingame.oatot );
     Menu_AddItem( &s_ingame.menu, &s_ingame.setup );
     Menu_AddItem( &s_ingame.menu, &s_ingame.server );
     Menu_AddItem( &s_ingame.menu, &s_ingame.restart );

@@ -569,6 +569,11 @@ extern void UI_FirstConnectMenu( void );
 extern void UI_VoteCustomMenu( void );
 
 //
+// ui_oatotmenu.c
+
+extern void UI_OatotMenu( void );
+
+//
 // ui_players.c
 //
 
