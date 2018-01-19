@@ -26,6 +26,7 @@
 #define ID_BACK                 15
 #define ID_MAKEBET              16
 #define ID_DISCARDBET           17
+
 #define SIZE_OF_LIST 5
 
 #define MAX_AMOUNT_LENGTH 7
@@ -65,6 +66,73 @@ static const char* bidCurrency_items[] = {
 
 /*
 =================
+GetSelectedBidIndex
+=================
+*/
+static int GetSelectedBidIndex(void) {
+    return s_oatotmenu.selected / 3;
+}
+
+/*
+=================
+DiscardSelectedBid
+=================
+*/
+static int DiscardSelectedBid(void) {
+    int bet_index, bet_id;
+    bet_index = GetSelectedBidIndex();
+    if (bet_index >= 0 && bet_index < activebids.bids_n) {
+        // get bet_id using bet_index
+        bet_id = activebids.bids[bet_index].id;
+        trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet_id));
+        return 0;
+    }
+    // error
+    return -1;
+}
+
+/*
+=================
+MakeSelectedBid
+=================
+*/
+static int MakeSelectedBid(void) {
+    int bet_index;
+    bet_index = GetSelectedBidIndex();
+    if (bet_index >= 0 && bet_index < activebids.bids_n) {
+        // break your head reading the code below:
+        trap_Cmd_ExecuteText(EXEC_APPEND, va(
+                                 "bet %s %s %s",
+                                 bidHorse_items[s_oatotmenu.bidHorses[bet_index].curvalue],
+                                 s_oatotmenu.bidAmounts[bet_index].field.buffer,
+                                 bidCurrency_items[s_oatotmenu.bidCurrencies[bet_index].curvalue]
+                             ));
+        return 0;
+    }
+    // error
+    return -1;
+}
+
+/*
+=================
+Bid_Event
+=================
+*/
+static void Bid_Event(void* ptr, int event) {
+    int bet_index, bet_id;
+    if (s_oatotmenu.selected != ((menucommon_s*)ptr)->id) {
+        s_oatotmenu.selected = ((menucommon_s*)ptr)->id;
+        UI_OatotMenuInternal();
+    }
+    if (event != QM_ACTIVATED) {
+        return;
+    }
+    DiscardSelectedBid();
+    MakeSelectedBid();
+}
+
+/*
+=================
 OatotMenu_Event
 =================
 */
@@ -78,6 +146,12 @@ static void OatotMenu_Event(void* ptr, int event) {
             return;
         }
         UI_PopMenu();
+        break;
+    case ID_MAKEBET:
+        //UI_MakeBetMenu();
+        break;
+    case ID_DISCARDBET:
+        DiscardSelectedBid();
         break;
     }
 }
@@ -214,7 +288,7 @@ static void setBidHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.top         = y - 8;
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
-    menu->generic.callback    = OatotMenu_Event;
+    menu->generic.callback    = Bid_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawHorse;
     menu->numitems            = 2;
     if (!strcmp(horse, "red")) {
@@ -234,7 +308,7 @@ static void setBidAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.top         = y - 8;
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
-    menu->generic.callback    = OatotMenu_Event;
+    menu->generic.callback    = Bid_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawAmount;
     Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
 }
@@ -249,7 +323,7 @@ static void setBidCurrency(menulist_s* menu, int y, int id, const char* currency
     menu->generic.top         = y - 8;
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
-    menu->generic.callback    = OatotMenu_Event;
+    menu->generic.callback    = Bid_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawCurrency;
     menu->numitems            = 2;
     if (!strcmp(currency, "OAC")) {
@@ -272,7 +346,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.menu.fullscreen = qfalse;
     s_oatotmenu.menu.draw = UI_OatotMenu_Draw;
     // Banner.
-    s_oatotmenu.banner.generic.type  = MTYPE_BTEXT;
+    s_oatotmenu.banner.generic.type   = MTYPE_BTEXT;
     s_oatotmenu.banner.generic.x      = 320;
     s_oatotmenu.banner.generic.y      = 16;
     s_oatotmenu.banner.string         = "YOUR ACTIVE BIDS";

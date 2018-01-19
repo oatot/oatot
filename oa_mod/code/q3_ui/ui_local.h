@@ -572,6 +572,7 @@ extern void UI_VoteCustomMenu( void );
 // ui_oatotmenu.c
 
 extern void UI_OatotMenu( void );
+extern void UI_OatotMenuInternal( void );
 
 //
 // ui_players.c
