@@ -405,12 +405,12 @@ void UI_OatotMenu(void) {
     int i;
     OatotMenu_Cache();
     memset(&s_oatotmenu, 0, sizeof(oatotmenu_t));
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBids");
     UI_OatotMenuInternal();
     // We need to initialize the bids list or it will be impossible to click on the items.
     for (i = 0; i < activebids.bids_n; i++) {
         //Q_strncpyz(mappage.mapname[i],"----",5);
     }
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBids");
     trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.banner);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
