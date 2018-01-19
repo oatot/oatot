@@ -88,9 +88,10 @@ static void CG_ParseActiveBids( void ) {
     int bids_n = atoi(CG_Argv(1));
     // set cgame data
     for (i = 0; i < bids_n; i++) {
-        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].horse, CG_Argv(i * 3 + 2));
-        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].currency, CG_Argv(i * 3 + 3));
-        cgs.clientinfo[cg.clientNum].activeBids[i].amount = atoi(CG_Argv(i * 3 + 4));
+        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].horse, CG_Argv(i * 4 + 2));
+        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].currency, CG_Argv(i * 4 + 3));
+        cgs.clientinfo[cg.clientNum].activeBids[i].amount = atoi(CG_Argv(i * 4 + 4));
+        cgs.clientinfo[cg.clientNum].activeBids[i].id = atoi(CG_Argv(i * 4 + 5));
     }
     cgs.clientinfo[cg.clientNum].bids_n = bids_n;
     // send the data to UI
@@ -98,7 +99,7 @@ static void CG_ParseActiveBids( void ) {
     bids = cgs.clientinfo[cg.clientNum].activeBids;
     strcat(command, va("ui_updateactivebids %d ", bids_n));
     for (i = 0; i < bids_n; i++) {
-        strcat(command, va("%s %s %d ", bids[i].horse, bids[i].currency, bids[i].amount));
+        strcat(command, va("%s %s %d %d ", bids[i].horse, bids[i].currency, bids[i].amount, bids[i].id));
     }
     trap_SendConsoleCommand(command);
 }

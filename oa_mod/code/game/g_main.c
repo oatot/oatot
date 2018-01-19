@@ -2752,7 +2752,7 @@ void G_UpdateActiveBids( gentity_t* ent )
     cmd_str[0] = 0;
     strcat( cmd_str, va("updateActiveBids \%d ", n_bids) );
     for (i = 0; i < n_bids; i++) {
-        strcat( cmd_str, va("%s %s %d ", bids[i].horse, bids[i].currency, bids[i].amount) );
+        strcat( cmd_str, va("%s %s %d %d ", bids[i].horse, bids[i].currency, bids[i].amount, bids[i].bet_ID) );
     }
     strcat( cmd_str, "\"" );
     trap_SendServerCommand( ent - g_entities, cmd_str );

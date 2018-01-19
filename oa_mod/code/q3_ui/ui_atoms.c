@@ -1071,9 +1071,10 @@ qboolean UI_ConsoleCommand( int realTime ) {
     if ( Q_strequal(cmd, "ui_updateactivebids") ) {
         activebids.bids_n = atoi(UI_Argv(1));
         for (i = 0; i < activebids.bids_n; i++) {
-            strcpy(activebids.bids[i].horse, UI_Argv(i * 3 + 2));
-            strcpy(activebids.bids[i].currency, UI_Argv(i * 3 + 3));
-            activebids.bids[i].amount = atoi(UI_Argv(i * 3 + 4));
+            strcpy(activebids.bids[i].horse, UI_Argv(i * 4 + 2));
+            strcpy(activebids.bids[i].currency, UI_Argv(i * 4 + 3));
+            activebids.bids[i].amount = atoi(UI_Argv(i * 4 + 4));
+            activebids.bids[i].id = atoi(UI_Argv(i * 4 + 5));
         }
         return qtrue;
     }
