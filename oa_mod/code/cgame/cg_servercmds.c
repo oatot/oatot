@@ -66,13 +66,20 @@ CG_ParseBalance
 =================
 */
 static void CG_ParseBalance( void ) {
-    if ( !strcmp(CG_Argv(1), "OAC") ) {
-        cgs.clientinfo[cg.clientNum].oac_balance.free_money = atoi(CG_Argv(2));
-        cgs.clientinfo[cg.clientNum].oac_balance.money_on_bids = atoi(CG_Argv(3));
-    } else if ( !strcmp(CG_Argv(1), "BTC") ) {
-        cgs.clientinfo[cg.clientNum].btc_balance.free_money = atoi(CG_Argv(2));
-        cgs.clientinfo[cg.clientNum].btc_balance.money_on_bids = atoi(CG_Argv(3));
+    // set cgame data
+    const char* currency;
+    int free_money = atoi(CG_Argv(2));
+    int money_on_bids = atoi(CG_Argv(3));
+    currency = CG_Argv(1);
+    if ( !strcmp(currency, "OAC") ) {
+        cgs.clientinfo[cg.clientNum].oac_balance.free_money = free_money;
+        cgs.clientinfo[cg.clientNum].oac_balance.money_on_bids = money_on_bids;
+    } else if ( !strcmp(currency, "BTC") ) {
+        cgs.clientinfo[cg.clientNum].btc_balance.free_money = free_money;
+        cgs.clientinfo[cg.clientNum].btc_balance.money_on_bids = money_on_bids;
     }
+    // send the data to UI
+    trap_SendConsoleCommand(va("ui_updatebalance %s %d %d", currency, free_money, money_on_bids));
 }
 
 /*

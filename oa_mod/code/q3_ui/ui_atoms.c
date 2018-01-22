@@ -1068,6 +1068,17 @@ qboolean UI_ConsoleCommand( int realTime ) {
         return qtrue;
     }
 
+    if ( Q_strequal(cmd, "ui_updatebalance") ) {
+        if ( !strcmp(CG_Argv(1), "OAC") ) {
+            oatotinfo.oac_balance.free_money = atoi(UI_Argv(2));
+            oatotinfo.oac_balance.money_on_bids = atoi(UI_Argv(3));
+        }
+        if ( !strcmp(CG_Argv(1), "BTC") ) {
+            oatotinfo.btc_balance.free_money = atoi(UI_Argv(2));
+            oatotinfo.btc_balance.money_on_bids = atoi(UI_Argv(3));
+        }
+    }
+
     if ( Q_strequal(cmd, "ui_updateactivebids") ) {
         oatotinfo.bids_n = atoi(UI_Argv(1));
         for (i = 0; i < oatotinfo.bids_n; i++) {
