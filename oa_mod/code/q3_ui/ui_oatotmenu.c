@@ -130,22 +130,46 @@ static void MakeSelectedBid(void) {
 
 /*
 =================
+CheckSelectedBid
+=================
+*/
+static qboolean CheckSelectedBid(void) {
+    activeBid_t bet;
+    GetSelectedBid(&bet);
+    if (!strcmp(bet.currency, "OAC")) {
+        if (bet.amount > oatotinfo.oac_balance.free_money || bet.amount <= 0) {
+            return qfalse;
+        }
+    } else if (!strcmp(bet.currency, "BTC")) {
+        if (bet.amount > oatotinfo.btc_balance.free_money || bet.amount <= 0) {
+            return qfalse;
+        }
+    }
+    return qtrue;
+}
+
+/*
+=================
 Bid_Event
 =================
 */
 static void Bid_Event(void* ptr, int event) {
-    int bet_index, bet_id;
     if (s_oatotmenu.selected != ((menucommon_s*)ptr)->id) {
         s_oatotmenu.selected = ((menucommon_s*)ptr)->id;
-        UI_OatotMenuInternal();
     }
     if (event != QM_ACTIVATED) {
         return;
     }
-    // Discard old bet.
-    DiscardSelectedBid();
-    // Make new with new input data.
-    MakeSelectedBid();
+    if (CheckSelectedBid()) {
+        // Discard old bet.
+        DiscardSelectedBid();
+        // Make new with new input data.
+        MakeSelectedBid();
+    } else {
+        // Invalid input (amount).
+        // We don't make a bet and set previous values instead.
+        UI_OatotMenuInternal();
+    }
 }
 
 /*
