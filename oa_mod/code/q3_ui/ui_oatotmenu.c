@@ -66,6 +66,21 @@ static const char* bidCurrency_items[] = {
 
 /*
 =================
+GetBalanceLen
+=================
+*/
+static int GetBalanceLen(void) {
+    int oac_balance = oatotinfo.oac_balance.free_money;
+    int btc_balance = oatotinfo.btc_balance.free_money;
+    if (oac_balance > btc_balance) {
+        return oac_balance / 10;
+    } else {
+        return btc_balance / 10;
+    }
+}
+
+/*
+=================
 GetSelectedBidIndex
 =================
 */
@@ -312,6 +327,7 @@ static void setBidAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.id          = id;
     menu->generic.callback    = Bid_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawAmount;
+    menu->field.maxchars      = GetBalanceLen();
     Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
 }
 
