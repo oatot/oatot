@@ -75,20 +75,28 @@ static int GetSelectedBidIndex(void) {
 
 /*
 =================
+GetSelectedBid
+=================
+*/
+static void GetSelectedBid(activeBid_t* bid) {
+    int bet_index;
+    bet_index = GetSelectedBidIndex();
+    if (bet_index >= 0 && bet_index < oatotinfo.bids_n) {
+        strcpy(bid->horse, bidHorse_items[s_oatotmenu.bidHorses[bet_index].curvalue]);
+        bid->amount = atoi(s_oatotmenu.bidAmounts[bet_index].field.buffer);
+        strcpy(bid->currency, bidCurrency_items[s_oatotmenu.bidCurrencies[bet_index].curvalue]);
+    }
+}
+
+/*
+=================
 DiscardSelectedBid
 =================
 */
-static int DiscardSelectedBid(void) {
-    int bet_index, bet_id;
-    bet_index = GetSelectedBidIndex();
-    if (bet_index >= 0 && bet_index < oatotinfo.bids_n) {
-        // get bet_id using bet_index
-        bet_id = oatotinfo.bids[bet_index].id;
-        trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet_id));
-        return 0;
-    }
-    // error
-    return -1;
+static void DiscardSelectedBid(void) {
+    activeBid_t bet;
+    GetSelectedBid(&bet);
+    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet.id));
 }
 
 /*
@@ -96,21 +104,13 @@ static int DiscardSelectedBid(void) {
 MakeSelectedBid
 =================
 */
-static int MakeSelectedBid(void) {
-    int bet_index;
-    bet_index = GetSelectedBidIndex();
-    if (bet_index >= 0 && bet_index < oatotinfo.bids_n) {
-        // break your head reading the code below:
-        trap_Cmd_ExecuteText(EXEC_APPEND, va(
-                                 "bet %s %s %s",
-                                 bidHorse_items[s_oatotmenu.bidHorses[bet_index].curvalue],
-                                 s_oatotmenu.bidAmounts[bet_index].field.buffer,
-                                 bidCurrency_items[s_oatotmenu.bidCurrencies[bet_index].curvalue]
-                             ));
-        return 0;
-    }
-    // error
-    return -1;
+static void MakeSelectedBid(void) {
+    activeBid_t bid;
+    GetSelectedBid(&bid);
+    trap_Cmd_ExecuteText(
+        EXEC_APPEND,
+        va("bet %s %d %s", bid.horse, bid.amount, bid.currency)
+    );
 }
 
 /*
@@ -127,7 +127,9 @@ static void Bid_Event(void* ptr, int event) {
     if (event != QM_ACTIVATED) {
         return;
     }
+    // Discard old bet.
     DiscardSelectedBid();
+    // Make new with new input data.
     MakeSelectedBid();
 }
 
