@@ -1071,21 +1071,21 @@ qboolean UI_ConsoleCommand( int realTime ) {
     if ( Q_strequal(cmd, "ui_updatebalance") ) {
         if ( !strcmp(UI_Argv(1), "OAC") ) {
             oatotinfo.oac_balance.free_money = atoi(UI_Argv(2));
-            oatotinfo.oac_balance.money_on_bids = atoi(UI_Argv(3));
+            oatotinfo.oac_balance.money_on_bets = atoi(UI_Argv(3));
         }
         if ( !strcmp(UI_Argv(1), "BTC") ) {
             oatotinfo.btc_balance.free_money = atoi(UI_Argv(2));
-            oatotinfo.btc_balance.money_on_bids = atoi(UI_Argv(3));
+            oatotinfo.btc_balance.money_on_bets = atoi(UI_Argv(3));
         }
     }
 
-    if ( Q_strequal(cmd, "ui_updateactivebids") ) {
-        oatotinfo.bids_n = atoi(UI_Argv(1));
-        for (i = 0; i < oatotinfo.bids_n; i++) {
-            strcpy(oatotinfo.bids[i].horse, UI_Argv(i * 4 + 2));
-            strcpy(oatotinfo.bids[i].currency, UI_Argv(i * 4 + 3));
-            oatotinfo.bids[i].amount = atoi(UI_Argv(i * 4 + 4));
-            oatotinfo.bids[i].id = atoi(UI_Argv(i * 4 + 5));
+    if ( Q_strequal(cmd, "ui_updateactivebets") ) {
+        oatotinfo.bets_n = atoi(UI_Argv(1));
+        for (i = 0; i < oatotinfo.bets_n; i++) {
+            strcpy(oatotinfo.bets[i].horse, UI_Argv(i * 4 + 2));
+            strcpy(oatotinfo.bets[i].currency, UI_Argv(i * 4 + 3));
+            oatotinfo.bets[i].amount = atoi(UI_Argv(i * 4 + 4));
+            oatotinfo.bets[i].id = atoi(UI_Argv(i * 4 + 5));
         }
         return qtrue;
     }

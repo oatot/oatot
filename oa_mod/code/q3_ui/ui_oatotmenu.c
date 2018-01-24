@@ -29,8 +29,6 @@
 
 #define SIZE_OF_LIST 5
 
-#define MAX_AMOUNT_LENGTH 7
-
 #define OATOT_MENU_VERTICAL_SPACING 20
 #define BUTTON_HORIZONTAL_SPACING 100
 
@@ -43,22 +41,22 @@ typedef struct {
     menubitmap_s    makeBet;
     menubitmap_s    discardBet;
 
-    menulist_s bidHorses[SIZE_OF_LIST];
-    menufield_s bidAmounts[SIZE_OF_LIST];
-    menulist_s bidCurrencies[SIZE_OF_LIST];
+    menulist_s betHorses[SIZE_OF_LIST];
+    menufield_s betAmounts[SIZE_OF_LIST];
+    menulist_s betCurrencies[SIZE_OF_LIST];
 
     int     selected;
 } oatotmenu_t;
 
 static oatotmenu_t s_oatotmenu;
 
-static const char* bidHorse_items[] = {
+static const char* betHorse_items[] = {
     "RED",
     "BLUE",
     NULL
 };
 
-static const char* bidCurrency_items[] = {
+static const char* betCurrency_items[] = {
     "OAC",
     "BTC",
     NULL
@@ -81,61 +79,69 @@ static int GetBalanceLen(void) {
 
 /*
 =================
-GetSelectedBidIndex
+GetSelectedBetIndex
 =================
 */
-static int GetSelectedBidIndex(void) {
+static int GetSelectedBetIndex(void) {
     return s_oatotmenu.selected / 3;
 }
 
 /*
 =================
-GetSelectedBid
+InitBetFromInput
 =================
 */
-static void GetSelectedBid(activeBid_t* bid) {
+static void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field) {
+    strcpy(bet->horse, betHorse_items[horse_index]);
+    bet->amount = atoi(amount_field.field.buffer);
+    strcpy(bet->currency, betCurrency_items[currency_index]);
+}
+
+/*
+=================
+GetSelectedBet
+=================
+*/
+static void GetSelectedBet(activeBet_t* bet) {
     int bet_index;
-    bet_index = GetSelectedBidIndex();
-    if (bet_index >= 0 && bet_index < oatotinfo.bids_n) {
-        strcpy(bid->horse, bidHorse_items[s_oatotmenu.bidHorses[bet_index].curvalue]);
-        bid->amount = atoi(s_oatotmenu.bidAmounts[bet_index].field.buffer);
-        strcpy(bid->currency, bidCurrency_items[s_oatotmenu.bidCurrencies[bet_index].curvalue]);
+    bet_index = GetSelectedBetIndex();
+    if (bet_index >= 0 && bet_index < oatotinfo.bets_n) {
+        InitBetFromInput(
+            bet,
+            s_oatotmenu.betHorses[bet_index].curvalue,
+            s_oatotmenu.betCurrencies[bet_index].curvalue,
+            s_oatotmenu.betAmounts[bet_index]
+        );
     }
 }
 
 /*
 =================
-DiscardSelectedBid
+DiscardBet
 =================
 */
-static void DiscardSelectedBid(void) {
-    activeBid_t bet;
-    GetSelectedBid(&bet);
+static void DiscardBet(activeBet_t bet) {
     trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet.id));
 }
 
 /*
 =================
-MakeSelectedBid
+MakeBet
 =================
 */
-static void MakeSelectedBid(void) {
-    activeBid_t bid;
-    GetSelectedBid(&bid);
+static void MakeBet(activeBet_t bet) {
     trap_Cmd_ExecuteText(
         EXEC_APPEND,
-        va("bet %s %d %s", bid.horse, bid.amount, bid.currency)
+        va("bet %s %d %s", bet.horse, bet.amount, bet.currency)
     );
 }
 
 /*
 =================
-CheckSelectedBid
+CheckBet
 =================
 */
-static qboolean CheckSelectedBid(void) {
-    activeBid_t bet;
-    GetSelectedBid(&bet);
+static qboolean CheckBet(activeBet_t bet) {
     if (!strcmp(bet.currency, "OAC")) {
         if (bet.amount > oatotinfo.oac_balance.free_money || bet.amount <= 0) {
             return qfalse;
@@ -150,21 +156,23 @@ static qboolean CheckSelectedBid(void) {
 
 /*
 =================
-Bid_Event
+Bet_Event
 =================
 */
-static void Bid_Event(void* ptr, int event) {
+static void Bet_Event(void* ptr, int event) {
+    activeBet_t bet;
+    GetSelectedBet(&bet);
     if (s_oatotmenu.selected != ((menucommon_s*)ptr)->id) {
         s_oatotmenu.selected = ((menucommon_s*)ptr)->id;
     }
     if (event != QM_ACTIVATED) {
         return;
     }
-    if (CheckSelectedBid()) {
+    if (CheckBet(bet)) {
         // Discard old bet.
-        DiscardSelectedBid();
-        // Make new with new input data.
-        MakeSelectedBid();
+        DiscardBet(bet);
+        // Make new bet with new input data.
+        MakeBet(bet);
     } else {
         // Invalid input (amount).
         // We don't make a bet and set previous values instead.
@@ -178,6 +186,8 @@ OatotMenu_Event
 =================
 */
 static void OatotMenu_Event(void* ptr, int event) {
+    activeBet_t bet;
+    GetSelectedBet(&bet);
     if (event != QM_ACTIVATED) {
         return;
     }
@@ -189,10 +199,10 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
-        //UI_MakeBetMenu();
+        //UI_BetMenu();
         break;
     case ID_DISCARDBET:
-        DiscardSelectedBid();
+        DiscardBet(bet);
         break;
     }
 }
@@ -238,7 +248,7 @@ static void OatotMenu_DrawHorse(void* self) {
     float*      color;
     OatotMenu_SetDrawSpin(self, item, style, color);
     UI_DrawProportionalString(item->generic.x, item->generic.y, "Horse", *style, color);
-    UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, bidHorse_items[item->curvalue], *style, color);
+    UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, betHorse_items[item->curvalue], *style, color);
 }
 
 /*
@@ -301,7 +311,7 @@ static void OatotMenu_DrawCurrency(void* self) {
     float*      color;
     OatotMenu_SetDrawSpin(self, item, style, color);
     UI_DrawProportionalString(item->generic.x, item->generic.y, "Currency", *style, color);
-    UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, bidCurrency_items[item->curvalue], *style, color);
+    UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, betCurrency_items[item->curvalue], *style, color);
 }
 
 /*
@@ -319,7 +329,7 @@ static void OatotMenu_Cache(void) {
     trap_R_RegisterShaderNoMip(ART_BACKGROUND);
 }
 
-static void setBidHorse(menulist_s* menu, int y, int id, const char* horse) {
+static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.type        = MTYPE_SPINCONTROL;
     menu->generic.flags       = QMF_NODEFAULTINIT;
     menu->generic.x           = 280 - 100;
@@ -329,7 +339,7 @@ static void setBidHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.top         = y - 8;
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
-    menu->generic.callback    = Bid_Event;
+    menu->generic.callback    = Bet_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawHorse;
     menu->numitems            = 2;
     if (!strcmp(horse, "red")) {
@@ -339,7 +349,7 @@ static void setBidHorse(menulist_s* menu, int y, int id, const char* horse) {
     }
 }
 
-static void setBidAmount(menufield_s* menu, int y, int id, int amount) {
+static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.type        = MTYPE_FIELD;
     menu->generic.flags       = QMF_NODEFAULTINIT;
     menu->generic.x           = 390 - 100;
@@ -349,13 +359,13 @@ static void setBidAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.top         = y - 8;
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
-    menu->generic.callback    = Bid_Event;
+    menu->generic.callback    = Bet_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawAmount;
     menu->field.maxchars      = GetBalanceLen();
     Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
 }
 
-static void setBidCurrency(menulist_s* menu, int y, int id, const char* currency) {
+static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
     menu->generic.flags       = QMF_NODEFAULTINIT;
     menu->generic.x           = 500 - 100;
@@ -365,7 +375,7 @@ static void setBidCurrency(menulist_s* menu, int y, int id, const char* currency
     menu->generic.top         = y - 8;
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
-    menu->generic.callback    = Bid_Event;
+    menu->generic.callback    = Bet_Event;
     menu->generic.ownerdraw   = OatotMenu_DrawCurrency;
     menu->numitems            = 2;
     if (!strcmp(currency, "OAC")) {
@@ -396,10 +406,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.banner.style          = UI_CENTER;
     // Initialize horse, amount and currency menu components.
     y = 98;
-    for (i = 0; i < oatotinfo.bids_n; i++) {
-        setBidHorse(&s_oatotmenu.bidHorses[i], y, i * 3, oatotinfo.bids[i].horse);
-        setBidAmount(&s_oatotmenu.bidAmounts[i], y, i * 3 + 1, oatotinfo.bids[i].amount);
-        setBidCurrency(&s_oatotmenu.bidCurrencies[i], y, i * 3 + 2, oatotinfo.bids[i].currency);
+    for (i = 0; i < oatotinfo.bets_n; i++) {
+        setBetHorse(&s_oatotmenu.betHorses[i], y, i * 3, oatotinfo.bets[i].horse);
+        setBetAmount(&s_oatotmenu.betAmounts[i], y, i * 3 + 1, oatotinfo.bets[i].amount);
+        setBetCurrency(&s_oatotmenu.betCurrencies[i], y, i * 3 + 2, oatotinfo.bets[i].currency);
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.
@@ -447,10 +457,10 @@ void UI_OatotMenu(void) {
     int i;
     OatotMenu_Cache();
     memset(&s_oatotmenu, 0, sizeof(oatotmenu_t));
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBids");
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBets");
     UI_OatotMenuInternal();
-    // We need to initialize the bids list or it will be impossible to click on the items.
-    for (i = 0; i < oatotinfo.bids_n; i++) {
+    // We need to initialize the bets list or it will be impossible to click on the items.
+    for (i = 0; i < oatotinfo.bets_n; i++) {
         //Q_strncpyz(mappage.mapname[i],"----",5);
     }
     trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
@@ -458,10 +468,10 @@ void UI_OatotMenu(void) {
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.makeBet);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.discardBet);
-    for (i = 0; i < oatotinfo.bids_n; i++) {
-        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.bidHorses[i]);
-        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.bidAmounts[i]);
-        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.bidCurrencies[i]);
+    for (i = 0; i < oatotinfo.bets_n; i++) {
+        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betHorses[i]);
+        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betAmounts[i]);
+        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betCurrencies[i]);
     }
     UI_PushMenu(&s_oatotmenu.menu);
 }
