@@ -30,7 +30,6 @@
 #define SIZE_OF_LIST 5
 
 #define OATOT_MENU_VERTICAL_SPACING 20
-#define BUTTON_HORIZONTAL_SPACING 100
 
 t_oatotinfo oatotinfo;
 
@@ -67,7 +66,7 @@ static const char* betCurrency_items[] = {
 GetBalanceLen
 =================
 */
-static int GetBalanceLen(void) {
+int GetBalanceLen(void) {
     int oac_balance = oatotinfo.oac_balance.free_money;
     int btc_balance = oatotinfo.btc_balance.free_money;
     if (oac_balance > btc_balance) {
@@ -79,22 +78,70 @@ static int GetBalanceLen(void) {
 
 /*
 =================
+InitBetFromInput
+=================
+*/
+void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field) {
+    strcpy(bet->horse, betHorse_items[horse_index]);
+    bet->amount = atoi(amount_field.field.buffer);
+    strcpy(bet->currency, betCurrency_items[currency_index]);
+}
+
+/*
+=================
+DiscardBet
+=================
+*/
+void DiscardBet(activeBet_t bet) {
+    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet.id));
+}
+
+/*
+=================
+MakeBet
+=================
+*/
+void MakeBet(activeBet_t bet) {
+    trap_Cmd_ExecuteText(
+        EXEC_APPEND,
+        va("bet %s %d %s", bet.horse, bet.amount, bet.currency)
+    );
+}
+
+/*
+=================
+CheckBetUpper
+=================
+*/
+qboolean CheckBetUpper(activeBet_t bet) {
+    if (!strcmp(bet.currency, "OAC")) {
+        if (bet.amount > oatotinfo.oac_balance.free_money) {
+            return qfalse;
+        }
+    } else if (!strcmp(bet.currency, "BTC")) {
+        if (bet.amount > oatotinfo.btc_balance.free_money) {
+            return qfalse;
+        }
+    }
+    return qtrue;
+}
+
+/*
+=================
+CheckBetLower
+=================
+*/
+qboolean CheckBetLower(activeBet_t bet) {
+    return bet.amount > 0;
+}
+
+/*
+=================
 GetSelectedBetIndex
 =================
 */
 static int GetSelectedBetIndex(void) {
     return s_oatotmenu.selected / 3;
-}
-
-/*
-=================
-InitBetFromInput
-=================
-*/
-static void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field) {
-    strcpy(bet->horse, betHorse_items[horse_index]);
-    bet->amount = atoi(amount_field.field.buffer);
-    strcpy(bet->currency, betCurrency_items[currency_index]);
 }
 
 /*
@@ -117,45 +164,6 @@ static void GetSelectedBet(activeBet_t* bet) {
 
 /*
 =================
-DiscardBet
-=================
-*/
-static void DiscardBet(activeBet_t bet) {
-    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet.id));
-}
-
-/*
-=================
-MakeBet
-=================
-*/
-static void MakeBet(activeBet_t bet) {
-    trap_Cmd_ExecuteText(
-        EXEC_APPEND,
-        va("bet %s %d %s", bet.horse, bet.amount, bet.currency)
-    );
-}
-
-/*
-=================
-CheckBet
-=================
-*/
-static qboolean CheckBet(activeBet_t bet) {
-    if (!strcmp(bet.currency, "OAC")) {
-        if (bet.amount > oatotinfo.oac_balance.free_money || bet.amount <= 0) {
-            return qfalse;
-        }
-    } else if (!strcmp(bet.currency, "BTC")) {
-        if (bet.amount > oatotinfo.btc_balance.free_money || bet.amount <= 0) {
-            return qfalse;
-        }
-    }
-    return qtrue;
-}
-
-/*
-=================
 Bet_Event
 =================
 */
@@ -168,7 +176,7 @@ static void Bet_Event(void* ptr, int event) {
     if (event != QM_ACTIVATED) {
         return;
     }
-    if (CheckBet(bet)) {
+    if (CheckBetUpper(bet) && CheckBetLower(bet)) {
         // Discard old bet.
         DiscardBet(bet);
         // Make new bet with new input data.
@@ -199,7 +207,7 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
-        //UI_BetMenu();
+        UI_BetMenu();
         break;
     case ID_DISCARDBET:
         DiscardBet(bet);
@@ -221,10 +229,10 @@ static void UI_OatotMenu_Draw(void) {
 
 /*
 =================
-OatotMenu_DrawSpin
+Oatot_SetSpin
 =================
 */
-static void OatotMenu_SetDrawSpin(void* self, menulist_s* item, int* style, float* color) {
+void Oatot_SetSpin(void* self, menulist_s* item, int* style, float* color) {
     qboolean focus;
     item = (menulist_s*) self;
     focus = (item->generic.parent->cursor == item->generic.menuPosition);
@@ -238,25 +246,25 @@ static void OatotMenu_SetDrawSpin(void* self, menulist_s* item, int* style, floa
 
 /*
 =================
-OatotMenu_DrawHorse
+Oatot_DrawHorse
 =================
 */
-static void OatotMenu_DrawHorse(void* self) {
+void Oatot_DrawHorse(void* self) {
     menulist_s* item;
     qboolean    focus;
     int*        style;
     float*      color;
-    OatotMenu_SetDrawSpin(self, item, style, color);
+    Oatot_SetSpin(self, item, style, color);
     UI_DrawProportionalString(item->generic.x, item->generic.y, "Horse", *style, color);
     UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, betHorse_items[item->curvalue], *style, color);
 }
 
 /*
 =================
-OatotMenu_DrawAmount
+Oatot_DrawAmount
 =================
 */
-static void OatotMenu_DrawAmount(void* self) {
+void Oatot_DrawAmount(void* self) {
     menufield_s*     f;
     qboolean        focus;
     int             style;
@@ -301,15 +309,15 @@ static void OatotMenu_DrawAmount(void* self) {
 
 /*
 =================
-OatotMenu_DrawCurrency
+Oatot_DrawCurrency
 =================
 */
-static void OatotMenu_DrawCurrency(void* self) {
+void Oatot_DrawCurrency(void* self) {
     menulist_s* item;
     qboolean    focus;
     int*        style;
     float*      color;
-    OatotMenu_SetDrawSpin(self, item, style, color);
+    Oatot_SetSpin(self, item, style, color);
     UI_DrawProportionalString(item->generic.x, item->generic.y, "Currency", *style, color);
     UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, betCurrency_items[item->curvalue], *style, color);
 }
@@ -340,7 +348,7 @@ static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
-    menu->generic.ownerdraw   = OatotMenu_DrawHorse;
+    menu->generic.ownerdraw   = Oatot_DrawHorse;
     menu->numitems            = 2;
     if (!strcmp(horse, "red")) {
         menu->curvalue = 0;
@@ -360,7 +368,7 @@ static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
-    menu->generic.ownerdraw   = OatotMenu_DrawAmount;
+    menu->generic.ownerdraw   = Oatot_DrawAmount;
     menu->field.maxchars      = GetBalanceLen();
     Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
 }
@@ -376,7 +384,7 @@ static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency
     menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
-    menu->generic.ownerdraw   = OatotMenu_DrawCurrency;
+    menu->generic.ownerdraw   = Oatot_DrawCurrency;
     menu->numitems            = 2;
     if (!strcmp(currency, "OAC")) {
         menu->curvalue = 0;

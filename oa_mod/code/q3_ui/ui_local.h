@@ -571,10 +571,34 @@ extern void UI_FirstConnectMenu( void );
 extern void UI_VoteCustomMenu( void );
 
 //
-// ui_oatotmenu.c
+// OATOT
 
+// Drawing
+#define BUTTON_HORIZONTAL_SPACING 100
+// Calculate default bet amount from balance
+#define OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT 10
+
+// Common checking & action functions
+extern int GetBalanceLen(void);
+extern void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field);
+extern void DiscardBet(activeBet_t bet);
+extern void MakeBet(activeBet_t bet);
+extern qboolean CheckBetUpper(activeBet_t bet);
+extern qboolean CheckBetLower(activeBet_t bet);
+
+// Common drawing functions
+extern void Oatot_SetSpin(void* seld, menulist_s* item, int* style, float* color);
+extern void Oatot_DrawHorse(void* self);
+extern void Oatot_DrawCurrency(void* self);
+extern void Oatot_DrawAmount(void* self);
+
+// ui_oatotmenu.c
 extern void UI_OatotMenu( void );
 extern void UI_OatotMenuInternal( void );
+
+// ui_betmenu.c
+extern void UI_BetMenu( void );
+extern void UI_BetMenuInternal( void );
 
 //
 // ui_players.c

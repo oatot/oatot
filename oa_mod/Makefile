@@ -2566,6 +2566,7 @@ Q3UIOBJ_ = \
   $(B)/$(BASEGAME)/ui/ui_votemenu_map.o \
   $(B)/$(BASEGAME)/ui/ui_votemenu_custom.o \
   $(B)/$(BASEGAME)/ui/ui_oatotmenu.o \
+  $(B)/$(BASEGAME)/ui/ui_betmenu.o \
   \
   $(B)/$(BASEGAME)/qcommon/q_math.o \
   $(B)/$(BASEGAME)/qcommon/q_shared.o
