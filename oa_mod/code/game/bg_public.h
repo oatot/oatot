@@ -109,7 +109,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 void StrToUpper( char *str );
 
-// max active bids number per client
+// max active bets number per client
 #define MAX_ACTIVE_BIDS_NUMBER 5
 
 // oatot game stages
@@ -130,7 +130,7 @@ struct betSum_s {
 
 struct balance_s {
     int free_money;
-    int money_on_bids;
+    int money_on_bets;
 };
 
 typedef struct {
@@ -138,7 +138,7 @@ typedef struct {
     char     currency[MAX_STRING_CHARS];
     int      amount;
     int      id;
-} activeBid_t;
+} activeBet_t;
 
 
 typedef enum {

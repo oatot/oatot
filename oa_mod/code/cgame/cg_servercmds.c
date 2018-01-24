@@ -69,61 +69,61 @@ static void CG_ParseBalance( void ) {
     // set cgame data
     const char* currency;
     int free_money = atoi(CG_Argv(2));
-    int money_on_bids = atoi(CG_Argv(3));
+    int money_on_bets = atoi(CG_Argv(3));
     currency = CG_Argv(1);
     if ( !strcmp(currency, "OAC") ) {
         cgs.clientinfo[cg.clientNum].oac_balance.free_money = free_money;
-        cgs.clientinfo[cg.clientNum].oac_balance.money_on_bids = money_on_bids;
+        cgs.clientinfo[cg.clientNum].oac_balance.money_on_bets = money_on_bets;
     } else if ( !strcmp(currency, "BTC") ) {
         cgs.clientinfo[cg.clientNum].btc_balance.free_money = free_money;
-        cgs.clientinfo[cg.clientNum].btc_balance.money_on_bids = money_on_bids;
+        cgs.clientinfo[cg.clientNum].btc_balance.money_on_bets = money_on_bets;
     }
     // send the data to UI
-    trap_SendConsoleCommand(va("ui_updatebalance %s %d %d", currency, free_money, money_on_bids));
+    trap_SendConsoleCommand(va("ui_updatebalance %s %d %d", currency, free_money, money_on_bets));
 }
 
 /*
 =================
-CG_ParseActiveBids
+CG_ParseActiveBets
 
 =================
 */
-static void CG_ParseActiveBids( void ) {
+static void CG_ParseActiveBets( void ) {
     char command[MAX_STRING_TOKENS];
-    activeBid_t* bids;
+    activeBet_t* bets;
     int i;
-    int bids_n = atoi(CG_Argv(1));
+    int bets_n = atoi(CG_Argv(1));
     // set cgame data
-    for (i = 0; i < bids_n; i++) {
-        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].horse, CG_Argv(i * 4 + 2));
-        strcpy(cgs.clientinfo[cg.clientNum].activeBids[i].currency, CG_Argv(i * 4 + 3));
-        cgs.clientinfo[cg.clientNum].activeBids[i].amount = atoi(CG_Argv(i * 4 + 4));
-        cgs.clientinfo[cg.clientNum].activeBids[i].id = atoi(CG_Argv(i * 4 + 5));
+    for (i = 0; i < bets_n; i++) {
+        strcpy(cgs.clientinfo[cg.clientNum].activeBets[i].horse, CG_Argv(i * 4 + 2));
+        strcpy(cgs.clientinfo[cg.clientNum].activeBets[i].currency, CG_Argv(i * 4 + 3));
+        cgs.clientinfo[cg.clientNum].activeBets[i].amount = atoi(CG_Argv(i * 4 + 4));
+        cgs.clientinfo[cg.clientNum].activeBets[i].id = atoi(CG_Argv(i * 4 + 5));
     }
-    cgs.clientinfo[cg.clientNum].bids_n = bids_n;
+    cgs.clientinfo[cg.clientNum].bets_n = bets_n;
     // send the data to UI
     command[0] = 0;
-    bids = cgs.clientinfo[cg.clientNum].activeBids;
-    strcat(command, va("ui_updateactivebids %d ", bids_n));
-    for (i = 0; i < bids_n; i++) {
-        strcat(command, va("%s %s %d %d ", bids[i].horse, bids[i].currency, bids[i].amount, bids[i].id));
+    bets = cgs.clientinfo[cg.clientNum].activeBets;
+    strcat(command, va("ui_updateactivebets %d ", bets_n));
+    for (i = 0; i < bets_n; i++) {
+        strcat(command, va("%s %s %d %d ", bets[i].horse, bets[i].currency, bets[i].amount, bets[i].id));
     }
     trap_SendConsoleCommand(command);
 }
 
 /*
 =================
-CG_ParseActiveBidsSums
+CG_ParseActiveBetsSums
 
 =================
 */
-static void CG_ParseActiveBidsSums( void ) {
+static void CG_ParseActiveBetsSums( void ) {
     if ( !strcmp(CG_Argv(1), "red") ) {
-        cgs.red_bids_sum.oac_amount = atoi(CG_Argv(2));
-        cgs.red_bids_sum.btc_amount = atoi(CG_Argv(3));
+        cgs.red_bets_sum.oac_amount = atoi(CG_Argv(2));
+        cgs.red_bets_sum.btc_amount = atoi(CG_Argv(3));
     } else if ( !strcmp(CG_Argv(1), "blue") ) {
-        cgs.blue_bids_sum.oac_amount = atoi(CG_Argv(2));
-        cgs.blue_bids_sum.btc_amount = atoi(CG_Argv(3));
+        cgs.blue_bets_sum.oac_amount = atoi(CG_Argv(2));
+        cgs.blue_bets_sum.btc_amount = atoi(CG_Argv(3));
     }
 }
 
@@ -1291,13 +1291,13 @@ static void CG_ServerCommand( void ) {
         return;
     }
 
-    if ( strequals( cmd, "updateActiveBids" ) ) {
-        CG_ParseActiveBids();
+    if ( strequals( cmd, "updateActiveBets" ) ) {
+        CG_ParseActiveBets();
         return;
     }
 
-    if ( strequals( cmd, "updateActiveBidsSums" ) ) {
-        CG_ParseActiveBidsSums();
+    if ( strequals( cmd, "updateActiveBetsSums" ) ) {
+        CG_ParseActiveBetsSums();
         return;
     }
     if ( strequals( cmd, "showResults" ) ) {

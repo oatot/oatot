@@ -2433,9 +2433,9 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     CG_ParseServerinfo();
 
     // oatot
-    trap_SendClientCommand( va( "getActiveBidsSums %s\n", "red" ) );
-    trap_SendClientCommand( va( "getActiveBidsSums %s\n", "blue" ) );
-    trap_SendClientCommand( "getActiveBids" );
+    trap_SendClientCommand( va( "getActiveBetsSums %s\n", "red" ) );
+    trap_SendClientCommand( va( "getActiveBetsSums %s\n", "blue" ) );
+    trap_SendClientCommand( "getActiveBets" );
     trap_SendClientCommand( "getBalance" );
 
     // load the new map

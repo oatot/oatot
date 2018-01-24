@@ -85,13 +85,13 @@ typedef struct gclient_s gclient_t;
 qboolean needToUpdateGameStage( void );
 qboolean checkForRestart( void );
 
-typedef struct bid_s bid_t;
-typedef struct fullbid_s fullbid_t;
+typedef struct bet_s bet_t;
+typedef struct fullbet_s fullbet_t;
 typedef struct currencySummary_s currencySummary_t;
-typedef struct bidsSummary_s bidsSummary_t;
+typedef struct betsSummary_s betsSummary_t;
 
-// structure for describing a bid (oatot)
-struct bid_s {
+// structure for describing a bet (oatot)
+struct bet_s {
     char horse[MAX_STRING_CHARS];
     char currency[MAX_STRING_CHARS];
     int amount;
@@ -99,9 +99,9 @@ struct bid_s {
     int bet_ID; // Unique bet ID.
 };
 
-// structure for describing a bid and its result (oatot)
-struct fullbid_s {
-    bid_t open_bid;
+// structure for describing a bet and its result (oatot)
+struct fullbet_s {
+    bet_t open_bet;
     char close_time[MAX_STRING_CHARS];
     char winner[MAX_STRING_CHARS];
     int prize;
@@ -115,7 +115,7 @@ struct currencySummary_s {
     int bets_lost;
 };
 
-struct bidsSummary_s {
+struct betsSummary_s {
     currencySummary_t oac_summary;
     currencySummary_t btc_summary;
 };
@@ -265,7 +265,7 @@ typedef struct {
     float		lastfraggedcarrier;
 } playerTeamState_t;
 
-// number of bids in single page when showing history with `pastBids` cmd
+// number of bets in single page when showing history with `pastBets` cmd
 #define BIDS_NUMBER_IN_HISTORY_PAGE 15
 
 // the auto following clients don't follow a specific client
@@ -285,7 +285,7 @@ typedef struct {
     int			wins, losses;		// tournament stats
     qboolean	teamLeader;			// true when this client is a team leader
     // oatot
-    int activeBidsNumber;
+    int activeBetsNumber;
 } clientSession_t;
 
 //
@@ -367,8 +367,8 @@ typedef struct {
     // oatot
     qboolean    ready;
     qboolean    nextPageUsed; // shows if next_page is initialized
-    char        next_page[MAX_STRING_CHARS]; // next page ID for pastBids()
-    int         activeBidsIds[MAX_ACTIVE_BIDS_NUMBER];
+    char        next_page[MAX_STRING_CHARS]; // next page ID for pastBets()
+    int         activeBetsIds[MAX_ACTIVE_BIDS_NUMBER];
     qboolean    welcomed;
 } clientPersistant_t;
 
@@ -1066,12 +1066,12 @@ extern t_customvote getCustomVote(char* votecommand);
 
 // oatot: call some certain RPCs needed
 balance_t G_GetBalance( gentity_t* ent, char* currency );
-int G_GetActiveBids( gentity_t* ent, bid_t* bids );
+int G_GetActiveBets( gentity_t* ent, bet_t* bets );
 
 // oatot: draw updates
 void G_UpdateBalance( gentity_t* ent );
-void G_UpdateActiveBids( gentity_t* ent );
-void G_UpdateActiveBidsSums( char* horse, gentity_t* ent );
+void G_UpdateActiveBets( gentity_t* ent );
+void G_UpdateActiveBetsSums( char* horse, gentity_t* ent );
 
 // ai_main.c
 #define MAX_FILEPATH			144

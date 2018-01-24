@@ -13,8 +13,8 @@ import (
 // #include "../game/bg_public.h"
 import "C"
 
-const maxActiveBidsN = 5
-const bidsPerPageN = 15
+const maxActiveBetsN = 5
+const betsPerPageN = 15
 const maxCStrLen = 1024
 
 var (
@@ -35,7 +35,7 @@ func StringToC(str string, cStr *C.char) {
 	slice[size] = C.char(byte('\x00'))
 }
 
-func CBidFromGo(in *g.Bid, out *C.bid_t) {
+func CBetFromGo(in *g.Bet, out *C.bet_t) {
 	//TODO: implement time storage in backend.
 	//timeStr := (*in.OpenTime).String()
 	out.amount = C.int(*in.Amount)
@@ -45,10 +45,10 @@ func CBidFromGo(in *g.Bid, out *C.bid_t) {
 	//StringToC(timeStr, &(out.open_time[0]))
 }
 
-func CFullbidFromGo(in *g.Bid, out *C.fullbid_t) {
+func CFullbetFromGo(in *g.Bet, out *C.fullbet_t) {
 	//TODO: implement time storage in backend.
 	//timeStr := (*in.CloseTime).String()
-	CBidFromGo(in, &out.open_bid)
+	CBetFromGo(in, &out.open_bet)
 	out.prize = C.int(*in.Prize)
 	StringToC(*in.Winner, &(out.winner[0]))
 	//StringToC(timeStr, &(out.close_time[0]))
@@ -90,28 +90,28 @@ func GOaChangeGameStage(newStage C.int) {
 	}
 }
 
-//export GOaCloseBids
-func GOaCloseBids(winner *C.char) {
+//export GOaCloseBets
+func GOaCloseBets(winner *C.char) {
 	winnerStr := C.GoString(winner)
-	_, err := client.OaCloseBids(
+	_, err := client.OaCloseBets(
 		context.Background(),
-		&g.OaCloseBidsRequest{
+		&g.OaCloseBetsRequest{
 			Winner: &winnerStr,
 		},
 	)
 	if err != nil {
-		log.Fatalf("OaCloseBids: %v", err)
+		log.Fatalf("OaCloseBets: %v", err)
 	}
 }
 
-//export GOaCloseBidsByIncident
-func GOaCloseBidsByIncident() {
-	_, err := client.OaCloseBidsByIncident(
+//export GOaCloseBetsByIncident
+func GOaCloseBetsByIncident() {
+	_, err := client.OaCloseBetsByIncident(
 		context.Background(),
-		&g.OaCloseBidsByIncidentRequest{},
+		&g.OaCloseBetsByIncidentRequest{},
 	)
 	if err != nil {
-		log.Fatalf("OaCloseBidsByIncident: %v", err)
+		log.Fatalf("OaCloseBetsByIncident: %v", err)
 	}
 }
 
@@ -166,17 +166,17 @@ func GOaTransferMoney(clGuid *C.char, amount C.int, currency *C.char) {
 	}
 }
 
-//export GOaActiveBidsSums
-func GOaActiveBidsSums(horse *C.char) C.betSum_t {
+//export GOaActiveBetsSums
+func GOaActiveBetsSums(horse *C.char) C.betSum_t {
 	horseStr := C.GoString(horse)
-	res, err := client.OaActiveBidsSums(
+	res, err := client.OaActiveBetsSums(
 		context.Background(),
-		&g.OaActiveBidsSumsRequest{
+		&g.OaActiveBetsSumsRequest{
 			Horse: &horseStr,
 		},
 	)
 	if err != nil {
-		log.Fatalf("OaActiveBidsSums: %v", err)
+		log.Fatalf("OaActiveBetsSums: %v", err)
 	}
 	return C.betSum_t{C.int(*res.OacAmount), C.int(*res.BtcAmount)}
 }
@@ -195,29 +195,29 @@ func GOaMyBalance(clGuid *C.char, currency *C.char) C.balance_t {
 	if err != nil {
 		log.Fatalf("OaMyBalance: %v", err)
 	}
-	return C.balance_t{C.int(*res.FreeMoney), C.int(*res.MoneyOnBids)}
+	return C.balance_t{C.int(*res.FreeMoney), C.int(*res.MoneyOnBets)}
 }
 
-//export GOaMyBid
-func GOaMyBid(clGuid *C.char, bid C.bid_t) {
+//export GOaMyBet
+func GOaMyBet(clGuid *C.char, bet C.bet_t) {
 	clGuidStr := C.GoString(clGuid)
-	horseStr := C.GoString(&(bid.horse[0]))
-	currencyStr := C.GoString(&(bid.currency[0]))
-	amountVal := uint64(bid.amount)
-	bidN := &g.Bid{
+	horseStr := C.GoString(&(bet.horse[0]))
+	currencyStr := C.GoString(&(bet.currency[0]))
+	amountVal := uint64(bet.amount)
+	betN := &g.Bet{
 		Horse:    &horseStr,
 		Currency: &currencyStr,
 		Amount:   &amountVal,
 	}
-	_, err := client.OaMyBid(
+	_, err := client.OaMyBet(
 		context.Background(),
-		&g.OaMyBidRequest{
+		&g.OaMyBetRequest{
 			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
-			Bid:    bidN,
+			Bet:    betN,
 		},
 	)
 	if err != nil {
-		log.Fatalf("OaMyBid: %v", err)
+		log.Fatalf("OaMyBet: %v", err)
 	}
 }
 
@@ -237,73 +237,73 @@ func GOaDiscardBet(clGuid *C.char, betId C.int) {
 	}
 }
 
-//export GOaMyActiveBids
-func GOaMyActiveBids(clGuid *C.char, activeBids *C.bid_t) C.int {
+//export GOaMyActiveBets
+func GOaMyActiveBets(clGuid *C.char, activeBets *C.bet_t) C.int {
 	clGuidStr := C.GoString(clGuid)
-	res, err := client.OaMyActiveBids(
+	res, err := client.OaMyActiveBets(
 		context.Background(),
-		&g.OaMyActiveBidsRequest{
+		&g.OaMyActiveBetsRequest{
 			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
 		},
 	)
 	if err != nil {
-		log.Fatalf("OaMyActiveBids: %v", err)
+		log.Fatalf("OaMyActiveBets: %v", err)
 	}
-	size := len(res.Bids)
-	var bids []C.bid_t
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bids)))
-	sliceHeader.Cap = maxActiveBidsN
-	sliceHeader.Len = maxActiveBidsN
-	sliceHeader.Data = uintptr(unsafe.Pointer(activeBids))
+	size := len(res.Bets)
+	var bets []C.bet_t
+	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bets)))
+	sliceHeader.Cap = maxActiveBetsN
+	sliceHeader.Len = maxActiveBetsN
+	sliceHeader.Data = uintptr(unsafe.Pointer(activeBets))
 	for i := 0; i < size; i++ {
-		CBidFromGo(res.Bids[i], &bids[i])
+		CBetFromGo(res.Bets[i], &bets[i])
 	}
 	return C.int(size)
 }
 
-//export GOaMyPastBids
-func GOaMyPastBids(clGuid *C.char, page *C.char, nextPage *C.char, pastBids *C.fullbid_t) C.int {
+//export GOaMyPastBets
+func GOaMyPastBets(clGuid *C.char, page *C.char, nextPage *C.char, pastBets *C.fullbet_t) C.int {
 	clGuidStr := C.GoString(clGuid)
 	pageStr := C.GoString(page)
-	res, err := client.OaMyPastBids(
+	res, err := client.OaMyPastBets(
 		context.Background(),
-		&g.OaMyPastBidsRequest{
+		&g.OaMyPastBetsRequest{
 			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
 			Page:   &pageStr,
 		},
 	)
 	if err != nil {
-		log.Fatalf("OaMyPastBids: %v", err)
+		log.Fatalf("OaMyPastBets: %v", err)
 	}
-	size := len(res.Bids)
-	var bids []C.fullbid_t
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bids)))
-	sliceHeader.Cap = bidsPerPageN
-	sliceHeader.Len = bidsPerPageN
-	sliceHeader.Data = uintptr(unsafe.Pointer(pastBids))
+	size := len(res.Bets)
+	var bets []C.fullbet_t
+	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bets)))
+	sliceHeader.Cap = betsPerPageN
+	sliceHeader.Len = betsPerPageN
+	sliceHeader.Data = uintptr(unsafe.Pointer(pastBets))
 	for i := 0; i < size; i++ {
-		CFullbidFromGo(res.Bids[i], &bids[i])
+		CFullbetFromGo(res.Bets[i], &bets[i])
 	}
 	StringToC(*res.NextPage, nextPage)
 	return C.int(size)
 	return 0
 }
 
-//export GOaMyBidsSummary
-func GOaMyBidsSummary(clGuid *C.char) C.bidsSummary_t {
+//export GOaMyBetsSummary
+func GOaMyBetsSummary(clGuid *C.char) C.betsSummary_t {
 	clGuidStr := C.GoString(clGuid)
-	res, err := client.OaMyBidsSummary(
+	res, err := client.OaMyBetsSummary(
 		context.Background(),
-		&g.OaMyBidsSummaryRequest{
+		&g.OaMyBetsSummaryRequest{
 			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
 		},
 	)
 	if err != nil {
-		log.Fatalf("OaMyBidsSummary: %v", err)
+		log.Fatalf("OaMyBetsSummary: %v", err)
 	}
 	oacSummary := CCurrencySummaryFromGo(res.OacSummary)
 	btcSummary := CCurrencySummaryFromGo(res.BtcSummary)
-	return C.bidsSummary_t{oacSummary, btcSummary}
+	return C.betsSummary_t{oacSummary, btcSummary}
 }
 
 func main() {}

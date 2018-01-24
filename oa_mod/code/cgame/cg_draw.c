@@ -2985,8 +2985,8 @@ int GetValueLength( int amount) {
 
 int GetMaxAmountLength( void ) {
     int max_len = 0, len = 0, i = 0;
-    for ( i = 0; i < cgs.clientinfo[cg.clientNum].bids_n; i++ ) {
-        len = strlen( va( "%d", cgs.clientinfo[cg.clientNum].activeBids[i].amount ) );
+    for ( i = 0; i < cgs.clientinfo[cg.clientNum].bets_n; i++ ) {
+        len = strlen( va( "%d", cgs.clientinfo[cg.clientNum].activeBets[i].amount ) );
         if ( len > max_len ) {
             max_len = len;
         }
@@ -3016,16 +3016,16 @@ static void CG_DrawValue( int x, int y, int amount, int shift, const char* curre
 
 /*
 =================
-CG_DrawBid
+CG_DrawBet
 =================
  */
-static void CG_DrawBid( int x, int y, int shift, activeBid_t bid ) {
-    if ( !strcmp( bid.horse, "red" ) ) {
+static void CG_DrawBet( int x, int y, int shift, activeBet_t bet ) {
+    if ( !strcmp( bet.horse, "red" ) ) {
         CG_DrawPic( x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.redFlagShader[cgs.redflag] );
-    } else if ( !strcmp( bid.horse, "blue" ) ) {
+    } else if ( !strcmp( bet.horse, "blue" ) ) {
         CG_DrawPic( x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.blueFlagShader[cgs.blueflag] );
     }
-    CG_DrawValue( x + CHAR_WIDTH + VALUE_SPACE_LEN, y, bid.amount, shift, bid.currency );
+    CG_DrawValue( x + CHAR_WIDTH + VALUE_SPACE_LEN, y, bet.amount, shift, bet.currency );
 }
 
 /*
@@ -3092,12 +3092,12 @@ void CG_DrawBalance( void ) {
 
 /*
 =================
-CG_DrawActiveBidsSums
+CG_DrawActiveBetsSums
 =================
  */
-void CG_DrawActiveBidsSums( void ) {
-    int red_amount = cgs.red_bids_sum.oac_amount;
-    int blue_amount = cgs.blue_bids_sum.oac_amount;
+void CG_DrawActiveBetsSums( void ) {
+    int red_amount = cgs.red_bets_sum.oac_amount;
+    int blue_amount = cgs.blue_bets_sum.oac_amount;
     int red_str_pos = ( GetValueLength( red_amount ) / 2 ) - 3 * SMALLCHAR_WIDTH;
     int blue_str_pos = 640 - ( GetValueLength( blue_amount ) / 2 ) - 3 * SMALLCHAR_WIDTH;
     if ( red_str_pos < 0 ) {
@@ -3114,21 +3114,21 @@ void CG_DrawActiveBidsSums( void ) {
 
 /*
 =================
-CG_DrawActiveBids
+CG_DrawActiveBets
 =================
  */
-void CG_DrawActiveBids( void ) {
+void CG_DrawActiveBets( void ) {
     int i = 0;
     int init_y = 190;
     int shift = GetMaxAmountLength();
     int max_len = 20 + shift + CHAR_WIDTH * 2 + VALUE_SPACE_LEN * 2;
-    int bids_n = cgs.clientinfo[cg.clientNum].bids_n;
-    for ( i = 0; i < bids_n; i++ ) {
-        if ( bids_n > 1 ) {
+    int bets_n = cgs.clientinfo[cg.clientNum].bets_n;
+    for ( i = 0; i < bets_n; i++ ) {
+        if ( bets_n > 1 ) {
             CG_DrawRect( 0, init_y + 40 * i - 15, max_len, 40, 2, GetGameStageColor() );
         }
         CG_DrawSmallString( 3, init_y + 40 * i, va( "^2%d", i ), 1.0F );
-        CG_DrawBid( 20, init_y + 40 * i, shift, cgs.clientinfo[cg.clientNum].activeBids[i] );
+        CG_DrawBet( 20, init_y + 40 * i, shift, cgs.clientinfo[cg.clientNum].activeBets[i] );
     }
 }
 
@@ -3161,8 +3161,8 @@ CG_DrawOatotStuff
 void CG_DrawOatotStuff( void ) {
     CG_DrawGameStageInfo();
     CG_DrawBalance();
-    CG_DrawActiveBidsSums();
-    CG_DrawActiveBids();
+    CG_DrawActiveBetsSums();
+    CG_DrawActiveBets();
 }
 
 /*

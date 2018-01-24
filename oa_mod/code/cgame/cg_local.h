@@ -345,8 +345,8 @@ typedef struct {
     // oatot
     balance_t       oac_balance;
     balance_t       btc_balance;
-    activeBid_t     activeBids[MAX_ACTIVE_BIDS_NUMBER];
-    int             bids_n;
+    activeBet_t     activeBets[MAX_ACTIVE_BIDS_NUMBER];
+    int             bets_n;
 
     qboolean		infoValid;
 
@@ -1254,8 +1254,8 @@ typedef struct {
     clientInfo_t	clientinfo[MAX_CLIENTS];
 
     // oatot
-    betSum_t red_bids_sum;
-    betSum_t blue_bids_sum;
+    betSum_t red_bets_sum;
+    betSum_t blue_bets_sum;
 
     // teamchat width is *3 because of embedded color codes
     char			teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH*3+1];
@@ -1602,8 +1602,8 @@ extern  char teamChat2[256];
 void CG_DrawOatotStuff( void );
 void CG_DrawBalanceBar( int left_side );
 void CG_DrawBalance( void );
-void CG_DrawActiveBids( void );
-void CG_DrawActiveBidsSums( void );
+void CG_DrawActiveBets( void );
+void CG_DrawActiveBetsSums( void );
 void CG_DrawResults( int prize, int balance_change );
 
 void CG_AddLagometerFrameInfo( void );

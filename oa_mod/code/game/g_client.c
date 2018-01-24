@@ -1287,9 +1287,9 @@ void ClientUserinfoChanged( int clientNum ) {
     trap_SetConfigstring( CS_PLAYERS+clientNum, s );
 
     G_UpdateBalance( ent );
-    G_UpdateActiveBids( ent );
-    G_UpdateActiveBidsSums( "red", ent );
-    G_UpdateActiveBidsSums( "blue", ent );
+    G_UpdateActiveBets( ent );
+    G_UpdateActiveBetsSums( "red", ent );
+    G_UpdateActiveBetsSums( "blue", ent );
 
     // this is not the userinfo, more like the configstring actually
     G_LogPrintf( "ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid") );
@@ -1317,7 +1317,7 @@ restarts.
 ============
 */
 char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
-    bid_t       bids[MAX_ACTIVE_BIDS_NUMBER];
+    bet_t       bets[MAX_ACTIVE_BIDS_NUMBER];
     char		*value;
 //	char		*areabits;
     gclient_t	*client;
@@ -1338,9 +1338,9 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
     Q_strncpyz( client->pers.guid, value, sizeof( client->pers.guid ) );
 
     if (!GOaIsNew(client->pers.guid)) {
-        client->sess.activeBidsNumber = GOaMyActiveBids(client->pers.guid, bids);
+        client->sess.activeBetsNumber = GOaMyActiveBets(client->pers.guid, bets);
     } else {
-        client->sess.activeBidsNumber = 0;
+        client->sess.activeBetsNumber = 0;
     }
 
     // IP filtering //KK-OAX Has this been obsoleted?
@@ -1632,7 +1632,7 @@ void ClientBegin( int clientNum ) {
         printWelcomeMessage( clientNum );
     }
     G_UpdateBalance( ent );
-    G_UpdateActiveBids( ent );
+    G_UpdateActiveBets( ent );
 }
 
 /*
@@ -2151,7 +2151,7 @@ void ClientDisconnect( int clientNum ) {
                 // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
                 trap_SendServerCommand( -1, "cp \"^1We got rage-quitter! Restart!\n\"");
                 trap_Cvar_Set( "g_rageQuit", "1" );
-                GOaCloseBidsByIncident();
+                GOaCloseBetsByIncident();
                 trap_SendConsoleCommand( EXEC_APPEND, "map_restart\n" );
             }
         }

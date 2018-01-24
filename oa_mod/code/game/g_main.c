@@ -939,10 +939,10 @@ void G_InitGame( int levelTime, int randomSeed, int restart )
     G_UpdateCvars();
 
     if ( g_gameStage.integer == FORMING_TEAMS ) {
-        // at this stage, no bids should be active
+        // at this stage, no bets should be active
         // but if the map was callvot'ed, it is still possible,
         // hence let's clear them.
-        GOaCloseBidsByIncident();
+        GOaCloseBetsByIncident();
     }
 
     G_RemapTeamShaders();
@@ -2119,17 +2119,17 @@ void transferPrizeMoney( int* balances_before, int* balances_after, char* winner
                     if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
                         GOaTransferMoney( cl->pers.guid, score, "OAC" );
                         trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else if ( cl->sess.activeBidsNumber != 0 ) {
+                    } else if ( cl->sess.activeBetsNumber != 0 ) {
                         trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                     }
                 } else if ( Q_strequal( winner, "blue" ) && ( cl->sess.sessionTeam == TEAM_BLUE ) ) {
                     if ( cl->sess.sessionTeam != TEAM_SPECTATOR ) {
                         GOaTransferMoney( cl->pers.guid, score, "OAC" );
                         trap_SendServerCommand( i, va( "showResults %d %d\n", score, change ) );
-                    } else if ( cl->sess.activeBidsNumber != 0 ) {
+                    } else if ( cl->sess.activeBetsNumber != 0 ) {
                         trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                     }
-                } else if ( cl->sess.activeBidsNumber != 0 ) {
+                } else if ( cl->sess.activeBetsNumber != 0 ) {
                     trap_SendServerCommand( i, va( "showResults 0 %d\n", change ) );
                 }
             }
@@ -2142,7 +2142,7 @@ void endOfMatchLogic( char* winner ) {
     int balances_before[MAX_GENTITIES];
     int balances_after[MAX_GENTITIES];
     getClientsBalances( balances_before );
-    GOaCloseBids( winner );
+    GOaCloseBets( winner );
     getClientsBalances( balances_after );
     transferPrizeMoney( balances_before, balances_after, winner );
 
@@ -2207,8 +2207,8 @@ void CheckExitRules( void )
             } else {
                 endOfMatchLogic( "blue" );
             }
-            G_UpdateActiveBidsSums( "red", 0 );
-            G_UpdateActiveBidsSums( "blue", 0 );
+            G_UpdateActiveBetsSums( "red", 0 );
+            G_UpdateActiveBetsSums( "blue", 0 );
 
             trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
             LogExit( "Timelimit hit." );
@@ -2255,8 +2255,8 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_RED] >= g_capturelimit.integer ) {
             endOfMatchLogic( "red" );
-            G_UpdateActiveBidsSums( "red", 0 );
-            G_UpdateActiveBidsSums( "blue", 0 );
+            G_UpdateActiveBetsSums( "red", 0 );
+            G_UpdateActiveBetsSums( "blue", 0 );
             trap_SendServerCommand( -1, "print \"Red hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2264,8 +2264,8 @@ void CheckExitRules( void )
 
         if ( level.teamScores[TEAM_BLUE] >= g_capturelimit.integer ) {
             endOfMatchLogic( "blue" );
-            G_UpdateActiveBidsSums( "red", 0 );
-            G_UpdateActiveBidsSums( "blue", 0 );
+            G_UpdateActiveBetsSums( "red", 0 );
+            G_UpdateActiveBetsSums( "blue", 0 );
             trap_SendServerCommand( -1, "print \"Blue hit the capturelimit.\n\"" );
             LogExit( "Capturelimit hit." );
             return;
@@ -2692,7 +2692,7 @@ balance_t G_GetBalance( gentity_t* ent, char* currency )
 {
     balance_t empty;
     empty.free_money = 0;
-    empty.money_on_bids = 0;
+    empty.money_on_bets = 0;
     if ( GOaIsNew( ent->client->pers.guid ) ) {
         return empty;
     }
@@ -2702,27 +2702,27 @@ balance_t G_GetBalance( gentity_t* ent, char* currency )
 
 /*
 ==================
-G_GetActiveBids
+G_GetActiveBets
 ==================
 */
-int G_GetActiveBids( gentity_t* ent, bid_t* bids )
+int G_GetActiveBets( gentity_t* ent, bet_t* bets )
 {
     gclient_t* client = ent->client;
     int i = 0;
-    int bids_n = 0;
+    int bets_n = 0;
     if ( GOaIsNew( client->pers.guid ) ) {
-        return bids_n;
+        return bets_n;
     }
-    bids_n = GOaMyActiveBids(client->pers.guid, bids);
-    if ( bids_n != client->sess.activeBidsNumber ) {
+    bets_n = GOaMyActiveBets(client->pers.guid, bets);
+    if ( bets_n != client->sess.activeBetsNumber ) {
         return -1;
-    } else if (bids_n < 0 || bids_n > MAX_ACTIVE_BIDS_NUMBER) {
+    } else if (bets_n < 0 || bets_n > MAX_ACTIVE_BIDS_NUMBER) {
         return -1;
     }
-    for ( i = 0; i < bids_n; i++ ) {
-        client->pers.activeBidsIds[i] = bids[i].bet_ID;
+    for ( i = 0; i < bets_n; i++ ) {
+        client->pers.activeBetsIds[i] = bets[i].bet_ID;
     }
-    return bids_n;
+    return bets_n;
 }
 
 /*
@@ -2734,25 +2734,25 @@ void G_UpdateBalance( gentity_t* ent )
 {
     balance_t btc_balance = G_GetBalance( ent, "BTC" );
     balance_t oac_balance = G_GetBalance( ent, "OAC" );
-    trap_SendServerCommand( ent - g_entities, va("updateBalance \%s %d %d\"", "OAC", oac_balance.free_money, oac_balance.money_on_bids) );
-    trap_SendServerCommand( ent - g_entities, va("updateBalance \%s %d %d\"", "BTC", btc_balance.free_money, btc_balance.money_on_bids) );
+    trap_SendServerCommand( ent - g_entities, va("updateBalance \%s %d %d\"", "OAC", oac_balance.free_money, oac_balance.money_on_bets) );
+    trap_SendServerCommand( ent - g_entities, va("updateBalance \%s %d %d\"", "BTC", btc_balance.free_money, btc_balance.money_on_bets) );
 }
 
 /*
 ==================
-G_UpdateActiveBids
+G_UpdateActiveBets
 ==================
 */
-void G_UpdateActiveBids( gentity_t* ent )
+void G_UpdateActiveBets( gentity_t* ent )
 {
     int i;
     char cmd_str[MAX_STRING_TOKENS];
-    bid_t bids[MAX_ACTIVE_BIDS_NUMBER];
-    int n_bids = G_GetActiveBids( ent, bids );
+    bet_t bets[MAX_ACTIVE_BIDS_NUMBER];
+    int n_bets = G_GetActiveBets( ent, bets );
     cmd_str[0] = 0;
-    strcat( cmd_str, va("updateActiveBids \%d ", n_bids) );
-    for (i = 0; i < n_bids; i++) {
-        strcat( cmd_str, va("%s %s %d %d ", bids[i].horse, bids[i].currency, bids[i].amount, bids[i].bet_ID) );
+    strcat( cmd_str, va("updateActiveBets \%d ", n_bets) );
+    for (i = 0; i < n_bets; i++) {
+        strcat( cmd_str, va("%s %s %d %d ", bets[i].horse, bets[i].currency, bets[i].amount, bets[i].bet_ID) );
     }
     strcat( cmd_str, "\"" );
     trap_SendServerCommand( ent - g_entities, cmd_str );
@@ -2760,16 +2760,16 @@ void G_UpdateActiveBids( gentity_t* ent )
 
 /*
 ==================
-G_UpdateActiveBidsSums
+G_UpdateActiveBetsSums
 ==================
 */
-void G_UpdateActiveBidsSums( char* horse, gentity_t* ent )
+void G_UpdateActiveBetsSums( char* horse, gentity_t* ent )
 {
-    betSum_t bet_sum = GOaActiveBidsSums( horse );
+    betSum_t bet_sum = GOaActiveBetsSums( horse );
     if ( !ent) {
-        trap_SendServerCommand( -1, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+        trap_SendServerCommand( -1, va("updateActiveBetsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
     } else {
-        trap_SendServerCommand( ent - g_entities, va("updateActiveBidsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
+        trap_SendServerCommand( ent - g_entities, va("updateActiveBetsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount) );
 
     }
 }
