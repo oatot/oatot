@@ -187,7 +187,8 @@ extern vmCvar_t ui_browserOnlyHumans;
 #define QM_LOSTFOCUS            2
 #define QM_ACTIVATED            3
 
-#define MENU_ART_DIR "art_blueish"
+#define MENU_ART_DIR   "art_blueish"
+#define MENU_OATOT_DIR "art"
 
 typedef struct _tag_menuframework {
     int cursor;

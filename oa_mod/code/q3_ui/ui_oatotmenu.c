@@ -1,12 +1,12 @@
 #include "ui_local.h"
 
-#define ART_BACK0           "menu/" MENU_ART_DIR "/myback_0"
-#define ART_BACK1           "menu/" MENU_ART_DIR "/myback_1"
-#define ART_MAKEBET0        "menu/" MENU_ART_DIR "/makebet_0"
-#define ART_MAKEBET1        "menu/" MENU_ART_DIR "/makebet_1"
-#define ART_DISCARDBET0     "menu/" MENU_ART_DIR "/discardbet_0"
-#define ART_DISCARDBET1     "menu/" MENU_ART_DIR "/discardbet_1"
-#define ART_BACKGROUND      "menu/" MENU_ART_DIR "/addbotframe"
+#define ART_BACK0           "menu/" MENU_OATOT_DIR "/myback_0"
+#define ART_BACK1           "menu/" MENU_OATOT_DIR "/myback_1"
+#define ART_MAKEBET0        "menu/" MENU_OATOT_DIR "/makebet_0"
+#define ART_MAKEBET1        "menu/" MENU_OATOT_DIR "/makebet_1"
+#define ART_DISCARDBET0     "menu/" MENU_OATOT_DIR "/discardbet_0"
+#define ART_DISCARDBET1     "menu/" MENU_OATOT_DIR "/discardbet_1"
+#define ART_BACKGROUND      "menu/" MENU_ART_DIR   "/addbotframe"
 
 #define ID_BID0_HORSE           0
 #define ID_BID0_AMOUNT          1
@@ -221,7 +221,7 @@ UI_OatotMenu_Draw
 =================
 */
 static void UI_OatotMenu_Draw(void) {
-    UI_DrawBannerString(320, 16, "OATOT MENU", UI_CENTER, color_white);
+    UI_DrawBannerString(320, 16, "YOUR ACTIVE BIDS", UI_CENTER, color_white);
     UI_DrawNamedPic(320 - 233, 240 - 166, 466, 332, ART_BACKGROUND);
     // standard menu drawing
     Menu_Draw(&s_oatotmenu.menu);

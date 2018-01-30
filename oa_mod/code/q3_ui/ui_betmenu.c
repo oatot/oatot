@@ -1,10 +1,10 @@
 #include "ui_local.h"
 
-#define ART_BACK0         "menu/" MENU_ART_DIR "/myback_0"
-#define ART_BACK1         "menu/" MENU_ART_DIR "/myback_1"
-#define ART_OK0           "menu/" MENU_ART_DIR "/ok_0"
-#define ART_OK1           "menu/" MENU_ART_DIR "/ok_1"
-#define ART_BACKGROUND    "menu/" MENU_ART_DIR "/addbotframe"
+#define ART_BACK0         "menu/" MENU_OATOT_DIR "/myback_0"
+#define ART_BACK1         "menu/" MENU_OATOT_DIR "/myback_1"
+#define ART_OK0           "menu/" MENU_OATOT_DIR "/ok_0"
+#define ART_OK1           "menu/" MENU_OATOT_DIR "/ok_1"
+#define ART_BACKGROUND    "menu/" MENU_ART_DIR   "/addbotframe"
 
 #define ID_HORSE        0
 #define ID_AMOUNT       1
@@ -136,7 +136,7 @@ void UI_BetMenuInternal(void) {
     s_betmenu.banner.generic.type   = MTYPE_BTEXT;
     s_betmenu.banner.generic.x      = 320;
     s_betmenu.banner.generic.y      = 16;
-    s_betmenu.banner.string         = "YOUR ACTIVE BIDS";
+    s_betmenu.banner.string         = "MAKE BET";
     s_betmenu.banner.color          = color_white;
     s_betmenu.banner.style          = UI_CENTER;
     // Initialize horse, amount and currency menu components.
