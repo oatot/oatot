@@ -8,21 +8,21 @@
 #define ART_DISCARDBET1     "menu/" MENU_OATOT_DIR "/discardbet_1"
 #define ART_BACKGROUND      "menu/" MENU_ART_DIR   "/addbotframe"
 
-#define ID_BID0_HORSE           0
-#define ID_BID0_AMOUNT          1
-#define ID_BID0_CURRENCY        2
-#define ID_BID1_HORSE           3
-#define ID_BID1_AMOUNT          4
-#define ID_BID1_CURRENCY        5
-#define ID_BID2_HORSE           6
-#define ID_BID2_AMOUNT          7
-#define ID_BID2_CURRENCY        8
-#define ID_BID3_HORSE           9
-#define ID_BID3_AMOUNT          10
-#define ID_BID3_CURRENCY        11
-#define ID_BID4_HORSE           12
-#define ID_BID4_AMOUNT          13
-#define ID_BID4_CURRENCY        14
+#define ID_BET0_HORSE           0
+#define ID_BET0_AMOUNT          1
+#define ID_BET0_CURRENCY        2
+#define ID_BET1_HORSE           3
+#define ID_BET1_AMOUNT          4
+#define ID_BET1_CURRENCY        5
+#define ID_BET2_HORSE           6
+#define ID_BET2_AMOUNT          7
+#define ID_BET2_CURRENCY        8
+#define ID_BET3_HORSE           9
+#define ID_BET3_AMOUNT          10
+#define ID_BET3_CURRENCY        11
+#define ID_BET4_HORSE           12
+#define ID_BET4_AMOUNT          13
+#define ID_BET4_CURRENCY        14
 #define ID_BACK                 15
 #define ID_MAKEBET              16
 #define ID_DISCARDBET           17
@@ -221,7 +221,7 @@ UI_OatotMenu_Draw
 =================
 */
 static void UI_OatotMenu_Draw(void) {
-    UI_DrawBannerString(320, 16, "YOUR ACTIVE BIDS", UI_CENTER, color_white);
+    UI_DrawBannerString(320, 16, "YOUR ACTIVE BETS", UI_CENTER, color_white);
     UI_DrawNamedPic(320 - 233, 240 - 166, 466, 332, ART_BACKGROUND);
     // standard menu drawing
     Menu_Draw(&s_oatotmenu.menu);
@@ -409,7 +409,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.banner.generic.type   = MTYPE_BTEXT;
     s_oatotmenu.banner.generic.x      = 320;
     s_oatotmenu.banner.generic.y      = 16;
-    s_oatotmenu.banner.string         = "YOUR ACTIVE BIDS";
+    s_oatotmenu.banner.string         = "YOUR ACTIVE BETS";
     s_oatotmenu.banner.color          = color_white;
     s_oatotmenu.banner.style          = UI_CENTER;
     // Initialize horse, amount and currency menu components.

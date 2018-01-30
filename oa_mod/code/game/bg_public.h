@@ -110,7 +110,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 void StrToUpper(char* str);
 
 // max active bets number per client
-#define MAX_ACTIVE_BIDS_NUMBER 5
+#define MAX_ACTIVE_BETS_NUMBER 5
 
 // oatot game stages
 typedef enum {

@@ -1838,7 +1838,7 @@ void Cmd_Bet_f(gentity_t* ent) {
     }
     if (client) {
         int bets_n = client->sess.activeBetsNumber;
-        if (bets_n < MAX_ACTIVE_BIDS_NUMBER) {
+        if (bets_n < MAX_ACTIVE_BETS_NUMBER) {
             // check args
             trap_Argv(1, arg1, sizeof(arg1));
             trap_Argv(2, arg2, sizeof(arg2));
@@ -1918,7 +1918,7 @@ void Cmd_Unbet_f(gentity_t* ent) {
 /*
 ==================
 Cmd_PastBets_f
-get last BIDS_NUMBER_IN_HISTORY_PAGE bets,
+get last BETS_NUMBER_IN_HISTORY_PAGE bets,
 specifying "elder" as arg shows the page before.
 ==================
 */
@@ -1927,7 +1927,7 @@ void Cmd_PastBets_f(gentity_t* ent) {
     char    bet_str[MAX_STRING_TOKENS];
     char    amount_str[MAX_STRING_TOKENS];
     char    prize_str[MAX_STRING_TOKENS];
-    fullbet_t past_bets[BIDS_NUMBER_IN_HISTORY_PAGE];
+    fullbet_t past_bets[BETS_NUMBER_IN_HISTORY_PAGE];
     gclient_t* client = ent->client;
     if (client) {
         if (trap_Argc() == 1 || !client->pers.nextPageUsed) {

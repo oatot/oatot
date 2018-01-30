@@ -338,7 +338,7 @@ typedef struct {
     // oatot
     balance_t       oac_balance;
     balance_t       btc_balance;
-    activeBet_t     activeBets[MAX_ACTIVE_BIDS_NUMBER];
+    activeBet_t     activeBets[MAX_ACTIVE_BETS_NUMBER];
     int             bets_n;
 
     qboolean        infoValid;

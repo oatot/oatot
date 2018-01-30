@@ -265,7 +265,7 @@ typedef struct {
 } playerTeamState_t;
 
 // number of bets in single page when showing history with `pastBets` cmd
-#define BIDS_NUMBER_IN_HISTORY_PAGE 15
+#define BETS_NUMBER_IN_HISTORY_PAGE 15
 
 // the auto following clients don't follow a specific client
 // number, but instead follow the first two active players
@@ -367,7 +367,7 @@ typedef struct {
     qboolean    ready;
     qboolean    nextPageUsed; // shows if next_page is initialized
     char        next_page[MAX_STRING_CHARS]; // next page ID for pastBets()
-    int         activeBetsIds[MAX_ACTIVE_BIDS_NUMBER];
+    int         activeBetsIds[MAX_ACTIVE_BETS_NUMBER];
     qboolean    welcomed;
 } clientPersistant_t;
 

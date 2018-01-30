@@ -2435,7 +2435,7 @@ int G_GetActiveBets(gentity_t* ent, bet_t* bets) {
     bets_n = GOaMyActiveBets(client->pers.guid, bets);
     if (bets_n != client->sess.activeBetsNumber) {
         return -1;
-    } else if (bets_n < 0 || bets_n > MAX_ACTIVE_BIDS_NUMBER) {
+    } else if (bets_n < 0 || bets_n > MAX_ACTIVE_BETS_NUMBER) {
         return -1;
     }
     for (i = 0; i < bets_n; i++) {
@@ -2464,7 +2464,7 @@ G_UpdateActiveBets
 void G_UpdateActiveBets(gentity_t* ent) {
     int i;
     char cmd_str[MAX_STRING_TOKENS];
-    bet_t bets[MAX_ACTIVE_BIDS_NUMBER];
+    bet_t bets[MAX_ACTIVE_BETS_NUMBER];
     int n_bets = G_GetActiveBets(ent, bets);
     cmd_str[0] = 0;
     strcat(cmd_str, va("updateActiveBets \%d ", n_bets));

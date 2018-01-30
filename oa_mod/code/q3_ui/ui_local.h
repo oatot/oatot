@@ -300,7 +300,7 @@ typedef struct {
     int         bets_n; // The actual number of active bets.
     balance_t   oac_balance; // Is needed to limit bet amount menu field.
     balance_t   btc_balance; // Is needed to limit bet amount menu field.
-    activeBet_t bets[MAX_ACTIVE_BIDS_NUMBER]; // Active bets.
+    activeBet_t bets[MAX_ACTIVE_BETS_NUMBER]; // Active bets.
 } t_oatotinfo;
 
 #define MAX_NAMELENGTH_INFO 20

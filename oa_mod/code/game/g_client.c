@@ -1153,7 +1153,7 @@ restarts.
 ============
 */
 char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
-    bet_t       bets[MAX_ACTIVE_BIDS_NUMBER];
+    bet_t       bets[MAX_ACTIVE_BETS_NUMBER];
     char*        value;
     //  char        *areabits;
     gclient_t*   client;
