@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
  */
 //
@@ -26,22 +26,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "cg_local.h"
 #include "../ui/ui_shared.h"
 #ifdef MISSIONPACK
-extern menuDef_t *menuScoreboard;
+extern menuDef_t* menuScoreboard;
 #endif
 
 void CG_PrintClientNumbers(void) {
     int i;
-
     CG_Printf("slot score ping name\n");
     CG_Printf("---- ----- ---- ----\n");
-
     for (i = 0; i < cg.numScores; i++) {
         CG_Printf("%-4d", cg.scores[i].client);
-
         CG_Printf(" %-5d", cg.scores[i].score);
-
         CG_Printf(" %-4d", cg.scores[i].ping);
-
         CG_Printf(" %s\n", cgs.clientinfo[cg.scores[i].client].name);
     }
 }
@@ -49,12 +44,10 @@ void CG_PrintClientNumbers(void) {
 void CG_TargetCommand_f(void) {
     int targetNum;
     char test[4];
-
     targetNum = CG_CrosshairPlayer();
     if (targetNum == -1) {
         return;
     }
-
     trap_Argv(1, test, 4);
     trap_SendClientCommand(va("gc %i %i", targetNum, atoi(test)));
 }
@@ -67,7 +60,7 @@ Keybinding command
 =================
  */
 static void CG_SizeUp_f(void) {
-    trap_Cvar_Set("cg_viewsize", va("%i", (int) (cg_viewsize.integer + 10)));
+    trap_Cvar_Set("cg_viewsize", va("%i", (int)(cg_viewsize.integer + 10)));
 }
 
 /*
@@ -78,7 +71,7 @@ Keybinding command
 =================
  */
 static void CG_SizeDown_f(void) {
-    trap_Cvar_Set("cg_viewsize", va("%i", (int) (cg_viewsize.integer - 10)));
+    trap_Cvar_Set("cg_viewsize", va("%i", (int)(cg_viewsize.integer - 10)));
 }
 
 /*
@@ -95,7 +88,6 @@ static void CG_Viewpos_f(void) {
 }
 
 static void CG_ScoresDown_f(void) {
-
 #ifdef MISSIONPACK
     CG_BuildSpectatorString();
 #endif
@@ -104,7 +96,6 @@ static void CG_ScoresDown_f(void) {
         // so request new ones
         cg.scoresRequestTime = cg.time;
         trap_SendClientCommand("score");
-
         // leave the current scores up if they were already
         // displayed, but if this is the first hit, clear them out
         if (!cg.showScores) {
@@ -126,16 +117,12 @@ static void CG_ScoresUp_f(void) {
 }
 
 static void CG_AccDown_f(void) {
-
     if (cg.accRequestTime + 2000 < cg.time) {
-
         cg.accRequestTime = cg.time;
         trap_SendClientCommand("acc");
-
         if (!cg.showAcc) {
             cg.showAcc = qtrue;
         }
-
     } else {
         cg.showAcc = qtrue;
     }
@@ -148,25 +135,21 @@ static void CG_AccUp_f(void) {
     }
 }
 
-
 #ifdef MISSIONPACK
-extern menuDef_t *menuScoreboard;
+extern menuDef_t* menuScoreboard;
 void Menu_Reset(void); // FIXME: add to right include file
 
 static void CG_LoadHud_f(void) {
     char buff[1024];
-    const char *hudSet;
-    memset(buff, 0, sizeof (buff));
-
+    const char* hudSet;
+    memset(buff, 0, sizeof(buff));
     String_Init();
     Menu_Reset();
-
-    trap_Cvar_VariableStringBuffer("cg_hudFiles", buff, sizeof (buff));
+    trap_Cvar_VariableStringBuffer("cg_hudFiles", buff, sizeof(buff));
     hudSet = buff;
     if (hudSet[0] == '\0') {
         hudSet = "ui/hud.txt";
     }
-
     CG_LoadMenus(hudSet);
     menuScoreboard = NULL;
 }
@@ -187,10 +170,10 @@ static void CG_scrollScoresUp_f(void) {
     }
 }
 
-static float CG_Cvar_Got(const char *cvar) {
+static float CG_Cvar_Got(const char* cvar) {
     char buff[128];
-    memset(buff, 0, sizeof (buff));
-    trap_Cvar_VariableStringBuffer(cvar, buff, sizeof (buff));
+    memset(buff, 0, sizeof(buff));
+    trap_Cvar_VariableStringBuffer(cvar, buff, sizeof(buff));
     return atof(buff);
 }
 
@@ -203,33 +186,24 @@ static void CG_spWin_f(void) {
     CG_AddBufferedSound(cgs.media.winnerSound);
     //trap_S_StartLocalSound(cgs.media.winnerSound, CHAN_ANNOUNCER);
     CG_CenterPrint("YOU WIN!", SCREEN_HEIGHT * .30, 0);
-
     // leilei - Unlock stuff!!! Trophies crap.
     {
         char berf[4];
-        //const char	*info;
+        //const char    *info;
         int trophyearn;
         int trophyhad;
-
         // trophyearn = 1 = GOLD!!!
         // trophyearn = 2 = silver!!
         // trophyearn = 3 = bronze...
         // trophyearn = 5 = PLATINUM!!!!!!!!!!!!!!!!!!!!
-
-
         trophyearn = 1; // gold... if we're good
-
-
         //info = CG_ConfigString( CS_SERVERINFO );
         //s = Info_ValueForKey( info, "mapname" );
-        trap_Cvar_VariableStringBuffer("ui_currentMap", berf, sizeof (berf)); // get map number instead for list consistency
-
+        trap_Cvar_VariableStringBuffer("ui_currentMap", berf, sizeof(berf));  // get map number instead for list consistency
         trophyhad = CG_Cvar_Got(va("ui_sp_unlock_%s", berf));
-
         if (trophyhad > trophyearn) {
             trophyearn = 0;
         }
-
         // leilei - unlocking maps (for the SP UI) by setting a cvar
         if (trophyearn) {
             if (trophyearn == 1) {
@@ -241,24 +215,25 @@ static void CG_spWin_f(void) {
             }
             trap_Cvar_Set(va("ui_sp_unlock_%s", berf), va("%i", trophyearn)); // YA YUO DID IT!!!1
         }
-
         // leilei - get all the total trophies. Should really be done in the single player ui scripts, but
-        // 		doing it here could make a nice verifier for legitimacy :)
+        //      doing it here could make a nice verifier for legitimacy :)
         {
             int tropees = 0;
             int tropgold = 0;
             int tropsilv = 0;
             int tropbrnz = 0;
-
             for (tropees = 0; tropees < 42; tropees++) {
                 int yeah;
                 yeah = CG_Cvar_Got(va("ui_sp_unlock_%i", tropees));
-                if (yeah == 1)
+                if (yeah == 1) {
                     tropgold++;
-                if (yeah == 2)
+                }
+                if (yeah == 2) {
                     tropsilv++;
-                if (yeah == 3)
+                }
+                if (yeah == 3) {
                     tropbrnz++;
+                }
             }
             trap_Cvar_Set("ui_sp_trophies_gold", va("%i", tropgold));
             trap_Cvar_Set("ui_sp_trophies_silver", va("%i", tropsilv));
@@ -284,12 +259,10 @@ static void CG_TellTarget_f(void) {
     int clientNum;
     char command[128];
     char message[128];
-
     clientNum = CG_CrosshairPlayer();
     if (clientNum == -1) {
         return;
     }
-
     trap_Args(message, 128);
     Com_sprintf(command, 128, "tell %i %s", clientNum, message);
     trap_SendClientCommand(command);
@@ -299,12 +272,10 @@ static void CG_TellAttacker_f(void) {
     int clientNum;
     char command[128];
     char message[128];
-
     clientNum = CG_LastAttacker();
     if (clientNum == -1) {
         return;
     }
-
     trap_Args(message, 128);
     Com_sprintf(command, 128, "tell %i %s", clientNum, message);
     trap_SendClientCommand(command);
@@ -314,12 +285,10 @@ static void CG_VoiceTellTarget_f(void) {
     int clientNum;
     char command[128];
     char message[128];
-
     clientNum = CG_CrosshairPlayer();
     if (clientNum == -1) {
         return;
     }
-
     trap_Args(message, 128);
     Com_sprintf(command, 128, "vtell %i %s", clientNum, message);
     trap_SendClientCommand(command);
@@ -329,12 +298,10 @@ static void CG_VoiceTellAttacker_f(void) {
     int clientNum;
     char command[128];
     char message[128];
-
     clientNum = CG_LastAttacker();
     if (clientNum == -1) {
         return;
     }
-
     trap_Args(message, 128);
     Com_sprintf(command, 128, "vtell %i %s", clientNum, message);
     trap_SendClientCommand(command);
@@ -354,7 +321,7 @@ static void CG_PrevTeamMember_f(void) {
 //
 
 static void CG_NextOrder_f(void) {
-    clientInfo_t *ci = cgs.clientinfo + cg.snap->ps.clientNum;
+    clientInfo_t* ci = cgs.clientinfo + cg.snap->ps.clientNum;
     if (ci) {
         if (!ci->teamLeader && sortedTeamPlayers[cg_currentSelectedPlayer.integer] != cg.snap->ps.clientNum) {
             return;
@@ -362,19 +329,16 @@ static void CG_NextOrder_f(void) {
     }
     if (cgs.currentOrder < TEAMTASK_CAMP) {
         cgs.currentOrder++;
-
         if (cgs.currentOrder == TEAMTASK_RETRIEVE) {
             if (!CG_OtherTeamHasFlag()) {
                 cgs.currentOrder++;
             }
         }
-
         if (cgs.currentOrder == TEAMTASK_ESCORT) {
             if (!CG_YourTeamHasFlag()) {
                 cgs.currentOrder++;
             }
         }
-
     } else {
         cgs.currentOrder = TEAMTASK_OFFENSE;
     }
@@ -465,17 +429,13 @@ static void CG_TauntGauntlet_f(void) {
 static void CG_TaskSuicide_f(void) {
     int clientNum;
     char command[128];
-
     clientNum = CG_CrosshairPlayer();
     if (clientNum == -1) {
         return;
     }
-
     Com_sprintf(command, 128, "tell %i suicide", clientNum);
     trap_SendClientCommand(command);
 }
-
-
 
 /*
 ==================
@@ -484,14 +444,15 @@ CG_TeamMenu_f
  */
 /*
 static void CG_TeamMenu_f( void ) {
-	if (trap_Key_GetCatcher() & KEYCATCH_CGAME) {
-		CG_EventHandling(CGAME_EVENT_NONE);
-		trap_Key_SetCatcher(0);
-	} else {
-		CG_EventHandling(CGAME_EVENT_TEAMMENU);
-		//trap_Key_SetCatcher(KEYCATCH_CGAME);
-	}
+    if (trap_Key_GetCatcher() & KEYCATCH_CGAME) {
+        CG_EventHandling(CGAME_EVENT_NONE);
+        trap_Key_SetCatcher(0);
+    } else {
+        CG_EventHandling(CGAME_EVENT_TEAMMENU);
+        //trap_Key_SetCatcher(KEYCATCH_CGAME);
+    }
 }
+
  */
 
 /*
@@ -501,9 +462,10 @@ CG_EditHud_f
  */
 /*
 static void CG_EditHud_f( void ) {
-	//cls.keyCatchers ^= KEYCATCH_CGAME;
-	//VM_Call (cgvm, CG_EVENT_HANDLING, (cls.keyCatchers & KEYCATCH_CGAME) ? CGAME_EVENT_EDITHUD : CGAME_EVENT_NONE);
+    //cls.keyCatchers ^= KEYCATCH_CGAME;
+    //VM_Call (cgvm, CG_EVENT_HANDLING, (cls.keyCatchers & KEYCATCH_CGAME) ? CGAME_EVENT_EDITHUD : CGAME_EVENT_NONE);
 }
+
  */
 
 #endif
@@ -516,8 +478,7 @@ CG_StartOrbit_f
 
 static void CG_StartOrbit_f(void) {
     char var[MAX_TOKEN_CHARS];
-
-    trap_Cvar_VariableStringBuffer("developer", var, sizeof ( var));
+    trap_Cvar_VariableStringBuffer("developer", var, sizeof(var));
     if (!atoi(var)) {
         return;
     }
@@ -534,20 +495,20 @@ static void CG_StartOrbit_f(void) {
 
 /*
 static void CG_Camera_f( void ) {
-	char name[1024];
-	trap_Argv( 1, name, sizeof(name));
-	if (trap_loadCamera(name)) {
-		cg.cameraMode = qtrue;
-		trap_startCamera(cg.time);
-	} else {
-		CG_Printf ("Unable to load camera %s\n",name);
-	}
+    char name[1024];
+    trap_Argv( 1, name, sizeof(name));
+    if (trap_loadCamera(name)) {
+        cg.cameraMode = qtrue;
+        trap_startCamera(cg.time);
+    } else {
+        CG_Printf ("Unable to load camera %s\n",name);
+    }
 }
+
  */
 
-
 typedef struct {
-    char *cmd;
+    char* cmd;
     void (*function)(void);
 } consoleCommand_t;
 
@@ -600,7 +561,7 @@ static consoleCommand_t commands[] = {
     { "scoresUp", CG_scrollScoresUp_f},
 #endif
     { "startOrbit", CG_StartOrbit_f},
-    //	{ "camera", CG_Camera_f },
+    //  { "camera", CG_Camera_f },
     { "loaddeferred", CG_LoadDeferredPlayers},
     { "+acc", CG_AccDown_f},
     { "-acc", CG_AccUp_f},
@@ -616,18 +577,15 @@ Cmd_Argc() / Cmd_Argv()
 =================
  */
 qboolean CG_ConsoleCommand(void) {
-    const char *cmd;
+    const char* cmd;
     int i;
-
     cmd = CG_Argv(0);
-
-    for (i = 0; i < sizeof ( commands) / sizeof ( commands[0]); i++) {
+    for (i = 0; i < sizeof(commands) / sizeof(commands[0]); i++) {
         if (Q_strequal(cmd, commands[i].cmd)) {
             commands[i].function();
             return qtrue;
         }
     }
-
     return qfalse;
 }
 
@@ -641,11 +599,9 @@ so it can perform tab completion
  */
 void CG_InitConsoleCommands(void) {
     int i;
-
-    for (i = 0; i < sizeof ( commands) / sizeof ( commands[0]); i++) {
+    for (i = 0; i < sizeof(commands) / sizeof(commands[0]); i++) {
         trap_AddCommand(commands[i].cmd);
     }
-
     //
     // the game server will interpret these commands, which will be automatically
     // forwarded to the server after they are not recognized locally

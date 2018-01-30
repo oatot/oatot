@@ -16,12 +16,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
  */
 #ifndef __UI_SHARED_H
 #define __UI_SHARED_H
-
 
 #include "../qcommon/q_shared.h"
 #include "../renderer/tr_types.h"
@@ -50,10 +49,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define WINDOW_FADINGOUT   0x00000020 // fading out, non-active
 #define WINDOW_FADINGIN    0x00000040 // fading in
 #define WINDOW_MOUSEOVERTEXT 0x00000080 // mouse is over it, non exclusive
-#define WINDOW_INTRANSITION  0x00000100 // window is in transition
-#define WINDOW_FORECOLORSET  0x00000200 // forecolor was explicitly set ( used to color alpha images or not )
+#define WINDOW_INTRANSITION 0x00000100 // window is in transition
+#define WINDOW_FORECOLORSET 0x00000200 // forecolor was explicitly set ( used to color alpha images or not )
 #define WINDOW_HORIZONTAL   0x00000400 // for list boxes and sliders, vertical is default this is set of horizontal
-#define WINDOW_LB_LEFTARROW  0x00000800 // mouse is over left/up arrow
+#define WINDOW_LB_LEFTARROW 0x00000800 // mouse is over left/up arrow
 #define WINDOW_LB_RIGHTARROW 0x00001000 // mouse is over right/down arrow
 #define WINDOW_LB_THUMB    0x00002000 // mouse is over thumb
 #define WINDOW_LB_PGUP    0x00004000 // mouse is over page up
@@ -64,10 +63,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define WINDOW_AUTOWRAPPED   0x00080000 // auto wrap text
 #define WINDOW_FORCED     0x00100000 // forced open
 #define WINDOW_POPUP     0x00200000 // popup
-#define WINDOW_BACKCOLORSET  0x00400000 // backcolor was explicitly set 
-#define WINDOW_TIMEDVISIBLE  0x00800000 // visibility timing ( NOT implemented )
+#define WINDOW_BACKCOLORSET 0x00400000 // backcolor was explicitly set 
+#define WINDOW_TIMEDVISIBLE 0x00800000 // visibility timing ( NOT implemented )
 // Changed RD
-#define WINDOW_ENDTRANSITION  0x01000000
+#define WINDOW_ENDTRANSITION 0x01000000
 #define WINDOW_NOTRANSITION   0x02000000
 #define WINDOW_FOCUSDISABLE   0x04000000
 // end changed RD
@@ -124,8 +123,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define NUM_CROSSHAIRS   10
 
 typedef struct {
-    const char *command;
-    const char *args[MAX_SCRIPT_ARGS];
+    const char* command;
+    const char* args[MAX_SCRIPT_ARGS];
 } scriptDef_t;
 
 typedef struct {
@@ -142,9 +141,9 @@ typedef rectDef_t Rectangle;
 typedef struct {
     Rectangle rect; // client coord rectangle
     Rectangle rectClient; // screen coord rectangle
-    const char *name; //
-    const char *group; // if it belongs to a group
-    const char *cinematicName; // cinematic name
+    const char* name; //
+    const char* group; // if it belongs to a group
+    const char* cinematicName; // cinematic name
     int cinematic; // cinematic handle
     int style; //
     int border; //
@@ -199,12 +198,12 @@ typedef struct listBoxDef_s {
     int elementStyle;
     int numColumns;
     columnInfo_t columnInfo[MAX_LB_COLUMNS];
-    const char *doubleClick;
+    const char* doubleClick;
     qboolean notselectable;
 } listBoxDef_t;
 
 typedef struct editFieldDef_s {
-    float minVal; //	edit field limits
+    float minVal; //    edit field limits
     float maxVal; //
     float defVal; //
     float range; //
@@ -216,8 +215,8 @@ typedef struct editFieldDef_s {
 #define MAX_MULTI_CVARS 32
 
 typedef struct multiDef_s {
-    const char *cvarList[MAX_MULTI_CVARS];
-    const char *cvarStr[MAX_MULTI_CVARS];
+    const char* cvarList[MAX_MULTI_CVARS];
+    const char* cvarStr[MAX_MULTI_CVARS];
     float cvarValue[MAX_MULTI_CVARS];
     int count;
     qboolean strDef;
@@ -256,11 +255,11 @@ typedef struct comboDef_s {
     float offsety;
 } comboDef_t;
 
-#define BOXTEXTSTEP  4
-#define BOXTEXTOFFSET  4
+#define BOXTEXTSTEP 4
+#define BOXTEXTOFFSET 4
 // end changed RD
 
-#define CVAR_ENABLE  0x00000001
+#define CVAR_ENABLE 0x00000001
 #define CVAR_DISABLE 0x00000002
 #define CVAR_SHOW   0x00000004
 #define CVAR_HIDE   0x00000008
@@ -275,32 +274,32 @@ typedef struct itemDef_s {
     float textaligny; // ( optional ) text alignment x coord
     float textscale; // scale percentage from 72pts
     int textStyle; // ( optional ) style, normal and shadowed are it for now
-    const char *text; // display text
-    void *parent; // menu owner
+    const char* text; // display text
+    void* parent; // menu owner
     qhandle_t asset; // handle to asset
-    const char *mouseEnterText; // mouse enter script
-    const char *mouseExitText; // mouse exit script
-    const char *mouseEnter; // mouse enter script
-    const char *mouseExit; // mouse exit script
-    const char *action; // select script
-    const char *onFocus; // select script
-    const char *leaveFocus; // select script
+    const char* mouseEnterText; // mouse enter script
+    const char* mouseExitText; // mouse exit script
+    const char* mouseEnter; // mouse enter script
+    const char* mouseExit; // mouse exit script
+    const char* action; // select script
+    const char* onFocus; // select script
+    const char* leaveFocus; // select script
     // Changed RD
-    const char *transitionEnd; // select script
+    const char* transitionEnd; // select script
     // end changed RD
-    const char *cvar; // associated cvar
-    const char *cvarTest; // associated cvar for enable actions
-    const char *enableCvar; // enable, disable, show, or hide based on value, this can contain a list
-    int cvarFlags; //	what type of action to take on cvarenables
+    const char* cvar; // associated cvar
+    const char* cvarTest; // associated cvar for enable actions
+    const char* enableCvar; // enable, disable, show, or hide based on value, this can contain a list
+    int cvarFlags; //   what type of action to take on cvarenables
     sfxHandle_t focusSound;
     int numColors; // number of color ranges
     colorRangeDef_t colorRanges[MAX_COLOR_RANGES];
     float special; // used for feeder id's etc.. diff per type
     int cursorPos; // cursor position in characters
-    void *typeData; // type specific data ptr's
+    void* typeData; // type specific data ptr's
     // Changed RD
-    void *multiData;
-    void *comboData;
+    void* multiData;
+    void* comboData;
     int bindtype;
     int bind2click;
     qboolean clickstatus;
@@ -316,7 +315,7 @@ typedef struct itemDef_s {
 
 typedef struct {
     Window window;
-    const char *font; // font
+    const char* font; // font
     qboolean fullScreen; // covers entire screen
     int itemCount; // number of items;
     int fontIndex; //
@@ -324,37 +323,37 @@ typedef struct {
     int fadeCycle; //
     float fadeClamp; //
     float fadeAmount; //
-    const char *onOpen; // run when the menu is first opened
-    const char *onClose; // run when the menu is closed
-    const char *onESC; // run when the menu is closed
+    const char* onOpen; // run when the menu is first opened
+    const char* onClose; // run when the menu is closed
+    const char* onESC; // run when the menu is closed
     // Changed RD
-    const char *opentransitionEnd; // select script
-    const char *esctransitionEnd;
+    const char* opentransitionEnd; // select script
+    const char* esctransitionEnd;
     // end changed RD
-    const char *soundName; // background loop sound for menu
+    const char* soundName; // background loop sound for menu
 
     vec4_t focusColor; // focus color for items
     vec4_t disableColor; // focus color for items
-    itemDef_t *items[MAX_MENUITEMS]; // items this menu contains
+    itemDef_t* items[MAX_MENUITEMS]; // items this menu contains
 } menuDef_t;
 
 typedef struct {
-    const char *fontStr;
-    const char *cursorStr;
+    const char* fontStr;
+    const char* cursorStr;
     // changed RD
-    const char *mainname;
-    const char *ingamename;
-    const char *errorname;
-    const char *connectname;
-    const char *endname;
-    const char *teamname;
+    const char* mainname;
+    const char* ingamename;
+    const char* errorname;
+    const char* connectname;
+    const char* endname;
+    const char* teamname;
     float scrollbarsize;
     float sliderwidth;
     float sliderheight;
     float sliderthumbwidth;
     float sliderthumbheight;
     // end changed RD
-    const char *gradientStr;
+    const char* gradientStr;
     fontInfo_t textFont;
     fontInfo_t smallFont;
     fontInfo_t bigFont;
@@ -407,57 +406,57 @@ typedef struct {
 } cachedAssets_t;
 
 typedef struct {
-    const char *name;
-    void (*handler) (itemDef_t *item, char** args);
+    const char* name;
+    void (*handler)(itemDef_t* item, char** args);
 } commandDef_t;
 
 typedef struct {
-    qhandle_t(*registerShaderNoMip) (const char *p);
-    void (*setColor) (const vec4_t v);
-    void (*drawHandlePic) (float x, float y, float w, float h, qhandle_t asset);
-    void (*drawStretchPic) (float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader);
-    void (*drawText) (float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style);
-    int (*textWidth) (const char *text, float scale, int limit);
-    int (*textHeight) (const char *text, float scale, int limit);
-    qhandle_t(*registerModel) (const char *p);
-    void (*modelBounds) (qhandle_t model, vec3_t min, vec3_t max);
-    void (*fillRect) (float x, float y, float w, float h, const vec4_t color);
-    void (*drawRect) (float x, float y, float w, float h, float size, const vec4_t color);
-    void (*drawSides) (float x, float y, float w, float h, float size);
-    void (*drawTopBottom) (float x, float y, float w, float h, float size);
-    void (*clearScene) (void);
-    void (*addRefEntityToScene) (const refEntity_t *re);
-    void (*renderScene) (const refdef_t *fd);
-    void (*registerFont) (const char *pFontname, int pointSize, fontInfo_t *font);
-    void (*ownerDrawItem) (float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle);
-    float (*getValue) (int ownerDraw);
-    qboolean(*ownerDrawVisible) (int flags);
-    void (*runScript)(char **p);
-    void (*getTeamColor)(vec4_t *color);
-    void (*getCVarString)(const char *cvar, char *buffer, int bufsize);
-    float (*getCVarValue)(const char *cvar);
-    void (*setCVar)(const char *cvar, const char *value);
-    void (*drawTextWithCursor)(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style);
+    qhandle_t(*registerShaderNoMip)(const char* p);
+    void (*setColor)(const vec4_t v);
+    void (*drawHandlePic)(float x, float y, float w, float h, qhandle_t asset);
+    void (*drawStretchPic)(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader);
+    void (*drawText)(float x, float y, float scale, vec4_t color, const char* text, float adjust, int limit, int style);
+    int (*textWidth)(const char* text, float scale, int limit);
+    int (*textHeight)(const char* text, float scale, int limit);
+    qhandle_t(*registerModel)(const char* p);
+    void (*modelBounds)(qhandle_t model, vec3_t min, vec3_t max);
+    void (*fillRect)(float x, float y, float w, float h, const vec4_t color);
+    void (*drawRect)(float x, float y, float w, float h, float size, const vec4_t color);
+    void (*drawSides)(float x, float y, float w, float h, float size);
+    void (*drawTopBottom)(float x, float y, float w, float h, float size);
+    void (*clearScene)(void);
+    void (*addRefEntityToScene)(const refEntity_t* re);
+    void (*renderScene)(const refdef_t* fd);
+    void (*registerFont)(const char* pFontname, int pointSize, fontInfo_t* font);
+    void (*ownerDrawItem)(float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle);
+    float (*getValue)(int ownerDraw);
+    qboolean(*ownerDrawVisible)(int flags);
+    void (*runScript)(char** p);
+    void (*getTeamColor)(vec4_t* color);
+    void (*getCVarString)(const char* cvar, char* buffer, int bufsize);
+    float (*getCVarValue)(const char* cvar);
+    void (*setCVar)(const char* cvar, const char* value);
+    void (*drawTextWithCursor)(float x, float y, float scale, vec4_t color, const char* text, int cursorPos, char cursor, int limit, int style);
     void (*setOverstrikeMode)(qboolean b);
     qboolean(*getOverstrikeMode)(void);
     void (*startLocalSound)(sfxHandle_t sfx, int channelNum);
-    qboolean(*ownerDrawHandleKey)(int ownerDraw, int flags, float *special, int key);
+    qboolean(*ownerDrawHandleKey)(int ownerDraw, int flags, float* special, int key);
     int (*feederCount)(float feederID);
-    const char *(*feederItemText)(float feederID, int index, int column, qhandle_t *handle);
+    const char* (*feederItemText)(float feederID, int index, int column, qhandle_t* handle);
     qhandle_t(*feederItemImage)(float feederID, int index);
     void (*feederSelection)(float feederID, int index);
-    void (*keynumToStringBuf)(int keynum, char *buf, int buflen);
-    void (*getBindingBuf)(int keynum, char *buf, int buflen);
-    void (*setBinding)(int keynum, const char *binding);
-    void (*executeText)(int exec_when, const char *text);
-    void (*Error)(int level, const char *error, ...) __attribute__ ((format(printf, 2, 3)));
-    void (*Print)(const char *msg, ...) __attribute__ ((format(printf, 1, 2)));
+    void (*keynumToStringBuf)(int keynum, char* buf, int buflen);
+    void (*getBindingBuf)(int keynum, char* buf, int buflen);
+    void (*setBinding)(int keynum, const char* binding);
+    void (*executeText)(int exec_when, const char* text);
+    void (*Error)(int level, const char* error, ...) __attribute__((format(printf, 2, 3)));
+    void (*Print)(const char* msg, ...) __attribute__((format(printf, 1, 2)));
     void (*Pause)(qboolean b);
     int (*ownerDrawWidth)(int ownerDraw, float scale);
-    sfxHandle_t(*registerSound)(const char *name, qboolean compressed);
-    void (*startBackgroundTrack)(const char *intro, const char *loop);
+    sfxHandle_t(*registerSound)(const char* name, qboolean compressed);
+    void (*startBackgroundTrack)(const char* intro, const char* loop);
     void (*stopBackgroundTrack)(void);
-    int (*playCinematic)(const char *name, float x, float y, float w, float h);
+    int (*playCinematic)(const char* name, float x, float y, float w, float h);
     void (*stopCinematic)(int handle);
     void (*drawCinematic)(int handle, float x, float y, float w, float h);
     void (*runCinematicFrame)(int handle);
@@ -481,59 +480,59 @@ typedef struct {
 
 } displayContextDef_t;
 
-const char *String_Alloc(const char *p);
+const char* String_Alloc(const char* p);
 void String_Init(void);
 void String_Report(void);
-void Init_Display(displayContextDef_t *dc);
-void Display_ExpandMacros(char * buff);
-void Menu_Init(menuDef_t *menu);
-void Item_Init(itemDef_t *item);
-void Menu_PostParse(menuDef_t *menu);
-menuDef_t *Menu_GetFocused(void);
-void Menu_HandleKey(menuDef_t *menu, int key, qboolean down);
-void Menu_HandleMouseMove(menuDef_t *menu, float x, float y);
-void Menu_ScrollFeeder(menuDef_t *menu, int feeder, qboolean down);
-qboolean Float_Parse(char **p, float *f);
-qboolean Color_Parse(char **p, vec4_t *c);
-qboolean Int_Parse(char **p, int *i);
-qboolean Rect_Parse(char **p, rectDef_t *r);
-qboolean String_Parse(char **p, const char **out);
-qboolean Script_Parse(char **p, const char **out);
-qboolean PC_Float_Parse(int handle, float *f);
-qboolean PC_Color_Parse(int handle, vec4_t *c);
-qboolean PC_Int_Parse(int handle, int *i);
-qboolean PC_Rect_Parse(int handle, rectDef_t *r);
-qboolean PC_String_Parse(int handle, const char **out);
-qboolean PC_Script_Parse(int handle, const char **out);
+void Init_Display(displayContextDef_t* dc);
+void Display_ExpandMacros(char* buff);
+void Menu_Init(menuDef_t* menu);
+void Item_Init(itemDef_t* item);
+void Menu_PostParse(menuDef_t* menu);
+menuDef_t* Menu_GetFocused(void);
+void Menu_HandleKey(menuDef_t* menu, int key, qboolean down);
+void Menu_HandleMouseMove(menuDef_t* menu, float x, float y);
+void Menu_ScrollFeeder(menuDef_t* menu, int feeder, qboolean down);
+qboolean Float_Parse(char** p, float* f);
+qboolean Color_Parse(char** p, vec4_t* c);
+qboolean Int_Parse(char** p, int* i);
+qboolean Rect_Parse(char** p, rectDef_t* r);
+qboolean String_Parse(char** p, const char** out);
+qboolean Script_Parse(char** p, const char** out);
+qboolean PC_Float_Parse(int handle, float* f);
+qboolean PC_Color_Parse(int handle, vec4_t* c);
+qboolean PC_Int_Parse(int handle, int* i);
+qboolean PC_Rect_Parse(int handle, rectDef_t* r);
+qboolean PC_String_Parse(int handle, const char** out);
+qboolean PC_Script_Parse(int handle, const char** out);
 int Menu_Count(void);
 void Menu_New(int handle);
 void Menu_PaintAll(void);
 // Changed RD
 void Menu_PaintEnd(void);
-qboolean Item_EnableShowViaCvar(itemDef_t *item, int flag);
+qboolean Item_EnableShowViaCvar(itemDef_t* item, int flag);
 // end changed RD
-menuDef_t *Menus_ActivateByName(const char *p);
+menuDef_t* Menus_ActivateByName(const char* p);
 void Menu_Reset(void);
 qboolean Menus_AnyFullScreenVisible(void);
-void Menus_Activate(menuDef_t *menu);
+void Menus_Activate(menuDef_t* menu);
 
-displayContextDef_t *Display_GetContext(void);
-void *Display_CaptureItem(int x, int y);
-qboolean Display_MouseMove(void *p, int x, int y);
+displayContextDef_t* Display_GetContext(void);
+void* Display_CaptureItem(int x, int y);
+qboolean Display_MouseMove(void* p, int x, int y);
 int Display_CursorType(int x, int y);
 qboolean Display_KeyBindPending(void);
-void Menus_OpenByName(const char *p);
-menuDef_t *Menus_FindByName(const char *p);
-void Menus_ShowByName(const char *p);
-void Menus_CloseByName(const char *p);
+void Menus_OpenByName(const char* p);
+menuDef_t* Menus_FindByName(const char* p);
+void Menus_ShowByName(const char* p);
+void Menus_CloseByName(const char* p);
 void Display_HandleKey(int key, qboolean down, int x, int y);
 void LerpColor(vec4_t a, vec4_t b, vec4_t c, float t);
 void Menus_CloseAll(void);
-void Menu_Paint(menuDef_t *menu, qboolean forcePaint);
-void Menu_SetFeederSelection(menuDef_t *menu, int feeder, int index, const char *name);
+void Menu_Paint(menuDef_t* menu, qboolean forcePaint);
+void Menu_SetFeederSelection(menuDef_t* menu, int feeder, int index, const char* name);
 void Display_CacheAll(void);
 
-void *UI_Alloc(int size);
+void* UI_Alloc(int size);
 void UI_InitMemory(void);
 qboolean UI_OutOfMemory(void);
 
@@ -543,31 +542,29 @@ void Controls_SetConfig(qboolean restart);
 void Controls_SetDefaults(void);
 #endif
 
-int trap_PC_AddGlobalDefine(char *define);
-int trap_PC_LoadSource(const char *filename);
+int trap_PC_AddGlobalDefine(char* define);
+int trap_PC_LoadSource(const char* filename);
 int trap_PC_FreeSource(int handle);
-int trap_PC_ReadToken(int handle, pc_token_t *pc_token);
-int trap_PC_SourceFileAndLine(int handle, char *filename, int *line);
+int trap_PC_ReadToken(int handle, pc_token_t* pc_token);
+int trap_PC_SourceFileAndLine(int handle, char* filename, int* line);
 
-void Item_Text_AutoWrapped_Paint(itemDef_t *item);
+void Item_Text_AutoWrapped_Paint(itemDef_t* item);
 
 // Knightmare- screen item alignment types
 // Adapted from an i3d thread that applies this to the JK2 source http://forums.inside3d.com/viewtopic.php?f=1&t=5159&p=49084
 
-#define  ALIGN_STRETCH    0
-#define  ALIGN_CENTER   1
-#define  ALIGN_LETTERBOX  2
-#define  ALIGN_TOP   3
-#define  ALIGN_BOTTOM   4
-#define  ALIGN_RIGHT   5
-#define  ALIGN_LEFT   6
-#define  ALIGN_TOPRIGHT   7
-#define  ALIGN_TOPLEFT   8
-#define  ALIGN_BOTTOMRIGHT   9
-#define  ALIGN_BOTTOMLEFT  10
-#define  ALIGN_TOP_STRETCH  11
-#define  ALIGN_BOTTOM_STRETCH  12
-
-
+#define ALIGN_STRETCH    0
+#define ALIGN_CENTER   1
+#define ALIGN_LETTERBOX 2
+#define ALIGN_TOP   3
+#define ALIGN_BOTTOM   4
+#define ALIGN_RIGHT   5
+#define ALIGN_LEFT   6
+#define ALIGN_TOPRIGHT   7
+#define ALIGN_TOPLEFT   8
+#define ALIGN_BOTTOMRIGHT   9
+#define ALIGN_BOTTOMLEFT 10
+#define ALIGN_TOP_STRETCH 11
+#define ALIGN_BOTTOM_STRETCH 12
 
 #endif

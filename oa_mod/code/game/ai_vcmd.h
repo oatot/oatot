@@ -16,21 +16,20 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 //
 
 /*****************************************************************************
- * name:		ai_vcmd.h
+ * name:        ai_vcmd.h
  *
- * desc:		Quake3 bot AI
+ * desc:        Quake3 bot AI
  *
  * $Archive: /source/code/botai/ai_vcmd.c $
  *
  *****************************************************************************/
 
-int BotVoiceChatCommand(bot_state_t *bs, int mode, char *voicechat);
-void BotVoiceChat_Defend(bot_state_t *bs, int client, int mode);
-
+int BotVoiceChatCommand(bot_state_t* bs, int mode, char* voicechat);
+void BotVoiceChat_Defend(bot_state_t* bs, int client, int mode);
 

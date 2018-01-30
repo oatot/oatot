@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Open Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 
@@ -28,17 +28,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * are not good enough to win you can still track your progress.
  */
 
-#define CHALLENGES_MAX_COUNT	MAX_INT-1
+#define CHALLENGES_MAX_COUNT    MAX_INT-1
 #define CHALLENGES_MAX          2048
 
-#define GENERAL_TEST		0
+#define GENERAL_TEST        0
 #define GENERAL_TOTALKILLS      1
 #define GENERAL_TOTALDEATHS     2
 #define GENERAL_TOTALGAMES      3
 
 //Gametypes
 #define GAMETYPES_FFA_WINS      101
-#define GAMETYPES_TOURNEY_WINS  102
+#define GAMETYPES_TOURNEY_WINS 102
 #define GAMETYPES_TDM_WINS      103
 #define GAMETYPES_CTF_WINS      104
 #define GAMETYPES_1FCTF_WINS    105
@@ -57,7 +57,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define WEAPON_SHOTGUN_KILLS    203
 #define WEAPON_GRANADE_KILLS    204
 #define WEAPON_ROCKET_KILLS     205
-#define WEAPON_LIGHTNING_KILLS  206
+#define WEAPON_LIGHTNING_KILLS 206
 #define WEAPON_PLASMA_KILLS     207
 #define WEAPON_RAIL_KILLS       208
 #define WEAPON_BFG_KILLS        209
@@ -86,7 +86,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define POWERUP_MULTI_KILL      405
 #define POWERUP_COUNTER_QUAD    406
 #define POWERUP_COUNTER_SPEED   407
-#define POWERUP_COUNTER_FLIGHT  408
+#define POWERUP_COUNTER_FLIGHT 408
 #define POWERUP_COUNTER_INVIS   409
 #define POWERUP_COUNTER_ENVIR   410
 #define POWERUP_COUNTER_REGEN   411

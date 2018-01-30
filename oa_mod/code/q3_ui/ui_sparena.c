@@ -16,35 +16,31 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 //
 #include "ui_local.h"
 
-void UI_SPArena_Start( const char *arenaInfo ) {
-    char	*map;
-    int		level;
-    int		n;
-    char	*txt;
-
-    n = (int)trap_Cvar_VariableValue( "sv_maxclients" );
-    if ( n < 8 ) {
-        trap_Cvar_SetValue( "sv_maxclients", 8 );
+void UI_SPArena_Start(const char* arenaInfo) {
+    char*    map;
+    int     level;
+    int     n;
+    char*    txt;
+    n = (int)trap_Cvar_VariableValue("sv_maxclients");
+    if (n < 8) {
+        trap_Cvar_SetValue("sv_maxclients", 8);
     }
-
-    level = atoi( Info_ValueForKey( arenaInfo, "num" ) );
-    txt = Info_ValueForKey( arenaInfo, "special" );
-    if( txt[0] ) {
-        if( Q_strequal( txt, "training" ) ) {
+    level = atoi(Info_ValueForKey(arenaInfo, "num"));
+    txt = Info_ValueForKey(arenaInfo, "special");
+    if (txt[0]) {
+        if (Q_strequal(txt, "training")) {
             level = -4;
-        }
-        else if( Q_strequal( txt, "final" ) ) {
+        } else if (Q_strequal(txt, "final")) {
             level = UI_GetNumSPTiers() * ARENAS_PER_TIER;
         }
     }
-    trap_Cvar_SetValue( "ui_spSelection", level );
-
-    map = Info_ValueForKey( arenaInfo, "map" );
-    trap_Cmd_ExecuteText( EXEC_APPEND, va( "spmap %s\n", map ) );
+    trap_Cvar_SetValue("ui_spSelection", level);
+    map = Info_ValueForKey(arenaInfo, "map");
+    trap_Cmd_ExecuteText(EXEC_APPEND, va("spmap %s\n", map));
 }

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Open Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
  */
 
@@ -45,26 +45,23 @@ void challenges_init(void) {
     fileHandle_t file;
     int fileLen;
     int i;
-
     //If already initialized then do nothing
-    if (challengesInitialized)
+    if (challengesInitialized) {
         return;
-
+    }
     //Else open file
     fileLen = trap_FS_FOpenFile(FILENAME, &file, FS_READ);
-
     //If the file not is big enough to contain all challenges then initialize from zero
-    if (fileLen<sizeof (challengeTable)) {
+    if (fileLen < sizeof(challengeTable)) {
         trap_FS_FCloseFile(file); //Lets remeber to close the file before all returns
-        for (i = 0; i < CHALLENGES_MAX; i++)
-            challengeTable[i] = 0; //Init all challenges to zero
+        for (i = 0; i < CHALLENGES_MAX; i++) {
+            challengeTable[i] = 0;    //Init all challenges to zero
+        }
         challengesInitialized = qtrue; //Still consider the system loaded!
         return; //Not enough data to actually read
     }
-
     //If the file is big enough:
-    trap_FS_Read(challengeTable, sizeof (challengeTable), file);
-
+    trap_FS_Read(challengeTable, sizeof(challengeTable), file);
     trap_FS_FCloseFile(file); //Lets remember to close the file
     challengesInitialized = qtrue; //We are initialized!
     return;
@@ -92,9 +89,8 @@ void challenges_save(void) {
     }
     for (i = 0; i < CHALLENGES_MAX; i++) {
         //Write the table to disk
-        trap_FS_Write((const void*) &challengeTable[i], sizeof (unsigned int), file);
+        trap_FS_Write((const void*) &challengeTable[i], sizeof(unsigned int), file);
     }
-
     //Always close the file in id tech 3
     trap_FS_FCloseFile(file);
     //Lets make the challenges system uninitialized since changes after this will most likely not be saved anyway.
@@ -108,8 +104,9 @@ void challenges_save(void) {
 
 unsigned int getChallenge(int challenge) {
     challenges_init();
-    if (challenge >= CHALLENGES_MAX)
+    if (challenge >= CHALLENGES_MAX) {
         return 0;
+    }
     return challengeTable[challenge];
 }
 
