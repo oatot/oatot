@@ -242,7 +242,7 @@ void InGame_MenuInit(void) {
     s_ingame.oatot.generic.flags        = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
     s_ingame.oatot.generic.x            = 320;
     s_ingame.oatot.generic.y            = y;
-    s_ingame.oatot.generic.id           = ID_VOTE;
+    s_ingame.oatot.generic.id           = ID_OATOT;
     s_ingame.oatot.generic.callback = InGame_Event;
     s_ingame.oatot.string               = "OATOT MENU";
     s_ingame.oatot.color                = color_red;
