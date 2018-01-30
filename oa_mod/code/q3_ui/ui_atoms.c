@@ -944,6 +944,7 @@ qboolean UI_ConsoleCommand(int realTime) {
             oatotinfo.btc_balance.free_money = atoi(UI_Argv(2));
             oatotinfo.btc_balance.money_on_bets = atoi(UI_Argv(3));
         }
+        return qtrue;
     }
     if (Q_strequal(cmd, "ui_updateactivebets")) {
         oatotinfo.bets_n = atoi(UI_Argv(1));
