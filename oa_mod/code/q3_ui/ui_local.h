@@ -570,6 +570,9 @@ extern void UI_VoteCustomMenu(void);
 // Calculate default bet amount from balance
 #define OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT 10
 
+extern const char* betHorse_items[3];
+extern const char* betCurrency_items[3];
+
 // Common checking & action functions
 extern int GetBalanceLen(void);
 extern void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field);
@@ -579,9 +582,6 @@ extern qboolean CheckBetUpper(activeBet_t bet);
 extern qboolean CheckBetLower(activeBet_t bet);
 
 // Common drawing functions
-extern void Oatot_SetSpin(void* seld, menulist_s* item, int* style, float* color);
-extern void Oatot_DrawHorse(void* self);
-extern void Oatot_DrawCurrency(void* self);
 extern void Oatot_DrawAmount(void* self);
 
 // ui_oatotmenu.c

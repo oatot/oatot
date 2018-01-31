@@ -142,17 +142,13 @@ void UI_BetMenuInternal(void) {
     // Initialize horse, amount and currency menu components.
     // Horse.
     s_betmenu.betHorse.generic.type        = MTYPE_SPINCONTROL;
-    s_betmenu.betHorse.generic.flags       = QMF_NODEFAULTINIT;
+    s_betmenu.betHorse.generic.flags       = QMF_PULSEIFFOCUS;
     s_betmenu.betHorse.generic.x           = 280 - 100;
     s_betmenu.betHorse.generic.y           = 98;
-    s_betmenu.betHorse.generic.left        = 280 - 100;
-    s_betmenu.betHorse.generic.right       = 280;
-    s_betmenu.betHorse.generic.top         = 98 - 8;
-    s_betmenu.betHorse.generic.bottom      = 98 + 2 * PROP_HEIGHT;
     s_betmenu.betHorse.generic.id          = ID_HORSE;
+    s_betmenu.betHorse.generic.name        = "Horse: ";
     s_betmenu.betHorse.generic.callback    = BetMenu_Event;
-    s_betmenu.betHorse.generic.ownerdraw   = Oatot_DrawHorse;
-    s_betmenu.betHorse.numitems            = 2;
+    s_betmenu.betHorse.itemnames           = betHorse_items;
     s_betmenu.betHorse.curvalue            = 0;
     // Amount.
     s_betmenu.betAmount.generic.type        = MTYPE_FIELD;
@@ -174,17 +170,13 @@ void UI_BetMenuInternal(void) {
     );
     // Currency.
     s_betmenu.betCurrency.generic.type        = MTYPE_SPINCONTROL;
-    s_betmenu.betCurrency.generic.flags       = QMF_NODEFAULTINIT;
+    s_betmenu.betCurrency.generic.flags       = QMF_PULSEIFFOCUS;
     s_betmenu.betCurrency.generic.x           = 500 - 100;
     s_betmenu.betCurrency.generic.y           = 98;
-    s_betmenu.betCurrency.generic.left        = 500 - 100;
-    s_betmenu.betCurrency.generic.right       = 500;
-    s_betmenu.betCurrency.generic.top         = 98 - 8;
-    s_betmenu.betCurrency.generic.bottom      = 98 + 2 * PROP_HEIGHT;
     s_betmenu.betCurrency.generic.id          = ID_CURRENCY;
+    s_betmenu.betCurrency.generic.name        = "Currency: ";
     s_betmenu.betCurrency.generic.callback    = BetMenu_Event;
-    s_betmenu.betCurrency.generic.ownerdraw   = Oatot_DrawCurrency;
-    s_betmenu.betCurrency.numitems            = 2;
+    s_betmenu.betCurrency.itemnames           = betCurrency_items;
     s_betmenu.betCurrency.curvalue            = 0;
     // Button back.
     s_betmenu.back.generic.type       = MTYPE_BITMAP;

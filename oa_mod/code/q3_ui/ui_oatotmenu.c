@@ -33,6 +33,19 @@
 
 t_oatotinfo oatotinfo;
 
+const char* betHorse_items[] = {
+    "RED",
+    "BLUE",
+    NULL
+};
+
+const char* betCurrency_items[] = {
+    "OAC",
+    "BTC",
+    NULL
+};
+
+
 typedef struct {
     menuframework_s menu;
     menutext_s      banner;
@@ -48,18 +61,6 @@ typedef struct {
 } oatotmenu_t;
 
 static oatotmenu_t s_oatotmenu;
-
-static const char* betHorse_items[] = {
-    "RED",
-    "BLUE",
-    NULL
-};
-
-static const char* betCurrency_items[] = {
-    "OAC",
-    "BTC",
-    NULL
-};
 
 /*
 =================
@@ -229,38 +230,6 @@ static void UI_OatotMenu_Draw(void) {
 
 /*
 =================
-Oatot_SetSpin
-=================
-*/
-void Oatot_SetSpin(void* self, menulist_s* item, int* style, float* color) {
-    qboolean focus;
-    item = (menulist_s*) self;
-    focus = (item->generic.parent->cursor == item->generic.menuPosition);
-    *style = UI_LEFT | UI_SMALLFONT;
-    color = text_color_normal;
-    if (focus) {
-        *style |= UI_PULSE;
-        color = text_color_highlight;
-    }
-}
-
-/*
-=================
-Oatot_DrawHorse
-=================
-*/
-void Oatot_DrawHorse(void* self) {
-    menulist_s* item;
-    qboolean    focus;
-    int*        style;
-    float*      color;
-    Oatot_SetSpin(self, item, style, color);
-    UI_DrawProportionalString(item->generic.x, item->generic.y, "Horse", *style, color);
-    UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, betHorse_items[item->curvalue], *style, color);
-}
-
-/*
-=================
 Oatot_DrawAmount
 =================
 */
@@ -309,21 +278,6 @@ void Oatot_DrawAmount(void* self) {
 
 /*
 =================
-Oatot_DrawCurrency
-=================
-*/
-void Oatot_DrawCurrency(void* self) {
-    menulist_s* item;
-    qboolean    focus;
-    int*        style;
-    float*      color;
-    Oatot_SetSpin(self, item, style, color);
-    UI_DrawProportionalString(item->generic.x, item->generic.y, "Currency", *style, color);
-    UI_DrawProportionalString(item->generic.x + 64, item->generic.y + PROP_HEIGHT, betCurrency_items[item->curvalue], *style, color);
-}
-
-/*
-=================
 OatotMenu_Cache
 =================
 */
@@ -339,17 +293,13 @@ static void OatotMenu_Cache(void) {
 
 static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.flags       = QMF_NODEFAULTINIT;
+    menu->generic.flags       = QMF_PULSEIFFOCUS;
     menu->generic.x           = 280 - 100;
     menu->generic.y           = y;
-    menu->generic.left        = 280 - 100;
-    menu->generic.right       = 280;
-    menu->generic.top         = y - 8;
-    menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
+    menu->generic.name        = "Horse: ";
     menu->generic.callback    = Bet_Event;
-    menu->generic.ownerdraw   = Oatot_DrawHorse;
-    menu->numitems            = 2;
+    menu->itemnames           = betHorse_items;
     if (!strcmp(horse, "red")) {
         menu->curvalue = 0;
     } else if (!strcmp(horse, "blue")) {
@@ -375,17 +325,13 @@ static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
 
 static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.flags       = QMF_NODEFAULTINIT;
+    menu->generic.flags       = QMF_PULSEIFFOCUS;
     menu->generic.x           = 500 - 100;
     menu->generic.y           = y;
-    menu->generic.left        = 500 - 100;
-    menu->generic.right       = 500;
-    menu->generic.top         = y - 8;
-    menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
+    menu->generic.name        = "Currency: ";
     menu->generic.callback    = Bet_Event;
-    menu->generic.ownerdraw   = Oatot_DrawCurrency;
-    menu->numitems            = 2;
+    menu->itemnames           = betCurrency_items;
     if (!strcmp(currency, "OAC")) {
         menu->curvalue = 0;
     } else if (!strcmp(currency, "BTC")) {
