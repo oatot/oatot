@@ -29,7 +29,7 @@
 
 #define SIZE_OF_LIST 5
 
-#define OATOT_MENU_VERTICAL_SPACING 20
+#define OATOT_MENU_VERTICAL_SPACING 50
 
 t_oatotinfo oatotinfo;
 
@@ -182,6 +182,7 @@ static void Bet_Event(void* ptr, int event) {
         DiscardBet(bet);
         // Make new bet with new input data.
         MakeBet(bet);
+        UI_OatotMenuInternal();
     } else {
         // Invalid input (amount).
         // We don't make a bet and set previous values instead.
@@ -212,6 +213,7 @@ static void OatotMenu_Event(void* ptr, int event) {
         break;
     case ID_DISCARDBET:
         DiscardBet(bet);
+        UI_OatotMenuInternal();
         break;
     }
 }
@@ -243,47 +245,65 @@ static void OatotMenu_Cache(void) {
     trap_R_RegisterShaderNoMip(ART_BACKGROUND);
 }
 
-static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
+static void setBetHorse(menulist_s* menu, int y, int bet_index, const char* horse) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
     menu->generic.x           = 170;
     menu->generic.y           = y;
-    menu->generic.id          = id;
+    menu->generic.id          = bet_index * 3;
     menu->generic.name        = "Horse: ";
     menu->generic.callback    = Bet_Event;
     menu->itemnames           = betHorse_items;
-    if (!strcmp(horse, "red")) {
-        menu->curvalue = 0;
-    } else if (!strcmp(horse, "blue")) {
-        menu->curvalue = 1;
+    if (bet_index < oatotinfo.bets_n) {
+        // Bet actually exists.
+        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+        if (!strcmp(horse, "red")) {
+            menu->curvalue = 0;
+        } else if (!strcmp(horse, "blue")) {
+            menu->curvalue = 1;
+        }
+    } else {
+        // Bet doesn't exist (yet), let's hide it.
+        menu->generic.flags = QMF_HIDDEN | QMF_INACTIVE;
     }
 }
 
-static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
+static void setBetAmount(menufield_s* menu, int y, int bet_index, int amount) {
     menu->generic.type        = MTYPE_FIELD;
-    menu->generic.flags       = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
     menu->generic.x           = 320;
     menu->generic.y           = y;
-    menu->generic.id          = id;
+    menu->generic.id          = bet_index * 3 + 1;
     menu->generic.name        = "Amount: ";
     menu->generic.callback    = Bet_Event;
     menu->field.maxchars      = GetBalanceLen();
-    Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
+    if (bet_index < oatotinfo.bets_n) {
+        // Bet actually exists.
+        menu->generic.flags = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+        Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
+    } else {
+        // Bet doesn't exist (yet), let's hide it.
+        menu->generic.flags = QMF_HIDDEN | QMF_INACTIVE;
+    }
 }
 
-static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency) {
+static void setBetCurrency(menulist_s* menu, int y, int bet_index, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
     menu->generic.x           = 500;
     menu->generic.y           = y;
-    menu->generic.id          = id;
+    menu->generic.id          = bet_index * 3 + 2;
     menu->generic.name        = "Currency: ";
     menu->generic.callback    = Bet_Event;
     menu->itemnames           = betCurrency_items;
-    if (!strcmp(currency, "OAC")) {
-        menu->curvalue = 0;
-    } else if (!strcmp(currency, "BTC")) {
-        menu->curvalue = 1;
+    if (bet_index < oatotinfo.bets_n) {
+        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+        // Bet actually exists.
+        if (!strcmp(currency, "OAC")) {
+            menu->curvalue = 0;
+        } else if (!strcmp(currency, "BTC")) {
+            menu->curvalue = 1;
+        }
+    } else {
+        // Bet doesn't exist (yet), let's hide it.
+        menu->generic.flags = QMF_HIDDEN | QMF_INACTIVE;
     }
 }
 
@@ -308,10 +328,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.banner.style          = UI_CENTER;
     // Initialize horse, amount and currency menu components.
     y = 98;
-    for (i = 0; i < oatotinfo.bets_n; i++) {
-        setBetHorse(&s_oatotmenu.betHorses[i], y, i * 3, oatotinfo.bets[i].horse);
-        setBetAmount(&s_oatotmenu.betAmounts[i], y, i * 3 + 1, oatotinfo.bets[i].amount);
-        setBetCurrency(&s_oatotmenu.betCurrencies[i], y, i * 3 + 2, oatotinfo.bets[i].currency);
+    for (i = 0; i < SIZE_OF_LIST; i++) {
+        setBetHorse(&s_oatotmenu.betHorses[i], y, i, oatotinfo.bets[i].horse);
+        setBetAmount(&s_oatotmenu.betAmounts[i], y, i, oatotinfo.bets[i].amount);
+        setBetCurrency(&s_oatotmenu.betCurrencies[i], y, i, oatotinfo.bets[i].currency);
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.
@@ -370,7 +390,7 @@ void UI_OatotMenu(void) {
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.makeBet);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.discardBet);
-    for (i = 0; i < oatotinfo.bets_n; i++) {
+    for (i = 0; i < SIZE_OF_LIST; i++) {
         Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betHorses[i]);
         Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betAmounts[i]);
         Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betCurrencies[i]);
