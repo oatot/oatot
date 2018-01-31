@@ -103,7 +103,7 @@ UI_BetMenu_Draw
 */
 static void UI_BetMenu_Draw(void) {
     UI_DrawBannerString(320, 16, "MAKE BET", UI_CENTER, color_white);
-    UI_DrawNamedPic(320 - 233, 240 - 166, 466, 332, ART_BACKGROUND);
+    UI_DrawNamedPic(320 - 275, 240 - 166, 550, 332, ART_BACKGROUND);
     // Standard menu drawing.
     Menu_Draw(&s_betmenu.menu);
 }
@@ -143,7 +143,7 @@ void UI_BetMenuInternal(void) {
     // Horse.
     s_betmenu.betHorse.generic.type        = MTYPE_SPINCONTROL;
     s_betmenu.betHorse.generic.flags       = QMF_PULSEIFFOCUS;
-    s_betmenu.betHorse.generic.x           = 280 - 100;
+    s_betmenu.betHorse.generic.x           = 60;
     s_betmenu.betHorse.generic.y           = 98;
     s_betmenu.betHorse.generic.id          = ID_HORSE;
     s_betmenu.betHorse.generic.name        = "Horse: ";
@@ -153,12 +153,8 @@ void UI_BetMenuInternal(void) {
     // Amount.
     s_betmenu.betAmount.generic.type        = MTYPE_FIELD;
     s_betmenu.betAmount.generic.flags       = QMF_NODEFAULTINIT;
-    s_betmenu.betAmount.generic.x           = 390 - 100;
+    s_betmenu.betAmount.generic.x           = 210;
     s_betmenu.betAmount.generic.y           = 98;
-    s_betmenu.betAmount.generic.left        = 390 - 100;
-    s_betmenu.betAmount.generic.right       = 390;
-    s_betmenu.betAmount.generic.top         = 98 - 8;
-    s_betmenu.betAmount.generic.bottom      = 98 + 2 * PROP_HEIGHT;
     s_betmenu.betAmount.generic.id          = ID_AMOUNT;
     s_betmenu.betAmount.generic.callback    = BetMenu_Event;
     s_betmenu.betAmount.generic.ownerdraw   = Oatot_DrawAmount;
@@ -171,7 +167,7 @@ void UI_BetMenuInternal(void) {
     // Currency.
     s_betmenu.betCurrency.generic.type        = MTYPE_SPINCONTROL;
     s_betmenu.betCurrency.generic.flags       = QMF_PULSEIFFOCUS;
-    s_betmenu.betCurrency.generic.x           = 500 - 100;
+    s_betmenu.betCurrency.generic.x           = 360;
     s_betmenu.betCurrency.generic.y           = 98;
     s_betmenu.betCurrency.generic.id          = ID_CURRENCY;
     s_betmenu.betCurrency.generic.name        = "Currency: ";

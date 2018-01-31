@@ -223,7 +223,7 @@ UI_OatotMenu_Draw
 */
 static void UI_OatotMenu_Draw(void) {
     UI_DrawBannerString(320, 16, "YOUR ACTIVE BETS", UI_CENTER, color_white);
-    UI_DrawNamedPic(320 - 233, 240 - 166, 466, 332, ART_BACKGROUND);
+    UI_DrawNamedPic(320 - 275, 240 - 166, 550, 332, ART_BACKGROUND);
     // standard menu drawing
     Menu_Draw(&s_oatotmenu.menu);
 }
@@ -294,7 +294,7 @@ static void OatotMenu_Cache(void) {
 static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.type        = MTYPE_SPINCONTROL;
     menu->generic.flags       = QMF_PULSEIFFOCUS;
-    menu->generic.x           = 280 - 100;
+    menu->generic.x           = 60;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.name        = "Horse: ";
@@ -310,12 +310,8 @@ static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
 static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.type        = MTYPE_FIELD;
     menu->generic.flags       = QMF_NODEFAULTINIT;
-    menu->generic.x           = 390 - 100;
+    menu->generic.x           = 210;
     menu->generic.y           = y;
-    menu->generic.left        = 390 - 100;
-    menu->generic.right       = 390;
-    menu->generic.top         = y - 8;
-    menu->generic.bottom      = y + 2 * PROP_HEIGHT;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
     menu->generic.ownerdraw   = Oatot_DrawAmount;
@@ -326,7 +322,7 @@ static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
 static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
     menu->generic.flags       = QMF_PULSEIFFOCUS;
-    menu->generic.x           = 500 - 100;
+    menu->generic.x           = 360;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.name        = "Currency: ";

@@ -566,7 +566,7 @@ extern void UI_VoteCustomMenu(void);
 // OATOT
 
 // Drawing
-#define BUTTON_HORIZONTAL_SPACING 100
+#define BUTTON_HORIZONTAL_SPACING 150
 // Calculate default bet amount from balance
 #define OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT 10
 
