@@ -143,7 +143,7 @@ void UI_BetMenuInternal(void) {
     // Horse.
     s_betmenu.betHorse.generic.type        = MTYPE_SPINCONTROL;
     s_betmenu.betHorse.generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_betmenu.betHorse.generic.x           = 200;
+    s_betmenu.betHorse.generic.x           = 170;
     s_betmenu.betHorse.generic.y           = 200;
     s_betmenu.betHorse.generic.id          = ID_HORSE;
     s_betmenu.betHorse.generic.name        = "Horse: ";
@@ -153,7 +153,7 @@ void UI_BetMenuInternal(void) {
     // Amount.
     s_betmenu.betAmount.generic.type        = MTYPE_FIELD;
     s_betmenu.betAmount.generic.flags       = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_betmenu.betAmount.generic.x           = 260;
+    s_betmenu.betAmount.generic.x           = 320;
     s_betmenu.betAmount.generic.y           = 200;
     s_betmenu.betAmount.generic.id          = ID_AMOUNT;
     s_betmenu.betAmount.generic.name        = "Amount: ";
@@ -167,7 +167,7 @@ void UI_BetMenuInternal(void) {
     // Currency.
     s_betmenu.betCurrency.generic.type        = MTYPE_SPINCONTROL;
     s_betmenu.betCurrency.generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_betmenu.betCurrency.generic.x           = 530;
+    s_betmenu.betCurrency.generic.x           = 500;
     s_betmenu.betCurrency.generic.y           = 200;
     s_betmenu.betCurrency.generic.id          = ID_CURRENCY;
     s_betmenu.betCurrency.generic.name        = "Currency: ";

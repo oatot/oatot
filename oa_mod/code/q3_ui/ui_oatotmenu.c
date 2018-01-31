@@ -274,7 +274,7 @@ static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
 static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
     menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    menu->generic.x           = 470;
+    menu->generic.x           = 500;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.name        = "Currency: ";
