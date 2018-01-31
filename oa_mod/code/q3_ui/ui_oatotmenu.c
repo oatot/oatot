@@ -230,54 +230,6 @@ static void UI_OatotMenu_Draw(void) {
 
 /*
 =================
-Oatot_DrawAmount
-=================
-*/
-void Oatot_DrawAmount(void* self) {
-    menufield_s*     f;
-    qboolean        focus;
-    int             style;
-    char*            txt;
-    char            c;
-    float*           color;
-    int             basex, x, y;
-    f = (menufield_s*)self;
-    basex = f->generic.x;
-    y = f->generic.y;
-    focus = (f->generic.parent->cursor == f->generic.menuPosition);
-    style = UI_LEFT | UI_SMALLFONT;
-    color = text_color_normal;
-    if (focus) {
-        style |= UI_PULSE;
-        color = text_color_highlight;
-    }
-    UI_DrawProportionalString(basex, y, "Amount", style, color);
-    // draw the actual amount
-    basex += 64;
-    y += PROP_HEIGHT;
-    txt = f->field.buffer;
-    color = g_color_table[ColorIndex(COLOR_WHITE)];
-    x = basex;
-    while ((c = *txt) != 0) {
-        UI_DrawChar(x, y, c, style, color);
-        txt++;
-        x += SMALLCHAR_WIDTH;
-    }
-    // draw cursor if we have focus
-    if (focus) {
-        if (trap_Key_GetOverstrikeMode()) {
-            c = 11;
-        } else {
-            c = 10;
-        }
-        style &= ~UI_PULSE;
-        style |= UI_BLINK;
-        UI_DrawChar(basex + f->field.cursor * SMALLCHAR_WIDTH, y, c, style, color_white);
-    }
-}
-
-/*
-=================
 OatotMenu_Cache
 =================
 */
@@ -293,8 +245,8 @@ static void OatotMenu_Cache(void) {
 
 static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.flags       = QMF_PULSEIFFOCUS;
-    menu->generic.x           = 60;
+    menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    menu->generic.x           = 170;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.name        = "Horse: ";
@@ -309,20 +261,20 @@ static void setBetHorse(menulist_s* menu, int y, int id, const char* horse) {
 
 static void setBetAmount(menufield_s* menu, int y, int id, int amount) {
     menu->generic.type        = MTYPE_FIELD;
-    menu->generic.flags       = QMF_NODEFAULTINIT;
-    menu->generic.x           = 210;
+    menu->generic.flags       = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    menu->generic.x           = 320;
     menu->generic.y           = y;
     menu->generic.id          = id;
+    menu->generic.name        = "Amount: ";
     menu->generic.callback    = Bet_Event;
-    menu->generic.ownerdraw   = Oatot_DrawAmount;
     menu->field.maxchars      = GetBalanceLen();
     Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
 }
 
 static void setBetCurrency(menulist_s* menu, int y, int id, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.flags       = QMF_PULSEIFFOCUS;
-    menu->generic.x           = 360;
+    menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    menu->generic.x           = 470;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.name        = "Currency: ";
@@ -368,10 +320,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.back.generic.flags      = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_oatotmenu.back.generic.id         = ID_BACK;
     s_oatotmenu.back.generic.callback   = OatotMenu_Event;
-    s_oatotmenu.back.generic.x          = 220 - 128;
-    s_oatotmenu.back.generic.y          = 410 - 64;
-    s_oatotmenu.back.width              = 128;
-    s_oatotmenu.back.height             = 64;
+    s_oatotmenu.back.generic.x          = 220 - 90;
+    s_oatotmenu.back.generic.y          = 410 - 45;
+    s_oatotmenu.back.width              = 90;
+    s_oatotmenu.back.height             = 45;
     s_oatotmenu.back.focuspic           = ART_BACK1;
     // Button makeBet.
     s_oatotmenu.makeBet.generic.type        = MTYPE_BITMAP;
@@ -379,10 +331,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.makeBet.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_oatotmenu.makeBet.generic.id          = ID_MAKEBET;
     s_oatotmenu.makeBet.generic.callback    = OatotMenu_Event;
-    s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 128;
-    s_oatotmenu.makeBet.generic.y           = 410 - 64;
-    s_oatotmenu.makeBet.width               = 128;
-    s_oatotmenu.makeBet.height              = 64;
+    s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 90;
+    s_oatotmenu.makeBet.generic.y           = 410 - 45;
+    s_oatotmenu.makeBet.width               = 90;
+    s_oatotmenu.makeBet.height              = 45;
     s_oatotmenu.makeBet.focuspic            = ART_MAKEBET1;
     // Button discardBet.
     s_oatotmenu.discardBet.generic.type         = MTYPE_BITMAP;
@@ -390,10 +342,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.discardBet.generic.flags        = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_oatotmenu.discardBet.generic.id           = ID_DISCARDBET;
     s_oatotmenu.discardBet.generic.callback     = OatotMenu_Event;
-    s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 128;
-    s_oatotmenu.discardBet.generic.y            = 410 - 64;
-    s_oatotmenu.discardBet.width                = 128;
-    s_oatotmenu.discardBet.height               = 64;
+    s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 90;
+    s_oatotmenu.discardBet.generic.y            = 410 - 45;
+    s_oatotmenu.discardBet.width                = 90;
+    s_oatotmenu.discardBet.height               = 45;
     s_oatotmenu.discardBet.focuspic             = ART_DISCARDBET1;
 }
 

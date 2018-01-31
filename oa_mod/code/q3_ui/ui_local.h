@@ -581,9 +581,6 @@ extern void MakeBet(activeBet_t bet);
 extern qboolean CheckBetUpper(activeBet_t bet);
 extern qboolean CheckBetLower(activeBet_t bet);
 
-// Common drawing functions
-extern void Oatot_DrawAmount(void* self);
-
 // ui_oatotmenu.c
 extern void UI_OatotMenu(void);
 extern void UI_OatotMenuInternal(void);

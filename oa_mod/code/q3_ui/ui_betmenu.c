@@ -142,9 +142,9 @@ void UI_BetMenuInternal(void) {
     // Initialize horse, amount and currency menu components.
     // Horse.
     s_betmenu.betHorse.generic.type        = MTYPE_SPINCONTROL;
-    s_betmenu.betHorse.generic.flags       = QMF_PULSEIFFOCUS;
-    s_betmenu.betHorse.generic.x           = 60;
-    s_betmenu.betHorse.generic.y           = 98;
+    s_betmenu.betHorse.generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_betmenu.betHorse.generic.x           = 200;
+    s_betmenu.betHorse.generic.y           = 200;
     s_betmenu.betHorse.generic.id          = ID_HORSE;
     s_betmenu.betHorse.generic.name        = "Horse: ";
     s_betmenu.betHorse.generic.callback    = BetMenu_Event;
@@ -152,12 +152,12 @@ void UI_BetMenuInternal(void) {
     s_betmenu.betHorse.curvalue            = 0;
     // Amount.
     s_betmenu.betAmount.generic.type        = MTYPE_FIELD;
-    s_betmenu.betAmount.generic.flags       = QMF_NODEFAULTINIT;
-    s_betmenu.betAmount.generic.x           = 210;
-    s_betmenu.betAmount.generic.y           = 98;
+    s_betmenu.betAmount.generic.flags       = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_betmenu.betAmount.generic.x           = 260;
+    s_betmenu.betAmount.generic.y           = 200;
     s_betmenu.betAmount.generic.id          = ID_AMOUNT;
+    s_betmenu.betAmount.generic.name        = "Amount: ";
     s_betmenu.betAmount.generic.callback    = BetMenu_Event;
-    s_betmenu.betAmount.generic.ownerdraw   = Oatot_DrawAmount;
     s_betmenu.betAmount.field.maxchars      = GetBalanceLen();
     Q_strncpyz(
         s_betmenu.betAmount.field.buffer,
@@ -166,9 +166,9 @@ void UI_BetMenuInternal(void) {
     );
     // Currency.
     s_betmenu.betCurrency.generic.type        = MTYPE_SPINCONTROL;
-    s_betmenu.betCurrency.generic.flags       = QMF_PULSEIFFOCUS;
-    s_betmenu.betCurrency.generic.x           = 360;
-    s_betmenu.betCurrency.generic.y           = 98;
+    s_betmenu.betCurrency.generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_betmenu.betCurrency.generic.x           = 530;
+    s_betmenu.betCurrency.generic.y           = 200;
     s_betmenu.betCurrency.generic.id          = ID_CURRENCY;
     s_betmenu.betCurrency.generic.name        = "Currency: ";
     s_betmenu.betCurrency.generic.callback    = BetMenu_Event;
@@ -180,10 +180,10 @@ void UI_BetMenuInternal(void) {
     s_betmenu.back.generic.flags      = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_betmenu.back.generic.id         = ID_BACK;
     s_betmenu.back.generic.callback   = BetMenu_Event;
-    s_betmenu.back.generic.x          = 220 - 128;
-    s_betmenu.back.generic.y          = 410 - 64;
-    s_betmenu.back.width              = 128;
-    s_betmenu.back.height             = 64;
+    s_betmenu.back.generic.x          = 220 - 90;
+    s_betmenu.back.generic.y          = 410 - 45;
+    s_betmenu.back.width              = 90;
+    s_betmenu.back.height             = 45;
     s_betmenu.back.focuspic           = ART_BACK1;
     // Button ok.
     s_betmenu.ok.generic.type        = MTYPE_BITMAP;
@@ -191,10 +191,10 @@ void UI_BetMenuInternal(void) {
     s_betmenu.ok.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_betmenu.ok.generic.id          = ID_OK;
     s_betmenu.ok.generic.callback    = BetMenu_Event;
-    s_betmenu.ok.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 128;
-    s_betmenu.ok.generic.y           = 410 - 64;
-    s_betmenu.ok.width               = 128;
-    s_betmenu.ok.height              = 64;
+    s_betmenu.ok.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 90;
+    s_betmenu.ok.generic.y           = 410 - 45;
+    s_betmenu.ok.width               = 90;
+    s_betmenu.ok.height              = 45;
     s_betmenu.ok.focuspic            = ART_OK1;
 }
 
