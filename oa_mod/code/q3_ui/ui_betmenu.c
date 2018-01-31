@@ -88,6 +88,7 @@ static void BetMenu_Event(void* ptr, int event) {
         if (CheckAndNormalize(current_bet)) {
             MakeBet(current_bet);
             UI_PopMenu();
+            UI_PopMenu();
         }
         break;
     default:
@@ -158,7 +159,7 @@ void UI_BetMenuInternal(void) {
     s_betmenu.betAmount.generic.id          = ID_AMOUNT;
     s_betmenu.betAmount.generic.name        = "Amount: ";
     s_betmenu.betAmount.generic.callback    = BetMenu_Event;
-    s_betmenu.betAmount.field.maxchars      = GetBalanceLen();
+    s_betmenu.betAmount.field.widthInChars  = GetBalanceLen();
     Q_strncpyz(
         s_betmenu.betAmount.field.buffer,
         va("%d", GetOptimalBetAmount(oatotinfo.oac_balance.free_money)),

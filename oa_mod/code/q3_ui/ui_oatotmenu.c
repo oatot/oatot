@@ -274,7 +274,7 @@ static void setBetAmount(menufield_s* menu, int y, int bet_index, int amount) {
     menu->generic.id          = bet_index * 3 + 1;
     menu->generic.name        = "Amount: ";
     menu->generic.callback    = Bet_Event;
-    menu->field.maxchars      = GetBalanceLen();
+    menu->field.widthInChars  = GetBalanceLen();
     if (bet_index < oatotinfo.bets_n) {
         // Bet actually exists.
         menu->generic.flags = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
