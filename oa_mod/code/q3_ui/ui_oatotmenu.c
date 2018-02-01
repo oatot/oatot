@@ -71,9 +71,9 @@ int GetBalanceLen(void) {
     int oac_balance = oatotinfo.oac_balance.free_money;
     int btc_balance = oatotinfo.btc_balance.free_money;
     if (oac_balance > btc_balance) {
-        return oac_balance / 10;
+        return oac_balance / 10 + 2;
     } else {
-        return btc_balance / 10;
+        return btc_balance / 10 + 2;
     }
 }
 
@@ -209,6 +209,8 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
+        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
+        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
         UI_BetMenu();
         break;
     case ID_DISCARDBET:
@@ -315,6 +317,8 @@ UI_OatotMenuInternal
 */
 void UI_OatotMenuInternal(void) {
     int y, i;
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
     // Menu.
     s_oatotmenu.menu.wrapAround = qtrue;
     s_oatotmenu.menu.fullscreen = qfalse;
@@ -379,13 +383,13 @@ void UI_OatotMenu(void) {
     int i;
     OatotMenu_Cache();
     memset(&s_oatotmenu, 0, sizeof(oatotmenu_t));
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBets");
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBets\n");
+    trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
     UI_OatotMenuInternal();
     // We need to initialize the bets list or it will be impossible to click on the items.
     for (i = 0; i < oatotinfo.bets_n; i++) {
         //Q_strncpyz(mappage.mapname[i],"----",5);
     }
-    trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.banner);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.makeBet);

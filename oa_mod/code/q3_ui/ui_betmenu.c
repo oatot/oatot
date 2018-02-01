@@ -85,6 +85,8 @@ static void BetMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_OK:
+        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
+        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
         if (CheckAndNormalize(current_bet)) {
             MakeBet(current_bet);
             UI_PopMenu();
@@ -92,6 +94,8 @@ static void BetMenu_Event(void* ptr, int event) {
         }
         break;
     default:
+        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
+        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
         CheckAndNormalize(current_bet);
         break;
     }
@@ -129,6 +133,8 @@ UI_BetMenuInternal
 =================
 */
 void UI_BetMenuInternal(void) {
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
     // Menu.
     s_betmenu.menu.wrapAround = qtrue;
     s_betmenu.menu.fullscreen = qfalse;
