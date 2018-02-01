@@ -52,13 +52,13 @@ CheckAndNormalize
 static qboolean CheckAndNormalize(activeBet_t bet) {
     int balance;
     if (!CheckBetLower(bet)) {
-        Q_strncpyz(s_betmenu.betAmount.field.buffer, va("%d", 1), sizeof(s_betmenu.betAmount.field.buffer));
+        Q_strncpyz(s_betmenu.betAmount.field.buffer, va("%d", 0), sizeof(s_betmenu.betAmount.field.buffer));
         return qfalse;
     } else if (!CheckBetUpper(bet)) {
         if (!strcmp(bet.currency, "OAC")) {
             balance = oatotinfo.oac_balance.free_money;
         } else if (!strcmp(bet.currency, "BTC")) {
-            balance = oatotinfo.oac_balance.free_money;
+            balance = oatotinfo.btc_balance.free_money;
         }
         Q_strncpyz(s_betmenu.betAmount.field.buffer, va("%d", balance), sizeof(s_betmenu.betAmount.field.buffer));
         return qfalse;
@@ -85,8 +85,6 @@ static void BetMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_OK:
-        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
-        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
         if (CheckAndNormalize(current_bet)) {
             MakeBet(current_bet);
             UI_PopMenu();
@@ -94,8 +92,6 @@ static void BetMenu_Event(void* ptr, int event) {
         }
         break;
     default:
-        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
-        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
         CheckAndNormalize(current_bet);
         break;
     }

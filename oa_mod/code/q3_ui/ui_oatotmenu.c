@@ -209,8 +209,6 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
-        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
-        trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
         UI_BetMenu();
         break;
     case ID_DISCARDBET:
