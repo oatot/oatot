@@ -1870,7 +1870,7 @@ void Cmd_Bet_f(gentity_t* ent) {
             bet.amount = money;
             GOaMyBet(client->pers.guid, bet);
             ent->client->sess.activeBetsNumber += 1;
-            G_UpdateBalance(ent);
+            G_UpdateBalance(ent, arg3);
             G_UpdateActiveBets(ent);
             G_UpdateActiveBetsSums(arg1, 0);
             trap_SendServerCommand(ent - g_entities, "print \"^2Your bet is made.\n\"");
@@ -1905,7 +1905,8 @@ void Cmd_Unbet_f(gentity_t* ent) {
         bet_ID = client->pers.activeBetsIds[atoi(arg1)];
         GOaDiscardBet(client->pers.guid, bet_ID);
         ent->client->sess.activeBetsNumber -= 1;
-        G_UpdateBalance(ent);
+        G_UpdateBalance(ent, "OAC");
+        G_UpdateBalance(ent, "BTC");
         G_UpdateActiveBets(ent);
         G_UpdateActiveBetsSums("red", 0);
         G_UpdateActiveBetsSums("blue", 0);
@@ -2152,9 +2153,11 @@ Cmd_UpdateBalance_f
 ==================
 */
 void Cmd_UpdateBalance_f(gentity_t* ent) {
+    char    arg1[MAX_STRING_TOKENS];
     gclient_t* client = ent->client;
     if (client) {
-        G_UpdateBalance(ent);
+        trap_Argv(1, arg1, sizeof(arg1));
+        G_UpdateBalance(ent, arg1);
     } else {
         trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
     }

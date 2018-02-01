@@ -2449,11 +2449,14 @@ int G_GetActiveBets(gentity_t* ent, bet_t* bets) {
 G_UpdateBalance
 ==================
 */
-void G_UpdateBalance(gentity_t* ent) {
-    balance_t btc_balance = G_GetBalance(ent, "BTC");
-    balance_t oac_balance = G_GetBalance(ent, "OAC");
-    trap_SendServerCommand(ent - g_entities, va("updateBalance \%s %d %d\"", "OAC", oac_balance.free_money, oac_balance.money_on_bets));
-    trap_SendServerCommand(ent - g_entities, va("updateBalance \%s %d %d\"", "BTC", btc_balance.free_money, btc_balance.money_on_bets));
+void G_UpdateBalance(gentity_t* ent, char* currency) {
+    if (!strcmp(currency, "OAC")) {
+        balance_t oac_balance = G_GetBalance(ent, "OAC");
+        trap_SendServerCommand(ent - g_entities, va("updateBalance \%s %d %d\"", currency, oac_balance.free_money, oac_balance.money_on_bets));
+    } else if (!strcmp(currency, "BTC")) {
+        balance_t btc_balance = G_GetBalance(ent, "BTC");
+        trap_SendServerCommand(ent - g_entities, va("updateBalance \%s %d %d\"", currency, btc_balance.free_money, btc_balance.money_on_bets));
+    }
 }
 
 /*

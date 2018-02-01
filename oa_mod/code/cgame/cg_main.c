@@ -2195,8 +2195,9 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     // oatot
     trap_SendClientCommand(va("getActiveBetsSums %s\n", "red"));
     trap_SendClientCommand(va("getActiveBetsSums %s\n", "blue"));
-    trap_SendClientCommand("getActiveBets");
-    trap_SendClientCommand("getBalance");
+    trap_SendClientCommand("getActiveBets\n");
+    trap_SendClientCommand("getBalance OAC\n");
+    trap_SendClientCommand("getBalance BTC\n");
     // load the new map
     // load the new map
 #ifndef SCRIPTHUD

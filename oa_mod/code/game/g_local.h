@@ -1059,7 +1059,7 @@ balance_t G_GetBalance(gentity_t* ent, char* currency);
 int G_GetActiveBets(gentity_t* ent, bet_t* bets);
 
 // oatot: draw updates
-void G_UpdateBalance(gentity_t* ent);
+void G_UpdateBalance(gentity_t* ent, char* currency);
 void G_UpdateActiveBets(gentity_t* ent);
 void G_UpdateActiveBetsSums(char* horse, gentity_t* ent);
 

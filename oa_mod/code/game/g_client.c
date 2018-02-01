@@ -1124,7 +1124,8 @@ void ClientUserinfoChanged(int clientNum) {
                client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader);
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
-    G_UpdateBalance(ent);
+    G_UpdateBalance(ent, "OAC");
+    G_UpdateBalance(ent, "BTC");
     G_UpdateActiveBets(ent);
     G_UpdateActiveBetsSums("red", ent);
     G_UpdateActiveBetsSums("blue", ent);
@@ -1414,7 +1415,8 @@ void ClientBegin(int clientNum) {
         client->pers.welcomed = qtrue;
         printWelcomeMessage(clientNum);
     }
-    G_UpdateBalance(ent);
+    G_UpdateBalance(ent, "OAC");
+    G_UpdateBalance(ent, "BTC");
     G_UpdateActiveBets(ent);
 }
 
