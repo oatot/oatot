@@ -944,6 +944,7 @@ qboolean UI_ConsoleCommand(int realTime) {
             oatotinfo.btc_balance.free_money = atoi(UI_Argv(2));
             oatotinfo.btc_balance.money_on_bets = atoi(UI_Argv(3));
         }
+        UI_OatotMenuInternal();
         return qtrue;
     }
     if (Q_strequal(cmd, "ui_updateactivebets")) {
@@ -954,6 +955,7 @@ qboolean UI_ConsoleCommand(int realTime) {
             oatotinfo.bets[i].amount = atoi(UI_Argv(i * 4 + 4));
             oatotinfo.bets[i].id = atoi(UI_Argv(i * 4 + 5));
         }
+        UI_OatotMenuInternal();
         return qtrue;
     }
     return qfalse;
