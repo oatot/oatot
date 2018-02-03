@@ -314,7 +314,10 @@ UI_OatotMenuInternal
 =================
 */
 void UI_OatotMenuInternal(void) {
-    int y, i;
+    char info[MAX_INFO_STRING];
+    int y, i, game_stage;
+    trap_GetConfigString(CS_SERVERINFO, info, MAX_INFO_STRING);
+    game_stage = atoi(Info_ValueForKey(info, "g_gameStage"));
     trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
     trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
     // Menu.
@@ -350,7 +353,11 @@ void UI_OatotMenuInternal(void) {
     // Button makeBet.
     s_oatotmenu.makeBet.generic.type        = MTYPE_BITMAP;
     s_oatotmenu.makeBet.generic.name        = ART_MAKEBET0;
-    s_oatotmenu.makeBet.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    if (game_stage == MAKING_BETS) {
+        s_oatotmenu.makeBet.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    } else {
+        s_oatotmenu.makeBet.generic.flags       = QMF_GRAYED;
+    }
     s_oatotmenu.makeBet.generic.id          = ID_MAKEBET;
     s_oatotmenu.makeBet.generic.callback    = OatotMenu_Event;
     s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 90;
@@ -361,7 +368,11 @@ void UI_OatotMenuInternal(void) {
     // Button discardBet.
     s_oatotmenu.discardBet.generic.type         = MTYPE_BITMAP;
     s_oatotmenu.discardBet.generic.name         = ART_DISCARDBET0;
-    s_oatotmenu.discardBet.generic.flags        = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    if (game_stage == MAKING_BETS) {
+        s_oatotmenu.discardBet.generic.flags        = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    } else {
+        s_oatotmenu.discardBet.generic.flags        = QMF_GRAYED;
+    }
     s_oatotmenu.discardBet.generic.id           = ID_DISCARDBET;
     s_oatotmenu.discardBet.generic.callback     = OatotMenu_Event;
     s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 90;
