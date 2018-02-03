@@ -49,6 +49,7 @@ const char* betCurrency_items[] = {
 typedef struct {
     menuframework_s menu;
     menutext_s      banner;
+    menutext_s      info;
     menubitmap_s    back;
     menubitmap_s    makeBet;
     menubitmap_s    discardBet;
@@ -192,6 +193,17 @@ static void Bet_Event(void* ptr, int event) {
 
 /*
 =================
+OatotMenu_StatusBar
+=================
+*/
+
+static void OatotMenu_StatusBar(void* self) {
+    UI_DrawString(320, 320, "It is not possible to make or discard", UI_CENTER | UI_SMALLFONT, colorRed);
+    UI_DrawString(320, 340, "any bets at this stage of the game.", UI_CENTER | UI_SMALLFONT, colorRed);
+}
+
+/*
+=================
 OatotMenu_Event
 =================
 */
@@ -225,7 +237,7 @@ UI_OatotMenu_Draw
 */
 static void UI_OatotMenu_Draw(void) {
     UI_DrawBannerString(320, 16, "YOUR ACTIVE BETS", UI_CENTER, color_white);
-    UI_DrawNamedPic(320 - 275, 240 - 166, 550, 332, ART_BACKGROUND);
+    UI_DrawNamedPic(320 - 320, 240 - 166, 640, 332, ART_BACKGROUND);
     // standard menu drawing
     Menu_Draw(&s_oatotmenu.menu);
 }
@@ -247,7 +259,7 @@ static void OatotMenu_Cache(void) {
 
 static void setBetHorse(menulist_s* menu, int y, int bet_index, const char* horse) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.x           = 170;
+    menu->generic.x           = 180;
     menu->generic.y           = y;
     menu->generic.id          = bet_index * 3;
     menu->generic.name        = "Horse: ";
@@ -287,7 +299,7 @@ static void setBetAmount(menufield_s* menu, int y, int bet_index, int amount) {
 
 static void setBetCurrency(menulist_s* menu, int y, int bet_index, const char* currency) {
     menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.x           = 500;
+    menu->generic.x           = 460;
     menu->generic.y           = y;
     menu->generic.id          = bet_index * 3 + 2;
     menu->generic.name        = "Currency: ";
@@ -331,6 +343,16 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.banner.string         = "YOUR ACTIVE BETS";
     s_oatotmenu.banner.color          = color_white;
     s_oatotmenu.banner.style          = UI_CENTER;
+    // Info.
+    s_oatotmenu.info.generic.type     = MTYPE_TEXT;
+    if (game_stage != FORMING_TEAMS) {
+        s_oatotmenu.info.generic.flags = QMF_HIDDEN;
+    }
+    s_oatotmenu.info.generic.x        = 320;
+    s_oatotmenu.info.generic.y        = 170;
+    s_oatotmenu.info.string           = "Betting is not yet started.";
+    s_oatotmenu.info.color            = color_orange;
+    s_oatotmenu.info.style            = UI_CENTER | UI_SMALLFONT;
     // Initialize horse, amount and currency menu components.
     y = 98;
     for (i = 0; i < SIZE_OF_LIST; i++) {
@@ -354,12 +376,13 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.makeBet.generic.type        = MTYPE_BITMAP;
     s_oatotmenu.makeBet.generic.name        = ART_MAKEBET0;
     if (game_stage == MAKING_BETS) {
-        s_oatotmenu.makeBet.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+        s_oatotmenu.makeBet.generic.flags   = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
-        s_oatotmenu.makeBet.generic.flags       = QMF_GRAYED;
+        s_oatotmenu.makeBet.generic.flags   = QMF_GRAYED;
     }
     s_oatotmenu.makeBet.generic.id          = ID_MAKEBET;
     s_oatotmenu.makeBet.generic.callback    = OatotMenu_Event;
+    s_oatotmenu.makeBet.generic.statusbar   = OatotMenu_StatusBar;
     s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 90;
     s_oatotmenu.makeBet.generic.y           = 410 - 45;
     s_oatotmenu.makeBet.width               = 90;
@@ -369,12 +392,13 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.discardBet.generic.type         = MTYPE_BITMAP;
     s_oatotmenu.discardBet.generic.name         = ART_DISCARDBET0;
     if (game_stage == MAKING_BETS) {
-        s_oatotmenu.discardBet.generic.flags        = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+        s_oatotmenu.discardBet.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
-        s_oatotmenu.discardBet.generic.flags        = QMF_GRAYED;
+        s_oatotmenu.discardBet.generic.flags    = QMF_GRAYED;
     }
     s_oatotmenu.discardBet.generic.id           = ID_DISCARDBET;
     s_oatotmenu.discardBet.generic.callback     = OatotMenu_Event;
+    s_oatotmenu.discardBet.generic.statusbar    = OatotMenu_StatusBar;
     s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 90;
     s_oatotmenu.discardBet.generic.y            = 410 - 45;
     s_oatotmenu.discardBet.width                = 90;
@@ -400,6 +424,7 @@ void UI_OatotMenu(void) {
         //Q_strncpyz(mappage.mapname[i],"----",5);
     }
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.banner);
+    Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.info);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.makeBet);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.discardBet);
