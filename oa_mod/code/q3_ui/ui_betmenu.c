@@ -87,8 +87,7 @@ static void BetMenu_Event(void* ptr, int event) {
     case ID_OK:
         if (CheckAndNormalize(current_bet)) {
             MakeBet(current_bet);
-            UI_PopMenu();
-            UI_PopMenu();
+            UI_ForceMenuOff();
         }
         break;
     default:
