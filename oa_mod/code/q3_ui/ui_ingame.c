@@ -246,7 +246,7 @@ void InGame_MenuInit(void) {
     s_ingame.oatot.generic.callback = InGame_Event;
     s_ingame.oatot.string               = "OATOT MENU";
     s_ingame.oatot.color                = color_red;
-    s_ingame.oatot.style                = UI_CENTER | UI_SMALLFONT;
+    s_ingame.oatot.style                = UI_CENTER | UI_DROPSHADOW;
     y += INGAME_MENU_VERTICAL_SPACING;
     s_ingame.setup.generic.type         = MTYPE_PTEXT;
     s_ingame.setup.generic.flags        = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
