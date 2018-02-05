@@ -393,10 +393,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.makeBet.generic.id          = ID_MAKEBET;
     s_oatotmenu.makeBet.generic.callback    = OatotMenu_Event;
     s_oatotmenu.makeBet.generic.statusbar   = MakeBet_StatusBar;
-    s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 120;
-    s_oatotmenu.makeBet.generic.y           = 410 - 35;
-    s_oatotmenu.makeBet.width               = 120;
-    s_oatotmenu.makeBet.height              = 35;
+    s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 125;
+    s_oatotmenu.makeBet.generic.y           = 410 - 45;
+    s_oatotmenu.makeBet.width               = 125;
+    s_oatotmenu.makeBet.height              = 45;
     s_oatotmenu.makeBet.focuspic            = ART_MAKEBET1;
     // Button discardBet.
     s_oatotmenu.discardBet.generic.type         = MTYPE_BITMAP;
@@ -409,10 +409,10 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.discardBet.generic.id           = ID_DISCARDBET;
     s_oatotmenu.discardBet.generic.callback     = OatotMenu_Event;
     s_oatotmenu.discardBet.generic.statusbar    = DiscardBet_StatusBar;
-    s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 120;
-    s_oatotmenu.discardBet.generic.y            = 410 - 35;
-    s_oatotmenu.discardBet.width                = 120;
-    s_oatotmenu.discardBet.height               = 35;
+    s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 125;
+    s_oatotmenu.discardBet.generic.y            = 410 - 45;
+    s_oatotmenu.discardBet.width                = 125;
+    s_oatotmenu.discardBet.height               = 45;
     s_oatotmenu.discardBet.focuspic             = ART_DISCARDBET1;
 }
 
