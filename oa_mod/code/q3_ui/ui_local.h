@@ -576,7 +576,7 @@ extern const char* betCurrency_items[3];
 // Common checking & action functions
 extern int GetBalanceLen(void);
 extern void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field);
-extern void DiscardBet(activeBet_t bet);
+extern void DiscardBet(int bet_index);
 extern void MakeBet(activeBet_t bet);
 extern qboolean CheckBetUpper(activeBet_t bet);
 extern qboolean CheckBetLower(activeBet_t bet);

@@ -94,8 +94,8 @@ void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, men
 DiscardBet
 =================
 */
-void DiscardBet(activeBet_t bet) {
-    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet.id));
+void DiscardBet(int bet_index) {
+    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet_index));
 }
 
 /*
@@ -171,16 +171,16 @@ Bet_Event
 */
 static void Bet_Event(void* ptr, int event) {
     activeBet_t bet;
-    GetSelectedBet(&bet);
     if (s_oatotmenu.selected != ((menucommon_s*)ptr)->id) {
         s_oatotmenu.selected = ((menucommon_s*)ptr)->id;
     }
     if (event != QM_ACTIVATED) {
         return;
     }
+    GetSelectedBet(&bet);
     if (CheckBetUpper(bet) && CheckBetLower(bet)) {
         // Discard old bet.
-        DiscardBet(bet);
+        DiscardBet(GetSelectedBetIndex());
         // Make new bet with new input data.
         MakeBet(bet);
         UI_OatotMenuInternal();
@@ -208,8 +208,6 @@ OatotMenu_Event
 =================
 */
 static void OatotMenu_Event(void* ptr, int event) {
-    activeBet_t bet;
-    GetSelectedBet(&bet);
     if (event != QM_ACTIVATED) {
         return;
     }
@@ -224,7 +222,7 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_BetMenu();
         break;
     case ID_DISCARDBET:
-        DiscardBet(bet);
+        DiscardBet(GetSelectedBetIndex());
         UI_OatotMenuInternal();
         break;
     }
