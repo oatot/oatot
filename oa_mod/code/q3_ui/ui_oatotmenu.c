@@ -95,7 +95,7 @@ DiscardBet
 =================
 */
 void DiscardBet(int bet_index) {
-    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d", bet_index));
+    trap_Cmd_ExecuteText(EXEC_APPEND, va("unbet %d\n", bet_index));
 }
 
 /*
@@ -106,7 +106,7 @@ MakeBet
 void MakeBet(activeBet_t bet) {
     trap_Cmd_ExecuteText(
         EXEC_APPEND,
-        va("bet %s %d %s", bet.horse, bet.amount, bet.currency)
+        va("bet %s %d %s\n", bet.horse, bet.amount, bet.currency)
     );
 }
 
