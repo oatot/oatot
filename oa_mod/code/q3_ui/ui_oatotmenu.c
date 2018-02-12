@@ -6,30 +6,23 @@
 #define ART_MAKEBET1        "menu/" MENU_OATOT_DIR "/makebet_1"
 #define ART_DISCARDBET0     "menu/" MENU_OATOT_DIR "/discardbet_0"
 #define ART_DISCARDBET1     "menu/" MENU_OATOT_DIR "/discardbet_1"
+#define ART_EDITBET0        "menu/" MENU_OATOT_DIR "/editbet_0"
+#define ART_EDITBET1        "menu/" MENU_OATOT_DIR "/editbet_1"
 #define ART_BACKGROUND      "menu/" MENU_ART_DIR   "/addbotframe"
 
-#define ID_BET0_HORSE           0
-#define ID_BET0_AMOUNT          1
-#define ID_BET0_CURRENCY        2
-#define ID_BET1_HORSE           3
-#define ID_BET1_AMOUNT          4
-#define ID_BET1_CURRENCY        5
-#define ID_BET2_HORSE           6
-#define ID_BET2_AMOUNT          7
-#define ID_BET2_CURRENCY        8
-#define ID_BET3_HORSE           9
-#define ID_BET3_AMOUNT          10
-#define ID_BET3_CURRENCY        11
-#define ID_BET4_HORSE           12
-#define ID_BET4_AMOUNT          13
-#define ID_BET4_CURRENCY        14
-#define ID_BACK                 15
-#define ID_MAKEBET              16
-#define ID_DISCARDBET           17
+#define ID_BET0          0
+#define ID_BET1          1
+#define ID_BET2          2
+#define ID_BET3          3
+#define ID_BET4          4
+#define ID_BACK          5
+#define ID_MAKEBET       6
+#define ID_DISCARDBET    7
+#define ID_EDITBET       8
 
 #define SIZE_OF_LIST 5
 
-#define OATOT_MENU_VERTICAL_SPACING 50
+#define OATOT_MENU_VERTICAL_SPACING 30
 
 t_oatotinfo oatotinfo;
 
@@ -53,10 +46,9 @@ typedef struct {
     menubitmap_s    back;
     menubitmap_s    makeBet;
     menubitmap_s    discardBet;
+    menubitmap_s    editBet;
 
-    menulist_s betHorses[SIZE_OF_LIST];
-    menufield_s betAmounts[SIZE_OF_LIST];
-    menulist_s betCurrencies[SIZE_OF_LIST];
+    menutext_s activeBets[SIZE_OF_LIST];
 
     int     selected;
 } oatotmenu_t;
@@ -139,29 +131,16 @@ qboolean CheckBetLower(activeBet_t bet) {
 
 /*
 =================
-GetSelectedBetIndex
+getDefaultBet
 =================
 */
-static int GetSelectedBetIndex(void) {
-    return s_oatotmenu.selected / 3;
-}
-
-/*
-=================
-GetSelectedBet
-=================
-*/
-static void GetSelectedBet(activeBet_t* bet) {
-    int bet_index;
-    bet_index = GetSelectedBetIndex();
-    if (bet_index >= 0 && bet_index < oatotinfo.bets_n) {
-        InitBetFromInput(
-            bet,
-            s_oatotmenu.betHorses[bet_index].curvalue,
-            s_oatotmenu.betCurrencies[bet_index].curvalue,
-            s_oatotmenu.betAmounts[bet_index]
-        );
-    }
+static activeBet_t getDefaultBet(int free_money) {
+    activeBet_t bet;
+    int optimal = free_money / OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT;
+    strcpy(bet.horse, "red");
+    bet.amount = (optimal ? optimal : 1);
+    strcpy(bet.currency, "OAC");
+    return bet;
 }
 
 /*
@@ -170,29 +149,8 @@ Bet_Event
 =================
 */
 static void Bet_Event(void* ptr, int event) {
-    activeBet_t bet;
     if (s_oatotmenu.selected != ((menucommon_s*)ptr)->id) {
         s_oatotmenu.selected = ((menucommon_s*)ptr)->id;
-    }
-    // draw current bet selection
-    if (s_oatotmenu.betHorses[s_oatotmenu.selected].generic.flags != (QMF_HIDDEN | QMF_INACTIVE)) {
-        // bet is actually visible and exists
-        UI_DrawRect(160, 120 + GetSelectedBetIndex() * OATOT_MENU_VERTICAL_SPACING, 390, OATOT_MENU_VERTICAL_SPACING, colorGreen);
-    }
-    if (event != QM_ACTIVATED) {
-        return;
-    }
-    GetSelectedBet(&bet);
-    if (CheckBetUpper(bet) && CheckBetLower(bet)) {
-        // Discard old bet.
-        DiscardBet(GetSelectedBetIndex());
-        // Make new bet with new input data.
-        MakeBet(bet);
-        UI_OatotMenuInternal();
-    } else {
-        // Invalid input (amount).
-        // We don't make a bet and set previous values instead.
-        UI_OatotMenuInternal();
     }
 }
 
@@ -211,7 +169,16 @@ DiscardBet_StatusBar
 =================
 */
 static void DiscardBet_StatusBar(void* self) {
-    UI_DrawString(320, 320, "Click to discard the bet which is currently selected in green.", UI_CENTER | UI_SMALLFONT, colorGreen);
+    UI_DrawString(320, 320, "Click to discard the bet which is currently selected.", UI_CENTER | UI_SMALLFONT, colorGreen);
+}
+
+/*
+=================
+EditBet_StatusBar
+=================
+*/
+static void EditBet_StatusBar(void* self) {
+    UI_DrawString(320, 320, "Click to edit the bet which is currently selected.", UI_CENTER | UI_SMALLFONT, colorGreen);
 }
 
 /*
@@ -220,6 +187,7 @@ OatotMenu_Event
 =================
 */
 static void OatotMenu_Event(void* ptr, int event) {
+    activeBet_t selected_bet = oatotinfo.bets[s_oatotmenu.selected];
     if (event != QM_ACTIVATED) {
         return;
     }
@@ -231,11 +199,16 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
-        UI_BetMenu();
+        UI_BetMenu(getDefaultBet(oatotinfo.oac_balance.free_money));
         break;
     case ID_DISCARDBET:
-        DiscardBet(GetSelectedBetIndex());
+        DiscardBet(s_oatotmenu.selected);
         UI_OatotMenuInternal();
+        break;
+    case ID_EDITBET:
+        DiscardBet(s_oatotmenu.selected);
+        UI_OatotMenuInternal();
+        UI_BetMenu(selected_bet);
         break;
     }
 }
@@ -264,68 +237,26 @@ static void OatotMenu_Cache(void) {
     trap_R_RegisterShaderNoMip(ART_MAKEBET1);
     trap_R_RegisterShaderNoMip(ART_DISCARDBET0);
     trap_R_RegisterShaderNoMip(ART_DISCARDBET1);
+    trap_R_RegisterShaderNoMip(ART_EDITBET0);
+    trap_R_RegisterShaderNoMip(ART_EDITBET1);
     trap_R_RegisterShaderNoMip(ART_BACKGROUND);
 }
 
-static void setBetHorse(menulist_s* menu, int y, int bet_index, const char* horse) {
-    menu->generic.type        = MTYPE_SPINCONTROL;
+static void setBet(menutext_s* menu, int y, int id, activeBet_t bet) {
+    menu->generic.type        = MTYPE_PTEXT;
     menu->generic.x           = 185;
     menu->generic.y           = y;
-    menu->generic.id          = bet_index * 3;
-    menu->generic.name        = "Horse: ";
+    menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
-    menu->itemnames           = betHorse_items;
-    if (bet_index < oatotinfo.bets_n) {
+    menu->style               = UI_LEFT | UI_SMALLFONT;
+    if (id < oatotinfo.bets_n) {
         // Bet actually exists.
-        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-        if (!strcmp(horse, "red")) {
-            menu->curvalue = 0;
-        } else if (!strcmp(horse, "blue")) {
-            menu->curvalue = 1;
-        }
+        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_LEFT_JUSTIFY;
+        strcpy(menu->string, va("%s %d %s\0", bet.horse, bet.amount, bet.currency));
     } else {
         // Bet doesn't exist (yet), let's hide it.
-        menu->generic.flags = QMF_HIDDEN | QMF_INACTIVE;
-    }
-}
-
-static void setBetAmount(menufield_s* menu, int y, int bet_index, int amount) {
-    menu->generic.type        = MTYPE_FIELD;
-    menu->generic.x           = 320;
-    menu->generic.y           = y;
-    menu->generic.id          = bet_index * 3 + 1;
-    menu->generic.name        = "Amount: ";
-    menu->generic.callback    = Bet_Event;
-    menu->field.widthInChars  = GetBalanceLen();
-    if (bet_index < oatotinfo.bets_n) {
-        // Bet actually exists.
-        menu->generic.flags = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-        Q_strncpyz(menu->field.buffer, va("%d", amount), sizeof(menu->field.buffer));
-    } else {
-        // Bet doesn't exist (yet), let's hide it.
-        menu->generic.flags = QMF_HIDDEN | QMF_INACTIVE;
-    }
-}
-
-static void setBetCurrency(menulist_s* menu, int y, int bet_index, const char* currency) {
-    menu->generic.type        = MTYPE_SPINCONTROL;
-    menu->generic.x           = 455;
-    menu->generic.y           = y;
-    menu->generic.id          = bet_index * 3 + 2;
-    menu->generic.name        = "Currency: ";
-    menu->generic.callback    = Bet_Event;
-    menu->itemnames           = betCurrency_items;
-    if (bet_index < oatotinfo.bets_n) {
-        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-        // Bet actually exists.
-        if (!strcmp(currency, "OAC")) {
-            menu->curvalue = 0;
-        } else if (!strcmp(currency, "BTC")) {
-            menu->curvalue = 1;
-        }
-    } else {
-        // Bet doesn't exist (yet), let's hide it.
-        menu->generic.flags = QMF_HIDDEN | QMF_INACTIVE;
+        menu->generic.flags = QMF_HIDDEN;
+        strcpy(menu->string, "-----");
     }
 }
 
@@ -366,9 +297,7 @@ void UI_OatotMenuInternal(void) {
     // Initialize horse, amount and currency menu components.
     y = 120;
     for (i = 0; i < SIZE_OF_LIST; i++) {
-        setBetHorse(&s_oatotmenu.betHorses[i], y, i, oatotinfo.bets[i].horse);
-        setBetAmount(&s_oatotmenu.betAmounts[i], y, i, oatotinfo.bets[i].amount);
-        setBetCurrency(&s_oatotmenu.betCurrencies[i], y, i, oatotinfo.bets[i].currency);
+        setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.bets[i]);
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.
@@ -414,6 +343,22 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.discardBet.width                = 125;
     s_oatotmenu.discardBet.height               = 45;
     s_oatotmenu.discardBet.focuspic             = ART_DISCARDBET1;
+    // Button editBet.
+    s_oatotmenu.editBet.generic.type         = MTYPE_BITMAP;
+    s_oatotmenu.editBet.generic.name         = ART_EDITBET0;
+    if (game_stage == MAKING_BETS) {
+        s_oatotmenu.editBet.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    } else {
+        s_oatotmenu.editBet.generic.flags    = QMF_GRAYED;
+    }
+    s_oatotmenu.editBet.generic.id           = ID_EDITBET;
+    s_oatotmenu.editBet.generic.callback     = OatotMenu_Event;
+    s_oatotmenu.editBet.generic.statusbar    = EditBet_StatusBar;
+    s_oatotmenu.editBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 3 - 125;
+    s_oatotmenu.editBet.generic.y            = 410 - 45;
+    s_oatotmenu.editBet.width                = 125;
+    s_oatotmenu.editBet.height               = 45;
+    s_oatotmenu.editBet.focuspic             = ART_EDITBET1;
 }
 
 /*
@@ -429,19 +374,14 @@ void UI_OatotMenu(void) {
     trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBets\n");
     trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
     UI_OatotMenuInternal();
-    // We need to initialize the bets list or it will be impossible to click on the items.
-    for (i = 0; i < oatotinfo.bets_n; i++) {
-        //Q_strncpyz(mappage.mapname[i],"----",5);
-    }
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.banner);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.info);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.back);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.makeBet);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.discardBet);
+    Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.editBet);
     for (i = 0; i < SIZE_OF_LIST; i++) {
-        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betHorses[i]);
-        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betAmounts[i]);
-        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.betCurrencies[i]);
+        Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.activeBets[i]);
     }
     UI_PushMenu(&s_oatotmenu.menu);
 }

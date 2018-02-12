@@ -27,16 +27,6 @@ static betmenu_t s_betmenu;
 
 /*
 =================
-GetOptimalBetAmount
-=================
-*/
-static int GetOptimalBetAmount(int free_money) {
-    int optimal = free_money / OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT;
-    return (optimal ? optimal : 1);
-}
-
-/*
-=================
 GetCurrentBet
 =================
 */
@@ -127,7 +117,7 @@ UI_BetMenuInternal
  *Used then forcing a redraw
 =================
 */
-void UI_BetMenuInternal(void) {
+void UI_BetMenuInternal(activeBet_t bet) {
     trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
     trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
     // Menu.
@@ -151,7 +141,11 @@ void UI_BetMenuInternal(void) {
     s_betmenu.betHorse.generic.name        = "Horse: ";
     s_betmenu.betHorse.generic.callback    = BetMenu_Event;
     s_betmenu.betHorse.itemnames           = betHorse_items;
-    s_betmenu.betHorse.curvalue            = 0;
+    if (!Q_stricmp(bet.horse, "red")) {
+        s_betmenu.betHorse.curvalue        = 0;
+    } else if (!Q_stricmp(bet.horse, "blue")) {
+        s_betmenu.betHorse.curvalue        = 1;
+    }
     // Amount.
     s_betmenu.betAmount.generic.type        = MTYPE_FIELD;
     s_betmenu.betAmount.generic.flags       = QMF_NUMBERSONLY | QMF_PULSEIFFOCUS | QMF_SMALLFONT;
@@ -163,7 +157,7 @@ void UI_BetMenuInternal(void) {
     s_betmenu.betAmount.field.widthInChars  = GetBalanceLen();
     Q_strncpyz(
         s_betmenu.betAmount.field.buffer,
-        va("%d", GetOptimalBetAmount(oatotinfo.oac_balance.free_money)),
+        va("%d", bet.amount),
         sizeof(s_betmenu.betAmount.field.buffer)
     );
     // Currency.
@@ -175,7 +169,11 @@ void UI_BetMenuInternal(void) {
     s_betmenu.betCurrency.generic.name        = "Currency: ";
     s_betmenu.betCurrency.generic.callback    = BetMenu_Event;
     s_betmenu.betCurrency.itemnames           = betCurrency_items;
-    s_betmenu.betCurrency.curvalue            = 0;
+    if (!Q_stricmp(bet.horse, "oac")) {
+        s_betmenu.betCurrency.curvalue        = 0;
+    } else if (!Q_stricmp(bet.horse, "btc")) {
+        s_betmenu.betCurrency.curvalue        = 1;
+    }
     // Button back.
     s_betmenu.back.generic.type       = MTYPE_BITMAP;
     s_betmenu.back.generic.name       = ART_BACK0;
@@ -206,10 +204,10 @@ UI_BetMenu
  *Called from outside
 =================
 */
-void UI_BetMenu(void) {
+void UI_BetMenu(activeBet_t bet) {
     BetMenu_Cache();
     memset(&s_betmenu, 0, sizeof(betmenu_t));
-    UI_BetMenuInternal();
+    UI_BetMenuInternal(bet);
     trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.banner);
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.back);
