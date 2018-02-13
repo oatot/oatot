@@ -1,0 +1,34 @@
+# Tip: You can create a supermake.local file and this script will get the variable from there.
+BINNAME=openarena-server
+MODNAME=oatot
+# ARCH should be either i386 (32 bit) or x86_64 (64 bit).
+ARCH=x86_64
+
+if [ -r $BINNAME ] ; then
+    echo $BINNAME found
+else
+    echo $BINNAME not found! Check the variables in the script
+    exit 1
+fi
+
+# Usage.
+usage() {
+    echo "usage: $0 <port_number> <server_config>" >&2
+    exit 1
+}
+
+# Check arguments number.
+if (($# != 2)); then
+    usage
+fi
+
+# Read port and server config arguments.
+PORT=$1
+CONFIG="$2"
+
+# Set LD_LIBRARY_PATH for Go client .so.
+export LD_LIBRARY_PATH=$(readlink -f ../build/release-linux-$ARCH/${MODNAME}/go-client/)
+# Change to build dir.
+cd ../build/release-linux-$ARCH/${MODNAME}
+# Launch the server itself.
+$BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port $PORT +exec $CONFIG
