@@ -44,6 +44,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define SB_SCORELINE_X 34
 
 #define MAX_NAME_LEN 15
+#define MAX_KDR_LEN 8
+#define MAX_DMG_LEN 13
 
 static qboolean localClient; // true if local client has been displayed
 
@@ -181,9 +183,9 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
         CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
         CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
         CG_DrawSmallString(SB_SCORELINE_X + 39 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 45 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 45 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade, MAX_KDR_LEN);
         if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-            CG_DrawSmallString(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade);
+            CG_DrawSmallStringLen(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade, MAX_DMG_LEN);
             CG_DrawSmallString(SB_SCORELINE_X + 68 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
         } else {
             CG_DrawSmallString(SB_SCORELINE_X + 55 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
