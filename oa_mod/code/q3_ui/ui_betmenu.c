@@ -92,7 +92,7 @@ UI_BetMenu_Draw
 =================
 */
 static void UI_BetMenu_Draw(void) {
-    UI_DrawBannerString(320, 16, "MAKE BET", UI_CENTER, color_white);
+    UI_DrawBannerString(320, 16, "MAKE BET", UI_CENTER | UI_SMALLFONT, color_white);
     UI_DrawNamedPic(320 - 233, 240 - 166, 466, 332, ART_BACKGROUND);
     // Standard menu drawing.
     Menu_Draw(&s_betmenu.menu);
@@ -130,7 +130,7 @@ void UI_BetMenuInternal(activeBet_t bet, qboolean edit_mode) {
     s_betmenu.banner.generic.y      = 16;
     s_betmenu.banner.string         = "MAKE BET";
     s_betmenu.banner.color          = color_white;
-    s_betmenu.banner.style          = UI_CENTER;
+    s_betmenu.banner.style          = UI_CENTER | UI_SMALLFONT;
     // Initialize horse, amount and currency menu components.
     // Horse.
     s_betmenu.betHorse.generic.type        = MTYPE_SPINCONTROL;

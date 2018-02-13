@@ -299,7 +299,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.banner.generic.y      = 16;
     s_oatotmenu.banner.string         = "YOUR ACTIVE BETS";
     s_oatotmenu.banner.color          = color_white;
-    s_oatotmenu.banner.style          = UI_CENTER;
+    s_oatotmenu.banner.style          = UI_CENTER | UI_SMALLFONT;
     // Info.
     s_oatotmenu.info.generic.type     = MTYPE_TEXT;
     if (game_stage != FORMING_TEAMS) {
