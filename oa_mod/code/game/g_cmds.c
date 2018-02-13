@@ -2090,28 +2090,39 @@ void Cmd_Ready_f(gentity_t* ent) {
 
 /*
 ==================
+G_ReadAndPrintFile
+==================
+*/
+static void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
+    char text[MAX_ARENAS_TEXT];
+    if (file) {
+        trap_FS_Read(&text, len, file);
+        text[len] = '\0';
+        trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", text));
+        trap_FS_FCloseFile(file);
+    }
+}
+
+/*
+==================
 Cmd_Help_f
 ==================
 */
 void Cmd_Help_f(gentity_t* ent) {
-    char help_message[MAX_ARENAS_TEXT];
-    int len;
-    fileHandle_t file;
+    int len, len_common;
+    fileHandle_t file0, file1;
     gclient_t* client = ent->client;
     if (client) {
+        len_common = trap_FS_FOpenFile("texts/help_message_common.txt", &file0, FS_READ);
         if (g_gameStage.integer == FORMING_TEAMS) {
-            len = trap_FS_FOpenFile("texts/help_message_forming_teams.txt", &file, FS_READ);
+            len = trap_FS_FOpenFile("texts/help_message_forming_teams.txt", &file1, FS_READ);
         } else if (g_gameStage.integer == MAKING_BETS) {
-            len = trap_FS_FOpenFile("texts/help_message_making_bets.txt", &file, FS_READ);
+            len = trap_FS_FOpenFile("texts/help_message_making_bets.txt", &file1, FS_READ);
         } else {
-            len = trap_FS_FOpenFile("texts/help_message_playing.txt", &file, FS_READ);
+            len = trap_FS_FOpenFile("texts/help_message_playing.txt", &file1, FS_READ);
         }
-        if (file) {
-            trap_FS_Read(&help_message, len, file);
-            help_message[len] = '\0';
-            trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", help_message));
-            trap_FS_FCloseFile(file);
-        }
+        G_ReadAndPrintFile(ent, file1, len);
+        G_ReadAndPrintFile(ent, file0, len_common);
     } else {
         trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
     }

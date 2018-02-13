@@ -24,7 +24,9 @@ You will need a C-compiler (better gcc or clang), GNU make, Go, grpc-go.
 ```
 cd /path/to/oa_mod/linux_scripts/
 cp /path/to/openarena-server .
-./build_and_run_oa_server
+cp /path/to/server.cfg .
+./build_oa_server
+./run_oa_server 27963 server.cfg
 ```
 
 ## How to build and run backend
@@ -57,6 +59,10 @@ Basic stuff you can call by typing `/<command>` in OA game console.
  - shareBalance     <currency>[BTC,OAC]
 ```
 
+*Update note:*<br>
+/bet and /unbet commands are outdated, there is super cool UI menu for this purpose instead.
+*Don't worry, /bet and /unbet are still there for quality people! :p*
+
 *Game stages*
 
 Game process is splitted into the following stages, the only way to switch between them
@@ -73,11 +79,22 @@ in some way.
     Available commands: `bet, unbet, pastBets, betsSummary, help, shareBalance`.
     Teams are fixed, you can't switch. If someone disconnects, `map_restart` is called.
     You can now make and discard your bets. Still no scores though.
+    Next stage will be started in `g_makingBetsTime`.
 
  - **PLAYING**<br>
     Available commands: `pastBets, betsSummary, help, shareBalance`.
     Betting is finished. Teams are still locked, but the game has started already,
     so score is now counted.
+
+*New Cvars*
+
+**Server-side:**<br>
+ - `g_makingBetsTime`<br>
+    The duration of MAKING_BETS in mins, 2 by default.
+    Type: `CVAR_SERVERINFO`.
+
+**Client-side:**<br>
+ - ...
 
 *How to earn OaCoins?*
 
