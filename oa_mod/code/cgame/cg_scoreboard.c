@@ -321,10 +321,10 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
     if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score ^1Ping ^1Time ^1Name ^1Acc ^1K/D ^1Dmg ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg           ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     } else {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score ^1Ping ^1Time ^1Name ^1Acc ^1K/D ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     }
     y = SB_TOP;
