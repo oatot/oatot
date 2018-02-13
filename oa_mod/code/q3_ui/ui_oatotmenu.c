@@ -303,11 +303,16 @@ void UI_OatotMenuInternal(void) {
     // Info.
     s_oatotmenu.info.generic.type     = MTYPE_TEXT;
     if (game_stage != FORMING_TEAMS) {
-        s_oatotmenu.info.generic.flags = QMF_HIDDEN;
+        if (oatotinfo.bets_n == 0 && game_stage == MAKING_BETS) {
+            s_oatotmenu.info.string        = "You don't have any active bets yet, press MAKE BET to make one.";
+        } else {
+            s_oatotmenu.info.generic.flags = QMF_HIDDEN;
+        }
+    } else {
+        s_oatotmenu.info.string            = "Betting is not yet started.";
     }
     s_oatotmenu.info.generic.x        = 320;
     s_oatotmenu.info.generic.y        = 170;
-    s_oatotmenu.info.string           = "Betting is not yet started.";
     s_oatotmenu.info.color            = color_orange;
     s_oatotmenu.info.style            = UI_CENTER | UI_SMALLFONT;
     // Initialize horse, amount and currency menu components.
@@ -346,7 +351,7 @@ void UI_OatotMenuInternal(void) {
     // Button discardBet.
     s_oatotmenu.discardBet.generic.type         = MTYPE_BITMAP;
     s_oatotmenu.discardBet.generic.name         = ART_DISCARDBET0;
-    if (game_stage == MAKING_BETS) {
+   if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
         s_oatotmenu.discardBet.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
         s_oatotmenu.discardBet.generic.flags    = QMF_GRAYED;
@@ -362,7 +367,7 @@ void UI_OatotMenuInternal(void) {
     // Button editBet.
     s_oatotmenu.editBet.generic.type         = MTYPE_BITMAP;
     s_oatotmenu.editBet.generic.name         = ART_EDITBET0;
-    if (game_stage == MAKING_BETS) {
+   if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
         s_oatotmenu.editBet.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
         s_oatotmenu.editBet.generic.flags    = QMF_GRAYED;
