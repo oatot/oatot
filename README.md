@@ -24,7 +24,8 @@ You will need a C-compiler (better gcc or clang), GNU make, Go, grpc-go.
 ```
 cd /path/to/oa_mod/linux_scripts/
 cp /path/to/openarena-server .
-./build_and_run_oa_server
+cp /path/to/server.cfg .
+./build_and_run_oa_server 27963 server.cfg
 ```
 
 ## How to build and run backend
