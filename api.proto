@@ -115,11 +115,11 @@ message OaTransferMoneyRequest {
 message OaTransferMoneyResponse {
 }
 
-message OaActiveBidsSumsRequest {
+message OaActiveBetsSumsRequest {
   required string horse = 1;
 }
 
-message OaActiveBidsSumsResponse {
+message OaActiveBetsSumsResponse {
   // TODO: one RPC for all horses.
   required fixed64 oac_amount = 1;
   required fixed64 btc_amount = 2;
@@ -156,11 +156,11 @@ message OaMyBalanceRequest {
 
 message OaMyBalanceResponse {
   required fixed64 free_money = 1;
-  required fixed64 money_on_bids = 2;
+  required fixed64 money_on_bets = 2;
 }
 
-message Bid {
-  // Filled by the user who makes the bid.
+message Bet {
+  // Filled by the user who makes the bet.
   required string horse = 1;
   required string currency = 2;
   required fixed64 amount = 3;
@@ -173,44 +173,44 @@ message Bid {
   optional fixed64 bet_id = 8;
 }
 
-message OaMyBidRequest {
+message OaMyBetRequest {
   required OaAuth oa_auth = 1;
-  required Bid bid = 2;
+  required Bet bet = 2;
 }
 
-message OaMyBidResponse {
+message OaMyBetResponse {
 }
 
-message OaCloseBidsRequest {
+message OaCloseBetsRequest {
   required string winner = 1;
 }
 
-message OaCloseBidsResponse {
+message OaCloseBetsResponse {
 }
 
-message OaCloseBidsByIncidentRequest {
+message OaCloseBetsByIncidentRequest {
 }
 
-message OaCloseBidsByIncidentResponse {
+message OaCloseBetsByIncidentResponse {
 }
 
-message OaMyActiveBidsRequest {
+message OaMyActiveBetsRequest {
   required OaAuth oa_auth = 1;
 }
 
-message OaMyActiveBidsResponse {
-  repeated Bid bids = 1;
+message OaMyActiveBetsResponse {
+  repeated Bet bets = 1;
 }
 
-message OaMyPastBidsRequest {
+message OaMyPastBetsRequest {
   required OaAuth oa_auth = 1;
-  // 15 bids per page.
-  // If page string is empty (""), return last 15 bids.
+  // 15 bets per page.
+  // If page string is empty (""), return last 15 bets.
   required string page = 2;
 }
 
-message OaMyPastBidsResponse {
-  repeated Bid bids = 1;
+message OaMyPastBetsResponse {
+  repeated Bet bets = 1;
   required string next_page = 2; // If empty, stop.
 }
 
@@ -222,13 +222,13 @@ message CurrencySummary {
   required fixed64 bets_lost = 5;
 }
 
-message OaMyBidsSummaryRequest {
+message OaMyBetsSummaryRequest {
   required OaAuth oa_auth = 1;
 }
 
-message OaMyBidsSummaryResponse {
+message OaMyBetsSummaryResponse {
   // TODO: currency name as a string to support more in future.
-  // Only past bids.
+  // Only past bets.
   required CurrencySummary oac_summary = 1;
   required CurrencySummary btc_summary = 2;
 }
@@ -263,11 +263,11 @@ service Oatot {
 
   // For all the players, after the match is finished in an appropriate way.
   // We know the winner.
-  rpc OaCloseBids(OaCloseBidsRequest) returns (OaCloseBidsResponse);
+  rpc OaCloseBets(OaCloseBetsRequest) returns (OaCloseBetsResponse);
 
   // For all the players, in case match is finished by incident (e.g. someone disconnects).
   // We have to return all the money back.
-  rpc OaCloseBidsByIncident(OaCloseBidsByIncidentRequest) returns (OaCloseBidsByIncidentResponse);
+  rpc OaCloseBetsByIncident(OaCloseBetsByIncidentRequest) returns (OaCloseBetsByIncidentResponse);
 
   //////////////////////////////
   // Initiated by the server. //
@@ -283,8 +283,8 @@ service Oatot {
   // Transfer 'prize' money calculated by player score after the end of match.
   rpc OaTransferMoney(OaTransferMoneyRequest) returns (OaTransferMoneyResponse);
 
-  // Active bids sums by horse.
-  rpc OaActiveBidsSums(OaActiveBidsSumsRequest) returns (OaActiveBidsSumsResponse);
+  // Active bets sums by horse.
+  rpc OaActiveBetsSums(OaActiveBetsSumsRequest) returns (OaActiveBetsSumsResponse);
 
   //////////////////////////////
   // Initiated by the client. //
@@ -292,20 +292,20 @@ service Oatot {
 
   rpc OaMyBalance(OaMyBalanceRequest) returns (OaMyBalanceResponse);
 
-  rpc OaMyBid(OaMyBidRequest) returns (OaMyBidResponse);
+  rpc OaMyBet(OaMyBetRequest) returns (OaMyBetResponse);
 
   // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
-  // Completely remove it and disregard in OaActiveBidsSums, OaMyActiveBids,
-  // OaMyPastBids, ...
-  // TODO: s/bet/bid/
+  // Completely remove it and disregard in OaActiveBetsSums, OaMyActiveBets,
+  // OaMyPastBets, ...
+  // TODO: s/bet/bet/
   rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
 
-  // Active bids for this match. Output array MUST BE sorted by open time increase.
+  // Active bets for this match. Output array MUST BE sorted by open time increase.
   // (first opened bet ALWAYS 0, second - 1... etc).
-  rpc OaMyActiveBids(OaMyActiveBidsRequest) returns (OaMyActiveBidsResponse);
+  rpc OaMyActiveBets(OaMyActiveBetsRequest) returns (OaMyActiveBetsResponse);
 
-  // Past bids (15 per page), DO NOT include active bids here.
-  rpc OaMyPastBids(OaMyPastBidsRequest) returns (OaMyPastBidsResponse);
+  // Past bets (15 per page), DO NOT include active bets here.
+  rpc OaMyPastBets(OaMyPastBetsRequest) returns (OaMyPastBetsResponse);
 
-  rpc OaMyBidsSummary(OaMyBidsSummaryRequest) returns (OaMyBidsSummaryResponse);
+  rpc OaMyBetsSummary(OaMyBetsSummaryRequest) returns (OaMyBetsSummaryResponse);
 }

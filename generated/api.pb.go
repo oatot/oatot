@@ -33,8 +33,8 @@ It has these top-level messages:
 	OaDiscardBetResponse
 	OaTransferMoneyRequest
 	OaTransferMoneyResponse
-	OaActiveBidsSumsRequest
-	OaActiveBidsSumsResponse
+	OaActiveBetsSumsRequest
+	OaActiveBetsSumsResponse
 	OaChangeGameStageRequest
 	OaChangeGameStageResponse
 	OaIsNewRequest
@@ -43,20 +43,20 @@ It has these top-level messages:
 	OaRegisterResponse
 	OaMyBalanceRequest
 	OaMyBalanceResponse
-	Bid
-	OaMyBidRequest
-	OaMyBidResponse
-	OaCloseBidsRequest
-	OaCloseBidsResponse
-	OaCloseBidsByIncidentRequest
-	OaCloseBidsByIncidentResponse
-	OaMyActiveBidsRequest
-	OaMyActiveBidsResponse
-	OaMyPastBidsRequest
-	OaMyPastBidsResponse
+	Bet
+	OaMyBetRequest
+	OaMyBetResponse
+	OaCloseBetsRequest
+	OaCloseBetsResponse
+	OaCloseBetsByIncidentRequest
+	OaCloseBetsByIncidentResponse
+	OaMyActiveBetsRequest
+	OaMyActiveBetsResponse
+	OaMyPastBetsRequest
+	OaMyPastBetsResponse
 	CurrencySummary
-	OaMyBidsSummaryRequest
-	OaMyBidsSummaryResponse
+	OaMyBetsSummaryRequest
+	OaMyBetsSummaryResponse
 */
 package oatot
 
@@ -575,43 +575,43 @@ func (m *OaTransferMoneyResponse) String() string            { return proto.Comp
 func (*OaTransferMoneyResponse) ProtoMessage()               {}
 func (*OaTransferMoneyResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{23} }
 
-type OaActiveBidsSumsRequest struct {
+type OaActiveBetsSumsRequest struct {
 	Horse            *string `protobuf:"bytes,1,req,name=horse" json:"horse,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaActiveBidsSumsRequest) Reset()                    { *m = OaActiveBidsSumsRequest{} }
-func (m *OaActiveBidsSumsRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaActiveBidsSumsRequest) ProtoMessage()               {}
-func (*OaActiveBidsSumsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{24} }
+func (m *OaActiveBetsSumsRequest) Reset()                    { *m = OaActiveBetsSumsRequest{} }
+func (m *OaActiveBetsSumsRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaActiveBetsSumsRequest) ProtoMessage()               {}
+func (*OaActiveBetsSumsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{24} }
 
-func (m *OaActiveBidsSumsRequest) GetHorse() string {
+func (m *OaActiveBetsSumsRequest) GetHorse() string {
 	if m != nil && m.Horse != nil {
 		return *m.Horse
 	}
 	return ""
 }
 
-type OaActiveBidsSumsResponse struct {
+type OaActiveBetsSumsResponse struct {
 	// TODO: one RPC for all horses.
 	OacAmount        *uint64 `protobuf:"fixed64,1,req,name=oac_amount,json=oacAmount" json:"oac_amount,omitempty"`
 	BtcAmount        *uint64 `protobuf:"fixed64,2,req,name=btc_amount,json=btcAmount" json:"btc_amount,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaActiveBidsSumsResponse) Reset()                    { *m = OaActiveBidsSumsResponse{} }
-func (m *OaActiveBidsSumsResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaActiveBidsSumsResponse) ProtoMessage()               {}
-func (*OaActiveBidsSumsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{25} }
+func (m *OaActiveBetsSumsResponse) Reset()                    { *m = OaActiveBetsSumsResponse{} }
+func (m *OaActiveBetsSumsResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaActiveBetsSumsResponse) ProtoMessage()               {}
+func (*OaActiveBetsSumsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{25} }
 
-func (m *OaActiveBidsSumsResponse) GetOacAmount() uint64 {
+func (m *OaActiveBetsSumsResponse) GetOacAmount() uint64 {
 	if m != nil && m.OacAmount != nil {
 		return *m.OacAmount
 	}
 	return 0
 }
 
-func (m *OaActiveBidsSumsResponse) GetBtcAmount() uint64 {
+func (m *OaActiveBetsSumsResponse) GetBtcAmount() uint64 {
 	if m != nil && m.BtcAmount != nil {
 		return *m.BtcAmount
 	}
@@ -733,7 +733,7 @@ func (m *OaMyBalanceRequest) GetCurrency() string {
 
 type OaMyBalanceResponse struct {
 	FreeMoney        *uint64 `protobuf:"fixed64,1,req,name=free_money,json=freeMoney" json:"free_money,omitempty"`
-	MoneyOnBids      *uint64 `protobuf:"fixed64,2,req,name=money_on_bids,json=moneyOnBids" json:"money_on_bids,omitempty"`
+	MoneyOnBets      *uint64 `protobuf:"fixed64,2,req,name=money_on_bets,json=moneyOnBets" json:"money_on_bets,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
@@ -749,15 +749,15 @@ func (m *OaMyBalanceResponse) GetFreeMoney() uint64 {
 	return 0
 }
 
-func (m *OaMyBalanceResponse) GetMoneyOnBids() uint64 {
-	if m != nil && m.MoneyOnBids != nil {
-		return *m.MoneyOnBids
+func (m *OaMyBalanceResponse) GetMoneyOnBets() uint64 {
+	if m != nil && m.MoneyOnBets != nil {
+		return *m.MoneyOnBets
 	}
 	return 0
 }
 
-type Bid struct {
-	// Filled by the user who makes the bid.
+type Bet struct {
+	// Filled by the user who makes the bet.
 	Horse    *string `protobuf:"bytes,1,req,name=horse" json:"horse,omitempty"`
 	Currency *string `protobuf:"bytes,2,req,name=currency" json:"currency,omitempty"`
 	Amount   *uint64 `protobuf:"fixed64,3,req,name=amount" json:"amount,omitempty"`
@@ -771,225 +771,225 @@ type Bid struct {
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *Bid) Reset()                    { *m = Bid{} }
-func (m *Bid) String() string            { return proto.CompactTextString(m) }
-func (*Bid) ProtoMessage()               {}
-func (*Bid) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{34} }
+func (m *Bet) Reset()                    { *m = Bet{} }
+func (m *Bet) String() string            { return proto.CompactTextString(m) }
+func (*Bet) ProtoMessage()               {}
+func (*Bet) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{34} }
 
-func (m *Bid) GetHorse() string {
+func (m *Bet) GetHorse() string {
 	if m != nil && m.Horse != nil {
 		return *m.Horse
 	}
 	return ""
 }
 
-func (m *Bid) GetCurrency() string {
+func (m *Bet) GetCurrency() string {
 	if m != nil && m.Currency != nil {
 		return *m.Currency
 	}
 	return ""
 }
 
-func (m *Bid) GetAmount() uint64 {
+func (m *Bet) GetAmount() uint64 {
 	if m != nil && m.Amount != nil {
 		return *m.Amount
 	}
 	return 0
 }
 
-func (m *Bid) GetOpenTime() *google_protobuf.Timestamp {
+func (m *Bet) GetOpenTime() *google_protobuf.Timestamp {
 	if m != nil {
 		return m.OpenTime
 	}
 	return nil
 }
 
-func (m *Bid) GetCloseTime() *google_protobuf.Timestamp {
+func (m *Bet) GetCloseTime() *google_protobuf.Timestamp {
 	if m != nil {
 		return m.CloseTime
 	}
 	return nil
 }
 
-func (m *Bid) GetWinner() string {
+func (m *Bet) GetWinner() string {
 	if m != nil && m.Winner != nil {
 		return *m.Winner
 	}
 	return ""
 }
 
-func (m *Bid) GetPrize() uint64 {
+func (m *Bet) GetPrize() uint64 {
 	if m != nil && m.Prize != nil {
 		return *m.Prize
 	}
 	return 0
 }
 
-func (m *Bid) GetBetId() uint64 {
+func (m *Bet) GetBetId() uint64 {
 	if m != nil && m.BetId != nil {
 		return *m.BetId
 	}
 	return 0
 }
 
-type OaMyBidRequest struct {
+type OaMyBetRequest struct {
 	OaAuth           *OaAuth `protobuf:"bytes,1,req,name=oa_auth,json=oaAuth" json:"oa_auth,omitempty"`
-	Bid              *Bid    `protobuf:"bytes,2,req,name=bid" json:"bid,omitempty"`
+	Bet              *Bet    `protobuf:"bytes,2,req,name=bet" json:"bet,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaMyBidRequest) Reset()                    { *m = OaMyBidRequest{} }
-func (m *OaMyBidRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaMyBidRequest) ProtoMessage()               {}
-func (*OaMyBidRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{35} }
+func (m *OaMyBetRequest) Reset()                    { *m = OaMyBetRequest{} }
+func (m *OaMyBetRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaMyBetRequest) ProtoMessage()               {}
+func (*OaMyBetRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{35} }
 
-func (m *OaMyBidRequest) GetOaAuth() *OaAuth {
+func (m *OaMyBetRequest) GetOaAuth() *OaAuth {
 	if m != nil {
 		return m.OaAuth
 	}
 	return nil
 }
 
-func (m *OaMyBidRequest) GetBid() *Bid {
+func (m *OaMyBetRequest) GetBet() *Bet {
 	if m != nil {
-		return m.Bid
+		return m.Bet
 	}
 	return nil
 }
 
-type OaMyBidResponse struct {
+type OaMyBetResponse struct {
 	XXX_unrecognized []byte `json:"-"`
 }
 
-func (m *OaMyBidResponse) Reset()                    { *m = OaMyBidResponse{} }
-func (m *OaMyBidResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaMyBidResponse) ProtoMessage()               {}
-func (*OaMyBidResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{36} }
+func (m *OaMyBetResponse) Reset()                    { *m = OaMyBetResponse{} }
+func (m *OaMyBetResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaMyBetResponse) ProtoMessage()               {}
+func (*OaMyBetResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{36} }
 
-type OaCloseBidsRequest struct {
+type OaCloseBetsRequest struct {
 	Winner           *string `protobuf:"bytes,1,req,name=winner" json:"winner,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaCloseBidsRequest) Reset()                    { *m = OaCloseBidsRequest{} }
-func (m *OaCloseBidsRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaCloseBidsRequest) ProtoMessage()               {}
-func (*OaCloseBidsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{37} }
+func (m *OaCloseBetsRequest) Reset()                    { *m = OaCloseBetsRequest{} }
+func (m *OaCloseBetsRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaCloseBetsRequest) ProtoMessage()               {}
+func (*OaCloseBetsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{37} }
 
-func (m *OaCloseBidsRequest) GetWinner() string {
+func (m *OaCloseBetsRequest) GetWinner() string {
 	if m != nil && m.Winner != nil {
 		return *m.Winner
 	}
 	return ""
 }
 
-type OaCloseBidsResponse struct {
+type OaCloseBetsResponse struct {
 	XXX_unrecognized []byte `json:"-"`
 }
 
-func (m *OaCloseBidsResponse) Reset()                    { *m = OaCloseBidsResponse{} }
-func (m *OaCloseBidsResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaCloseBidsResponse) ProtoMessage()               {}
-func (*OaCloseBidsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{38} }
+func (m *OaCloseBetsResponse) Reset()                    { *m = OaCloseBetsResponse{} }
+func (m *OaCloseBetsResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaCloseBetsResponse) ProtoMessage()               {}
+func (*OaCloseBetsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{38} }
 
-type OaCloseBidsByIncidentRequest struct {
+type OaCloseBetsByIncidentRequest struct {
 	XXX_unrecognized []byte `json:"-"`
 }
 
-func (m *OaCloseBidsByIncidentRequest) Reset()                    { *m = OaCloseBidsByIncidentRequest{} }
-func (m *OaCloseBidsByIncidentRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaCloseBidsByIncidentRequest) ProtoMessage()               {}
-func (*OaCloseBidsByIncidentRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{39} }
+func (m *OaCloseBetsByIncidentRequest) Reset()                    { *m = OaCloseBetsByIncidentRequest{} }
+func (m *OaCloseBetsByIncidentRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaCloseBetsByIncidentRequest) ProtoMessage()               {}
+func (*OaCloseBetsByIncidentRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{39} }
 
-type OaCloseBidsByIncidentResponse struct {
+type OaCloseBetsByIncidentResponse struct {
 	XXX_unrecognized []byte `json:"-"`
 }
 
-func (m *OaCloseBidsByIncidentResponse) Reset()                    { *m = OaCloseBidsByIncidentResponse{} }
-func (m *OaCloseBidsByIncidentResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaCloseBidsByIncidentResponse) ProtoMessage()               {}
-func (*OaCloseBidsByIncidentResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{40} }
+func (m *OaCloseBetsByIncidentResponse) Reset()                    { *m = OaCloseBetsByIncidentResponse{} }
+func (m *OaCloseBetsByIncidentResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaCloseBetsByIncidentResponse) ProtoMessage()               {}
+func (*OaCloseBetsByIncidentResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{40} }
 
-type OaMyActiveBidsRequest struct {
+type OaMyActiveBetsRequest struct {
 	OaAuth           *OaAuth `protobuf:"bytes,1,req,name=oa_auth,json=oaAuth" json:"oa_auth,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaMyActiveBidsRequest) Reset()                    { *m = OaMyActiveBidsRequest{} }
-func (m *OaMyActiveBidsRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaMyActiveBidsRequest) ProtoMessage()               {}
-func (*OaMyActiveBidsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{41} }
+func (m *OaMyActiveBetsRequest) Reset()                    { *m = OaMyActiveBetsRequest{} }
+func (m *OaMyActiveBetsRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaMyActiveBetsRequest) ProtoMessage()               {}
+func (*OaMyActiveBetsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{41} }
 
-func (m *OaMyActiveBidsRequest) GetOaAuth() *OaAuth {
+func (m *OaMyActiveBetsRequest) GetOaAuth() *OaAuth {
 	if m != nil {
 		return m.OaAuth
 	}
 	return nil
 }
 
-type OaMyActiveBidsResponse struct {
-	Bids             []*Bid `protobuf:"bytes,1,rep,name=bids" json:"bids,omitempty"`
+type OaMyActiveBetsResponse struct {
+	Bets             []*Bet `protobuf:"bytes,1,rep,name=bets" json:"bets,omitempty"`
 	XXX_unrecognized []byte `json:"-"`
 }
 
-func (m *OaMyActiveBidsResponse) Reset()                    { *m = OaMyActiveBidsResponse{} }
-func (m *OaMyActiveBidsResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaMyActiveBidsResponse) ProtoMessage()               {}
-func (*OaMyActiveBidsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{42} }
+func (m *OaMyActiveBetsResponse) Reset()                    { *m = OaMyActiveBetsResponse{} }
+func (m *OaMyActiveBetsResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaMyActiveBetsResponse) ProtoMessage()               {}
+func (*OaMyActiveBetsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{42} }
 
-func (m *OaMyActiveBidsResponse) GetBids() []*Bid {
+func (m *OaMyActiveBetsResponse) GetBets() []*Bet {
 	if m != nil {
-		return m.Bids
+		return m.Bets
 	}
 	return nil
 }
 
-type OaMyPastBidsRequest struct {
+type OaMyPastBetsRequest struct {
 	OaAuth *OaAuth `protobuf:"bytes,1,req,name=oa_auth,json=oaAuth" json:"oa_auth,omitempty"`
-	// 15 bids per page.
-	// If page string is empty (""), return last 15 bids.
+	// 15 bets per page.
+	// If page string is empty (""), return last 15 bets.
 	Page             *string `protobuf:"bytes,2,req,name=page" json:"page,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaMyPastBidsRequest) Reset()                    { *m = OaMyPastBidsRequest{} }
-func (m *OaMyPastBidsRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaMyPastBidsRequest) ProtoMessage()               {}
-func (*OaMyPastBidsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{43} }
+func (m *OaMyPastBetsRequest) Reset()                    { *m = OaMyPastBetsRequest{} }
+func (m *OaMyPastBetsRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaMyPastBetsRequest) ProtoMessage()               {}
+func (*OaMyPastBetsRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{43} }
 
-func (m *OaMyPastBidsRequest) GetOaAuth() *OaAuth {
+func (m *OaMyPastBetsRequest) GetOaAuth() *OaAuth {
 	if m != nil {
 		return m.OaAuth
 	}
 	return nil
 }
 
-func (m *OaMyPastBidsRequest) GetPage() string {
+func (m *OaMyPastBetsRequest) GetPage() string {
 	if m != nil && m.Page != nil {
 		return *m.Page
 	}
 	return ""
 }
 
-type OaMyPastBidsResponse struct {
-	Bids             []*Bid  `protobuf:"bytes,1,rep,name=bids" json:"bids,omitempty"`
+type OaMyPastBetsResponse struct {
+	Bets             []*Bet  `protobuf:"bytes,1,rep,name=bets" json:"bets,omitempty"`
 	NextPage         *string `protobuf:"bytes,2,req,name=next_page,json=nextPage" json:"next_page,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaMyPastBidsResponse) Reset()                    { *m = OaMyPastBidsResponse{} }
-func (m *OaMyPastBidsResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaMyPastBidsResponse) ProtoMessage()               {}
-func (*OaMyPastBidsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{44} }
+func (m *OaMyPastBetsResponse) Reset()                    { *m = OaMyPastBetsResponse{} }
+func (m *OaMyPastBetsResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaMyPastBetsResponse) ProtoMessage()               {}
+func (*OaMyPastBetsResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{44} }
 
-func (m *OaMyPastBidsResponse) GetBids() []*Bid {
+func (m *OaMyPastBetsResponse) GetBets() []*Bet {
 	if m != nil {
-		return m.Bids
+		return m.Bets
 	}
 	return nil
 }
 
-func (m *OaMyPastBidsResponse) GetNextPage() string {
+func (m *OaMyPastBetsResponse) GetNextPage() string {
 	if m != nil && m.NextPage != nil {
 		return *m.NextPage
 	}
@@ -1045,44 +1045,44 @@ func (m *CurrencySummary) GetBetsLost() uint64 {
 	return 0
 }
 
-type OaMyBidsSummaryRequest struct {
+type OaMyBetsSummaryRequest struct {
 	OaAuth           *OaAuth `protobuf:"bytes,1,req,name=oa_auth,json=oaAuth" json:"oa_auth,omitempty"`
 	XXX_unrecognized []byte  `json:"-"`
 }
 
-func (m *OaMyBidsSummaryRequest) Reset()                    { *m = OaMyBidsSummaryRequest{} }
-func (m *OaMyBidsSummaryRequest) String() string            { return proto.CompactTextString(m) }
-func (*OaMyBidsSummaryRequest) ProtoMessage()               {}
-func (*OaMyBidsSummaryRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{46} }
+func (m *OaMyBetsSummaryRequest) Reset()                    { *m = OaMyBetsSummaryRequest{} }
+func (m *OaMyBetsSummaryRequest) String() string            { return proto.CompactTextString(m) }
+func (*OaMyBetsSummaryRequest) ProtoMessage()               {}
+func (*OaMyBetsSummaryRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{46} }
 
-func (m *OaMyBidsSummaryRequest) GetOaAuth() *OaAuth {
+func (m *OaMyBetsSummaryRequest) GetOaAuth() *OaAuth {
 	if m != nil {
 		return m.OaAuth
 	}
 	return nil
 }
 
-type OaMyBidsSummaryResponse struct {
+type OaMyBetsSummaryResponse struct {
 	// TODO: currency name as a string to support more in future.
-	// Only past bids.
+	// Only past bets.
 	OacSummary       *CurrencySummary `protobuf:"bytes,1,req,name=oac_summary,json=oacSummary" json:"oac_summary,omitempty"`
 	BtcSummary       *CurrencySummary `protobuf:"bytes,2,req,name=btc_summary,json=btcSummary" json:"btc_summary,omitempty"`
 	XXX_unrecognized []byte           `json:"-"`
 }
 
-func (m *OaMyBidsSummaryResponse) Reset()                    { *m = OaMyBidsSummaryResponse{} }
-func (m *OaMyBidsSummaryResponse) String() string            { return proto.CompactTextString(m) }
-func (*OaMyBidsSummaryResponse) ProtoMessage()               {}
-func (*OaMyBidsSummaryResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{47} }
+func (m *OaMyBetsSummaryResponse) Reset()                    { *m = OaMyBetsSummaryResponse{} }
+func (m *OaMyBetsSummaryResponse) String() string            { return proto.CompactTextString(m) }
+func (*OaMyBetsSummaryResponse) ProtoMessage()               {}
+func (*OaMyBetsSummaryResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{47} }
 
-func (m *OaMyBidsSummaryResponse) GetOacSummary() *CurrencySummary {
+func (m *OaMyBetsSummaryResponse) GetOacSummary() *CurrencySummary {
 	if m != nil {
 		return m.OacSummary
 	}
 	return nil
 }
 
-func (m *OaMyBidsSummaryResponse) GetBtcSummary() *CurrencySummary {
+func (m *OaMyBetsSummaryResponse) GetBtcSummary() *CurrencySummary {
 	if m != nil {
 		return m.BtcSummary
 	}
@@ -1115,8 +1115,8 @@ func init() {
 	proto.RegisterType((*OaDiscardBetResponse)(nil), "oatot.OaDiscardBetResponse")
 	proto.RegisterType((*OaTransferMoneyRequest)(nil), "oatot.OaTransferMoneyRequest")
 	proto.RegisterType((*OaTransferMoneyResponse)(nil), "oatot.OaTransferMoneyResponse")
-	proto.RegisterType((*OaActiveBidsSumsRequest)(nil), "oatot.OaActiveBidsSumsRequest")
-	proto.RegisterType((*OaActiveBidsSumsResponse)(nil), "oatot.OaActiveBidsSumsResponse")
+	proto.RegisterType((*OaActiveBetsSumsRequest)(nil), "oatot.OaActiveBetsSumsRequest")
+	proto.RegisterType((*OaActiveBetsSumsResponse)(nil), "oatot.OaActiveBetsSumsResponse")
 	proto.RegisterType((*OaChangeGameStageRequest)(nil), "oatot.OaChangeGameStageRequest")
 	proto.RegisterType((*OaChangeGameStageResponse)(nil), "oatot.OaChangeGameStageResponse")
 	proto.RegisterType((*OaIsNewRequest)(nil), "oatot.OaIsNewRequest")
@@ -1125,20 +1125,20 @@ func init() {
 	proto.RegisterType((*OaRegisterResponse)(nil), "oatot.OaRegisterResponse")
 	proto.RegisterType((*OaMyBalanceRequest)(nil), "oatot.OaMyBalanceRequest")
 	proto.RegisterType((*OaMyBalanceResponse)(nil), "oatot.OaMyBalanceResponse")
-	proto.RegisterType((*Bid)(nil), "oatot.Bid")
-	proto.RegisterType((*OaMyBidRequest)(nil), "oatot.OaMyBidRequest")
-	proto.RegisterType((*OaMyBidResponse)(nil), "oatot.OaMyBidResponse")
-	proto.RegisterType((*OaCloseBidsRequest)(nil), "oatot.OaCloseBidsRequest")
-	proto.RegisterType((*OaCloseBidsResponse)(nil), "oatot.OaCloseBidsResponse")
-	proto.RegisterType((*OaCloseBidsByIncidentRequest)(nil), "oatot.OaCloseBidsByIncidentRequest")
-	proto.RegisterType((*OaCloseBidsByIncidentResponse)(nil), "oatot.OaCloseBidsByIncidentResponse")
-	proto.RegisterType((*OaMyActiveBidsRequest)(nil), "oatot.OaMyActiveBidsRequest")
-	proto.RegisterType((*OaMyActiveBidsResponse)(nil), "oatot.OaMyActiveBidsResponse")
-	proto.RegisterType((*OaMyPastBidsRequest)(nil), "oatot.OaMyPastBidsRequest")
-	proto.RegisterType((*OaMyPastBidsResponse)(nil), "oatot.OaMyPastBidsResponse")
+	proto.RegisterType((*Bet)(nil), "oatot.Bet")
+	proto.RegisterType((*OaMyBetRequest)(nil), "oatot.OaMyBetRequest")
+	proto.RegisterType((*OaMyBetResponse)(nil), "oatot.OaMyBetResponse")
+	proto.RegisterType((*OaCloseBetsRequest)(nil), "oatot.OaCloseBetsRequest")
+	proto.RegisterType((*OaCloseBetsResponse)(nil), "oatot.OaCloseBetsResponse")
+	proto.RegisterType((*OaCloseBetsByIncidentRequest)(nil), "oatot.OaCloseBetsByIncidentRequest")
+	proto.RegisterType((*OaCloseBetsByIncidentResponse)(nil), "oatot.OaCloseBetsByIncidentResponse")
+	proto.RegisterType((*OaMyActiveBetsRequest)(nil), "oatot.OaMyActiveBetsRequest")
+	proto.RegisterType((*OaMyActiveBetsResponse)(nil), "oatot.OaMyActiveBetsResponse")
+	proto.RegisterType((*OaMyPastBetsRequest)(nil), "oatot.OaMyPastBetsRequest")
+	proto.RegisterType((*OaMyPastBetsResponse)(nil), "oatot.OaMyPastBetsResponse")
 	proto.RegisterType((*CurrencySummary)(nil), "oatot.CurrencySummary")
-	proto.RegisterType((*OaMyBidsSummaryRequest)(nil), "oatot.OaMyBidsSummaryRequest")
-	proto.RegisterType((*OaMyBidsSummaryResponse)(nil), "oatot.OaMyBidsSummaryResponse")
+	proto.RegisterType((*OaMyBetsSummaryRequest)(nil), "oatot.OaMyBetsSummaryRequest")
+	proto.RegisterType((*OaMyBetsSummaryResponse)(nil), "oatot.OaMyBetsSummaryResponse")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1166,31 +1166,32 @@ type OatotClient interface {
 	OaChangeGameStage(ctx context.Context, in *OaChangeGameStageRequest, opts ...grpc.CallOption) (*OaChangeGameStageResponse, error)
 	// For all the players, after the match is finished in an appropriate way.
 	// We know the winner.
-	OaCloseBids(ctx context.Context, in *OaCloseBidsRequest, opts ...grpc.CallOption) (*OaCloseBidsResponse, error)
+	OaCloseBets(ctx context.Context, in *OaCloseBetsRequest, opts ...grpc.CallOption) (*OaCloseBetsResponse, error)
 	// For all the players, in case match is finished by incident (e.g. someone disconnects).
 	// We have to return all the money back.
-	OaCloseBidsByIncident(ctx context.Context, in *OaCloseBidsByIncidentRequest, opts ...grpc.CallOption) (*OaCloseBidsByIncidentResponse, error)
+	OaCloseBetsByIncident(ctx context.Context, in *OaCloseBetsByIncidentRequest, opts ...grpc.CallOption) (*OaCloseBetsByIncidentResponse, error)
 	// Check if this player hasn't appeared before.
 	OaIsNew(ctx context.Context, in *OaIsNewRequest, opts ...grpc.CallOption) (*OaIsNewResponse, error)
-	// Register player in the database, sponsor them with 1000 OAC.
+	// Register player in the database, sponsor them with the amount of money specified
+	// by backend option.
 	OaRegister(ctx context.Context, in *OaRegisterRequest, opts ...grpc.CallOption) (*OaRegisterResponse, error)
 	// Transfer 'prize' money calculated by player score after the end of match.
 	OaTransferMoney(ctx context.Context, in *OaTransferMoneyRequest, opts ...grpc.CallOption) (*OaTransferMoneyResponse, error)
-	// Active bids sums by horse.
-	OaActiveBidsSums(ctx context.Context, in *OaActiveBidsSumsRequest, opts ...grpc.CallOption) (*OaActiveBidsSumsResponse, error)
+	// Active bets sums by horse.
+	OaActiveBetsSums(ctx context.Context, in *OaActiveBetsSumsRequest, opts ...grpc.CallOption) (*OaActiveBetsSumsResponse, error)
 	OaMyBalance(ctx context.Context, in *OaMyBalanceRequest, opts ...grpc.CallOption) (*OaMyBalanceResponse, error)
-	OaMyBid(ctx context.Context, in *OaMyBidRequest, opts ...grpc.CallOption) (*OaMyBidResponse, error)
+	OaMyBet(ctx context.Context, in *OaMyBetRequest, opts ...grpc.CallOption) (*OaMyBetResponse, error)
 	// Discard a bet. This MUST only be possible during MAKING_BETS game stage.
-	// Completely remove it and disregard in OaActiveBidsSums, OaMyActiveBids,
-	// OaMyPastBids, ...
-	// TODO: s/bet/bid/
+	// Completely remove it and disregard in OaActiveBetsSums, OaMyActiveBets,
+	// OaMyPastBets, ...
+	// TODO: s/bet/bet/
 	OaDiscardBet(ctx context.Context, in *OaDiscardBetRequest, opts ...grpc.CallOption) (*OaDiscardBetResponse, error)
-	// Active bids for this match. Output array MUST BE sorted by open time increase.
+	// Active bets for this match. Output array MUST BE sorted by open time increase.
 	// (first opened bet ALWAYS 0, second - 1... etc).
-	OaMyActiveBids(ctx context.Context, in *OaMyActiveBidsRequest, opts ...grpc.CallOption) (*OaMyActiveBidsResponse, error)
-	// Past bids (15 per page), DO NOT include active bids here.
-	OaMyPastBids(ctx context.Context, in *OaMyPastBidsRequest, opts ...grpc.CallOption) (*OaMyPastBidsResponse, error)
-	OaMyBidsSummary(ctx context.Context, in *OaMyBidsSummaryRequest, opts ...grpc.CallOption) (*OaMyBidsSummaryResponse, error)
+	OaMyActiveBets(ctx context.Context, in *OaMyActiveBetsRequest, opts ...grpc.CallOption) (*OaMyActiveBetsResponse, error)
+	// Past bets (15 per page), DO NOT include active bets here.
+	OaMyPastBets(ctx context.Context, in *OaMyPastBetsRequest, opts ...grpc.CallOption) (*OaMyPastBetsResponse, error)
+	OaMyBetsSummary(ctx context.Context, in *OaMyBetsSummaryRequest, opts ...grpc.CallOption) (*OaMyBetsSummaryResponse, error)
 }
 
 type oatotClient struct {
@@ -1291,18 +1292,18 @@ func (c *oatotClient) OaChangeGameStage(ctx context.Context, in *OaChangeGameSta
 	return out, nil
 }
 
-func (c *oatotClient) OaCloseBids(ctx context.Context, in *OaCloseBidsRequest, opts ...grpc.CallOption) (*OaCloseBidsResponse, error) {
-	out := new(OaCloseBidsResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaCloseBids", in, out, c.cc, opts...)
+func (c *oatotClient) OaCloseBets(ctx context.Context, in *OaCloseBetsRequest, opts ...grpc.CallOption) (*OaCloseBetsResponse, error) {
+	out := new(OaCloseBetsResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaCloseBets", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *oatotClient) OaCloseBidsByIncident(ctx context.Context, in *OaCloseBidsByIncidentRequest, opts ...grpc.CallOption) (*OaCloseBidsByIncidentResponse, error) {
-	out := new(OaCloseBidsByIncidentResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaCloseBidsByIncident", in, out, c.cc, opts...)
+func (c *oatotClient) OaCloseBetsByIncident(ctx context.Context, in *OaCloseBetsByIncidentRequest, opts ...grpc.CallOption) (*OaCloseBetsByIncidentResponse, error) {
+	out := new(OaCloseBetsByIncidentResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaCloseBetsByIncident", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1336,9 +1337,9 @@ func (c *oatotClient) OaTransferMoney(ctx context.Context, in *OaTransferMoneyRe
 	return out, nil
 }
 
-func (c *oatotClient) OaActiveBidsSums(ctx context.Context, in *OaActiveBidsSumsRequest, opts ...grpc.CallOption) (*OaActiveBidsSumsResponse, error) {
-	out := new(OaActiveBidsSumsResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaActiveBidsSums", in, out, c.cc, opts...)
+func (c *oatotClient) OaActiveBetsSums(ctx context.Context, in *OaActiveBetsSumsRequest, opts ...grpc.CallOption) (*OaActiveBetsSumsResponse, error) {
+	out := new(OaActiveBetsSumsResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaActiveBetsSums", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1354,9 +1355,9 @@ func (c *oatotClient) OaMyBalance(ctx context.Context, in *OaMyBalanceRequest, o
 	return out, nil
 }
 
-func (c *oatotClient) OaMyBid(ctx context.Context, in *OaMyBidRequest, opts ...grpc.CallOption) (*OaMyBidResponse, error) {
-	out := new(OaMyBidResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyBid", in, out, c.cc, opts...)
+func (c *oatotClient) OaMyBet(ctx context.Context, in *OaMyBetRequest, opts ...grpc.CallOption) (*OaMyBetResponse, error) {
+	out := new(OaMyBetResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyBet", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1372,27 +1373,27 @@ func (c *oatotClient) OaDiscardBet(ctx context.Context, in *OaDiscardBetRequest,
 	return out, nil
 }
 
-func (c *oatotClient) OaMyActiveBids(ctx context.Context, in *OaMyActiveBidsRequest, opts ...grpc.CallOption) (*OaMyActiveBidsResponse, error) {
-	out := new(OaMyActiveBidsResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyActiveBids", in, out, c.cc, opts...)
+func (c *oatotClient) OaMyActiveBets(ctx context.Context, in *OaMyActiveBetsRequest, opts ...grpc.CallOption) (*OaMyActiveBetsResponse, error) {
+	out := new(OaMyActiveBetsResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyActiveBets", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *oatotClient) OaMyPastBids(ctx context.Context, in *OaMyPastBidsRequest, opts ...grpc.CallOption) (*OaMyPastBidsResponse, error) {
-	out := new(OaMyPastBidsResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyPastBids", in, out, c.cc, opts...)
+func (c *oatotClient) OaMyPastBets(ctx context.Context, in *OaMyPastBetsRequest, opts ...grpc.CallOption) (*OaMyPastBetsResponse, error) {
+	out := new(OaMyPastBetsResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyPastBets", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *oatotClient) OaMyBidsSummary(ctx context.Context, in *OaMyBidsSummaryRequest, opts ...grpc.CallOption) (*OaMyBidsSummaryResponse, error) {
-	out := new(OaMyBidsSummaryResponse)
-	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyBidsSummary", in, out, c.cc, opts...)
+func (c *oatotClient) OaMyBetsSummary(ctx context.Context, in *OaMyBetsSummaryRequest, opts ...grpc.CallOption) (*OaMyBetsSummaryResponse, error) {
+	out := new(OaMyBetsSummaryResponse)
+	err := grpc.Invoke(ctx, "/oatot.Oatot/OaMyBetsSummary", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1416,31 +1417,32 @@ type OatotServer interface {
 	OaChangeGameStage(context.Context, *OaChangeGameStageRequest) (*OaChangeGameStageResponse, error)
 	// For all the players, after the match is finished in an appropriate way.
 	// We know the winner.
-	OaCloseBids(context.Context, *OaCloseBidsRequest) (*OaCloseBidsResponse, error)
+	OaCloseBets(context.Context, *OaCloseBetsRequest) (*OaCloseBetsResponse, error)
 	// For all the players, in case match is finished by incident (e.g. someone disconnects).
 	// We have to return all the money back.
-	OaCloseBidsByIncident(context.Context, *OaCloseBidsByIncidentRequest) (*OaCloseBidsByIncidentResponse, error)
+	OaCloseBetsByIncident(context.Context, *OaCloseBetsByIncidentRequest) (*OaCloseBetsByIncidentResponse, error)
 	// Check if this player hasn't appeared before.
 	OaIsNew(context.Context, *OaIsNewRequest) (*OaIsNewResponse, error)
-	// Register player in the database, sponsor them with 1000 OAC.
+	// Register player in the database, sponsor them with the amount of money specified
+	// by backend option.
 	OaRegister(context.Context, *OaRegisterRequest) (*OaRegisterResponse, error)
 	// Transfer 'prize' money calculated by player score after the end of match.
 	OaTransferMoney(context.Context, *OaTransferMoneyRequest) (*OaTransferMoneyResponse, error)
-	// Active bids sums by horse.
-	OaActiveBidsSums(context.Context, *OaActiveBidsSumsRequest) (*OaActiveBidsSumsResponse, error)
+	// Active bets sums by horse.
+	OaActiveBetsSums(context.Context, *OaActiveBetsSumsRequest) (*OaActiveBetsSumsResponse, error)
 	OaMyBalance(context.Context, *OaMyBalanceRequest) (*OaMyBalanceResponse, error)
-	OaMyBid(context.Context, *OaMyBidRequest) (*OaMyBidResponse, error)
+	OaMyBet(context.Context, *OaMyBetRequest) (*OaMyBetResponse, error)
 	// Discard a bet. This MUST only be possible during MAKING_BETS game stage.
-	// Completely remove it and disregard in OaActiveBidsSums, OaMyActiveBids,
-	// OaMyPastBids, ...
-	// TODO: s/bet/bid/
+	// Completely remove it and disregard in OaActiveBetsSums, OaMyActiveBets,
+	// OaMyPastBets, ...
+	// TODO: s/bet/bet/
 	OaDiscardBet(context.Context, *OaDiscardBetRequest) (*OaDiscardBetResponse, error)
-	// Active bids for this match. Output array MUST BE sorted by open time increase.
+	// Active bets for this match. Output array MUST BE sorted by open time increase.
 	// (first opened bet ALWAYS 0, second - 1... etc).
-	OaMyActiveBids(context.Context, *OaMyActiveBidsRequest) (*OaMyActiveBidsResponse, error)
-	// Past bids (15 per page), DO NOT include active bids here.
-	OaMyPastBids(context.Context, *OaMyPastBidsRequest) (*OaMyPastBidsResponse, error)
-	OaMyBidsSummary(context.Context, *OaMyBidsSummaryRequest) (*OaMyBidsSummaryResponse, error)
+	OaMyActiveBets(context.Context, *OaMyActiveBetsRequest) (*OaMyActiveBetsResponse, error)
+	// Past bets (15 per page), DO NOT include active bets here.
+	OaMyPastBets(context.Context, *OaMyPastBetsRequest) (*OaMyPastBetsResponse, error)
+	OaMyBetsSummary(context.Context, *OaMyBetsSummaryRequest) (*OaMyBetsSummaryResponse, error)
 }
 
 func RegisterOatotServer(s *grpc.Server, srv OatotServer) {
@@ -1627,38 +1629,38 @@ func _Oatot_OaChangeGameStage_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaCloseBids_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaCloseBidsRequest)
+func _Oatot_OaCloseBets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaCloseBetsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaCloseBids(ctx, in)
+		return srv.(OatotServer).OaCloseBets(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaCloseBids",
+		FullMethod: "/oatot.Oatot/OaCloseBets",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaCloseBids(ctx, req.(*OaCloseBidsRequest))
+		return srv.(OatotServer).OaCloseBets(ctx, req.(*OaCloseBetsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaCloseBidsByIncident_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaCloseBidsByIncidentRequest)
+func _Oatot_OaCloseBetsByIncident_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaCloseBetsByIncidentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaCloseBidsByIncident(ctx, in)
+		return srv.(OatotServer).OaCloseBetsByIncident(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaCloseBidsByIncident",
+		FullMethod: "/oatot.Oatot/OaCloseBetsByIncident",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaCloseBidsByIncident(ctx, req.(*OaCloseBidsByIncidentRequest))
+		return srv.(OatotServer).OaCloseBetsByIncident(ctx, req.(*OaCloseBetsByIncidentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1717,20 +1719,20 @@ func _Oatot_OaTransferMoney_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaActiveBidsSums_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaActiveBidsSumsRequest)
+func _Oatot_OaActiveBetsSums_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaActiveBetsSumsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaActiveBidsSums(ctx, in)
+		return srv.(OatotServer).OaActiveBetsSums(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaActiveBidsSums",
+		FullMethod: "/oatot.Oatot/OaActiveBetsSums",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaActiveBidsSums(ctx, req.(*OaActiveBidsSumsRequest))
+		return srv.(OatotServer).OaActiveBetsSums(ctx, req.(*OaActiveBetsSumsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1753,20 +1755,20 @@ func _Oatot_OaMyBalance_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaMyBid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaMyBidRequest)
+func _Oatot_OaMyBet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaMyBetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaMyBid(ctx, in)
+		return srv.(OatotServer).OaMyBet(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaMyBid",
+		FullMethod: "/oatot.Oatot/OaMyBet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaMyBid(ctx, req.(*OaMyBidRequest))
+		return srv.(OatotServer).OaMyBet(ctx, req.(*OaMyBetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1789,56 +1791,56 @@ func _Oatot_OaDiscardBet_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaMyActiveBids_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaMyActiveBidsRequest)
+func _Oatot_OaMyActiveBets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaMyActiveBetsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaMyActiveBids(ctx, in)
+		return srv.(OatotServer).OaMyActiveBets(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaMyActiveBids",
+		FullMethod: "/oatot.Oatot/OaMyActiveBets",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaMyActiveBids(ctx, req.(*OaMyActiveBidsRequest))
+		return srv.(OatotServer).OaMyActiveBets(ctx, req.(*OaMyActiveBetsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaMyPastBids_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaMyPastBidsRequest)
+func _Oatot_OaMyPastBets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaMyPastBetsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaMyPastBids(ctx, in)
+		return srv.(OatotServer).OaMyPastBets(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaMyPastBids",
+		FullMethod: "/oatot.Oatot/OaMyPastBets",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaMyPastBids(ctx, req.(*OaMyPastBidsRequest))
+		return srv.(OatotServer).OaMyPastBets(ctx, req.(*OaMyPastBetsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Oatot_OaMyBidsSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OaMyBidsSummaryRequest)
+func _Oatot_OaMyBetsSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OaMyBetsSummaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OatotServer).OaMyBidsSummary(ctx, in)
+		return srv.(OatotServer).OaMyBetsSummary(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oatot.Oatot/OaMyBidsSummary",
+		FullMethod: "/oatot.Oatot/OaMyBetsSummary",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OatotServer).OaMyBidsSummary(ctx, req.(*OaMyBidsSummaryRequest))
+		return srv.(OatotServer).OaMyBetsSummary(ctx, req.(*OaMyBetsSummaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1888,12 +1890,12 @@ var Oatot_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Oatot_OaChangeGameStage_Handler,
 		},
 		{
-			MethodName: "OaCloseBids",
-			Handler:    _Oatot_OaCloseBids_Handler,
+			MethodName: "OaCloseBets",
+			Handler:    _Oatot_OaCloseBets_Handler,
 		},
 		{
-			MethodName: "OaCloseBidsByIncident",
-			Handler:    _Oatot_OaCloseBidsByIncident_Handler,
+			MethodName: "OaCloseBetsByIncident",
+			Handler:    _Oatot_OaCloseBetsByIncident_Handler,
 		},
 		{
 			MethodName: "OaIsNew",
@@ -1908,32 +1910,32 @@ var Oatot_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Oatot_OaTransferMoney_Handler,
 		},
 		{
-			MethodName: "OaActiveBidsSums",
-			Handler:    _Oatot_OaActiveBidsSums_Handler,
+			MethodName: "OaActiveBetsSums",
+			Handler:    _Oatot_OaActiveBetsSums_Handler,
 		},
 		{
 			MethodName: "OaMyBalance",
 			Handler:    _Oatot_OaMyBalance_Handler,
 		},
 		{
-			MethodName: "OaMyBid",
-			Handler:    _Oatot_OaMyBid_Handler,
+			MethodName: "OaMyBet",
+			Handler:    _Oatot_OaMyBet_Handler,
 		},
 		{
 			MethodName: "OaDiscardBet",
 			Handler:    _Oatot_OaDiscardBet_Handler,
 		},
 		{
-			MethodName: "OaMyActiveBids",
-			Handler:    _Oatot_OaMyActiveBids_Handler,
+			MethodName: "OaMyActiveBets",
+			Handler:    _Oatot_OaMyActiveBets_Handler,
 		},
 		{
-			MethodName: "OaMyPastBids",
-			Handler:    _Oatot_OaMyPastBids_Handler,
+			MethodName: "OaMyPastBets",
+			Handler:    _Oatot_OaMyPastBets_Handler,
 		},
 		{
-			MethodName: "OaMyBidsSummary",
-			Handler:    _Oatot_OaMyBidsSummary_Handler,
+			MethodName: "OaMyBetsSummary",
+			Handler:    _Oatot_OaMyBetsSummary_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1943,104 +1945,104 @@ var Oatot_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("api.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 1574 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x57, 0x4b, 0x6f, 0xdb, 0xc6,
-	0x16, 0x86, 0x64, 0x5b, 0x96, 0x8e, 0x62, 0xfb, 0x86, 0xd7, 0x56, 0x64, 0xda, 0xb2, 0x7d, 0x99,
-	0x8b, 0x22, 0x01, 0x02, 0x05, 0xd5, 0xa2, 0x76, 0x50, 0xa0, 0x8d, 0x65, 0x17, 0x81, 0x83, 0xb8,
-	0x72, 0x25, 0x37, 0xc9, 0xa6, 0x60, 0x47, 0xe4, 0x44, 0x22, 0x2a, 0x71, 0x54, 0xce, 0x30, 0xb6,
-	0xba, 0xed, 0xa6, 0x40, 0xd7, 0xdd, 0x16, 0xe8, 0xa6, 0xbf, 0xb1, 0xcb, 0x62, 0x1e, 0x24, 0x87,
-	0x0f, 0xd9, 0xb1, 0x77, 0x9c, 0x33, 0x73, 0xbe, 0xf3, 0x9c, 0x33, 0x1f, 0xa1, 0x86, 0x66, 0x5e,
-	0x7b, 0x16, 0x10, 0x46, 0x8c, 0x15, 0x82, 0x18, 0x61, 0xe6, 0xfe, 0x88, 0x90, 0xd1, 0x04, 0x3f,
-	0x17, 0xc2, 0x61, 0xf8, 0xe1, 0x39, 0xf3, 0xa6, 0x98, 0x32, 0x34, 0x9d, 0xc9, 0x73, 0xd6, 0x6b,
-	0xa8, 0x0e, 0x3c, 0x86, 0x8f, 0x43, 0x36, 0x36, 0xf6, 0xa1, 0x3e, 0x64, 0x8e, 0x8d, 0x5c, 0x37,
-	0xc0, 0x94, 0x36, 0x4b, 0x07, 0xe5, 0x27, 0xb5, 0x3e, 0x0c, 0x99, 0x73, 0x2c, 0x25, 0x46, 0x0b,
-	0x80, 0x62, 0x4a, 0x3d, 0xe2, 0xdb, 0x9e, 0xdb, 0x2c, 0x8b, 0xfd, 0x9a, 0x92, 0x9c, 0xb9, 0xd6,
-	0xff, 0xa0, 0xd2, 0x43, 0x02, 0xe9, 0x11, 0xac, 0x3a, 0x13, 0x7b, 0x14, 0x7a, 0xae, 0x42, 0xa9,
-	0x38, 0x93, 0x57, 0xa1, 0xe7, 0x5a, 0x47, 0xb0, 0xc5, 0xcd, 0xbd, 0x21, 0x23, 0xcf, 0x1f, 0x30,
-	0x3c, 0xfb, 0xbc, 0x8f, 0x7f, 0x0e, 0x31, 0x65, 0xb7, 0xda, 0xb6, 0xbe, 0x80, 0x46, 0x56, 0x93,
-	0xce, 0x88, 0x4f, 0xb1, 0xb1, 0x0b, 0x35, 0x67, 0x8c, 0x26, 0x13, 0xec, 0x8f, 0xb0, 0x52, 0x4c,
-	0x04, 0xd6, 0x1f, 0xa5, 0x8c, 0xc9, 0xce, 0xa7, 0x9a, 0x4c, 0x03, 0x97, 0x33, 0xc0, 0x5c, 0x9d,
-	0x7a, 0x23, 0x1f, 0xbb, 0x36, 0xc3, 0xd7, 0xac, 0xb9, 0x24, 0xd5, 0xa5, 0xe8, 0x12, 0x5f, 0x33,
-	0xae, 0xce, 0x57, 0x88, 0x85, 0x01, 0x6e, 0x2e, 0xab, 0x64, 0x45, 0x02, 0xeb, 0x30, 0x13, 0x4f,
-	0x27, 0x8e, 0xe7, 0x96, 0x2c, 0x1f, 0xc3, 0x43, 0xa5, 0x48, 0x42, 0x16, 0xc5, 0xf2, 0x8c, 0xdb,
-	0x62, 0xd8, 0x46, 0x21, 0x1b, 0x8b, 0x48, 0xea, 0x9d, 0x8d, 0xb6, 0x68, 0x81, 0x76, 0x54, 0xde,
-	0x7e, 0x95, 0xaa, 0x2f, 0x6b, 0x13, 0x0c, 0x1d, 0x42, 0xda, 0xb5, 0xda, 0xf0, 0xdf, 0x1e, 0xca,
-	0x57, 0x66, 0x61, 0x2d, 0x9f, 0xc1, 0x66, 0xfa, 0xbc, 0xf2, 0x7f, 0x13, 0x56, 0x18, 0xf9, 0x09,
-	0xfb, 0xea, 0xb8, 0x5c, 0x58, 0x3f, 0xc0, 0x23, 0x6e, 0x53, 0xd3, 0xe8, 0xdc, 0xcb, 0xf9, 0x04,
-	0xbe, 0xac, 0xc3, 0x9b, 0xd0, 0xcc, 0xc3, 0xab, 0xc0, 0x4e, 0x61, 0x93, 0xef, 0x9d, 0xcf, 0x4f,
-	0x84, 0xe3, 0xf4, 0x7e, 0x49, 0xfb, 0x47, 0x35, 0x92, 0x06, 0xa3, 0x02, 0xfe, 0x0a, 0xaa, 0x2a,
-	0x43, 0xbc, 0x8b, 0x96, 0x9e, 0xd4, 0x3b, 0x8f, 0x35, 0x98, 0xdc, 0xf9, 0xb6, 0x5c, 0xf7, 0x57,
-	0x65, 0x1e, 0xa9, 0xf9, 0x67, 0x09, 0x2a, 0x52, 0xb6, 0x30, 0xd9, 0xc6, 0x0b, 0x00, 0xe4, 0xba,
-	0xbc, 0xd9, 0xbc, 0xa9, 0x6c, 0xc6, 0x7a, 0xc7, 0x6c, 0xcb, 0xdb, 0xdd, 0x8e, 0x6e, 0x77, 0xfb,
-	0x32, 0xba, 0xdd, 0xfd, 0x9a, 0x38, 0xcd, 0xd7, 0xc6, 0x4b, 0x58, 0x9f, 0x20, 0xca, 0xec, 0x90,
-	0x46, 0xea, 0x4b, 0xb7, 0xaa, 0x3f, 0xe0, 0x1a, 0xdf, 0x53, 0x89, 0x60, 0xfd, 0x28, 0x6b, 0xd7,
-	0xc7, 0x53, 0xf2, 0x11, 0x2b, 0xef, 0xef, 0x55, 0x3b, 0x2d, 0xbc, 0x72, 0xaa, 0x97, 0x54, 0xf9,
-	0xd2, 0x16, 0x54, 0xf9, 0xbe, 0x91, 0x79, 0x3f, 0xc5, 0x33, 0x42, 0x3d, 0xd6, 0x65, 0xce, 0xfd,
-	0xea, 0xf7, 0x42, 0x5e, 0x38, 0x1d, 0x46, 0xd5, 0xef, 0xd6, 0xd9, 0xf3, 0x6b, 0x49, 0xea, 0xbe,
-	0xf3, 0xd8, 0xd8, 0x0d, 0xd0, 0xd5, 0x7d, 0x7d, 0xc8, 0x5a, 0x2a, 0xe7, 0x46, 0x8e, 0x09, 0x55,
-	0x8a, 0x18, 0xa1, 0x63, 0x8f, 0x8a, 0x2a, 0x55, 0xfa, 0xf1, 0xda, 0x7a, 0x2a, 0xab, 0x90, 0x72,
-	0x42, 0x45, 0xb0, 0x0e, 0x65, 0x76, 0xad, 0x1c, 0x2f, 0xb3, 0x6b, 0xeb, 0x92, 0x5f, 0xe5, 0x53,
-	0x8f, 0x3a, 0x28, 0x70, 0xbb, 0x38, 0x9e, 0x12, 0x9f, 0xc1, 0x2a, 0x41, 0xba, 0xab, 0x6b, 0xca,
-	0x55, 0x39, 0xb6, 0xfb, 0x15, 0x22, 0xc7, 0xf7, 0x16, 0x54, 0x86, 0x98, 0x45, 0xd3, 0xa7, 0xd2,
-	0x5f, 0x19, 0x62, 0x76, 0xe6, 0x5a, 0x0d, 0x7e, 0xe1, 0x75, 0x54, 0x55, 0x20, 0x06, 0x8d, 0x1e,
-	0xba, 0x0c, 0x90, 0x4f, 0x3f, 0xe0, 0xe0, 0x9c, 0xf8, 0x78, 0x7e, 0x57, 0x83, 0x0d, 0xa8, 0xa0,
-	0x29, 0x09, 0x7d, 0xa6, 0x0c, 0xaa, 0x15, 0x4f, 0x87, 0x13, 0x06, 0x01, 0xf6, 0x9d, 0xb9, 0x1a,
-	0xb0, 0xf1, 0xda, 0xda, 0x86, 0x47, 0x39, 0xab, 0xca, 0xa1, 0xe7, 0x7c, 0xeb, 0xd8, 0x61, 0xde,
-	0x47, 0xdc, 0xf5, 0x5c, 0x3a, 0x08, 0xa7, 0xf1, 0x9d, 0xdf, 0x84, 0x95, 0x31, 0x09, 0x68, 0xf4,
-	0x50, 0xc8, 0x85, 0xf5, 0x1e, 0x9a, 0x79, 0x85, 0x64, 0x1c, 0x13, 0xe4, 0xd8, 0xca, 0xbf, 0x92,
-	0xf0, 0xaf, 0x46, 0x90, 0x73, 0x2c, 0x5d, 0x6c, 0x01, 0x88, 0x92, 0xea, 0xee, 0xd7, 0x78, 0x45,
-	0x85, 0xc0, 0x3a, 0xe4, 0xc8, 0x27, 0x63, 0xe4, 0x8f, 0xf0, 0x2b, 0x34, 0xc5, 0x03, 0x86, 0x46,
-	0x38, 0xf2, 0x65, 0x07, 0x6a, 0x3e, 0xbe, 0xb2, 0x29, 0x97, 0x29, 0xe0, 0xaa, 0x8f, 0xaf, 0xc4,
-	0x19, 0x6b, 0x07, 0xb6, 0x0b, 0x14, 0x55, 0x80, 0x47, 0xb0, 0xde, 0x43, 0x67, 0xf4, 0x5b, 0x7c,
-	0x75, 0xc7, 0x4c, 0x5b, 0x4f, 0x61, 0x23, 0xd6, 0x54, 0x01, 0x36, 0xa0, 0x12, 0x60, 0x1a, 0x4e,
-	0x64, 0x70, 0xd5, 0xbe, 0x5a, 0x59, 0x5f, 0xc2, 0xc3, 0x1e, 0xea, 0xe3, 0x91, 0x47, 0x19, 0x0e,
-	0xee, 0x6a, 0x67, 0x13, 0x0c, 0x5d, 0x59, 0xf9, 0xfd, 0x9e, 0x4b, 0xcf, 0xe7, 0x5d, 0x34, 0x41,
-	0xbe, 0x83, 0xef, 0xda, 0x25, 0x7a, 0x37, 0x94, 0x33, 0xdd, 0xf0, 0x9e, 0x77, 0xbc, 0x86, 0x9c,
-	0x14, 0xef, 0x43, 0x80, 0xb1, 0x3d, 0xe5, 0xfd, 0x11, 0x15, 0x8f, 0x4b, 0x44, 0xc3, 0x18, 0x16,
-	0xac, 0x89, 0x1d, 0x9b, 0xf8, 0xf6, 0x90, 0x8f, 0x6f, 0x59, 0xbf, 0xba, 0x10, 0xf6, 0x7c, 0xde,
-	0x0b, 0xd6, 0x6f, 0x65, 0x58, 0xea, 0x7a, 0x6e, 0x71, 0xe7, 0xdc, 0xe4, 0x93, 0xd6, 0xd5, 0x4b,
-	0xa9, 0xae, 0x3e, 0x84, 0x1a, 0x99, 0x61, 0x5f, 0xce, 0xe2, 0xe5, 0x83, 0xd2, 0x2d, 0xb3, 0xb8,
-	0xca, 0x0f, 0x8b, 0x49, 0xfe, 0x02, 0xc0, 0x99, 0x10, 0x8a, 0xa5, 0xe6, 0xca, 0xad, 0x9a, 0x35,
-	0x71, 0x5a, 0xa8, 0x36, 0xa0, 0x72, 0xe5, 0xf9, 0x3e, 0x0e, 0x9a, 0x95, 0x83, 0x12, 0x1f, 0xbc,
-	0x72, 0xc5, 0xa3, 0x9a, 0x05, 0xde, 0x2f, 0xb8, 0xb9, 0x7a, 0x50, 0xe2, 0x37, 0x5d, 0x2c, 0xb4,
-	0x01, 0x50, 0x95, 0x62, 0x39, 0x00, 0xde, 0xf2, 0xb6, 0x3b, 0x9f, 0x77, 0x93, 0xf1, 0xff, 0xa9,
-	0xa5, 0xdb, 0x85, 0xa5, 0xa1, 0x1a, 0x27, 0xf5, 0x0e, 0xa8, 0x33, 0x1c, 0x87, 0x8b, 0xad, 0x87,
-	0xbc, 0x29, 0x15, 0xae, 0xea, 0x94, 0x67, 0xbc, 0x53, 0x4e, 0xb8, 0xfb, 0x5d, 0xed, 0xc5, 0x4e,
-	0xa2, 0x50, 0xaf, 0xa3, 0x5c, 0x59, 0x5b, 0xbc, 0xfa, 0xda, 0x69, 0x05, 0xb2, 0x07, 0xbb, 0x9a,
-	0xb8, 0x3b, 0x3f, 0xf3, 0x1d, 0xcf, 0xc5, 0x7e, 0x34, 0x0f, 0xad, 0x7d, 0x68, 0x2d, 0xd8, 0x57,
-	0x00, 0x5f, 0xc3, 0x16, 0x77, 0x2c, 0x99, 0x0c, 0x77, 0xbd, 0x06, 0x47, 0x7c, 0x34, 0xa6, 0x01,
-	0x54, 0x67, 0xee, 0xc1, 0xf2, 0x30, 0x21, 0x0c, 0x7a, 0x4a, 0x84, 0xdc, 0xfa, 0x4e, 0x36, 0xf4,
-	0x05, 0xa2, 0xec, 0x1e, 0x86, 0x0d, 0x03, 0x96, 0x67, 0x28, 0xa6, 0xad, 0xe2, 0xdb, 0x1a, 0xf0,
-	0xf9, 0xad, 0x43, 0x7e, 0x9a, 0x2b, 0x72, 0x4e, 0x5d, 0x33, 0x5b, 0x03, 0xac, 0x72, 0xc1, 0x05,
-	0x07, 0xfd, 0xbb, 0x04, 0x1b, 0x27, 0xaa, 0xe3, 0x07, 0xe1, 0x74, 0x8a, 0x82, 0x39, 0x57, 0x60,
-	0x84, 0xa1, 0x89, 0x3d, 0xc4, 0xd1, 0xc4, 0xac, 0x0a, 0x41, 0x17, 0x0b, 0xda, 0x2d, 0x37, 0x65,
-	0xdf, 0xc9, 0x1b, 0x07, 0x42, 0x74, 0x21, 0x9a, 0xaf, 0x05, 0x72, 0x65, 0x4f, 0x08, 0x8d, 0xae,
-	0x8e, 0xc4, 0x7b, 0x43, 0x28, 0x33, 0xb6, 0xa1, 0x3a, 0xc4, 0x8c, 0xda, 0x57, 0xc4, 0x17, 0xac,
-	0xba, 0xd2, 0x5f, 0xe5, 0xeb, 0x77, 0xc4, 0xe7, 0x76, 0xc5, 0x96, 0x50, 0x5c, 0x91, 0x76, 0xb9,
-	0x80, 0xeb, 0x59, 0x2f, 0x65, 0x29, 0xd4, 0x7c, 0xe7, 0x7e, 0xde, 0xb5, 0x98, 0xbf, 0x97, 0xf8,
-	0xbb, 0x92, 0x81, 0x50, 0x39, 0x3c, 0x84, 0x3a, 0x7f, 0x25, 0xa8, 0x14, 0x2b, 0x9c, 0x86, 0xc2,
-	0xc9, 0xe4, 0xa7, 0xcf, 0x1f, 0x94, 0x28, 0x57, 0x87, 0x92, 0x12, 0x44, 0x8a, 0xe5, 0x9b, 0x15,
-	0x87, 0x2c, 0x52, 0xec, 0xfc, 0xb5, 0x06, 0x2b, 0x3d, 0x7e, 0xca, 0x38, 0x87, 0xf5, 0xf4, 0xaf,
-	0x91, 0xb1, 0xab, 0x51, 0x90, 0x1c, 0xa3, 0x37, 0x5b, 0x0b, 0x76, 0x55, 0x28, 0x59, 0xb8, 0x4e,
-	0x31, 0x5c, 0xe7, 0x46, 0xb8, 0xe4, 0x77, 0xe6, 0x18, 0x20, 0xf9, 0xd9, 0x30, 0x9a, 0xe9, 0xc3,
-	0xc9, 0x2f, 0x8c, 0xb9, 0x5d, 0xb0, 0xa3, 0x20, 0x5e, 0xc1, 0x03, 0xfd, 0x4f, 0xc3, 0x30, 0xe3,
-	0xfa, 0xe4, 0x83, 0xdb, 0x29, 0xdc, 0x53, 0x40, 0x03, 0xf8, 0x4f, 0xf6, 0x2f, 0xc1, 0xd8, 0xd3,
-	0xec, 0x16, 0xfc, 0x9d, 0x98, 0xfb, 0x0b, 0xf7, 0x15, 0xe8, 0x6b, 0x58, 0x4b, 0xf1, 0x7c, 0x63,
-	0xa7, 0x98, 0xfd, 0x4b, 0xb8, 0xdd, 0x9b, 0x7e, 0x0d, 0x22, 0x07, 0x75, 0x1e, 0x9c, 0x72, 0xb0,
-	0x80, 0x82, 0xa7, 0x1c, 0x2c, 0x22, 0xd0, 0x51, 0x41, 0x13, 0xe6, 0x9b, 0x2a, 0x68, 0x8e, 0x57,
-	0xa7, 0x0a, 0x5a, 0x40, 0x97, 0x2f, 0x60, 0x23, 0xc3, 0x43, 0x0d, 0x5d, 0x23, 0x4f, 0x92, 0xcd,
-	0xbd, 0x45, 0xdb, 0x0a, 0xf1, 0x2d, 0x67, 0x1a, 0x19, 0xae, 0x63, 0xec, 0xc7, 0x85, 0x2c, 0xa6,
-	0x4f, 0xe6, 0xc1, 0xe2, 0x03, 0x0a, 0xf7, 0x14, 0xea, 0xda, 0x7c, 0x37, 0xb6, 0x13, 0x85, 0xcc,
-	0xc3, 0x62, 0x9a, 0x45, 0x5b, 0x0a, 0x65, 0xc8, 0x1f, 0x81, 0x82, 0x57, 0xc2, 0x78, 0x9c, 0x57,
-	0xca, 0xbd, 0x31, 0xe6, 0xff, 0x6f, 0x3e, 0xa4, 0x6c, 0x1c, 0xc1, 0xaa, 0xa2, 0x65, 0xc6, 0x56,
-	0xac, 0xa0, 0x13, 0x3c, 0xb3, 0x91, 0x15, 0x27, 0xd7, 0x2b, 0x21, 0x5a, 0xf1, 0xf5, 0xca, 0x11,
-	0x37, 0x73, 0xbb, 0x60, 0x27, 0x29, 0x68, 0x86, 0x49, 0xc7, 0x05, 0x2d, 0xe6, 0xf5, 0x71, 0x41,
-	0x17, 0x10, 0x70, 0xde, 0xc6, 0x59, 0x3e, 0x6d, 0x24, 0x3a, 0x85, 0xcc, 0xdc, 0xdc, 0x5f, 0xb8,
-	0xaf, 0x57, 0x33, 0xa6, 0x78, 0x5a, 0x35, 0xb3, 0x84, 0x52, 0xab, 0x66, 0x9e, 0x11, 0x8a, 0x4c,
-	0x8b, 0x19, 0xae, 0x65, 0x5a, 0xe7, 0x34, 0x5a, 0xa6, 0x53, 0x94, 0x44, 0x4e, 0xa1, 0xe4, 0xf7,
-	0x47, 0x9b, 0x42, 0xb9, 0x3f, 0x2d, 0x6d, 0x0a, 0xe5, 0xff, 0x97, 0xf8, 0x7d, 0x4c, 0x93, 0x82,
-	0xf8, 0x3e, 0x16, 0x92, 0x0d, 0xb3, 0xb5, 0x60, 0x57, 0xf7, 0x2b, 0x79, 0xd6, 0x0d, 0x3d, 0xfa,
-	0x0c, 0x7d, 0xd0, 0xfc, 0x2a, 0xe0, 0x01, 0x17, 0x31, 0x0d, 0x8b, 0x9e, 0x37, 0xa3, 0x95, 0xce,
-	0x45, 0xe6, 0xe5, 0xd4, 0xfa, 0xa0, 0xf0, 0x55, 0xfc, 0x37, 0x00, 0x00, 0xff, 0xff, 0x51, 0x1b,
-	0x25, 0x6d, 0x91, 0x14, 0x00, 0x00,
+	// 1570 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x57, 0xcb, 0x6f, 0xdb, 0x46,
+	0x13, 0x87, 0x64, 0x5b, 0x96, 0x46, 0xb1, 0xfd, 0x85, 0x9f, 0xad, 0xc8, 0xf4, 0xf3, 0x63, 0x3e,
+	0x14, 0x09, 0x10, 0x28, 0xa8, 0x0e, 0xb5, 0x83, 0x02, 0x6d, 0xfc, 0x28, 0x02, 0x07, 0x71, 0xed,
+	0xca, 0x6e, 0x92, 0x4b, 0xc1, 0xae, 0xa8, 0x8d, 0x4c, 0x54, 0xe2, 0xaa, 0xdc, 0x65, 0x6c, 0xf7,
+	0xda, 0x4b, 0x81, 0x9e, 0x7b, 0x2d, 0xd0, 0x4b, 0xff, 0xc6, 0x1e, 0x8b, 0xd9, 0x5d, 0x92, 0xcb,
+	0x87, 0xec, 0xd8, 0x37, 0xee, 0xec, 0xce, 0x6f, 0x66, 0xe7, 0xb5, 0x3f, 0x42, 0x83, 0x4c, 0xfc,
+	0xce, 0x24, 0x64, 0x82, 0x59, 0x73, 0x8c, 0x08, 0x26, 0xec, 0xad, 0x21, 0x63, 0xc3, 0x11, 0x7d,
+	0x2e, 0x85, 0xfd, 0xe8, 0xc3, 0x73, 0xe1, 0x8f, 0x29, 0x17, 0x64, 0x3c, 0x51, 0xe7, 0x9c, 0xd7,
+	0x50, 0x3f, 0xf3, 0x05, 0xdd, 0x8b, 0xc4, 0x85, 0xb5, 0x05, 0xcd, 0xbe, 0xf0, 0x5c, 0x32, 0x18,
+	0x84, 0x94, 0xf3, 0x76, 0x65, 0xbb, 0xfa, 0xa4, 0xd1, 0x83, 0xbe, 0xf0, 0xf6, 0x94, 0xc4, 0xda,
+	0x00, 0xe0, 0x94, 0x73, 0x9f, 0x05, 0xae, 0x3f, 0x68, 0x57, 0xe5, 0x7e, 0x43, 0x4b, 0x8e, 0x06,
+	0xce, 0xff, 0xa0, 0x76, 0x42, 0x24, 0xd2, 0x23, 0x98, 0xf7, 0x46, 0xee, 0x30, 0xf2, 0x07, 0x1a,
+	0xa5, 0xe6, 0x8d, 0x5e, 0x45, 0xfe, 0xc0, 0xd9, 0x85, 0x15, 0x34, 0xf7, 0x86, 0x0d, 0xfd, 0xe0,
+	0x4c, 0xd0, 0xc9, 0xe7, 0x3d, 0xfa, 0x73, 0x44, 0xb9, 0xb8, 0xd5, 0xb6, 0xf3, 0x05, 0xb4, 0xf2,
+	0x9a, 0x7c, 0xc2, 0x02, 0x4e, 0xad, 0x75, 0x68, 0x78, 0x17, 0x64, 0x34, 0xa2, 0xc1, 0x90, 0x6a,
+	0xc5, 0x54, 0xe0, 0xfc, 0x51, 0xc9, 0x99, 0xec, 0x7e, 0xaa, 0xc9, 0x2c, 0x70, 0x35, 0x07, 0x8c,
+	0xea, 0xdc, 0x1f, 0x06, 0x74, 0xe0, 0x0a, 0x7a, 0x25, 0xda, 0x33, 0x4a, 0x5d, 0x89, 0xce, 0xe9,
+	0x95, 0x40, 0x75, 0x5c, 0x11, 0x11, 0x85, 0xb4, 0x3d, 0xab, 0x83, 0x15, 0x0b, 0x9c, 0x9d, 0xdc,
+	0x7d, 0xba, 0xc9, 0x7d, 0x6e, 0x89, 0xf2, 0x1e, 0x3c, 0xd4, 0x8a, 0x2c, 0x12, 0xf1, 0x5d, 0x9e,
+	0xa1, 0x2d, 0x41, 0x5d, 0x12, 0x89, 0x0b, 0x79, 0x93, 0x66, 0x77, 0xa9, 0x23, 0x4b, 0xa0, 0x13,
+	0xa7, 0xb7, 0x57, 0xe7, 0xfa, 0xcb, 0x59, 0x06, 0xcb, 0x84, 0x50, 0x76, 0x9d, 0x0e, 0xfc, 0xf7,
+	0x84, 0x14, 0x33, 0x33, 0x35, 0x97, 0xcf, 0x60, 0x39, 0x7b, 0x5e, 0xfb, 0xbf, 0x0c, 0x73, 0x82,
+	0xfd, 0x44, 0x03, 0x7d, 0x5c, 0x2d, 0x9c, 0x1f, 0xe0, 0x11, 0xda, 0x34, 0x34, 0xba, 0xf7, 0x72,
+	0x3e, 0x85, 0xaf, 0x9a, 0xf0, 0x36, 0xb4, 0x8b, 0xf0, 0xfa, 0x62, 0x87, 0xb0, 0x8c, 0x7b, 0xc7,
+	0xd7, 0x07, 0xd2, 0x71, 0x7e, 0xbf, 0xa0, 0xfd, 0xa3, 0x0b, 0xc9, 0x80, 0xd1, 0x17, 0xfe, 0x0a,
+	0xea, 0x3a, 0x42, 0x58, 0x45, 0x33, 0x4f, 0x9a, 0xdd, 0xc7, 0x06, 0x4c, 0xe1, 0x7c, 0x47, 0xad,
+	0x7b, 0xf3, 0x2a, 0x8e, 0xdc, 0xfe, 0xb3, 0x02, 0x35, 0x25, 0x9b, 0x1a, 0x6c, 0xeb, 0x05, 0x00,
+	0x19, 0x0c, 0xb0, 0xd8, 0xfc, 0xb1, 0x2a, 0xc6, 0x66, 0xd7, 0xee, 0xa8, 0xee, 0xee, 0xc4, 0xdd,
+	0xdd, 0x39, 0x8f, 0xbb, 0xbb, 0xd7, 0x90, 0xa7, 0x71, 0x6d, 0xbd, 0x84, 0xc5, 0x11, 0xe1, 0xc2,
+	0x8d, 0x78, 0xac, 0x3e, 0x73, 0xab, 0xfa, 0x03, 0xd4, 0xf8, 0x9e, 0x2b, 0x04, 0xe7, 0x47, 0x95,
+	0xbb, 0x1e, 0x1d, 0xb3, 0x8f, 0x54, 0x7b, 0x7f, 0xaf, 0xdc, 0x19, 0xd7, 0xab, 0x66, 0x6a, 0x49,
+	0xa7, 0x2f, 0x6b, 0x41, 0xa7, 0xef, 0x1b, 0x15, 0xf7, 0x43, 0x3a, 0x61, 0xdc, 0x17, 0xfb, 0xc2,
+	0xbb, 0x5f, 0xfe, 0x5e, 0xa8, 0x86, 0x33, 0x61, 0x74, 0xfe, 0x6e, 0x9d, 0x3d, 0xbf, 0x56, 0x94,
+	0xee, 0x3b, 0x5f, 0x5c, 0x0c, 0x42, 0x72, 0x79, 0x5f, 0x1f, 0xf2, 0x96, 0xaa, 0x85, 0x91, 0x63,
+	0x43, 0x9d, 0x13, 0xc1, 0xf8, 0x85, 0xcf, 0x65, 0x96, 0x6a, 0xbd, 0x64, 0xed, 0x3c, 0x55, 0x59,
+	0xc8, 0x38, 0xa1, 0x6f, 0xb0, 0x08, 0x55, 0x71, 0xa5, 0x1d, 0xaf, 0x8a, 0x2b, 0xe7, 0x1c, 0x5b,
+	0xf9, 0xd0, 0xe7, 0x1e, 0x09, 0x07, 0xfb, 0x34, 0x99, 0x12, 0x9f, 0xc1, 0x3c, 0x23, 0xa6, 0xab,
+	0x0b, 0xda, 0x55, 0x35, 0xb6, 0x7b, 0x35, 0xa6, 0xc6, 0xf7, 0x0a, 0xd4, 0xfa, 0x54, 0xc4, 0xd3,
+	0xa7, 0xd6, 0x9b, 0xeb, 0x53, 0x71, 0x34, 0x70, 0x5a, 0xd8, 0xf0, 0x26, 0xaa, 0x4e, 0x90, 0x80,
+	0xd6, 0x09, 0x39, 0x0f, 0x49, 0xc0, 0x3f, 0xd0, 0xf0, 0x98, 0x05, 0xf4, 0xfa, 0xae, 0x06, 0x5b,
+	0x50, 0x23, 0x63, 0x16, 0x05, 0x42, 0x1b, 0xd4, 0x2b, 0x0c, 0x87, 0x17, 0x85, 0x21, 0x0d, 0xbc,
+	0x6b, 0x3d, 0x60, 0x93, 0xb5, 0xb3, 0x0a, 0x8f, 0x0a, 0x56, 0xb5, 0x43, 0xcf, 0x71, 0x6b, 0xcf,
+	0x13, 0xfe, 0x47, 0xba, 0x4f, 0x05, 0x3f, 0x8b, 0xc6, 0x49, 0xcf, 0x2f, 0xc3, 0xdc, 0x05, 0x0b,
+	0x79, 0xfc, 0x50, 0xa8, 0x85, 0xf3, 0x1e, 0xda, 0x45, 0x85, 0x74, 0x1c, 0x33, 0xe2, 0xb9, 0xda,
+	0xbf, 0x8a, 0xf4, 0xaf, 0xc1, 0x88, 0xb7, 0xa7, 0x5c, 0xdc, 0x00, 0x90, 0x29, 0x35, 0xdd, 0x6f,
+	0x60, 0x46, 0xa5, 0xc0, 0xd9, 0x41, 0xe4, 0x83, 0x0b, 0x12, 0x0c, 0xe9, 0x2b, 0x32, 0xa6, 0x67,
+	0x82, 0x0c, 0x69, 0xec, 0xcb, 0x1a, 0x34, 0x02, 0x7a, 0xe9, 0x72, 0x94, 0x69, 0xe0, 0x7a, 0x40,
+	0x2f, 0xe5, 0x19, 0x67, 0x0d, 0x56, 0x4b, 0x14, 0xf5, 0x05, 0x77, 0x61, 0xf1, 0x84, 0x1c, 0xf1,
+	0x6f, 0xe9, 0xe5, 0x1d, 0x23, 0xed, 0x3c, 0x85, 0xa5, 0x44, 0x53, 0x5f, 0xb0, 0x05, 0xb5, 0x90,
+	0xf2, 0x68, 0xa4, 0x2e, 0x57, 0xef, 0xe9, 0x95, 0xf3, 0x25, 0x3c, 0x3c, 0x21, 0x3d, 0x3a, 0xf4,
+	0xb9, 0xa0, 0xe1, 0x5d, 0xed, 0x2c, 0x83, 0x65, 0x2a, 0x6b, 0xbf, 0xdf, 0xa3, 0xf4, 0xf8, 0x7a,
+	0x9f, 0x8c, 0x48, 0xe0, 0xd1, 0xbb, 0x56, 0x89, 0x59, 0x0d, 0xd5, 0x5c, 0x35, 0xbc, 0xc7, 0x8a,
+	0x37, 0x90, 0xd3, 0xe4, 0x7d, 0x08, 0x29, 0x75, 0xc7, 0x58, 0x1f, 0x71, 0xf2, 0x50, 0x22, 0x0b,
+	0xc6, 0x72, 0x60, 0x41, 0xee, 0xb8, 0x2c, 0x70, 0xfb, 0x54, 0x70, 0x9d, 0xbf, 0xa6, 0x14, 0x9e,
+	0x04, 0x58, 0x0b, 0xce, 0x6f, 0x55, 0x98, 0xd9, 0xa7, 0x53, 0x2a, 0xe7, 0x26, 0x9f, 0x8c, 0xaa,
+	0x9e, 0xc9, 0x54, 0xf5, 0x0e, 0x34, 0xd8, 0x84, 0x06, 0x6a, 0x16, 0xcf, 0x6e, 0x57, 0x6e, 0x99,
+	0xc5, 0x75, 0x3c, 0x2c, 0x27, 0xf9, 0x0b, 0x00, 0x6f, 0xc4, 0x38, 0x55, 0x9a, 0x73, 0xb7, 0x6a,
+	0x36, 0xe4, 0x69, 0xa9, 0xda, 0x82, 0xda, 0xa5, 0x1f, 0x04, 0x34, 0x6c, 0xd7, 0xb6, 0x2b, 0x38,
+	0x78, 0xd5, 0x0a, 0x6f, 0x35, 0x09, 0xfd, 0x5f, 0x68, 0x7b, 0x7e, 0xbb, 0x82, 0x9d, 0x2e, 0x17,
+	0xc6, 0x00, 0xa8, 0x2b, 0xb1, 0x1a, 0x00, 0x6f, 0xb1, 0xec, 0x8e, 0xaf, 0xef, 0x31, 0x51, 0xd6,
+	0x61, 0xa6, 0x4f, 0x85, 0x7e, 0xb7, 0x40, 0x9f, 0x41, 0x1c, 0x14, 0x3b, 0x0f, 0xb1, 0x28, 0x35,
+	0xae, 0xae, 0x94, 0x67, 0x58, 0x29, 0x07, 0xe8, 0x3e, 0x26, 0x21, 0x36, 0x97, 0xde, 0x42, 0xbf,
+	0x8e, 0x6a, 0xe5, 0xac, 0x60, 0xf6, 0x8d, 0xd3, 0x1a, 0x64, 0x13, 0xd6, 0x0d, 0xf1, 0xfe, 0xf5,
+	0x51, 0xe0, 0xf9, 0x03, 0x1a, 0xc4, 0xde, 0x3b, 0x5b, 0xb0, 0x31, 0x65, 0x5f, 0x03, 0x7c, 0x0d,
+	0x2b, 0xe8, 0x58, 0x3a, 0x19, 0xee, 0xda, 0x06, 0xbb, 0x38, 0x1a, 0xb3, 0x00, 0xba, 0x32, 0x37,
+	0x61, 0x56, 0x56, 0x9c, 0x22, 0x0c, 0x66, 0x48, 0xa4, 0xdc, 0xf9, 0x4e, 0x15, 0xf4, 0x29, 0xe1,
+	0xe2, 0x1e, 0x86, 0x2d, 0x0b, 0x66, 0x27, 0x24, 0xa1, 0xad, 0xf2, 0xdb, 0x39, 0xc3, 0xf9, 0x6d,
+	0x42, 0x7e, 0x9a, 0x2b, 0x6a, 0x4e, 0x5d, 0x09, 0xd7, 0x00, 0xac, 0xa3, 0xe0, 0x14, 0x41, 0xff,
+	0xae, 0xc0, 0xd2, 0x81, 0xae, 0xf8, 0xb3, 0x68, 0x3c, 0x26, 0xe1, 0x35, 0x2a, 0x08, 0x26, 0xc8,
+	0x08, 0x7b, 0x2a, 0x1e, 0x6c, 0x52, 0x80, 0x7d, 0xb4, 0x05, 0x4d, 0xb5, 0xa9, 0xea, 0x4e, 0x75,
+	0x1c, 0x48, 0xd1, 0xa9, 0x2c, 0xbe, 0x0d, 0x50, 0x2b, 0x77, 0xc4, 0x78, 0xdc, 0x3a, 0x0a, 0xef,
+	0x0d, 0xe3, 0xc2, 0x5a, 0x85, 0x3a, 0x7a, 0xe5, 0x5e, 0xb2, 0x40, 0xb2, 0xea, 0x5a, 0x6f, 0x1e,
+	0xd7, 0xef, 0x58, 0x80, 0x76, 0xe5, 0x96, 0x54, 0x9c, 0x53, 0x76, 0x51, 0x80, 0x7a, 0xce, 0x4b,
+	0x95, 0x0a, 0x3d, 0xdf, 0xd1, 0xcf, 0xbb, 0x26, 0xf3, 0xf7, 0x0a, 0xbe, 0x2b, 0x39, 0x08, 0x1d,
+	0xc3, 0x1d, 0x68, 0xe2, 0x2b, 0xc1, 0x95, 0x58, 0xe3, 0xb4, 0x34, 0x4e, 0x2e, 0x3e, 0x3d, 0x7c,
+	0x50, 0xe2, 0x58, 0xed, 0x28, 0x4a, 0x10, 0x2b, 0x56, 0x6f, 0x56, 0xec, 0x8b, 0x58, 0xb1, 0xfb,
+	0xd7, 0x02, 0xcc, 0x9d, 0xe0, 0x29, 0xeb, 0x18, 0x16, 0xb3, 0xbf, 0x46, 0xd6, 0xba, 0x41, 0x41,
+	0x0a, 0x8c, 0xde, 0xde, 0x98, 0xb2, 0xab, 0xaf, 0x92, 0x87, 0xeb, 0x96, 0xc3, 0x75, 0x6f, 0x84,
+	0x4b, 0x7f, 0x67, 0xf6, 0x00, 0xd2, 0x9f, 0x0d, 0xab, 0x9d, 0x3d, 0x9c, 0xfe, 0xc2, 0xd8, 0xab,
+	0x25, 0x3b, 0x1a, 0xe2, 0x15, 0x3c, 0x30, 0xff, 0x34, 0x2c, 0x3b, 0xc9, 0x4f, 0xf1, 0x72, 0x6b,
+	0xa5, 0x7b, 0x1a, 0xe8, 0x0c, 0xfe, 0x93, 0xff, 0x4b, 0xb0, 0x36, 0x0d, 0xbb, 0x25, 0x7f, 0x27,
+	0xf6, 0xd6, 0xd4, 0x7d, 0x0d, 0xfa, 0x1a, 0x16, 0x32, 0x3c, 0xdf, 0x5a, 0x2b, 0x67, 0xff, 0x0a,
+	0x6e, 0xfd, 0xa6, 0x5f, 0x83, 0xd8, 0x41, 0x93, 0x07, 0x67, 0x1c, 0x2c, 0xa1, 0xe0, 0x19, 0x07,
+	0xcb, 0x08, 0x74, 0x9c, 0xd0, 0x94, 0xf9, 0x66, 0x12, 0x5a, 0xe0, 0xd5, 0x99, 0x84, 0x96, 0xd0,
+	0xe5, 0x53, 0x58, 0xca, 0xf1, 0x50, 0xcb, 0xd4, 0x28, 0x92, 0x64, 0x7b, 0x73, 0xda, 0xb6, 0x46,
+	0x7c, 0x8b, 0x4c, 0x23, 0xc7, 0x75, 0xac, 0xad, 0x24, 0x91, 0xe5, 0xf4, 0xc9, 0xde, 0x9e, 0x7e,
+	0x40, 0xe3, 0x1e, 0x42, 0xd3, 0x98, 0xef, 0xd6, 0x6a, 0xaa, 0x90, 0x7b, 0x58, 0x6c, 0xbb, 0x6c,
+	0x4b, 0xa3, 0xf4, 0xf1, 0x11, 0x28, 0x79, 0x25, 0xac, 0xc7, 0x45, 0xa5, 0xc2, 0x1b, 0x63, 0xff,
+	0xff, 0xe6, 0x43, 0xda, 0xc6, 0x2e, 0xcc, 0x6b, 0x5a, 0x66, 0xad, 0x24, 0x0a, 0x26, 0xc1, 0xb3,
+	0x5b, 0x79, 0x71, 0xda, 0x5e, 0x29, 0xd1, 0x4a, 0xda, 0xab, 0x40, 0xdc, 0xec, 0xd5, 0x92, 0x9d,
+	0x34, 0xa1, 0x39, 0x26, 0x9d, 0x24, 0xb4, 0x9c, 0xd7, 0x27, 0x09, 0x9d, 0x42, 0xc0, 0xb1, 0x8c,
+	0xf3, 0x7c, 0xda, 0x4a, 0x75, 0x4a, 0x99, 0xb9, 0xbd, 0x35, 0x75, 0xdf, 0xcc, 0x66, 0x42, 0xf1,
+	0x8c, 0x6c, 0xe6, 0x09, 0xa5, 0x91, 0xcd, 0x22, 0x23, 0x94, 0x91, 0x96, 0x33, 0xdc, 0x88, 0xb4,
+	0xc9, 0x69, 0x8c, 0x48, 0x67, 0x28, 0x89, 0x9a, 0x42, 0xe9, 0xef, 0x8f, 0x31, 0x85, 0x0a, 0x7f,
+	0x5a, 0xc6, 0x14, 0x2a, 0xfe, 0x2f, 0x61, 0x3f, 0x66, 0x49, 0x41, 0xd2, 0x8f, 0xa5, 0x64, 0xc3,
+	0xde, 0x98, 0xb2, 0x6b, 0xfa, 0x95, 0x3e, 0xeb, 0x96, 0x79, 0xfb, 0x1c, 0x7d, 0x30, 0xfc, 0x2a,
+	0xe1, 0x01, 0xa7, 0x09, 0x0d, 0x8b, 0x9f, 0x37, 0x6b, 0x23, 0x1b, 0x8b, 0xdc, 0xcb, 0x69, 0xd4,
+	0x41, 0xe9, 0xab, 0xf8, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xef, 0xfc, 0x97, 0x3e, 0x91, 0x14,
+	0x00, 0x00,
 }

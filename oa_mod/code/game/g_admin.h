@@ -6,7 +6,7 @@ Portions Copyright (C) 2009 Karl F. Kuglin
 This file is part of the Open Arena source code.
 
 Originally copied from Tremulous under GPL version 2 including any later
-version.  The code has been modified to fit the needs of Open Arena.
+version. The code has been modified to fit the needs of Open Arena.
 
 Open Arena source code is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License as
@@ -15,12 +15,12 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Open Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
  */
 
@@ -83,15 +83,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define MAX_ADMIN_SHOWBANS 10
 
 // important note: QVM does not seem to allow a single char to be a
-// member of a struct at init time.  flag has been converted to char*
+// member of a struct at init time. flag has been converted to char*
 
 typedef struct {
-    char *keyword;
-    qboolean(* handler) (gentity_t *ent, int skiparg);
-    char *flag;
-    char *function; // used for !help
-    char *syntax; // used for !help
+    char* keyword;
+    qboolean(* handler)(gentity_t* ent, int skiparg);
+    char* flag;
+    char* function; // used for !help
+    char* syntax; // used for !help
 }
+
 g_admin_cmd_t;
 
 typedef struct g_admin_level {
@@ -99,6 +100,7 @@ typedef struct g_admin_level {
     char name[ MAX_NAME_LENGTH ];
     char flags[ MAX_ADMIN_FLAGS ];
 }
+
 g_admin_level_t;
 
 typedef struct g_admin_admin {
@@ -107,6 +109,7 @@ typedef struct g_admin_admin {
     int level;
     char flags[ MAX_ADMIN_FLAGS ];
 }
+
 g_admin_admin_t;
 
 typedef struct g_admin_ban {
@@ -118,6 +121,7 @@ typedef struct g_admin_ban {
     int expires;
     char banner[ MAX_NAME_LENGTH ];
 }
+
 g_admin_ban_t;
 
 typedef struct g_admin_command {
@@ -126,6 +130,7 @@ typedef struct g_admin_command {
     char desc[ 50 ];
     int levels[ MAX_ADMIN_LEVELS + 1 ];
 }
+
 g_admin_command_t;
 
 typedef struct g_admin_namelog {
@@ -135,6 +140,7 @@ typedef struct g_admin_namelog {
     int slot;
     qboolean banned;
 }
+
 g_admin_namelog_t;
 //KK-OAX Added for Warnings
 
@@ -148,53 +154,53 @@ typedef struct g_admin_warning {
     int expires;
 } g_admin_warning_t;
 
-qboolean G_admin_ban_check(char *userinfo, char *reason, int rlen);
-qboolean G_admin_cmd_check(gentity_t *ent, qboolean say);
-qboolean G_admin_readconfig(gentity_t *ent, int skiparg);
-qboolean G_admin_permission(gentity_t *ent, char flag);
-qboolean G_admin_name_check(gentity_t *ent, char *name, char *err, int len);
-void G_admin_namelog_update(gclient_t *ent, qboolean disconnect);
-int G_admin_level(gentity_t *ent);
-int G_admin_parse_time(const char *time);
+qboolean G_admin_ban_check(char* userinfo, char* reason, int rlen);
+qboolean G_admin_cmd_check(gentity_t* ent, qboolean say);
+qboolean G_admin_readconfig(gentity_t* ent, int skiparg);
+qboolean G_admin_permission(gentity_t* ent, char flag);
+qboolean G_admin_name_check(gentity_t* ent, char* name, char* err, int len);
+void G_admin_namelog_update(gclient_t* ent, qboolean disconnect);
+int G_admin_level(gentity_t* ent);
+int G_admin_parse_time(const char* time);
 
 // ! command functions
-qboolean G_admin_time(gentity_t *ent, int skiparg);
-qboolean G_admin_setlevel(gentity_t *ent, int skiparg);
-qboolean G_admin_kick(gentity_t *ent, int skiparg);
-qboolean G_admin_adjustban(gentity_t *ent, int skiparg);
-qboolean G_admin_ban(gentity_t *ent, int skiparg);
-qboolean G_admin_unban(gentity_t *ent, int skiparg);
-qboolean G_admin_putteam(gentity_t *ent, int skiparg);
-qboolean G_admin_listadmins(gentity_t *ent, int skiparg);
-qboolean G_admin_listplayers(gentity_t *ent, int skiparg);
-qboolean G_admin_map(gentity_t *ent, int skiparg);
-qboolean G_admin_mute(gentity_t *ent, int skiparg);
-qboolean G_admin_showbans(gentity_t *ent, int skiparg);
-qboolean G_admin_help(gentity_t *ent, int skiparg);
-qboolean G_admin_admintest(gentity_t *ent, int skiparg);
-qboolean G_admin_allready(gentity_t *ent, int skiparg);
-qboolean G_admin_cancelvote(gentity_t *ent, int skiparg);
-qboolean G_admin_passvote(gentity_t *ent, int skiparg);
-qboolean G_admin_spec999(gentity_t *ent, int skiparg);
-qboolean G_admin_rename(gentity_t *ent, int skiparg);
-qboolean G_admin_restart(gentity_t *ent, int skiparg);
-qboolean G_admin_nextmap(gentity_t *ent, int skiparg);
-qboolean G_admin_namelog(gentity_t *ent, int skiparg);
-qboolean G_admin_lock(gentity_t *ent, int skiparg);
-qboolean G_admin_unlock(gentity_t *ent, int skiparg);
+qboolean G_admin_time(gentity_t* ent, int skiparg);
+qboolean G_admin_setlevel(gentity_t* ent, int skiparg);
+qboolean G_admin_kick(gentity_t* ent, int skiparg);
+qboolean G_admin_adjustban(gentity_t* ent, int skiparg);
+qboolean G_admin_ban(gentity_t* ent, int skiparg);
+qboolean G_admin_unban(gentity_t* ent, int skiparg);
+qboolean G_admin_putteam(gentity_t* ent, int skiparg);
+qboolean G_admin_listadmins(gentity_t* ent, int skiparg);
+qboolean G_admin_listplayers(gentity_t* ent, int skiparg);
+qboolean G_admin_map(gentity_t* ent, int skiparg);
+qboolean G_admin_mute(gentity_t* ent, int skiparg);
+qboolean G_admin_showbans(gentity_t* ent, int skiparg);
+qboolean G_admin_help(gentity_t* ent, int skiparg);
+qboolean G_admin_admintest(gentity_t* ent, int skiparg);
+qboolean G_admin_allready(gentity_t* ent, int skiparg);
+qboolean G_admin_cancelvote(gentity_t* ent, int skiparg);
+qboolean G_admin_passvote(gentity_t* ent, int skiparg);
+qboolean G_admin_spec999(gentity_t* ent, int skiparg);
+qboolean G_admin_rename(gentity_t* ent, int skiparg);
+qboolean G_admin_restart(gentity_t* ent, int skiparg);
+qboolean G_admin_nextmap(gentity_t* ent, int skiparg);
+qboolean G_admin_namelog(gentity_t* ent, int skiparg);
+qboolean G_admin_lock(gentity_t* ent, int skiparg);
+qboolean G_admin_unlock(gentity_t* ent, int skiparg);
 //KK-OAX
-qboolean G_admin_disorient(gentity_t *ent, int skiparg);
-qboolean G_admin_orient(gentity_t *ent, int skiparg);
-qboolean G_admin_slap(gentity_t *ent, int skiparg);
-qboolean G_admin_warn(gentity_t *ent, int skiparg);
-qboolean G_admin_shuffle(gentity_t *ent, int skiparg);
+qboolean G_admin_disorient(gentity_t* ent, int skiparg);
+qboolean G_admin_orient(gentity_t* ent, int skiparg);
+qboolean G_admin_slap(gentity_t* ent, int skiparg);
+qboolean G_admin_warn(gentity_t* ent, int skiparg);
+qboolean G_admin_shuffle(gentity_t* ent, int skiparg);
 
-void G_admin_print(gentity_t *ent, char *m);
-void G_admin_buffer_print(gentity_t *ent, char *m);
+void G_admin_print(gentity_t* ent, char* m);
+void G_admin_buffer_print(gentity_t* ent, char* m);
 void G_admin_buffer_begin(void);
-void G_admin_buffer_end(gentity_t *ent);
+void G_admin_buffer_end(gentity_t* ent);
 
-void G_admin_duration(int secs, char *duration, int dursize);
+void G_admin_duration(int secs, char* duration, int dursize);
 void G_admin_cleanup(void);
 void G_admin_namelog_cleanup(void);
 

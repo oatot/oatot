@@ -11,19 +11,19 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 
 /*****************************************************************************
- * name:		be_aas_entity.h
+ * name: be_aas_entity.h
  *
- * desc:		AAS
+ * desc: AAS
  *
  * $Archive: /source/code/botlib/be_aas_entity.h $
  *
@@ -37,9 +37,9 @@ void AAS_UnlinkInvalidEntities(void);
 //resets the entity AAS and BSP links (sets areas and leaves pointers to NULL)
 void AAS_ResetEntityLinks(void);
 //updates an entity
-int AAS_UpdateEntity(int ent, bot_entitystate_t *state);
+int AAS_UpdateEntity(int ent, bot_entitystate_t* state);
 //gives the entity data used for collision detection
-void AAS_EntityBSPData(int entnum, bsp_entdata_t *entdata);
+void AAS_EntityBSPData(int entnum, bsp_entdata_t* entdata);
 #endif //AASINTERN
 
 //returns the size of the entity bounding box in mins and maxs
@@ -51,7 +51,7 @@ int AAS_OriginOfMoverWithModelNum(int modelnum, vec3_t origin);
 //returns the best reachable area the entity is situated in
 int AAS_BestReachableEntityArea(int entnum);
 //returns the info of the given entity
-void AAS_EntityInfo(int entnum, aas_entityinfo_t *info);
+void AAS_EntityInfo(int entnum, aas_entityinfo_t* info);
 //returns the next entity
 int AAS_NextEntity(int entnum);
 //returns the origin of the entity

@@ -11,19 +11,19 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 
 /*****************************************************************************
- * name:		be_aas_main.h
+ * name: be_aas_main.h
  *
- * desc:		AAS
+ * desc: AAS
  *
  * $Archive: /source/code/botlib/be_aas_main.h $
  *
@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 extern aas_t aasworld;
 
 //AAS error message
-void QDECL AAS_Error(char *fmt, ...);
+void QDECL AAS_Error(char* fmt, ...);
 //set AAS initialized
 void AAS_SetInitialized(void);
 //setup AAS with the given number of entities and clients
@@ -42,7 +42,7 @@ int AAS_Setup(void);
 //shutdown AAS
 void AAS_Shutdown(void);
 //start a new map
-int AAS_LoadMap(const char *mapname);
+int AAS_LoadMap(const char* mapname);
 //start a new time frame
 int AAS_StartFrame(float time);
 #endif //AASINTERN
@@ -52,10 +52,10 @@ int AAS_Initialized(void);
 //returns true if the AAS file is loaded
 int AAS_Loaded(void);
 //returns the model name from the given index
-char *AAS_ModelFromIndex(int index);
+char* AAS_ModelFromIndex(int index);
 //returns the index from the given model name
-int AAS_IndexFromModel(char *modelname);
+int AAS_IndexFromModel(char* modelname);
 //returns the current time
 float AAS_Time(void);
 //
-void AAS_ProjectPointOntoVector( vec3_t point, vec3_t vStart, vec3_t vEnd, vec3_t vProj );
+void AAS_ProjectPointOntoVector(vec3_t point, vec3_t vStart, vec3_t vEnd, vec3_t vProj);

@@ -11,32 +11,31 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Open Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 
 #include "g_local.h"
 
+static gentity_t* possessionFlag;
 
-static gentity_t	*possessionFlag;
-
-static void Possession_create_neutral_obelisk( gentity_t *target ) {
-    gitem_t			*it;
+static void Possession_create_neutral_obelisk(gentity_t* target) {
+    gitem_t* it;
     if (possessionFlag) {
         return;
     }
     it = BG_FindItem("Neutral Flag");
     possessionFlag = G_Spawn();
-    VectorCopy( target->r.currentOrigin, possessionFlag->s.origin );
+    VectorCopy(target->r.currentOrigin, possessionFlag->s.origin);
     possessionFlag->classname = it->classname;
     G_SpawnItem(possessionFlag, it);
-    FinishSpawningItem(possessionFlag );
-    Team_SetFlagStatus( TEAM_FREE, FLAG_ATBASE );
+    FinishSpawningItem(possessionFlag);
+    Team_SetFlagStatus(TEAM_FREE, FLAG_ATBASE);
 }
 
 static qboolean EntityFilterNoBotsOrHumanOnly(const gentity_t* item) {
@@ -47,8 +46,8 @@ static qboolean EntityFilterNoBotsOrHumanOnly(const gentity_t* item) {
     return qtrue;
 }
 
-void Possession_SpawnFlag( void ) {
-    gentity_t	*ent = NULL;
+void Possession_SpawnFlag(void) {
+    gentity_t* ent = NULL;
     if (possessionFlag) {
         return;
     }
@@ -73,13 +72,12 @@ void Possession_SpawnFlag( void ) {
     Possession_create_neutral_obelisk(ent);
 }
 
-int Possession_TouchFlag(gentity_t *other) {
-    gclient_t *cl = other->client;
+int Possession_TouchFlag(gentity_t* other) {
+    gclient_t* cl = other->client;
     cl->ps.powerups[PW_NEUTRALFLAG] = INT_MAX; // flags never expire
     cl->pers.teamState.flagsince = level.time;
     G_LogPrintf("POS: %i %i: %s^7 took the flag\n", other->s.number, 3, cl->pers.netname);
     return -1;
 }
-
 
 // Need a blank line

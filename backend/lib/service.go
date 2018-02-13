@@ -19,7 +19,7 @@ const (
 )
 
 const (
-	// Bid states.
+	// Bet states.
 	ACTIVE    = iota
 	PAST      = iota
 	CANCELLED = iota
@@ -27,12 +27,12 @@ const (
 
 type Player struct {
 	FreeMoney     map[string]int64 `json:"free_money"`
-	ActiveBids    map[int]struct{} `json:"active_bids"`
-	PastBids      map[int]struct{} `json:"past_bids"`
-	CancelledBids map[int]struct{} `json:"cancelled_bids"`
+	ActiveBets    map[int]struct{} `json:"active_bets"`
+	PastBets      map[int]struct{} `json:"past_bets"`
+	CancelledBets map[int]struct{} `json:"cancelled_bets"`
 }
 
-type Bid struct {
+type Bet struct {
 	Player   string `json:"player"`
 	Horse    string `json:"horse"`
 	Currency string `json:"currency"`
@@ -45,8 +45,8 @@ type Bid struct {
 type Data struct {
 	Stage      int                `json:"stage"`
 	Players    map[string]*Player `json:"players"`
-	Bids       []*Bid             `json:"bids"`
-	ActiveBids map[int]struct{}   `json:"active_bids"`
+	Bets       []*Bet             `json:"bets"`
+	ActiveBets map[int]struct{}   `json:"active_bets"`
 }
 
 type Server struct {
@@ -61,7 +61,7 @@ func New() (*Server, error) {
 	return &Server{
 		data: Data{
 			Players:    make(map[string]*Player),
-			ActiveBids: make(map[int]struct{}),
+			ActiveBets: make(map[int]struct{}),
 		},
 		startMoney: 1000,
 	}, nil
@@ -75,8 +75,8 @@ func Load(data []byte) (*Server, error) {
 	if s.data.Players == nil {
 		s.data.Players = make(map[string]*Player)
 	}
-	if s.data.ActiveBids == nil {
-		s.data.ActiveBids = make(map[int]struct{})
+	if s.data.ActiveBets == nil {
+		s.data.ActiveBets = make(map[int]struct{})
 	}
 	return s, nil
 }
@@ -136,23 +136,23 @@ func (s *Server) OaDiscardBet(ctx context.Context, req *g.OaDiscardBetRequest) (
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	id := int(*req.BetId)
-	if id < 0 || id >= len(s.data.Bids) {
-		return nil, status.Errorf(codes.NotFound, "No such bid")
+	if id < 0 || id >= len(s.data.Bets) {
+		return nil, status.Errorf(codes.NotFound, "No such bet")
 	}
-	bid := s.data.Bids[id]
-	if bid.State != ACTIVE {
-		return nil, status.Errorf(codes.FailedPrecondition, "The bid is not active")
+	bet := s.data.Bets[id]
+	if bet.State != ACTIVE {
+		return nil, status.Errorf(codes.FailedPrecondition, "The bet is not active")
 	}
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
 	// Modify.
-	bid.State = CANCELLED
-	delete(s.data.ActiveBids, id)
-	delete(player.ActiveBids, id)
-	player.CancelledBids[id] = struct{}{}
-	player.FreeMoney[bid.Currency] += bid.Amount
+	bet.State = CANCELLED
+	delete(s.data.ActiveBets, id)
+	delete(player.ActiveBets, id)
+	player.CancelledBets[id] = struct{}{}
+	player.FreeMoney[bet.Currency] += bet.Amount
 	return &g.OaDiscardBetResponse{}, nil
 }
 
@@ -173,22 +173,22 @@ func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequ
 	return &g.OaTransferMoneyResponse{}, nil
 }
 
-func (s *Server) OaActiveBidsSums(ctx context.Context, req *g.OaActiveBidsSumsRequest) (*g.OaActiveBidsSumsResponse, error) {
+func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRequest) (*g.OaActiveBetsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	var oacAmount, btcAmount uint64
-	for bidID := range s.data.ActiveBids {
-		bid := s.data.Bids[bidID]
-		if bid.Horse != *req.Horse {
+	for betID := range s.data.ActiveBets {
+		bet := s.data.Bets[betID]
+		if bet.Horse != *req.Horse {
 			continue
 		}
-		if bid.Currency == "OAC" {
-			oacAmount += uint64(bid.Amount)
-		} else if bid.Currency == "BTC" {
-			btcAmount += uint64(bid.Amount)
+		if bet.Currency == "OAC" {
+			oacAmount += uint64(bet.Amount)
+		} else if bet.Currency == "BTC" {
+			btcAmount += uint64(bet.Amount)
 		}
 	}
-	return &g.OaActiveBidsSumsResponse{
+	return &g.OaActiveBetsSumsResponse{
 		OacAmount: &oacAmount,
 		BtcAmount: &btcAmount,
 	}, nil
@@ -221,9 +221,9 @@ func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.O
 	}
 	s.data.Players[*req.OaAuth.ClGuid] = &Player{
 		FreeMoney:     map[string]int64{"OAC": s.startMoney},
-		ActiveBids:    make(map[int]struct{}),
-		PastBids:      make(map[int]struct{}),
-		CancelledBids: make(map[int]struct{}),
+		ActiveBets:    make(map[int]struct{}),
+		PastBets:      make(map[int]struct{}),
+		CancelledBets: make(map[int]struct{}),
 	}
 	return &g.OaRegisterResponse{}, nil
 }
@@ -236,20 +236,20 @@ func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
 	freeMoney := uint64(player.FreeMoney[*req.Currency])
-	moneyOnBids := uint64(0)
-	for bidID := range player.ActiveBids {
-		bid := s.data.Bids[bidID]
-		if bid.Currency == *req.Currency {
-			moneyOnBids += uint64(bid.Amount)
+	moneyOnBets := uint64(0)
+	for betID := range player.ActiveBets {
+		bet := s.data.Bets[betID]
+		if bet.Currency == *req.Currency {
+			moneyOnBets += uint64(bet.Amount)
 		}
 	}
 	return &g.OaMyBalanceResponse{
 		FreeMoney:   &freeMoney,
-		MoneyOnBids: &moneyOnBids,
+		MoneyOnBets: &moneyOnBets,
 	}, nil
 }
 
-func (s *Server) OaMyBid(ctx context.Context, req *g.OaMyBidRequest) (*g.OaMyBidResponse, error) {
+func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBetResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	if s.data.Stage != MAKING_BETS {
@@ -259,35 +259,35 @@ func (s *Server) OaMyBid(ctx context.Context, req *g.OaMyBidRequest) (*g.OaMyBid
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	if *req.Bid.Currency != "OAC" && *req.Bid.Currency != "BTC" {
+	if *req.Bet.Currency != "OAC" && *req.Bet.Currency != "BTC" {
 		return nil, status.Errorf(codes.Aborted, "Bad currency")
 	}
-	if *req.Bid.Horse != "red" && *req.Bid.Horse != "blue" {
+	if *req.Bet.Horse != "red" && *req.Bet.Horse != "blue" {
 		return nil, status.Errorf(codes.Aborted, "Bad horse")
 	}
-	freeMoney := uint64(player.FreeMoney[*req.Bid.Currency])
-	if *req.Bid.Amount > freeMoney {
+	freeMoney := uint64(player.FreeMoney[*req.Bet.Currency])
+	if *req.Bet.Amount > freeMoney {
 		return nil, status.Errorf(codes.FailedPrecondition, "Not enough money")
 	}
-	if *req.Bid.Amount <= 0 {
+	if *req.Bet.Amount <= 0 {
 		return nil, status.Errorf(codes.Aborted, "Negative amount")
 	}
-	bidID := len(s.data.Bids)
-	bid := &Bid{
+	betID := len(s.data.Bets)
+	bet := &Bet{
 		Player:   *req.OaAuth.ClGuid,
-		Horse:    *req.Bid.Horse,
-		Currency: *req.Bid.Currency,
-		Amount:   int64(*req.Bid.Amount),
+		Horse:    *req.Bet.Horse,
+		Currency: *req.Bet.Currency,
+		Amount:   int64(*req.Bet.Amount),
 		State:    ACTIVE,
 	}
-	s.data.Bids = append(s.data.Bids, bid)
-	s.data.ActiveBids[bidID] = struct{}{}
-	player.ActiveBids[bidID] = struct{}{}
-	player.FreeMoney[*req.Bid.Currency] -= int64(*req.Bid.Amount)
-	return &g.OaMyBidResponse{}, nil
+	s.data.Bets = append(s.data.Bets, bet)
+	s.data.ActiveBets[betID] = struct{}{}
+	player.ActiveBets[betID] = struct{}{}
+	player.FreeMoney[*req.Bet.Currency] -= int64(*req.Bet.Amount)
+	return &g.OaMyBetResponse{}, nil
 }
 
-func (s *Server) OaCloseBids(ctx context.Context, req *g.OaCloseBidsRequest) (*g.OaCloseBidsResponse, error) {
+func (s *Server) OaCloseBets(ctx context.Context, req *g.OaCloseBetsRequest) (*g.OaCloseBetsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	if s.data.Stage != PLAYING {
@@ -295,101 +295,101 @@ func (s *Server) OaCloseBids(ctx context.Context, req *g.OaCloseBidsRequest) (*g
 	}
 	amountsSums := make(map[string]int64)
 	winnersSums := make(map[string]int64)
-	for bidID := range s.data.ActiveBids {
-		bid := s.data.Bids[bidID]
-		amountsSums[bid.Currency] += bid.Amount
-		if bid.Horse == *req.Winner {
-			winnersSums[bid.Currency] += bid.Amount
+	for betID := range s.data.ActiveBets {
+		bet := s.data.Bets[betID]
+		amountsSums[bet.Currency] += bet.Amount
+		if bet.Horse == *req.Winner {
+			winnersSums[bet.Currency] += bet.Amount
 		}
 	}
 	winnersSums2 := make(map[string]int64)
-	for bidID := range s.data.ActiveBids {
-		bid := s.data.Bids[bidID]
-		if bid.Horse == *req.Winner {
-			x := big.NewInt(amountsSums[bid.Currency])
-			x.Mul(x, big.NewInt(bid.Amount))
-			x.Div(x, big.NewInt(winnersSums[bid.Currency]))
-			bid.Prize = x.Int64()
-			winnersSums2[bid.Currency] += bid.Prize
+	for betID := range s.data.ActiveBets {
+		bet := s.data.Bets[betID]
+		if bet.Horse == *req.Winner {
+			x := big.NewInt(amountsSums[bet.Currency])
+			x.Mul(x, big.NewInt(bet.Amount))
+			x.Div(x, big.NewInt(winnersSums[bet.Currency]))
+			bet.Prize = x.Int64()
+			winnersSums2[bet.Currency] += bet.Prize
 		}
 	}
 	// Give the remaining small money to somebody.
-	for bidID := range s.data.ActiveBids {
-		bid := s.data.Bids[bidID]
-		if bid.Horse == *req.Winner {
-			if winnersSums2[bid.Currency] < amountsSums[bid.Currency] {
-				bid.Prize += amountsSums[bid.Currency] - winnersSums2[bid.Currency]
-				winnersSums2[bid.Currency] = amountsSums[bid.Currency]
+	for betID := range s.data.ActiveBets {
+		bet := s.data.Bets[betID]
+		if bet.Horse == *req.Winner {
+			if winnersSums2[bet.Currency] < amountsSums[bet.Currency] {
+				bet.Prize += amountsSums[bet.Currency] - winnersSums2[bet.Currency]
+				winnersSums2[bet.Currency] = amountsSums[bet.Currency]
 			}
 		}
 	}
-	var bidIDs []int
-	for bidID := range s.data.ActiveBids {
-		bid := s.data.Bids[bidID]
-		if bid.Prize != 0 && bid.Prize < bid.Amount {
+	var betIDs []int
+	for betID := range s.data.ActiveBets {
+		bet := s.data.Bets[betID]
+		if bet.Prize != 0 && bet.Prize < bet.Amount {
 			panic("Something is rotten in the state of Denmark")
 		}
-		player := s.data.Players[bid.Player]
-		player.FreeMoney[bid.Currency] += bid.Prize
-		delete(player.ActiveBids, bidID)
-		player.PastBids[bidID] = struct{}{}
-		bid.Winner = *req.Winner
-		bidIDs = append(bidIDs, bidID)
+		player := s.data.Players[bet.Player]
+		player.FreeMoney[bet.Currency] += bet.Prize
+		delete(player.ActiveBets, betID)
+		player.PastBets[betID] = struct{}{}
+		bet.Winner = *req.Winner
+		betIDs = append(betIDs, betID)
 	}
-	for _, bidID := range bidIDs {
-		delete(s.data.ActiveBids, bidID)
+	for _, betID := range betIDs {
+		delete(s.data.ActiveBets, betID)
 	}
-	return &g.OaCloseBidsResponse{}, nil
+	return &g.OaCloseBetsResponse{}, nil
 }
 
-func (s *Server) OaCloseBidsByIncident(ctx context.Context, req *g.OaCloseBidsByIncidentRequest) (*g.OaCloseBidsByIncidentResponse, error) {
+func (s *Server) OaCloseBetsByIncident(ctx context.Context, req *g.OaCloseBetsByIncidentRequest) (*g.OaCloseBetsByIncidentResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	var bidIDs []int
-	for bidID := range s.data.ActiveBids {
-		bid := s.data.Bids[bidID]
-		player := s.data.Players[bid.Player]
-		player.FreeMoney[bid.Currency] += bid.Amount
-		delete(player.ActiveBids, bidID)
-		player.CancelledBids[bidID] = struct{}{}
-		bidIDs = append(bidIDs, bidID)
+	var betIDs []int
+	for betID := range s.data.ActiveBets {
+		bet := s.data.Bets[betID]
+		player := s.data.Players[bet.Player]
+		player.FreeMoney[bet.Currency] += bet.Amount
+		delete(player.ActiveBets, betID)
+		player.CancelledBets[betID] = struct{}{}
+		betIDs = append(betIDs, betID)
 	}
-	for _, bidID := range bidIDs {
-		delete(s.data.ActiveBids, bidID)
+	for _, betID := range betIDs {
+		delete(s.data.ActiveBets, betID)
 	}
-	return &g.OaCloseBidsByIncidentResponse{}, nil
+	return &g.OaCloseBetsByIncidentResponse{}, nil
 }
 
-func bidToPb(bid *Bid, bidID int) *g.Bid {
-	id := uint64(bidID)
-	amount := uint64(bid.Amount)
-	prize := uint64(bid.Prize)
-	return &g.Bid{
-		Horse:    &bid.Horse,
-		Currency: &bid.Currency,
+func betToPb(bet *Bet, betID int) *g.Bet {
+	id := uint64(betID)
+	amount := uint64(bet.Amount)
+	prize := uint64(bet.Prize)
+	return &g.Bet{
+		Horse:    &bet.Horse,
+		Currency: &bet.Currency,
 		Amount:   &amount,
-		Winner:   &bid.Winner,
+		Winner:   &bet.Winner,
 		Prize:    &prize,
 		BetId:    &id,
 	}
 }
 
-func (s *Server) OaMyActiveBids(ctx context.Context, req *g.OaMyActiveBidsRequest) (*g.OaMyActiveBidsResponse, error) {
+func (s *Server) OaMyActiveBets(ctx context.Context, req *g.OaMyActiveBetsRequest) (*g.OaMyActiveBetsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyActiveBidsResponse{}
-	for bidID := range player.ActiveBids {
-		bid := s.data.Bids[bidID]
-		res.Bids = append(res.Bids, bidToPb(bid, bidID))
+	res := &g.OaMyActiveBetsResponse{}
+	for betID := range player.ActiveBets {
+		bet := s.data.Bets[betID]
+		res.Bets = append(res.Bets, betToPb(bet, betID))
 	}
 	return res, nil
 }
 
-func (s *Server) OaMyPastBids(ctx context.Context, req *g.OaMyPastBidsRequest) (*g.OaMyPastBidsResponse, error) {
+func (s *Server) OaMyPastBets(ctx context.Context, req *g.OaMyPastBetsRequest) (*g.OaMyPastBetsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
@@ -398,12 +398,12 @@ func (s *Server) OaMyPastBids(ctx context.Context, req *g.OaMyPastBidsRequest) (
 	}
 	// TODO: Implement next page logic.
 	nextPage := ""
-	res := &g.OaMyPastBidsResponse{
+	res := &g.OaMyPastBetsResponse{
 		NextPage: &nextPage,
 	}
-	for bidID := range player.PastBids {
-		bid := s.data.Bids[bidID]
-		res.Bids = append(res.Bids, bidToPb(bid, bidID))
+	for betID := range player.PastBets {
+		bet := s.data.Bets[betID]
+		res.Bets = append(res.Bets, betToPb(bet, betID))
 	}
 	return res, nil
 }
@@ -419,31 +419,31 @@ func defaultCurrencySummary() *g.CurrencySummary {
 	}
 }
 
-func (s *Server) OaMyBidsSummary(ctx context.Context, req *g.OaMyBidsSummaryRequest) (*g.OaMyBidsSummaryResponse, error) {
+func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequest) (*g.OaMyBetsSummaryResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyBidsSummaryResponse{
+	res := &g.OaMyBetsSummaryResponse{
 		OacSummary: defaultCurrencySummary(),
 		BtcSummary: defaultCurrencySummary(),
 	}
-	for bidID := range player.PastBids {
-		bid := s.data.Bids[bidID]
+	for betID := range player.PastBets {
+		bet := s.data.Bets[betID]
 		var summary *g.CurrencySummary
-		if bid.Currency == "OAC" {
+		if bet.Currency == "OAC" {
 			summary = res.OacSummary
-		} else if bid.Currency == "BTC" {
+		} else if bet.Currency == "BTC" {
 			summary = res.BtcSummary
 		} else {
 			continue
 		}
-		*summary.TotalBet += uint64(bid.Amount)
-		*summary.TotalPrize += uint64(bid.Prize)
-		if bid.Prize == 0 {
-			*summary.TotalLost += uint64(bid.Amount)
+		*summary.TotalBet += uint64(bet.Amount)
+		*summary.TotalPrize += uint64(bet.Prize)
+		if bet.Prize == 0 {
+			*summary.TotalLost += uint64(bet.Amount)
 			*summary.BetsLost += 1
 		} else {
 			*summary.BetsWon += 1

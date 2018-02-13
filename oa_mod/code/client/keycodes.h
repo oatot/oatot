@@ -11,12 +11,12 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 //
@@ -101,10 +101,10 @@ typedef enum {
     K_MWHEELDOWN,
     K_MWHEELUP,
 
-    K_JOY1,		// BUTTON X
-    K_JOY2,		// BUTTON O
-    K_JOY3,		// BUTTON SQUARE
-    K_JOY4,		// BUTTON TRIANGLE
+    K_JOY1, // BUTTON X
+    K_JOY2, // BUTTON O
+    K_JOY3, // BUTTON SQUARE
+    K_JOY4, // BUTTON TRIANGLE
     K_JOY5,
     K_JOY6,
     K_JOY7,
@@ -129,10 +129,10 @@ typedef enum {
     K_JOY26,
     K_JOY27,
     K_JOY28,
-    K_JOY29,	// DPAD UP
-    K_JOY30,	// DPAD RIGHT
-    K_JOY31,	// DPAD DOWN
-    K_JOY32,	// DPAD LEFT
+    K_JOY29, // DPAD UP
+    K_JOY30, // DPAD RIGHT
+    K_JOY31, // DPAD DOWN
+    K_JOY32, // DPAD LEFT
 
     K_AUX1,
     K_AUX2,
@@ -266,11 +266,11 @@ typedef enum {
 // MAX_KEYS replaces K_LAST_KEY, however some mods may have used K_LAST_KEY
 // in detecting binds, so we leave it defined to the old hardcoded value
 // of maxiumum keys to prevent mods from crashing older versions of the engine
-#define K_LAST_KEY              256
+#define K_LAST_KEY 256
 
 // The menu code needs to get both key and char events, but
 // to avoid duplicating the paths, the char events are just
 // distinguished by or'ing in K_CHAR_FLAG (ugly)
-#define	K_CHAR_FLAG		1024
+#define K_CHAR_FLAG 1024
 
 #endif

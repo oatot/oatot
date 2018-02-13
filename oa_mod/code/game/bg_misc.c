@@ -12,12 +12,12 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Open Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
  */
 //
@@ -32,12 +32,12 @@ The suspended flag will allow items to hang in the air, otherwise they are dropp
 
 If an item is the target of another entity, it will not spawn in until fired.
 
-An item fires all of its targets when it is picked up.  If the toucher can't carry it, the targets won't be fired.
+An item fires all of its targets when it is picked up. If the toucher can't carry it, the targets won't be fired.
 
 "notfree" if set to 1, don't spawn in free for all games
 "notteam" if set to 1, don't spawn in team games
 "notsingle" if set to 1, don't spawn in single player games
-"wait"	override the default wait before respawning.  -1 = never respawn automatically, which can be used with targeted spawning.
+"wait" override the default wait before respawning. -1 = never respawn automatically, which can be used with targeted spawning.
 "random" random number of plus or minus seconds varied from the respawn time
 "count" override quantity or duration on most items.
  */
@@ -46,7 +46,8 @@ gitem_t bg_itemlist[] = {
     {
         NULL,
         NULL,
-        {   NULL,
+        {
+            NULL,
             NULL,
             NULL, NULL
         },
@@ -64,11 +65,12 @@ gitem_t bg_itemlist[] = {
     //
 
     /*QUAKED item_armor_shard (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_armor_shard",
         "sound/misc/ar1_pkup.wav",
-        {   "models/powerups/armor/shard.md3",
+        {
+            "models/powerups/armor/shard.md3",
             "models/powerups/armor/shard_sphere.md3",
             NULL, NULL
         },
@@ -82,11 +84,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_armor_combat (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_armor_combat",
         "sound/misc/ar2_pkup.wav",
-        {   "models/powerups/armor/armor_yel.md3",
+        {
+            "models/powerups/armor/armor_yel.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconr_yellow",
@@ -99,11 +102,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_armor_body (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_armor_body",
         "sound/misc/ar2_pkup.wav",
-        {   "models/powerups/armor/armor_red.md3",
+        {
+            "models/powerups/armor/armor_red.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconr_red",
@@ -119,11 +123,12 @@ gitem_t bg_itemlist[] = {
     // health
     //
     /*QUAKED item_health_small (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_health_small",
         "sound/items/s_health.wav",
-        {   "models/powerups/health/small_cross.md3",
+        {
+            "models/powerups/health/small_cross.md3",
             "models/powerups/health/small_sphere.md3",
             NULL, NULL
         },
@@ -137,11 +142,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_health (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_health",
         "sound/items/n_health.wav",
-        {   "models/powerups/health/medium_cross.md3",
+        {
+            "models/powerups/health/medium_cross.md3",
             "models/powerups/health/medium_sphere.md3",
             NULL, NULL
         },
@@ -155,11 +161,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_health_large (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_health_large",
         "sound/items/l_health.wav",
-        {   "models/powerups/health/large_cross.md3",
+        {
+            "models/powerups/health/large_cross.md3",
             "models/powerups/health/large_sphere.md3",
             NULL, NULL
         },
@@ -173,11 +180,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_health_mega (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_health_mega",
         "sound/items/m_health.wav",
-        {   "models/powerups/health/mega_cross.md3",
+        {
+            "models/powerups/health/mega_cross.md3",
             "models/powerups/health/mega_sphere.md3",
             NULL, NULL
         },
@@ -190,17 +198,17 @@ gitem_t bg_itemlist[] = {
         /* sounds */ ""
     },
 
-
     //
     // WEAPONS
     //
 
     /*QUAKED weapon_gauntlet (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_gauntlet",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/gauntlet/gauntlet.md3",
+        {
+            "models/weapons2/gauntlet/gauntlet.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_gauntlet",
@@ -213,11 +221,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_shotgun",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/shotgun/shotgun.md3",
+        {
+            "models/weapons2/shotgun/shotgun.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_shotgun",
@@ -230,11 +239,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_machinegun",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/machinegun/machinegun.md3",
+        {
+            "models/weapons2/machinegun/machinegun.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_machinegun",
@@ -247,11 +257,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_grenadelauncher",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/grenadel/grenadel.md3",
+        {
+            "models/weapons2/grenadel/grenadel.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_grenade",
@@ -264,11 +275,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_rocketlauncher",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/rocketl/rocketl.md3",
+        {
+            "models/weapons2/rocketl/rocketl.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_rocket",
@@ -281,11 +293,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_lightning (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_lightning",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/lightning/lightning.md3",
+        {
+            "models/weapons2/lightning/lightning.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_lightning",
@@ -298,11 +311,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_railgun",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/railgun/railgun.md3",
+        {
+            "models/weapons2/railgun/railgun.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_railgun",
@@ -315,11 +329,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_plasmagun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_plasmagun",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/plasma/plasma.md3",
+        {
+            "models/weapons2/plasma/plasma.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_plasma",
@@ -332,11 +347,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_bfg",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/bfg/bfg.md3",
+        {
+            "models/weapons2/bfg/bfg.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_bfg",
@@ -349,11 +365,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_grapplinghook (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_grapplinghook",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons2/grapple/grapple.md3",
+        {
+            "models/weapons2/grapple/grapple.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_grapple",
@@ -370,11 +387,12 @@ gitem_t bg_itemlist[] = {
     //
 
     /*QUAKED ammo_shells (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_shells",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/shotgunam.md3",
+        {
+            "models/powerups/ammo/shotgunam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_shotgun",
@@ -387,11 +405,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_bullets (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_bullets",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/machinegunam.md3",
+        {
+            "models/powerups/ammo/machinegunam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_machinegun",
@@ -404,11 +423,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_grenades",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/grenadeam.md3",
+        {
+            "models/powerups/ammo/grenadeam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_grenade",
@@ -421,11 +441,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_cells (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_cells",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/plasmaam.md3",
+        {
+            "models/powerups/ammo/plasmaam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_plasma",
@@ -438,11 +459,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_lightning (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_lightning",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/lightningam.md3",
+        {
+            "models/powerups/ammo/lightningam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_lightning",
@@ -455,11 +477,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_rockets (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_rockets",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/rocketam.md3",
+        {
+            "models/powerups/ammo/rocketam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_rocket",
@@ -472,11 +495,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_slugs",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/railgunam.md3",
+        {
+            "models/powerups/ammo/railgunam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_railgun",
@@ -489,11 +513,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_bfg (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_bfg",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/bfgam.md3",
+        {
+            "models/powerups/ammo/bfgam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_bfg",
@@ -509,11 +534,12 @@ gitem_t bg_itemlist[] = {
     // HOLDABLE ITEMS
     //
     /*QUAKED holdable_teleporter (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "holdable_teleporter",
         "sound/items/holdable.wav",
-        {   "models/powerups/holdable/teleporter.md3",
+        {
+            "models/powerups/holdable/teleporter.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/teleporter",
@@ -525,7 +551,7 @@ gitem_t bg_itemlist[] = {
         /* sounds */ ""
     },
     /*QUAKED holdable_medkit (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "holdable_medkit",
         "sound/items/holdable.wav",
@@ -547,11 +573,12 @@ gitem_t bg_itemlist[] = {
     // POWERUP ITEMS
     //
     /*QUAKED item_quad (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_quad",
         "sound/items/quaddamage.wav",
-        {   "models/powerups/instant/quad.md3",
+        {
+            "models/powerups/instant/quad.md3",
             "models/powerups/instant/quad_ring.md3",
             NULL, NULL
         },
@@ -565,11 +592,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_enviro",
         "sound/items/protect.wav",
-        {   "models/powerups/instant/enviro.md3",
+        {
+            "models/powerups/instant/enviro.md3",
             "models/powerups/instant/enviro_ring.md3",
             NULL, NULL
         },
@@ -583,11 +611,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_haste (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_haste",
         "sound/items/haste.wav",
-        {   "models/powerups/instant/haste.md3",
+        {
+            "models/powerups/instant/haste.md3",
             "models/powerups/instant/haste_ring.md3",
             NULL, NULL
         },
@@ -601,11 +630,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_invis (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_invis",
         "sound/items/invisibility.wav",
-        {   "models/powerups/instant/invis.md3",
+        {
+            "models/powerups/instant/invis.md3",
             "models/powerups/instant/invis_ring.md3",
             NULL, NULL
         },
@@ -619,11 +649,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_regen (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_regen",
         "sound/items/regeneration.wav",
-        {   "models/powerups/instant/regen.md3",
+        {
+            "models/powerups/instant/regen.md3",
             "models/powerups/instant/regen_ring.md3",
             NULL, NULL
         },
@@ -637,11 +668,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_flight (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "item_flight",
         "sound/items/flight.wav",
-        {   "models/powerups/instant/flight.md3",
+        {
+            "models/powerups/instant/flight.md3",
             "models/powerups/instant/flight_ring.md3",
             NULL, NULL
         },
@@ -656,11 +688,12 @@ gitem_t bg_itemlist[] = {
 
     /*QUAKED team_CTF_redflag (1 0 0) (-16 -16 -16) (16 16 16)
     Only in CTF games
-     */
+    */
     {
         "team_CTF_redflag",
         NULL,
-        {   "models/flags/r_flag.md3",
+        {
+            "models/flags/r_flag.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconf_red1",
@@ -674,11 +707,12 @@ gitem_t bg_itemlist[] = {
 
     /*QUAKED team_CTF_blueflag (0 0 1) (-16 -16 -16) (16 16 16)
     Only in CTF games
-     */
+    */
     {
         "team_CTF_blueflag",
         NULL,
-        {   "models/flags/b_flag.md3",
+        {
+            "models/flags/b_flag.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconf_blu1",
@@ -691,11 +725,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED holdable_kamikaze (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "holdable_kamikaze",
         "sound/items/holdable.wav",
-        {   "models/powerups/kamikazi.md3",
+        {
+            "models/powerups/kamikazi.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/kamikaze",
@@ -708,11 +743,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED holdable_portal (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "holdable_portal",
         "sound/items/holdable.wav",
-        {   "models/powerups/holdable/porter.md3",
+        {
+            "models/powerups/holdable/porter.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/portal",
@@ -725,11 +761,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED holdable_invulnerability (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "holdable_invulnerability",
         "sound/items/holdable.wav",
-        {   "models/powerups/holdable/invulnerability.md3",
+        {
+            "models/powerups/holdable/invulnerability.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/invulnerability",
@@ -742,11 +779,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_nails (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_nails",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/nailgunam.md3",
+        {
+            "models/powerups/ammo/nailgunam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_nailgun",
@@ -759,11 +797,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_mines (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_mines",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/proxmineam.md3",
+        {
+            "models/powerups/ammo/proxmineam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_proxlauncher",
@@ -776,11 +815,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED ammo_belt (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "ammo_belt",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/ammo/chaingunam.md3",
+        {
+            "models/powerups/ammo/chaingunam.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_chaingun",
@@ -796,11 +836,12 @@ gitem_t bg_itemlist[] = {
     // PERSISTANT POWERUP ITEMS
     //
     /*QUAKED item_scout (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
-     */
+    */
     {
         "item_scout",
         "sound/items/scout.wav",
-        {   "models/powerups/scout.md3",
+        {
+            "models/powerups/scout.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/scout",
@@ -813,11 +854,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_guard (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
-     */
+    */
     {
         "item_guard",
         "sound/items/guard.wav",
-        {   "models/powerups/guard.md3",
+        {
+            "models/powerups/guard.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/guard",
@@ -830,11 +872,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_doubler (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
-     */
+    */
     {
         "item_doubler",
         "sound/items/doubler.wav",
-        {   "models/powerups/doubler.md3",
+        {
+            "models/powerups/doubler.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/doubler",
@@ -847,11 +890,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED item_doubler (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
-     */
+    */
     {
         "item_ammoregen",
         "sound/items/ammoregen.wav",
-        {   "models/powerups/ammo.md3",
+        {
+            "models/powerups/ammo.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/ammo_regen",
@@ -863,14 +907,14 @@ gitem_t bg_itemlist[] = {
         /* sounds */ ""
     },
 
-
     /*QUAKED team_CTF_neutralflag (0 0 1) (-16 -16 -16) (16 16 16)
     Only in One Flag CTF games
-     */
+    */
     {
         "team_CTF_neutralflag",
         NULL,
-        {   "models/flags/n_flag.md3",
+        {
+            "models/flags/n_flag.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconf_neutral1",
@@ -885,7 +929,8 @@ gitem_t bg_itemlist[] = {
     {
         "item_redcube",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/orb/r_orb.md3",
+        {
+            "models/powerups/orb/r_orb.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconh_rorb",
@@ -900,7 +945,8 @@ gitem_t bg_itemlist[] = {
     {
         "item_bluecube",
         "sound/misc/am_pkup.wav",
-        {   "models/powerups/orb/b_orb.md3",
+        {
+            "models/powerups/orb/b_orb.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconh_borb",
@@ -912,11 +958,12 @@ gitem_t bg_itemlist[] = {
         /* sounds */ ""
     },
     /*QUAKED weapon_nailgun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_nailgun",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons/nailgun/nailgun.md3",
+        {
+            "models/weapons/nailgun/nailgun.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_nailgun",
@@ -929,11 +976,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_prox_launcher (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_prox_launcher",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons/proxmine/proxmine.md3",
+        {
+            "models/weapons/proxmine/proxmine.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_proxlauncher",
@@ -951,11 +999,12 @@ gitem_t bg_itemlist[] = {
     },
 
     /*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
-     */
+    */
     {
         "weapon_chaingun",
         "sound/misc/w_pkup.wav",
-        {   "models/weapons/vulcan/vulcan.md3",
+        {
+            "models/weapons/vulcan/vulcan.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconw_chaingun",
@@ -970,11 +1019,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_DD_point - NOT USED IN THE EDITOR
     Only in DD games
-     */
+    */
     {
         "team_DD_pointAblue",
         NULL,
-        {   "models/dpoints/a_blue.md3",
+        {
+            "models/dpoints/a_blue.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_blue",
@@ -988,11 +1038,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_DD_point - NOT USED IN THE EDITOR
     Only in DD games
-     */
+    */
     {
         "team_DD_pointBblue",
         NULL,
-        {   "models/dpoints/b_blue.md3",
+        {
+            "models/dpoints/b_blue.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconb_blue",
@@ -1006,11 +1057,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_DD_point - NOT USED IN THE EDITOR
     Only in DD games
-     */
+    */
     {
         "team_DD_pointAred",
         NULL,
-        {   "models/dpoints/a_red.md3",
+        {
+            "models/dpoints/a_red.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_red",
@@ -1024,11 +1076,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_DD_point - NOT USED IN THE EDITOR
     Only in DD games
-     */
+    */
     {
         "team_DD_pointBred",
         NULL,
-        {   "models/dpoints/b_red.md3",
+        {
+            "models/dpoints/b_red.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconb_red",
@@ -1042,11 +1095,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_DD_point - NOT USED IN THE EDITOR
     Only in DD games
-     */
+    */
     {
         "team_DD_pointAwhite",
         NULL,
-        {   "models/dpoints/a_white.md3",
+        {
+            "models/dpoints/a_white.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/icona_white",
@@ -1060,11 +1114,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_DD_point - NOT USED IN THE EDITOR
     Only in DD games
-     */
+    */
     {
         "team_DD_pointBwhite",
         NULL,
-        {   "models/dpoints/b_white.md3",
+        {
+            "models/dpoints/b_white.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconb_white",
@@ -1078,14 +1133,14 @@ gitem_t bg_itemlist[] = {
 
     //Now things for standard domination:
 
-
     /*team_dom_pointWhite - NOT USED IN THE EDITOR
     Only in Domination games
-     */
+    */
     {
         "team_dom_pointWhite",
         NULL,
-        {   "models/flags/n_flag.md3",
+        {
+            "models/flags/n_flag.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconf_neutral1",
@@ -1099,11 +1154,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_dom_pointWhite - NOT USED IN THE EDITOR
     Only in Domination games
-     */
+    */
     {
         "team_dom_pointRed",
         NULL,
-        {   "models/flags/r_flag.md3",
+        {
+            "models/flags/r_flag.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconf_red1",
@@ -1117,11 +1173,12 @@ gitem_t bg_itemlist[] = {
 
     /*team_dom_pointBlue - NOT USED IN THE EDITOR
     Only in Domination games
-     */
+    */
     {
         "team_dom_pointBlue",
         NULL,
-        {   "models/flags/b_flag.md3",
+        {
+            "models/flags/b_flag.md3",
             NULL, NULL, NULL
         },
         /* icon */ "icons/iconf_blu1",
@@ -1137,16 +1194,15 @@ gitem_t bg_itemlist[] = {
     {NULL}
 };
 
-int bg_numItems = sizeof (bg_itemlist) / sizeof (bg_itemlist[0]) - 1;
+int bg_numItems = sizeof(bg_itemlist) / sizeof(bg_itemlist[0]) - 1;
 
 /*
 ==============
 BG_FindItemForPowerup
 ==============
  */
-gitem_t *BG_FindItemForPowerup(powerup_t pw) {
+gitem_t* BG_FindItemForPowerup(powerup_t pw) {
     int i;
-
     for (i = 0; i < bg_numItems; i++) {
         if ((bg_itemlist[i].giType == IT_POWERUP ||
                 bg_itemlist[i].giType == IT_TEAM ||
@@ -1155,7 +1211,6 @@ gitem_t *BG_FindItemForPowerup(powerup_t pw) {
             return &bg_itemlist[i];
         }
     }
-
     return NULL;
 }
 
@@ -1164,17 +1219,14 @@ gitem_t *BG_FindItemForPowerup(powerup_t pw) {
 BG_FindItemForHoldable
 ==============
  */
-gitem_t *BG_FindItemForHoldable(holdable_t pw) {
+gitem_t* BG_FindItemForHoldable(holdable_t pw) {
     int i;
-
     for (i = 0; i < bg_numItems; i++) {
         if (bg_itemlist[i].giType == IT_HOLDABLE && bg_itemlist[i].giTag == pw) {
             return &bg_itemlist[i];
         }
     }
-
     Com_Error(ERR_DROP, "HoldableItem not found");
-
     return NULL;
 }
 
@@ -1184,15 +1236,13 @@ BG_FindItemForWeapon
 
 ===============
  */
-gitem_t *BG_FindItemForWeapon(weapon_t weapon) {
-    gitem_t *it;
-
+gitem_t* BG_FindItemForWeapon(weapon_t weapon) {
+    gitem_t* it;
     for (it = bg_itemlist + 1; it->classname; it++) {
         if (it->giType == IT_WEAPON && it->giTag == weapon) {
             return it;
         }
     }
-
     Com_Error(ERR_DROP, "Couldn't find item for weapon %i", weapon);
     return NULL;
 }
@@ -1203,14 +1253,13 @@ BG_FindItem
 
 ===============
  */
-gitem_t *BG_FindItem(const char *pickupName) {
-    gitem_t *it;
-
+gitem_t* BG_FindItem(const char* pickupName) {
+    gitem_t* it;
     for (it = bg_itemlist + 1; it->classname; it++) {
-        if (Q_strequal(it->pickup_name, pickupName))
+        if (Q_strequal(it->pickup_name, pickupName)) {
             return it;
+        }
     }
-
     return NULL;
 }
 
@@ -1222,11 +1271,9 @@ Items can be picked up without actually touching their physical bounds to make
 grabbing them easier
 ============
  */
-qboolean BG_PlayerTouchesItem(playerState_t *ps, entityState_t *item, int atTime) {
+qboolean BG_PlayerTouchesItem(playerState_t* ps, entityState_t* item, int atTime) {
     vec3_t origin;
-
     BG_EvaluateTrajectory(&item->pos, atTime, origin);
-
     // we are ignoring ducked differences here
     if (ps->origin[0] - origin[0] > 44
             || ps->origin[0] - origin[0] < -50
@@ -1236,7 +1283,6 @@ qboolean BG_PlayerTouchesItem(playerState_t *ps, entityState_t *item, int atTime
             || ps->origin[2] - origin[2] < -36) {
         return qfalse;
     }
-
     return qtrue;
 }
 
@@ -1248,43 +1294,35 @@ Returns false if the item should not be picked up.
 This needs to be the same for client side prediction and server use.
 ================
  */
-qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t *ent, const playerState_t *ps) {
-    gitem_t *item;
+qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t* ent, const playerState_t* ps) {
+    gitem_t* item;
     int upperBound;
-
     if (ent->modelindex < 1 || ent->modelindex >= bg_numItems) {
         Com_Error(ERR_DROP, "BG_CanItemBeGrabbed: index out of range");
     }
-
     item = &bg_itemlist[ent->modelindex];
-
     switch (item->giType) {
     case IT_WEAPON:
         return qtrue; // weapons are always picked up
-
     case IT_AMMO:
         if (ps->ammo[ item->giTag ] >= 200) {
             return qfalse; // can't hold any more
         }
         return qtrue;
-
     case IT_ARMOR:
         if (bg_itemlist[ps->stats[STAT_PERSISTANT_POWERUP]].giTag == PW_SCOUT) {
             return qfalse;
         }
-
         // we also clamp armor to the maxhealth for handicapping
         if (bg_itemlist[ps->stats[STAT_PERSISTANT_POWERUP]].giTag == PW_GUARD) {
             upperBound = ps->stats[STAT_MAX_HEALTH];
         } else {
             upperBound = ps->stats[STAT_MAX_HEALTH] * 2;
         }
-
         if (ps->stats[STAT_ARMOR] >= upperBound) {
             return qfalse;
         }
         return qtrue;
-
     case IT_HEALTH:
         // small and mega healths will go over the max, otherwise
         // don't pick up if already at max
@@ -1296,26 +1334,21 @@ qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t *ent, const playe
             }
             return qtrue;
         }
-
         if (ps->stats[STAT_HEALTH] >= ps->stats[STAT_MAX_HEALTH]) {
             return qfalse;
         }
         return qtrue;
-
     case IT_POWERUP:
         return qtrue; // powerups are always picked up
-
     case IT_PERSISTANT_POWERUP:
-
         //In Double D we don't want persistant Powerups (or maybe, can be discussed)
-        if (gametype == GT_DOUBLE_D)
+        if (gametype == GT_DOUBLE_D) {
             return qfalse;
-
+        }
         // can only hold one item at a time
         if (ps->stats[STAT_PERSISTANT_POWERUP]) {
             return qfalse;
         }
-
         // check team only
         if ((ent->generic1 & 2) && (ps->persistant[PERS_TEAM] != TEAM_RED)) {
             return qfalse;
@@ -1323,9 +1356,7 @@ qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t *ent, const playe
         if ((ent->generic1 & 4) && (ps->persistant[PERS_TEAM] != TEAM_BLUE)) {
             return qfalse;
         }
-
         return qtrue;
-
     case IT_TEAM: // team items, such as flags
         if (gametype == GT_POSSESSION) {
             if (item->giTag == PW_NEUTRALFLAG) {
@@ -1354,46 +1385,47 @@ qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t *ent, const playe
             if (ps->persistant[PERS_TEAM] == TEAM_RED) {
                 if (item->giTag == PW_BLUEFLAG ||
                         (item->giTag == PW_REDFLAG && ent->modelindex2) ||
-                        (item->giTag == PW_REDFLAG && ps->powerups[PW_BLUEFLAG]))
+                        (item->giTag == PW_REDFLAG && ps->powerups[PW_BLUEFLAG])) {
                     return qtrue;
+                }
             } else if (ps->persistant[PERS_TEAM] == TEAM_BLUE) {
                 if (item->giTag == PW_REDFLAG ||
                         (item->giTag == PW_BLUEFLAG && ent->modelindex2) ||
-                        (item->giTag == PW_BLUEFLAG && ps->powerups[PW_REDFLAG]))
+                        (item->giTag == PW_BLUEFLAG && ps->powerups[PW_REDFLAG])) {
                     return qtrue;
+                }
             }
         }
-
         if (gametype == GT_DOUBLE_D) {
             //We can touch both flags
-            if (item->giTag == PW_BLUEFLAG || item->giTag == PW_REDFLAG)
+            if (item->giTag == PW_BLUEFLAG || item->giTag == PW_REDFLAG) {
                 return qtrue;
-        }
-
-        if (gametype == GT_DOMINATION) {
-            if (item->giTag == DOM_POINTWHITE)
-                return qtrue;
-            if (ps->persistant[PERS_TEAM] == TEAM_RED) {
-                if (item->giTag == DOM_POINTBLUE)
-                    return qtrue;
-            } else if (ps->persistant[PERS_TEAM] == TEAM_BLUE) {
-                if (item->giTag == DOM_POINTRED)
-                    return qtrue;
             }
         }
-
+        if (gametype == GT_DOMINATION) {
+            if (item->giTag == DOM_POINTWHITE) {
+                return qtrue;
+            }
+            if (ps->persistant[PERS_TEAM] == TEAM_RED) {
+                if (item->giTag == DOM_POINTBLUE) {
+                    return qtrue;
+                }
+            } else if (ps->persistant[PERS_TEAM] == TEAM_BLUE) {
+                if (item->giTag == DOM_POINTRED) {
+                    return qtrue;
+                }
+            }
+        }
         if (gametype == GT_HARVESTER) {
             return qtrue;
         }
         return qfalse;
-
     case IT_HOLDABLE:
         // can only hold one item at a time
         if (ps->stats[STAT_HOLDABLE_ITEM]) {
             return qfalse;
         }
         return qtrue;
-
     case IT_BAD:
         Com_Error(ERR_DROP, "BG_CanItemBeGrabbed: IT_BAD");
     default:
@@ -1404,7 +1436,6 @@ qboolean BG_CanItemBeGrabbed(int gametype, const entityState_t *ent, const playe
 #endif
         break;
     }
-
     return qfalse;
 }
 
@@ -1416,10 +1447,9 @@ BG_EvaluateTrajectory
 
 ================
  */
-void BG_EvaluateTrajectory(const trajectory_t *tr, int atTime, vec3_t result) {
+void BG_EvaluateTrajectory(const trajectory_t* tr, int atTime, vec3_t result) {
     float deltaTime;
     float phase;
-
     switch (tr->trType) {
     case TR_STATIONARY:
     case TR_INTERPOLATE:
@@ -1462,10 +1492,9 @@ BG_EvaluateTrajectoryDelta
 For determining velocity at a given time
 ================
  */
-void BG_EvaluateTrajectoryDelta(const trajectory_t *tr, int atTime, vec3_t result) {
+void BG_EvaluateTrajectoryDelta(const trajectory_t* tr, int atTime, vec3_t result) {
     float deltaTime;
     float phase;
-
     switch (tr->trType) {
     case TR_STATIONARY:
     case TR_INTERPOLATE:
@@ -1498,7 +1527,7 @@ void BG_EvaluateTrajectoryDelta(const trajectory_t *tr, int atTime, vec3_t resul
     }
 }
 
-char *eventnames[] = {
+char* eventnames[] = {
     "EV_NONE",
 
     "EV_FOOTSTEP",
@@ -1591,7 +1620,6 @@ char *eventnames[] = {
     "EV_JUICED", // invulnerability juiced effect
     "EV_LIGHTNINGBOLT", // lightning bolt bounced of invulnerability sphere
 
-
     "EV_DEBUG_LINE",
     "EV_STOPLOOPINGSOUND",
     "EV_TAUNT"
@@ -1606,14 +1634,13 @@ Handles the sequence numbers
 ===============
  */
 
-void trap_Cvar_VariableStringBuffer(const char *var_name, char *buffer, int bufsize);
+void trap_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
 
-void BG_AddPredictableEventToPlayerstate(int newEvent, int eventParm, playerState_t *ps) {
-
+void BG_AddPredictableEventToPlayerstate(int newEvent, int eventParm, playerState_t* ps) {
 #ifdef _DEBUG
     {
         char buf[256];
-        trap_Cvar_VariableStringBuffer("showevents", buf, sizeof (buf));
+        trap_Cvar_VariableStringBuffer("showevents", buf, sizeof(buf));
         if (atof(buf) != 0) {
 #ifdef QAGAME
             Com_Printf(" game event svt %5d -> %5d: num = %20s parm %d\n", ps->pmove_framecount/*ps->commandTime*/, ps->eventSequence, eventnames[newEvent], eventParm);
@@ -1633,25 +1660,21 @@ void BG_AddPredictableEventToPlayerstate(int newEvent, int eventParm, playerStat
 BG_TouchJumpPad
 ========================
  */
-void BG_TouchJumpPad(playerState_t *ps, entityState_t *jumppad) {
+void BG_TouchJumpPad(playerState_t* ps, entityState_t* jumppad) {
     vec3_t angles;
     float p;
     int effectNum;
-
     // spectators don't use jump pads
     if (ps->pm_type != PM_NORMAL) {
         return;
     }
-
     // flying characters don't hit bounce pads
     if (ps->powerups[PW_FLIGHT]) {
         return;
     }
-
     // if we didn't hit this same jumppad the previous frame
     // then don't play the event sound again if we are in a fat trigger
     if (ps->jumppad_ent != jumppad->number) {
-
         vectoangles(jumppad->origin2, angles);
         p = fabs(AngleNormalize180(angles[PITCH]));
         if (p < 45) {
@@ -1676,9 +1699,8 @@ This is done after each set of usercmd_t on the server,
 and after local prediction on the client
 ========================
  */
-void BG_PlayerStateToEntityState(playerState_t *ps, entityState_t *s, qboolean snap) {
+void BG_PlayerStateToEntityState(playerState_t* ps, entityState_t* s, qboolean snap) {
     int i;
-
     if (ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR) {
         s->eType = ET_INVISIBLE;
     } else if (ps->stats[STAT_HEALTH] <= GIB_HEALTH) {
@@ -1686,9 +1708,7 @@ void BG_PlayerStateToEntityState(playerState_t *ps, entityState_t *s, qboolean s
     } else {
         s->eType = ET_PLAYER;
     }
-
     s->number = ps->clientNum;
-
     s->pos.trType = TR_INTERPOLATE;
     VectorCopy(ps->origin, s->pos.trBase);
     if (snap) {
@@ -1696,13 +1716,11 @@ void BG_PlayerStateToEntityState(playerState_t *ps, entityState_t *s, qboolean s
     }
     // set the trDelta for flag direction
     VectorCopy(ps->velocity, s->pos.trDelta);
-
     s->apos.trType = TR_INTERPOLATE;
     VectorCopy(ps->viewangles, s->apos.trBase);
     if (snap) {
         SnapVector(s->apos.trBase);
     }
-
     s->angles2[YAW] = ps->movementDir;
     s->legsAnim = ps->legsAnim;
     s->torsoAnim = ps->torsoAnim;
@@ -1714,13 +1732,11 @@ void BG_PlayerStateToEntityState(playerState_t *ps, entityState_t *s, qboolean s
     } else {
         s->eFlags &= ~EF_DEAD;
     }
-
     if (ps->externalEvent) {
         s->event = ps->externalEvent;
         s->eventParm = ps->externalEventParm;
     } else if (ps->entityEventSequence < ps->eventSequence) {
         int seq;
-
         if (ps->entityEventSequence < ps->eventSequence - MAX_PS_EVENTS) {
             ps->entityEventSequence = ps->eventSequence - MAX_PS_EVENTS;
         }
@@ -1729,17 +1745,14 @@ void BG_PlayerStateToEntityState(playerState_t *ps, entityState_t *s, qboolean s
         s->eventParm = ps->eventParms[ seq ];
         ps->entityEventSequence++;
     }
-
     s->weapon = ps->weapon;
     s->groundEntityNum = ps->groundEntityNum;
-
     s->powerups = 0;
     for (i = 0; i < MAX_POWERUPS; i++) {
         if (ps->powerups[ i ]) {
             s->powerups |= 1 << i;
         }
     }
-
     s->loopSound = ps->loopSound;
     s->generic1 = ps->generic1;
 }
@@ -1752,9 +1765,8 @@ This is done after each set of usercmd_t on the server,
 and after local prediction on the client
 ========================
  */
-void BG_PlayerStateToEntityStateExtraPolate(playerState_t *ps, entityState_t *s, int time, qboolean snap) {
+void BG_PlayerStateToEntityStateExtraPolate(playerState_t* ps, entityState_t* s, int time, qboolean snap) {
     int i;
-
     if (ps->pm_type == PM_INTERMISSION || ps->pm_type == PM_SPECTATOR) {
         s->eType = ET_INVISIBLE;
     } else if (ps->stats[STAT_HEALTH] <= GIB_HEALTH) {
@@ -1762,9 +1774,7 @@ void BG_PlayerStateToEntityStateExtraPolate(playerState_t *ps, entityState_t *s,
     } else {
         s->eType = ET_PLAYER;
     }
-
     s->number = ps->clientNum;
-
     s->pos.trType = TR_LINEAR_STOP;
     VectorCopy(ps->origin, s->pos.trBase);
     if (snap) {
@@ -1776,13 +1786,11 @@ void BG_PlayerStateToEntityStateExtraPolate(playerState_t *ps, entityState_t *s,
     s->pos.trTime = time;
     // set maximum extra polation time
     s->pos.trDuration = 50; // 1000 / sv_fps (default = 20)
-
     s->apos.trType = TR_INTERPOLATE;
     VectorCopy(ps->viewangles, s->apos.trBase);
     if (snap) {
         SnapVector(s->apos.trBase);
     }
-
     s->angles2[YAW] = ps->movementDir;
     s->legsAnim = ps->legsAnim;
     s->torsoAnim = ps->torsoAnim;
@@ -1794,13 +1802,11 @@ void BG_PlayerStateToEntityStateExtraPolate(playerState_t *ps, entityState_t *s,
     } else {
         s->eFlags &= ~EF_DEAD;
     }
-
     if (ps->externalEvent) {
         s->event = ps->externalEvent;
         s->eventParm = ps->externalEventParm;
     } else if (ps->entityEventSequence < ps->eventSequence) {
         int seq;
-
         if (ps->entityEventSequence < ps->eventSequence - MAX_PS_EVENTS) {
             ps->entityEventSequence = ps->eventSequence - MAX_PS_EVENTS;
         }
@@ -1809,17 +1815,14 @@ void BG_PlayerStateToEntityStateExtraPolate(playerState_t *ps, entityState_t *s,
         s->eventParm = ps->eventParms[ seq ];
         ps->entityEventSequence++;
     }
-
     s->weapon = ps->weapon;
     s->groundEntityNum = ps->groundEntityNum;
-
     s->powerups = 0;
     for (i = 0; i < MAX_POWERUPS; i++) {
         if (ps->powerups[ i ]) {
             s->powerups |= 1 << i;
         }
     }
-
     s->loopSound = ps->loopSound;
     s->generic1 = ps->generic1;
 }
@@ -1830,105 +1833,126 @@ BG_TeamName
 KK-OAX Copied from Tremulous
 ============
  */
-const char *BG_TeamName(team_t team) {
-    if (team == TEAM_NONE)
+const char* BG_TeamName(team_t team) {
+    if (team == TEAM_NONE) {
         return "spectator";
-    if (team == TEAM_RED)
+    }
+    if (team == TEAM_RED) {
         return "Red";
-    if (team == TEAM_BLUE)
+    }
+    if (team == TEAM_BLUE) {
         return "Blue";
-    if (team == TEAM_FREE)
+    }
+    if (team == TEAM_FREE) {
         return "Free For All";
+    }
     return "<team>";
 }
 
-int trap_FS_FOpenFile(const char *qpath, fileHandle_t *f, fsMode_t mode);
-void trap_FS_Read(void *buffer, int len, fileHandle_t f);
+int trap_FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode);
+void trap_FS_Read(void* buffer, int len, fileHandle_t f);
 void trap_FS_FCloseFile(fileHandle_t f);
 
 qboolean MatchesGametype(int gametype, const char* gametypeName) {
     qboolean mayRead = qfalse;
     switch (gametype) {
     case GT_FFA:
-        if (Q_strequal(gametypeName, "dm")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "dm")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_TEAM:
-        if (Q_strequal(gametypeName, "team")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "team")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_TOURNAMENT:
-        if (Q_strequal(gametypeName, "tourney")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "tourney")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_CTF:
-        if (Q_strequal(gametypeName, "ctf")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "ctf")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_1FCTF:
-        if (Q_strequal(gametypeName, "1fctf")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "1fctf")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_OBELISK:
-        if (Q_strequal(gametypeName, "obelisk")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "obelisk")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_HARVESTER:
-        if (Q_strequal(gametypeName, "harvester")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "harvester")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_ELIMINATION:
-        if (Q_strequal(gametypeName, "elimination")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "elimination")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_CTF_ELIMINATION:
-        if (Q_strequal(gametypeName, "ctfelim")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "ctfelim")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_LMS:
-        if (Q_strequal(gametypeName, "lms")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "lms")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_DOUBLE_D:
-        if (Q_strequal(gametypeName, "dd")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "dd")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_DOMINATION:
-        if (Q_strequal(gametypeName, "dom")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "dom")) {
+            mayRead = qtrue;
+        }
         break;
     case GT_POSSESSION:
-        if (Q_strequal(gametypeName, "pos")) mayRead = qtrue;
+        if (Q_strequal(gametypeName, "pos")) {
+            mayRead = qtrue;
+        }
         break;
     };
     return mayRead;
 }
 
-void MapInfoGet(const char* mapname, int gametype, mapinfo_result_t *result) {
+void MapInfoGet(const char* mapname, int gametype, mapinfo_result_t* result) {
     fileHandle_t file;
     char buffer[4 * 1024];
     char keyBuffer[MAX_TOKEN_CHARS];
-    char *token;
-    char *pointer;
+    char* token;
+    char* pointer;
     int mayRead;
     int i;
-
-    memset(result, 0, sizeof (*result));
-    Com_sprintf(buffer, sizeof (buffer), "maps/%s.info", mapname);
+    memset(result, 0, sizeof(*result));
+    Com_sprintf(buffer, sizeof(buffer), "maps/%s.info", mapname);
     Q_strlwr(buffer);
-
     trap_FS_FOpenFile(buffer, &file, FS_READ);
-
     if (!file) {
         Com_Printf("File %s not found\n", buffer);
         return;
     }
-
-    memset(&buffer, 0, sizeof (buffer));
-
-    trap_FS_Read(&buffer, sizeof (buffer), file);
-
+    memset(&buffer, 0, sizeof(buffer));
+    trap_FS_Read(&buffer, sizeof(buffer), file);
     pointer = buffer;
     mayRead = qtrue;
-
     while (qtrue) {
         token = COM_Parse(&pointer);
         if (!token[0]) {
             break;
         }
-        Q_strncpyz(keyBuffer, token, sizeof (keyBuffer));
+        Q_strncpyz(keyBuffer, token, sizeof(keyBuffer));
         token = COM_Parse(&pointer);
-
         Com_Printf("Token \"%s\" found, with value: \"%s\"\n", keyBuffer, token);
-
         if (Q_strequal(keyBuffer, "gametype")) {
             mayRead = qfalse;
             if (!token[0]) {
@@ -1936,57 +1960,76 @@ void MapInfoGet(const char* mapname, int gametype, mapinfo_result_t *result) {
             }
             if (Q_strequal(token, "*")) {
                 mayRead = qtrue;
-            }
-            else {
+            } else {
                 mayRead = MatchesGametype(gametype, token);
             }
         }
         if (Q_strequal(keyBuffer, "author")) {
-            if (mayRead) Q_strncpyz(result->author, token, sizeof (result->author));
+            if (mayRead) {
+                Q_strncpyz(result->author, token, sizeof(result->author));
+            }
         }
         if (Q_strequal(keyBuffer, "description")) {
-            if (mayRead) Q_strncpyz(result->description, token, sizeof (result->description));
+            if (mayRead) {
+                Q_strncpyz(result->description, token, sizeof(result->description));
+            }
         }
         if (Q_strequal(keyBuffer, "mpBots")) {
-            if (mayRead) Q_strncpyz(result->mpBots, token, sizeof (result->mpBots));
+            if (mayRead) {
+                Q_strncpyz(result->mpBots, token, sizeof(result->mpBots));
+            }
         }
         if (Q_strequal(keyBuffer, "captureLimit")) {
-            if (mayRead) result->captureLimit = atoi(token);
+            if (mayRead) {
+                result->captureLimit = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "fragLimit")) {
-            if (mayRead) result->fragLimit = atoi(token);
+            if (mayRead) {
+                result->fragLimit = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "maxPlayers")) {
-            if (mayRead) result->maxPlayers = atoi(token);
+            if (mayRead) {
+                result->maxPlayers = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "maxTeamSize")) {
-            if (mayRead) result->maxTeamSize = atoi(token);
+            if (mayRead) {
+                result->maxTeamSize = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "minPlayers")) {
-            if (mayRead) result->minPlayers = atoi(token);
+            if (mayRead) {
+                result->minPlayers = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "minTeamSize")) {
-            if (mayRead) result->minTeamSize = atoi(token);
+            if (mayRead) {
+                result->minTeamSize = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "recommendedPlayers")) {
-            if (mayRead) result->recommendedPlayers = atoi(token);
+            if (mayRead) {
+                result->recommendedPlayers = atoi(token);
+            }
         }
         if (Q_strequal(keyBuffer, "timeLimit")) {
-            if (mayRead) result->timeLimit = atoi(token);
+            if (mayRead) {
+                result->timeLimit = atoi(token);
+            }
         }
 #define SUPPORT_GAMETYPE_PREFIX "support_"
-        if (Q_strequaln(keyBuffer, SUPPORT_GAMETYPE_PREFIX, sizeof (SUPPORT_GAMETYPE_PREFIX) - 1)) {
+        if (Q_strequaln(keyBuffer, SUPPORT_GAMETYPE_PREFIX, sizeof(SUPPORT_GAMETYPE_PREFIX) - 1)) {
             //Com_Printf("Saw %s, gametype part: %s\n", token, &token[sizeof(SUPPORT_GAMETYPE_PREFIX)-1]);
             for (i = 0; i < GT_MAX_GAME_TYPE; ++i) {
-                if (MatchesGametype(i, &keyBuffer[sizeof (SUPPORT_GAMETYPE_PREFIX) - 1])) {
+                if (MatchesGametype(i, &keyBuffer[sizeof(SUPPORT_GAMETYPE_PREFIX) - 1])) {
                     //Com_Printf("Matched gametype %d, %s\n", i, token);
                     result->gametypeSupported[i] = token[0];
                     break;
                 }
             }
         }
-
     }
-
     trap_FS_FCloseFile(file);
 }

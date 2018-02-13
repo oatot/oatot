@@ -48,9 +48,9 @@ Basic stuff you can call by typing `/<command>` in OA game console.
 ```
  - bet              <horse>[red,blue] <amount> <currency>[BTC,OAC]
  - unbet            <bet_ID>
- - pastBids
- - pastBids         elder
- - bidsSummary
+ - pastBets
+ - pastBets         elder
+ - betsSummary
  - ready
  - help
  - shareBalance
@@ -64,18 +64,18 @@ is to use `ready` command or by finishing the match
 in some way.
 
  - **FORMING_TEAMS**<br>
-    Available commands: `pastBids, bidsSummary, ready, help, shareBalance`.
+    Available commands: `pastBets, betsSummary, ready, help, shareBalance`.
     Players are able to switch teams or spec and disconnect. No additional restrictions
     comparing to normal game, but scores (both flags and personal) aren't counted.
     You can't make any bets yet, teams aren't formed.
 
  - **MAKING_BETS**<br>
-    Available commands: `bet, unbet, pastBids, bidsSummary, help, shareBalance`.
+    Available commands: `bet, unbet, pastBets, betsSummary, help, shareBalance`.
     Teams are fixed, you can't switch. If someone disconnects, `map_restart` is called.
     You can now make and discard your bets. Still no scores though.
 
  - **PLAYING**<br>
-    Available commands: `pastBids, bidsSummary, help, shareBalance`.
+    Available commands: `pastBets, betsSummary, help, shareBalance`.
     Betting is finished. Teams are still locked, but the game has started already,
     so score is now counted.
 

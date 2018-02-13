@@ -11,27 +11,27 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 
 /*****************************************************************************
- * name:		l_util.h
+ * name: l_util.h
  *
- * desc:		utils
+ * desc: utils
  *
  * $Archive: /source/code/botlib/l_util.h $
  *
  *****************************************************************************/
 
-#define Vector2Angles(v,a)		vectoangles(v,a)
+#define Vector2Angles(v,a) vectoangles(v,a)
 #ifndef MAX_PATH
-#define MAX_PATH				MAX_QPATH
+#define MAX_PATH MAX_QPATH
 #endif
-#define Maximum(x,y)			(x > y ? x : y)
-#define Minimum(x,y)			(x < y ? x : y)
+#define Maximum(x,y) (x > y ? x : y)
+#define Minimum(x,y) (x < y ? x : y)
