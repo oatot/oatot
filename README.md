@@ -60,7 +60,7 @@ Basic stuff you can call by typing `/<command>` in OA game console.
 ```
 
 *Update note:*<br>
-/bet and /unbet commands are outdated, there is super cool UI menu for this purpose instead.
+`/bet` and `/unbet` commands are outdated, there is super cool UI menu for this purpose instead.
 *Don't worry, /bet and /unbet are still there for quality people! :p*
 
 *Game stages*
@@ -91,6 +91,9 @@ in some way.
 **Server-side:**<br>
  - `g_makingBetsTime`<br>
     The duration of MAKING_BETS in mins, 2 by default.
+    Type: `CVAR_SERVERINFO`.
+ - `g_easyItemPickup`<br>
+    1 for easy item pickup (high items), 1 by default.
     Type: `CVAR_SERVERINFO`.
 
 **Client-side:**<br>
