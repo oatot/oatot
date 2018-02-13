@@ -518,8 +518,13 @@ gentity_t* LaunchItem(gitem_t* item, vec3_t origin, vec3_t velocity) {
     dropped->s.modelindex2 = 1; // This is non-zero is it's a dropped item
     dropped->classname = item->classname;
     dropped->item = item;
-    VectorSet(dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
-    VectorSet(dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS);
+    if (g_easyItemPickup.integer) {
+        VectorSet(dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_HEIGHT);
+        VectorSet(dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_HEIGHT);
+    } else {
+        VectorSet(dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
+        VectorSet(dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS);
+    }
     dropped->r.contents = CONTENTS_TRIGGER;
     dropped->touch = Touch_Item;
     G_SetOrigin(dropped, origin);
@@ -585,8 +590,13 @@ free fall from their spawn points
 void FinishSpawningItem(gentity_t* ent) {
     trace_t tr;
     vec3_t dest;
-    VectorSet(ent->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
-    VectorSet(ent->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS);
+    if (g_easyItemPickup.integer) {
+        VectorSet(ent->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_HEIGHT);
+        VectorSet(ent->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_HEIGHT);
+    } else {
+        VectorSet(ent->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
+        VectorSet(ent->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS);
+    }
     ent->s.eType = ET_ITEM;
     ent->s.modelindex = ent->item - bg_itemlist; // store item number in modelindex
     ent->s.modelindex2 = 0; // zero indicates this isn't a dropped item
