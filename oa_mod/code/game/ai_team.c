@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_team.c
+ * name: ai_team.c
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /MissionPack/code/game/ai_team.c $
  *
@@ -56,8 +56,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 //ctf task preferences for a client
 typedef struct bot_ctftaskpreference_s {
-    char        name[36];
-    int         preference;
+    char name[36];
+    int preference;
 } bot_ctftaskpreference_t;
 
 bot_ctftaskpreference_t ctftaskpreferences[MAX_CLIENTS];
@@ -842,17 +842,17 @@ void BotDDorders_Standard(bot_state_t* bs) {
         break;
     /*case 2:
     {
-        //the one closest to point A will take that
-        ClientName(teammates[0], name, sizeof(name));
-        BotAI_BotInitialChat(bs, "cmd_takea", name, NULL);
-        BotSayTeamOrder(bs, teammates[0]);
-        //BotSayVoiceTeamOrder(bs, teammates[0], VOICECHAT_TAKEA);
-        //the other goes for point B
-        ClientName(teammates[1], name, sizeof(name));
-        BotAI_BotInitialChat(bs, "cmd_takeb", name, NULL);
-        BotSayTeamOrder(bs, teammates[1]);
-        //BotSayVoiceTeamOrder(bs, teammates[1], VOICECHAT_TAKEB);
-        break;
+    //the one closest to point A will take that
+    ClientName(teammates[0], name, sizeof(name));
+    BotAI_BotInitialChat(bs, "cmd_takea", name, NULL);
+    BotSayTeamOrder(bs, teammates[0]);
+    //BotSayVoiceTeamOrder(bs, teammates[0], VOICECHAT_TAKEA);
+    //the other goes for point B
+    ClientName(teammates[1], name, sizeof(name));
+    BotAI_BotInitialChat(bs, "cmd_takeb", name, NULL);
+    BotSayTeamOrder(bs, teammates[1]);
+    //BotSayVoiceTeamOrder(bs, teammates[1], VOICECHAT_TAKEB);
+    break;
     }*/
     default: {
         for (i = 0; i < numteammates / 2; i++) { //Half take point A
@@ -1111,7 +1111,7 @@ void BotCreateGroup(bot_state_t* bs, int* teammates, int groupsize) {
 ==================
 BotTeamOrders
 
-  FIXME: defend key areas?
+ FIXME: defend key areas?
 ==================
 */
 void BotTeamOrders(bot_state_t* bs) {
@@ -1153,13 +1153,13 @@ void BotTeamOrders(bot_state_t* bs) {
         break;
     }
     case 4: {
-        BotCreateGroup(bs, teammates, 2);       //a group of 2
-        BotCreateGroup(bs, &teammates[2], 2);   //a group of 2
+        BotCreateGroup(bs, teammates, 2); //a group of 2
+        BotCreateGroup(bs, &teammates[2], 2); //a group of 2
         break;
     }
     case 5: {
-        BotCreateGroup(bs, teammates, 2);       //a group of 2
-        BotCreateGroup(bs, &teammates[2], 3);   //a group of 3
+        BotCreateGroup(bs, teammates, 2); //a group of 2
+        BotCreateGroup(bs, &teammates[2], 3); //a group of 3
         break;
     }
     default: {
@@ -1177,7 +1177,7 @@ void BotTeamOrders(bot_state_t* bs) {
 ==================
 Bot1FCTFOrders_FlagAtCenter
 
-  X% defend the base, Y% get the flag
+ X% defend the base, Y% get the flag
 ==================
 */
 void Bot1FCTFOrders_FlagAtCenter(bot_state_t* bs) {
@@ -1329,7 +1329,7 @@ void Bot1FCTFOrders_FlagAtCenter(bot_state_t* bs) {
 ==================
 Bot1FCTFOrders_TeamHasFlag
 
-  X% towards neutral flag, Y% go towards enemy base and accompany flag carrier if visible
+ X% towards neutral flag, Y% go towards enemy base and accompany flag carrier if visible
 ==================
 */
 void Bot1FCTFOrders_TeamHasFlag(bot_state_t* bs) {
@@ -1549,7 +1549,7 @@ void Bot1FCTFOrders_TeamHasFlag(bot_state_t* bs) {
 ==================
 Bot1FCTFOrders_EnemyHasFlag
 
-  X% defend the base, Y% towards neutral flag
+ X% defend the base, Y% towards neutral flag
 ==================
 */
 void Bot1FCTFOrders_EnemyHasFlag(bot_state_t* bs) {
@@ -1701,7 +1701,7 @@ void Bot1FCTFOrders_EnemyHasFlag(bot_state_t* bs) {
 ==================
 Bot1FCTFOrders_EnemyDroppedFlag
 
-  X% defend the base, Y% get the flag
+ X% defend the base, Y% get the flag
 ==================
 */
 void Bot1FCTFOrders_EnemyDroppedFlag(bot_state_t* bs) {
@@ -1875,7 +1875,7 @@ void Bot1FCTFOrders(bot_state_t* bs) {
 ==================
 BotObeliskOrders
 
-  X% in defence Y% in offence
+ X% in defence Y% in offence
 ==================
 */
 void BotObeliskOrders(bot_state_t* bs) {
@@ -2027,7 +2027,7 @@ void BotObeliskOrders(bot_state_t* bs) {
 ==================
 BotHarvesterOrders
 
-  X% defend the base, Y% harvest
+ X% defend the base, Y% harvest
 ==================
 */
 void BotHarvesterOrders(bot_state_t* bs) {

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,47 +27,47 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define PARTofUI 1
 #include "../cgame/cg_challenges.c"
 
-#define ID_BACK                         1
+#define ID_BACK 1
 
 //Main menu:
-#define ID_GENERAL          100
-#define ID_GAMETYPES                    101
-#define ID_WEAPONS                      102
-#define ID_AWARDS                       103
-#define ID_POWERUPS                     104
-#define ID_FFA                          105
+#define ID_GENERAL 100
+#define ID_GAMETYPES 101
+#define ID_WEAPONS 102
+#define ID_AWARDS 103
+#define ID_POWERUPS 104
+#define ID_FFA 105
 
-#define ART_BACK0       "menu/" MENU_ART_DIR "/back_0"
-#define ART_BACK1       "menu/" MENU_ART_DIR "/back_1"
-#define ART_FRAMEL      "menu/" MENU_ART_DIR "/frame2_l"
-#define ART_FRAMER      "menu/" MENU_ART_DIR "/frame1_r"
+#define ART_BACK0 "menu/" MENU_ART_DIR "/back_0"
+#define ART_BACK1 "menu/" MENU_ART_DIR "/back_1"
+#define ART_FRAMEL "menu/" MENU_ART_DIR "/frame2_l"
+#define ART_FRAMER "menu/" MENU_ART_DIR "/frame1_r"
 
-#define MAX_ENTRIES                     18
-#define MAX_INT_AS_STRING               8
+#define MAX_ENTRIES 18
+#define MAX_INT_AS_STRING 8
 
 typedef struct {
     menuframework_s menu;
 
     menutext_s banner;
-    menubitmap_s    framel;
-    menubitmap_s    framer;
+    menubitmap_s framel;
+    menubitmap_s framer;
 
     menutext_s headlines[5];
 
-    int             numberOfEntries;
+    int numberOfEntries;
     menutext_s entry[MAX_ENTRIES];
     menutext_s entryIntText[MAX_ENTRIES];
-    char            entryIntString[MAX_ENTRIES][MAX_INT_AS_STRING];
-    int             entryInt[MAX_ENTRIES];
+    char entryIntString[MAX_ENTRIES][MAX_INT_AS_STRING];
+    int entryInt[MAX_ENTRIES];
 
-    menutext_s      notice;
-    menutext_s      notice2;
-    menubitmap_s    back;
+    menutext_s notice;
+    menutext_s notice2;
+    menubitmap_s back;
 } challenges_t;
 
 static challenges_t challenges;
 
-static int             mainSelection;
+static int mainSelection;
 
 //This should only be accessed locally
 void UI_ChallengesLocal(void);
@@ -138,93 +138,93 @@ static void UI_Challenges_Init(void) {
     UI_DisplayOptionsMenu_Cache();
     challenges.menu.wrapAround = qtrue;
     challenges.menu.fullscreen = qtrue;
-    challenges.banner.generic.type      = MTYPE_BTEXT;
-    challenges.banner.generic.flags     = QMF_CENTER_JUSTIFY;
-    challenges.banner.generic.x         = 320;
-    challenges.banner.generic.y         = 16;
-    challenges.banner.string            = "STATISTICS";
-    challenges.banner.color             = color_white;
-    challenges.banner.style             = UI_CENTER;
-    challenges.framel.generic.type      = MTYPE_BITMAP;
-    challenges.framel.generic.name      = ART_FRAMEL;
-    challenges.framel.generic.flags     = QMF_INACTIVE;
-    challenges.framel.generic.x         = 0;
-    challenges.framel.generic.y         = 78;
-    challenges.framel.width             = 256;
-    challenges.framel.height            = 329;
-    challenges.framer.generic.type      = MTYPE_BITMAP;
-    challenges.framer.generic.name      = ART_FRAMER;
-    challenges.framer.generic.flags     = QMF_INACTIVE;
-    challenges.framer.generic.x         = 376;
-    challenges.framer.generic.y         = 76;
-    challenges.framer.width             = 256;
-    challenges.framer.height            = 334;
-    challenges.headlines[0].generic.type        = MTYPE_PTEXT;
-    challenges.headlines[0].generic.flags       = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    challenges.headlines[0].generic.id          = ID_GENERAL;
-    challenges.headlines[0].generic.callback    = UI_Challenges_Event;
-    challenges.headlines[0].generic.x           = 216;
-    challenges.headlines[0].generic.y           = 240 - 2 * PROP_HEIGHT;
-    challenges.headlines[0].string              = "GENERAL";
-    challenges.headlines[0].style               = UI_RIGHT;
-    challenges.headlines[0].color               = color_red;
-    challenges.headlines[1].generic.type            = MTYPE_PTEXT;
-    challenges.headlines[1].generic.flags       = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    challenges.headlines[1].generic.id          = ID_GAMETYPES;
-    challenges.headlines[1].generic.callback        = UI_Challenges_Event;
-    challenges.headlines[1].generic.x           = 216;
-    challenges.headlines[1].generic.y           = 240 - PROP_HEIGHT;
-    challenges.headlines[1].string              = "GAMETYPES";
-    challenges.headlines[1].style               = UI_RIGHT;
-    challenges.headlines[1].color               = color_red;
-    challenges.headlines[2].generic.type            = MTYPE_PTEXT;
-    challenges.headlines[2].generic.flags           = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    challenges.headlines[2].generic.id              = ID_WEAPONS;
-    challenges.headlines[2].generic.callback        = UI_Challenges_Event;
-    challenges.headlines[2].generic.x               = 216;
-    challenges.headlines[2].generic.y               = 240;
-    challenges.headlines[2].string                  = "WEAPONS";
-    challenges.headlines[2].style                   = UI_RIGHT;
-    challenges.headlines[2].color                   = color_red;
-    challenges.headlines[3].generic.type            = MTYPE_PTEXT;
-    challenges.headlines[3].generic.flags       = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    challenges.headlines[3].generic.id          = ID_AWARDS;
-    challenges.headlines[3].generic.callback        = UI_Challenges_Event;
-    challenges.headlines[3].generic.x           = 216;
-    challenges.headlines[3].generic.y           = 240 + PROP_HEIGHT;
-    challenges.headlines[3].string              = "AWARDS";
-    challenges.headlines[3].style               = UI_RIGHT;
-    challenges.headlines[3].color               = color_red;
-    challenges.headlines[4].generic.type            = MTYPE_PTEXT;
-    challenges.headlines[4].generic.flags       = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    challenges.headlines[4].generic.id          = ID_POWERUPS;
-    challenges.headlines[4].generic.callback        = UI_Challenges_Event;
-    challenges.headlines[4].generic.x           = 216;
-    challenges.headlines[4].generic.y           = 240 + PROP_HEIGHT * 2;
-    challenges.headlines[4].string              = "POWERUPS";
-    challenges.headlines[4].style               = UI_RIGHT;
-    challenges.headlines[4].color               = color_red;
-    challenges.notice.generic.type          = MTYPE_TEXT;
+    challenges.banner.generic.type = MTYPE_BTEXT;
+    challenges.banner.generic.flags = QMF_CENTER_JUSTIFY;
+    challenges.banner.generic.x = 320;
+    challenges.banner.generic.y = 16;
+    challenges.banner.string = "STATISTICS";
+    challenges.banner.color = color_white;
+    challenges.banner.style = UI_CENTER;
+    challenges.framel.generic.type = MTYPE_BITMAP;
+    challenges.framel.generic.name = ART_FRAMEL;
+    challenges.framel.generic.flags = QMF_INACTIVE;
+    challenges.framel.generic.x = 0;
+    challenges.framel.generic.y = 78;
+    challenges.framel.width = 256;
+    challenges.framel.height = 329;
+    challenges.framer.generic.type = MTYPE_BITMAP;
+    challenges.framer.generic.name = ART_FRAMER;
+    challenges.framer.generic.flags = QMF_INACTIVE;
+    challenges.framer.generic.x = 376;
+    challenges.framer.generic.y = 76;
+    challenges.framer.width = 256;
+    challenges.framer.height = 334;
+    challenges.headlines[0].generic.type = MTYPE_PTEXT;
+    challenges.headlines[0].generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    challenges.headlines[0].generic.id = ID_GENERAL;
+    challenges.headlines[0].generic.callback = UI_Challenges_Event;
+    challenges.headlines[0].generic.x = 216;
+    challenges.headlines[0].generic.y = 240 - 2 * PROP_HEIGHT;
+    challenges.headlines[0].string = "GENERAL";
+    challenges.headlines[0].style = UI_RIGHT;
+    challenges.headlines[0].color = color_red;
+    challenges.headlines[1].generic.type = MTYPE_PTEXT;
+    challenges.headlines[1].generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    challenges.headlines[1].generic.id = ID_GAMETYPES;
+    challenges.headlines[1].generic.callback = UI_Challenges_Event;
+    challenges.headlines[1].generic.x = 216;
+    challenges.headlines[1].generic.y = 240 - PROP_HEIGHT;
+    challenges.headlines[1].string = "GAMETYPES";
+    challenges.headlines[1].style = UI_RIGHT;
+    challenges.headlines[1].color = color_red;
+    challenges.headlines[2].generic.type = MTYPE_PTEXT;
+    challenges.headlines[2].generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    challenges.headlines[2].generic.id = ID_WEAPONS;
+    challenges.headlines[2].generic.callback = UI_Challenges_Event;
+    challenges.headlines[2].generic.x = 216;
+    challenges.headlines[2].generic.y = 240;
+    challenges.headlines[2].string = "WEAPONS";
+    challenges.headlines[2].style = UI_RIGHT;
+    challenges.headlines[2].color = color_red;
+    challenges.headlines[3].generic.type = MTYPE_PTEXT;
+    challenges.headlines[3].generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    challenges.headlines[3].generic.id = ID_AWARDS;
+    challenges.headlines[3].generic.callback = UI_Challenges_Event;
+    challenges.headlines[3].generic.x = 216;
+    challenges.headlines[3].generic.y = 240 + PROP_HEIGHT;
+    challenges.headlines[3].string = "AWARDS";
+    challenges.headlines[3].style = UI_RIGHT;
+    challenges.headlines[3].color = color_red;
+    challenges.headlines[4].generic.type = MTYPE_PTEXT;
+    challenges.headlines[4].generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    challenges.headlines[4].generic.id = ID_POWERUPS;
+    challenges.headlines[4].generic.callback = UI_Challenges_Event;
+    challenges.headlines[4].generic.x = 216;
+    challenges.headlines[4].generic.y = 240 + PROP_HEIGHT * 2;
+    challenges.headlines[4].string = "POWERUPS";
+    challenges.headlines[4].style = UI_RIGHT;
+    challenges.headlines[4].color = color_red;
+    challenges.notice.generic.type = MTYPE_TEXT;
     challenges.notice.generic.flags = QMF_CENTER_JUSTIFY | QMF_INACTIVE | QMF_SMALLFONT;
-    challenges.notice.generic.x     = 160;
-    challenges.notice.generic.y     = 430;
-    challenges.notice.string        = "Only results against";
-    challenges.notice2.generic.type          = MTYPE_TEXT;
-    challenges.notice2.generic.flags    = QMF_CENTER_JUSTIFY | QMF_INACTIVE | QMF_SMALLFONT;
-    challenges.notice2.generic.x     = 160;
-    challenges.notice2.generic.y     = 430 + PROP_HEIGHT - 10;
-    challenges.notice2.string        = "humans are counted";
-    challenges.back.generic.type        = MTYPE_BITMAP;
-    challenges.back.generic.name        = ART_BACK0;
-    challenges.back.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    challenges.back.generic.callback    = UI_Challenges_Event;
-    challenges.back.generic.id          = ID_BACK;
-    challenges.back.generic.x           = 0;
-    challenges.back.generic.y           = 480 - 64;
-    challenges.back.width               = 128;
-    challenges.back.height              = 64;
-    challenges.back.focuspic            = ART_BACK1;
-    challenges.headlines[mainSelection].generic.flags     = QMF_RIGHT_JUSTIFY | QMF_INACTIVE;
+    challenges.notice.generic.x = 160;
+    challenges.notice.generic.y = 430;
+    challenges.notice.string = "Only results against";
+    challenges.notice2.generic.type = MTYPE_TEXT;
+    challenges.notice2.generic.flags = QMF_CENTER_JUSTIFY | QMF_INACTIVE | QMF_SMALLFONT;
+    challenges.notice2.generic.x = 160;
+    challenges.notice2.generic.y = 430 + PROP_HEIGHT - 10;
+    challenges.notice2.string = "humans are counted";
+    challenges.back.generic.type = MTYPE_BITMAP;
+    challenges.back.generic.name = ART_BACK0;
+    challenges.back.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    challenges.back.generic.callback = UI_Challenges_Event;
+    challenges.back.generic.id = ID_BACK;
+    challenges.back.generic.x = 0;
+    challenges.back.generic.y = 480 - 64;
+    challenges.back.width = 128;
+    challenges.back.height = 64;
+    challenges.back.focuspic = ART_BACK1;
+    challenges.headlines[mainSelection].generic.flags = QMF_RIGHT_JUSTIFY | QMF_INACTIVE;
     switch (mainSelection) {
     case 0:
         //Overall statistics
@@ -352,14 +352,14 @@ static void UI_Challenges_Init(void) {
     for (i = 0; i < MAX_ENTRIES && i < challenges.numberOfEntries; i++) {
         challenges.entry[i].color = color_white;
         challenges.entry[i].generic.type = MTYPE_TEXT;
-        challenges.entry[i].generic.x        = 230;
-        challenges.entry[i].generic.y        = y;
+        challenges.entry[i].generic.x = 230;
+        challenges.entry[i].generic.y = y;
         challenges.entryIntText[i].color = color_white;
         challenges.entryIntText[i].generic.type = MTYPE_TEXT;
-        challenges.entryIntText[i].generic.x        = 630;
-        challenges.entryIntText[i].generic.y        = y;
+        challenges.entryIntText[i].generic.x = 630;
+        challenges.entryIntText[i].generic.y = y;
         challenges.entryIntText[i].style = UI_RIGHT;
-        challenges.entryIntText[i].string           = challenges.entryIntString[i];
+        challenges.entryIntText[i].string = challenges.entryIntString[i];
         strncpy(challenges.entryIntString[i], va("%u", challenges.entryInt[i]), MAX_INT_AS_STRING);
         y += BIGCHAR_HEIGHT + 2;
     }

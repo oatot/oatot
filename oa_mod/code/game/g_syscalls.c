@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -40,40 +40,40 @@ int PASSFLOAT(float x) {
     return fi.i;
 }
 
-void    trap_Printf(const char* fmt) {
+void trap_Printf(const char* fmt) {
     syscall(G_PRINT, fmt);
 }
 
-void    trap_Error(const char* fmt) {
+void trap_Error(const char* fmt) {
     syscall(G_ERROR, fmt);
     exit(0); //Will never be executed. Makes compiler happy
 }
 
-int     trap_Milliseconds(void) {
+int trap_Milliseconds(void) {
     return syscall(G_MILLISECONDS);
 }
 
-int     trap_Argc(void) {
+int trap_Argc(void) {
     return syscall(G_ARGC);
 }
 
-void    trap_Argv(int n, char* buffer, int bufferLength) {
+void trap_Argv(int n, char* buffer, int bufferLength) {
     syscall(G_ARGV, n, buffer, bufferLength);
 }
 
-int     trap_FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode) {
+int trap_FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode) {
     return syscall(G_FS_FOPEN_FILE, qpath, f, mode);
 }
 
-void    trap_FS_Read(void* buffer, int len, fileHandle_t f) {
+void trap_FS_Read(void* buffer, int len, fileHandle_t f) {
     syscall(G_FS_READ, buffer, len, f);
 }
 
-void    trap_FS_Write(const void* buffer, int len, fileHandle_t f) {
+void trap_FS_Write(const void* buffer, int len, fileHandle_t f) {
     syscall(G_FS_WRITE, buffer, len, f);
 }
 
-void    trap_FS_FCloseFile(fileHandle_t f) {
+void trap_FS_FCloseFile(fileHandle_t f) {
     syscall(G_FS_FCLOSE_FILE, f);
 }
 
@@ -85,15 +85,15 @@ int trap_FS_Seek(fileHandle_t f, long offset, int origin) {
     return syscall(G_FS_SEEK, f, offset, origin);
 }
 
-void    trap_SendConsoleCommand(int exec_when, const char* text) {
+void trap_SendConsoleCommand(int exec_when, const char* text) {
     syscall(G_SEND_CONSOLE_COMMAND, exec_when, text);
 }
 
-void    trap_Cvar_Register(vmCvar_t* cvar, const char* var_name, const char* value, int flags) {
+void trap_Cvar_Register(vmCvar_t* cvar, const char* var_name, const char* value, int flags) {
     syscall(G_CVAR_REGISTER, cvar, var_name, value, flags);
 }
 
-void    trap_Cvar_Update(vmCvar_t* cvar) {
+void trap_Cvar_Update(vmCvar_t* cvar) {
     syscall(G_CVAR_UPDATE, cvar);
 }
 

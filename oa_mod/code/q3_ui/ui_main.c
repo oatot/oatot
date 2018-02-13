@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -67,8 +67,8 @@ intptr_t vmMain(int command, int arg0, int arg1, int arg2, int arg3, int arg4, i
     case UI_DRAW_CONNECT_SCREEN:
         UI_DrawConnectScreen(arg0);
         return 0;
-    case UI_HASUNIQUECDKEY:             // mod authors need to observe this
-        return qtrue;  // bk010117 - change this to qfalse for mods!
+    case UI_HASUNIQUECDKEY: // mod authors need to observe this
+        return qtrue; // bk010117 - change this to qfalse for mods!
     }
     return -1;
 }
@@ -80,109 +80,109 @@ cvars
 */
 
 typedef struct {
-    vmCvar_t*    vmCvar;
-    char*        cvarName;
-    char*        defaultString;
-    int         cvarFlags;
+    vmCvar_t* vmCvar;
+    char* cvarName;
+    char* defaultString;
+    int cvarFlags;
 } cvarTable_t;
 
-vmCvar_t    ui_ffa_fraglimit;
-vmCvar_t    ui_ffa_timelimit;
+vmCvar_t ui_ffa_fraglimit;
+vmCvar_t ui_ffa_timelimit;
 
-vmCvar_t    ui_tourney_fraglimit;
-vmCvar_t    ui_tourney_timelimit;
+vmCvar_t ui_tourney_fraglimit;
+vmCvar_t ui_tourney_timelimit;
 
-vmCvar_t    ui_team_fraglimit;
-vmCvar_t    ui_team_timelimit;
-vmCvar_t    ui_team_friendly;
+vmCvar_t ui_team_fraglimit;
+vmCvar_t ui_team_timelimit;
+vmCvar_t ui_team_friendly;
 
-vmCvar_t    ui_ctf_capturelimit;
-vmCvar_t    ui_ctf_timelimit;
-vmCvar_t    ui_ctf_friendly;
+vmCvar_t ui_ctf_capturelimit;
+vmCvar_t ui_ctf_timelimit;
+vmCvar_t ui_ctf_friendly;
 
-vmCvar_t    ui_1fctf_capturelimit;
-vmCvar_t    ui_1fctf_timelimit;
-vmCvar_t    ui_1fctf_friendly;
+vmCvar_t ui_1fctf_capturelimit;
+vmCvar_t ui_1fctf_timelimit;
+vmCvar_t ui_1fctf_friendly;
 
-vmCvar_t    ui_overload_capturelimit;
-vmCvar_t    ui_overload_timelimit;
-vmCvar_t    ui_overload_friendly;
+vmCvar_t ui_overload_capturelimit;
+vmCvar_t ui_overload_timelimit;
+vmCvar_t ui_overload_friendly;
 
-vmCvar_t    ui_harvester_capturelimit;
-vmCvar_t    ui_harvester_timelimit;
-vmCvar_t    ui_harvester_friendly;
+vmCvar_t ui_harvester_capturelimit;
+vmCvar_t ui_harvester_timelimit;
+vmCvar_t ui_harvester_friendly;
 
-vmCvar_t    ui_elimination_capturelimit;
-vmCvar_t    ui_elimination_timelimit;
+vmCvar_t ui_elimination_capturelimit;
+vmCvar_t ui_elimination_timelimit;
 
-vmCvar_t    ui_ctf_elimination_capturelimit;
-vmCvar_t    ui_ctf_elimination_timelimit;
+vmCvar_t ui_ctf_elimination_capturelimit;
+vmCvar_t ui_ctf_elimination_timelimit;
 
-vmCvar_t    ui_lms_fraglimit;
-vmCvar_t    ui_lms_timelimit;
+vmCvar_t ui_lms_fraglimit;
+vmCvar_t ui_lms_timelimit;
 
-vmCvar_t    ui_dd_capturelimit;
-vmCvar_t    ui_dd_timelimit;
-vmCvar_t    ui_dd_friendly;
+vmCvar_t ui_dd_capturelimit;
+vmCvar_t ui_dd_timelimit;
+vmCvar_t ui_dd_friendly;
 
-vmCvar_t    ui_dom_capturelimit;
-vmCvar_t    ui_dom_timelimit;
-vmCvar_t    ui_dom_friendly;
+vmCvar_t ui_dom_capturelimit;
+vmCvar_t ui_dom_timelimit;
+vmCvar_t ui_dom_friendly;
 
-vmCvar_t    ui_pos_scorelimit;
-vmCvar_t    ui_pos_timelimit;
+vmCvar_t ui_pos_scorelimit;
+vmCvar_t ui_pos_timelimit;
 
-vmCvar_t    ui_arenasFile;
-vmCvar_t    ui_botsFile;
-vmCvar_t    ui_spScores1;
-vmCvar_t    ui_spScores2;
-vmCvar_t    ui_spScores3;
-vmCvar_t    ui_spScores4;
-vmCvar_t    ui_spScores5;
-vmCvar_t    ui_spAwards;
-vmCvar_t    ui_spVideos;
-vmCvar_t    ui_spSkill;
+vmCvar_t ui_arenasFile;
+vmCvar_t ui_botsFile;
+vmCvar_t ui_spScores1;
+vmCvar_t ui_spScores2;
+vmCvar_t ui_spScores3;
+vmCvar_t ui_spScores4;
+vmCvar_t ui_spScores5;
+vmCvar_t ui_spAwards;
+vmCvar_t ui_spVideos;
+vmCvar_t ui_spSkill;
 
-vmCvar_t    ui_spSelection;
+vmCvar_t ui_spSelection;
 
-vmCvar_t    ui_browserMaster;
-vmCvar_t    ui_browserGameType;
-vmCvar_t    ui_browserSortKey;
-vmCvar_t    ui_browserShowFull;
-vmCvar_t    ui_browserShowEmpty;
+vmCvar_t ui_browserMaster;
+vmCvar_t ui_browserGameType;
+vmCvar_t ui_browserSortKey;
+vmCvar_t ui_browserShowFull;
+vmCvar_t ui_browserShowEmpty;
 
-vmCvar_t    ui_brassTime;
-vmCvar_t    ui_drawCrosshair;
-vmCvar_t    ui_drawCrosshairNames;
-vmCvar_t    ui_marks;
+vmCvar_t ui_brassTime;
+vmCvar_t ui_drawCrosshair;
+vmCvar_t ui_drawCrosshairNames;
+vmCvar_t ui_marks;
 
-vmCvar_t    ui_server1;
-vmCvar_t    ui_server2;
-vmCvar_t    ui_server3;
-vmCvar_t    ui_server4;
-vmCvar_t    ui_server5;
-vmCvar_t    ui_server6;
-vmCvar_t    ui_server7;
-vmCvar_t    ui_server8;
-vmCvar_t    ui_server9;
-vmCvar_t    ui_server10;
-vmCvar_t    ui_server11;
-vmCvar_t    ui_server12;
-vmCvar_t    ui_server13;
-vmCvar_t    ui_server14;
-vmCvar_t    ui_server15;
-vmCvar_t    ui_server16;
+vmCvar_t ui_server1;
+vmCvar_t ui_server2;
+vmCvar_t ui_server3;
+vmCvar_t ui_server4;
+vmCvar_t ui_server5;
+vmCvar_t ui_server6;
+vmCvar_t ui_server7;
+vmCvar_t ui_server8;
+vmCvar_t ui_server9;
+vmCvar_t ui_server10;
+vmCvar_t ui_server11;
+vmCvar_t ui_server12;
+vmCvar_t ui_server13;
+vmCvar_t ui_server14;
+vmCvar_t ui_server15;
+vmCvar_t ui_server16;
 
 //vmCvar_t ui_cdkeychecked;
 
 //new in beta 23:
-vmCvar_t        ui_browserOnlyHumans;
+vmCvar_t ui_browserOnlyHumans;
 
 //new in beta 37:
-vmCvar_t        ui_setupchecked;
+vmCvar_t ui_setupchecked;
 
 // bk001129 - made static to avoid aliasing.
-static cvarTable_t      cvarTable[] = {
+static cvarTable_t cvarTable[] = {
     { &ui_ffa_fraglimit, "ui_ffa_fraglimit", "20", CVAR_ARCHIVE },
     { &ui_ffa_timelimit, "ui_ffa_timelimit", "0", CVAR_ARCHIVE },
 
@@ -191,23 +191,23 @@ static cvarTable_t      cvarTable[] = {
 
     { &ui_team_fraglimit, "ui_team_fraglimit", "0", CVAR_ARCHIVE },
     { &ui_team_timelimit, "ui_team_timelimit", "20", CVAR_ARCHIVE },
-    { &ui_team_friendly, "ui_team_friendly",  "1", CVAR_ARCHIVE },
+    { &ui_team_friendly, "ui_team_friendly", "1", CVAR_ARCHIVE },
 
     { &ui_ctf_capturelimit, "ui_ctf_capturelimit", "8", CVAR_ARCHIVE },
     { &ui_ctf_timelimit, "ui_ctf_timelimit", "30", CVAR_ARCHIVE },
-    { &ui_ctf_friendly, "ui_ctf_friendly",  "0", CVAR_ARCHIVE },
+    { &ui_ctf_friendly, "ui_ctf_friendly", "0", CVAR_ARCHIVE },
 
     { &ui_1fctf_capturelimit, "ui_1fctf_capturelimit", "8", CVAR_ARCHIVE },
     { &ui_1fctf_timelimit, "ui_1fctf_timelimit", "30", CVAR_ARCHIVE },
-    { &ui_1fctf_friendly, "ui_1fctf_friendly",  "0", CVAR_ARCHIVE },
+    { &ui_1fctf_friendly, "ui_1fctf_friendly", "0", CVAR_ARCHIVE },
 
     { &ui_overload_capturelimit, "ui_overload_capturelimit", "8", CVAR_ARCHIVE },
     { &ui_overload_timelimit, "ui_overload_timelimit", "30", CVAR_ARCHIVE },
-    { &ui_overload_friendly, "ui_overload_friendly",  "0", CVAR_ARCHIVE },
+    { &ui_overload_friendly, "ui_overload_friendly", "0", CVAR_ARCHIVE },
 
     { &ui_harvester_capturelimit, "ui_harvester_capturelimit", "20", CVAR_ARCHIVE },
     { &ui_harvester_timelimit, "ui_harvester_timelimit", "30", CVAR_ARCHIVE },
-    { &ui_harvester_friendly, "ui_harvester_friendly",  "0", CVAR_ARCHIVE },
+    { &ui_harvester_friendly, "ui_harvester_friendly", "0", CVAR_ARCHIVE },
 
     { &ui_elimination_capturelimit, "ui_elimination_capturelimit", "8", CVAR_ARCHIVE },
     { &ui_elimination_timelimit, "ui_elimination_timelimit", "20", CVAR_ARCHIVE },
@@ -220,11 +220,11 @@ static cvarTable_t      cvarTable[] = {
 
     { &ui_dd_capturelimit, "ui_dd_capturelimit", "8", CVAR_ARCHIVE },
     { &ui_dd_timelimit, "ui_dd_timelimit", "30", CVAR_ARCHIVE },
-    { &ui_dd_friendly, "ui_dd_friendly",  "0", CVAR_ARCHIVE },
+    { &ui_dd_friendly, "ui_dd_friendly", "0", CVAR_ARCHIVE },
 
     { &ui_dom_capturelimit, "ui_dom_capturelimit", "500", CVAR_ARCHIVE },
     { &ui_dom_timelimit, "ui_dom_timelimit", "30", CVAR_ARCHIVE },
-    { &ui_dom_friendly, "ui_dom_friendly",  "0", CVAR_ARCHIVE },
+    { &ui_dom_friendly, "ui_dom_friendly", "0", CVAR_ARCHIVE },
 
     { &ui_pos_scorelimit, "ui_pos_scorelimit", "120", CVAR_ARCHIVE },
     { &ui_pos_timelimit, "ui_pos_timelimit", "20", CVAR_ARCHIVE },
@@ -288,7 +288,7 @@ UI_RegisterCvars
 =================
 */
 void UI_RegisterCvars(void) {
-    int         i;
+    int i;
     cvarTable_t* cv;
     for (i = 0, cv = cvarTable; i < cvarTableSize; i++, cv++) {
         trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
@@ -301,7 +301,7 @@ UI_UpdateCvars
 =================
 */
 void UI_UpdateCvars(void) {
-    int         i;
+    int i;
     cvarTable_t* cv;
     for (i = 0, cv = cvarTable; i < cvarTableSize; i++, cv++) {
         trap_Cvar_Update(cv->vmCvar);

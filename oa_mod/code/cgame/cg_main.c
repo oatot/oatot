@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -414,9 +414,9 @@ static cvarTable_t cvarTable[] = {// bk001129
     { &cg_obituaryOutput, "cg_obituaryOutput", "3", CVAR_ARCHIVE},
     //unlagged - smooth clients #2
     // this is done server-side now
-    //  { &cg_smoothClients, "cg_smoothClients", "0", CVAR_USERINFO | CVAR_ARCHIVE},
+    // { &cg_smoothClients, "cg_smoothClients", "0", CVAR_USERINFO | CVAR_ARCHIVE},
     //unlagged - smooth clients #2
-    //  { &cg_cameraMode, "com_cameraMode", "0", CVAR_CHEAT},
+    // { &cg_cameraMode, "com_cameraMode", "0", CVAR_CHEAT},
 
     { &pmove_fixed, "pmove_fixed", "0", CVAR_SYSTEMINFO},
     { &pmove_msec, "pmove_msec", "11", CVAR_SYSTEMINFO},
@@ -447,21 +447,21 @@ static cvarTable_t cvarTable[] = {// bk001129
     { &cg_oldPlasma, "cg_oldPlasma", "1", CVAR_ARCHIVE},
     //unlagged - client options
     { &cg_delag, "cg_delag", "1", CVAR_ARCHIVE | CVAR_USERINFO},
-    //  { &cg_debugDelag, "cg_debugDelag", "0", CVAR_USERINFO | CVAR_CHEAT },
-    //  { &cg_drawBBox, "cg_drawBBox", "0", CVAR_CHEAT },
+    // { &cg_debugDelag, "cg_debugDelag", "0", CVAR_USERINFO | CVAR_CHEAT },
+    // { &cg_drawBBox, "cg_drawBBox", "0", CVAR_CHEAT },
     { &cg_cmdTimeNudge, "cg_cmdTimeNudge", "0", CVAR_ARCHIVE | CVAR_USERINFO},
     // this will be automagically copied from the server
     { &sv_fps, "sv_fps", "20", CVAR_SYSTEMINFO},
     { &cg_projectileNudge, "cg_projectileNudge", "0", CVAR_ARCHIVE},
     { &cg_optimizePrediction, "cg_optimizePrediction", "1", CVAR_ARCHIVE},
     { &cl_timeNudge, "cl_timeNudge", "0", CVAR_ARCHIVE},
-    //  { &cg_latentSnaps, "cg_latentSnaps", "0", CVAR_USERINFO | CVAR_CHEAT },
-    //  { &cg_latentCmds, "cg_latentCmds", "0", CVAR_USERINFO | CVAR_CHEAT },
-    //  { &cg_plOut, "cg_plOut", "0", CVAR_USERINFO | CVAR_CHEAT },
+    // { &cg_latentSnaps, "cg_latentSnaps", "0", CVAR_USERINFO | CVAR_CHEAT },
+    // { &cg_latentCmds, "cg_latentCmds", "0", CVAR_USERINFO | CVAR_CHEAT },
+    // { &cg_plOut, "cg_plOut", "0", CVAR_USERINFO | CVAR_CHEAT },
     //unlagged - client options
     { &cg_trueLightning, "cg_trueLightning", "0.0", CVAR_ARCHIVE},
     { &cg_music, "cg_music", "", CVAR_ARCHIVE},
-    //  { &cg_pmove_fixed, "cg_pmove_fixed", "0", CVAR_USERINFO | CVAR_ARCHIVE }
+    // { &cg_pmove_fixed, "cg_pmove_fixed", "0", CVAR_USERINFO | CVAR_ARCHIVE }
 
     { &cg_fragmsgsize, "cg_fragmsgsize", "1.0", CVAR_ARCHIVE},
     { &cg_crosshairPulse, "cg_crosshairPulse", "1", CVAR_ARCHIVE},
@@ -561,23 +561,23 @@ void CG_UpdateCvars(void) {
         // players *long* after they had left the area, on purpose
         if (cv->vmCvar == &cg_cmdTimeNudge) {
             CG_Cvar_ClampInt(cv->cvarName, cv->vmCvar, 0, 999);
-        }           // cl_timenudge less than -50 or greater than 50 doesn't actually
+        } // cl_timenudge less than -50 or greater than 50 doesn't actually
         // do anything more than -50 or 50 (actually the numbers are probably
         // closer to -30 and 30, but 50 is nice and round-ish)
         // might as well not feed the myth, eh?
         else if (cv->vmCvar == &cl_timeNudge) {
             CG_Cvar_ClampInt(cv->cvarName, cv->vmCvar, -50, 50);
-        }           // don't let this go too high - no point
+        } // don't let this go too high - no point
         /*else if ( cv->vmCvar == &cg_latentSnaps ) {
-            CG_Cvar_ClampInt( cv->cvarName, cv->vmCvar, 0, 10 );
+        CG_Cvar_ClampInt( cv->cvarName, cv->vmCvar, 0, 10 );
         }*/
         // don't let this get too large
         /*else if ( cv->vmCvar == &cg_latentCmds ) {
-            CG_Cvar_ClampInt( cv->cvarName, cv->vmCvar, 0, MAX_LATENT_CMDS - 1 );
+        CG_Cvar_ClampInt( cv->cvarName, cv->vmCvar, 0, MAX_LATENT_CMDS - 1 );
         }*/
         // no more than 100% packet loss
         /*else if ( cv->vmCvar == &cg_plOut ) {
-            CG_Cvar_ClampInt( cv->cvarName, cv->vmCvar, 0, 100 );
+        CG_Cvar_ClampInt( cv->cvarName, cv->vmCvar, 0, 100 );
         }*/
         //unlagged - client options
         else if (cv->vmCvar == &cg_errorDecay) {
@@ -586,7 +586,7 @@ void CG_UpdateCvars(void) {
         trap_Cvar_Update(cv->vmCvar);
     }
     // check for modications here
-    // If team overlay is on, ask for updates from the server.  If its off,
+    // If team overlay is on, ask for updates from the server. If its off,
     // let the server know so we don't receive it
     if (drawTeamOverlayModificationCount != cg_drawTeamOverlay.modificationCount) {
         drawTeamOverlayModificationCount = cg_drawTeamOverlay.modificationCount;
@@ -877,9 +877,9 @@ static void CG_RegisterSounds(void) {
     // only register the items that the server says we need
     Q_strncpyz(items, CG_ConfigString(CS_ITEMS), sizeof(items));
     for (i = 1; i < bg_numItems; i++) {
-        //      if ( items[ i ] == '1' || cg_buildScript.integer ) {
+        // if ( items[ i ] == '1' || cg_buildScript.integer ) {
         CG_RegisterItemSounds(i);
-        //      }
+        // }
     }
     for (i = 1; i < MAX_SOUNDS; i++) {
         soundName = CG_ConfigString(CS_SOUNDS + i);
@@ -1268,19 +1268,19 @@ static void CG_RegisterGraphics(void) {
     trap_R_RegisterModel("models/players/sorceress/upper.mdr");
     trap_R_RegisterModel("models/players/sorceress/head.md3");
 #endif
-    //  CG_ClearParticles ();
+    // CG_ClearParticles ();
     /*
-        for (i=1; i<MAX_PARTICLES_AREAS; i++)
-        {
-            {
-                int rval;
+    for (i=1; i<MAX_PARTICLES_AREAS; i++)
+    {
+    {
+    int rval;
 
-                rval = CG_NewParticleArea ( CS_PARTICLES + i);
-                if (!rval)
-                    break;
-            }
-        }
-     */
+    rval = CG_NewParticleArea ( CS_PARTICLES + i);
+    if (!rval)
+    break;
+    }
+    }
+    */
 }
 
 /*
@@ -1294,7 +1294,7 @@ void CG_BuildSpectatorString(void) {
     cg.spectatorList[0] = 0;
     for (i = 0; i < MAX_CLIENTS; i++) {
         if (cgs.clientinfo[i].infoValid && cgs.clientinfo[i].team == TEAM_SPECTATOR) {
-            Q_strcat(cg.spectatorList, sizeof(cg.spectatorList), va("%s     ", cgs.clientinfo[i].name));
+            Q_strcat(cg.spectatorList, sizeof(cg.spectatorList), va("%s ", cgs.clientinfo[i].name));
         }
     }
     i = strlen(cg.spectatorList);
@@ -1695,12 +1695,12 @@ void CG_ParseMenu(const char* menuFile) {
             break;
         }
         //if ( !Q_strequal( token, "{" ) ) {
-        //  Com_Printf( "Missing { in menu file\n" );
-        //  break;
+        // Com_Printf( "Missing { in menu file\n" );
+        // break;
         //}
         //if ( menuCount == MAX_MENUS ) {
-        //  Com_Printf( "Too many menus!\n" );
-        //  break;
+        // Com_Printf( "Too many menus!\n" );
+        // break;
         //}
         if (token.string[0] == '}') {
             break;
@@ -2088,29 +2088,29 @@ void CG_LoadHudMenu(void) {
 
 void CG_AssetCache(void) {
     //if (Assets.textFont == NULL) {
-    //  trap_R_RegisterFont("fonts/arial.ttf", 72, &Assets.textFont);
+    // trap_R_RegisterFont("fonts/arial.ttf", 72, &Assets.textFont);
     //}
     //Assets.background = trap_R_RegisterShaderNoMip( ASSET_BACKGROUND );
     //Com_Printf("Menu Size: %i bytes\n", sizeof(Menus));
     /*
-        cgDC.Assets.gradientBar = trap_R_RegisterShaderNoMip( ASSET_GRADIENTBAR );
-        cgDC.Assets.fxBasePic = trap_R_RegisterShaderNoMip( ART_FX_BASE );
-        cgDC.Assets.fxPic[0] = trap_R_RegisterShaderNoMip( ART_FX_RED );
-        cgDC.Assets.fxPic[1] = trap_R_RegisterShaderNoMip( ART_FX_YELLOW );
-        cgDC.Assets.fxPic[2] = trap_R_RegisterShaderNoMip( ART_FX_GREEN );
-        cgDC.Assets.fxPic[3] = trap_R_RegisterShaderNoMip( ART_FX_TEAL );
-        cgDC.Assets.fxPic[4] = trap_R_RegisterShaderNoMip( ART_FX_BLUE );
-        cgDC.Assets.fxPic[5] = trap_R_RegisterShaderNoMip( ART_FX_CYAN );
-        cgDC.Assets.fxPic[6] = trap_R_RegisterShaderNoMip( ART_FX_WHITE );
-        cgDC.Assets.scrollBar = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR );
-        cgDC.Assets.scrollBarArrowDown = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWDOWN );
-        cgDC.Assets.scrollBarArrowUp = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWUP );
-        cgDC.Assets.scrollBarArrowLeft = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWLEFT );
-        cgDC.Assets.scrollBarArrowRight = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWRIGHT );
-        cgDC.Assets.scrollBarThumb = trap_R_RegisterShaderNoMip( ASSET_SCROLL_THUMB );
-        cgDC.Assets.sliderBar = trap_R_RegisterShaderNoMip( ASSET_SLIDER_BAR );
-        cgDC.Assets.sliderThumb = trap_R_RegisterShaderNoMip( ASSET_SLIDER_THUMB );
-     */
+    cgDC.Assets.gradientBar = trap_R_RegisterShaderNoMip( ASSET_GRADIENTBAR );
+    cgDC.Assets.fxBasePic = trap_R_RegisterShaderNoMip( ART_FX_BASE );
+    cgDC.Assets.fxPic[0] = trap_R_RegisterShaderNoMip( ART_FX_RED );
+    cgDC.Assets.fxPic[1] = trap_R_RegisterShaderNoMip( ART_FX_YELLOW );
+    cgDC.Assets.fxPic[2] = trap_R_RegisterShaderNoMip( ART_FX_GREEN );
+    cgDC.Assets.fxPic[3] = trap_R_RegisterShaderNoMip( ART_FX_TEAL );
+    cgDC.Assets.fxPic[4] = trap_R_RegisterShaderNoMip( ART_FX_BLUE );
+    cgDC.Assets.fxPic[5] = trap_R_RegisterShaderNoMip( ART_FX_CYAN );
+    cgDC.Assets.fxPic[6] = trap_R_RegisterShaderNoMip( ART_FX_WHITE );
+    cgDC.Assets.scrollBar = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR );
+    cgDC.Assets.scrollBarArrowDown = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWDOWN );
+    cgDC.Assets.scrollBarArrowUp = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWUP );
+    cgDC.Assets.scrollBarArrowLeft = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWLEFT );
+    cgDC.Assets.scrollBarArrowRight = trap_R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWRIGHT );
+    cgDC.Assets.scrollBarThumb = trap_R_RegisterShaderNoMip( ASSET_SCROLL_THUMB );
+    cgDC.Assets.sliderBar = trap_R_RegisterShaderNoMip( ASSET_SLIDER_BAR );
+    cgDC.Assets.sliderThumb = trap_R_RegisterShaderNoMip( ASSET_SLIDER_THUMB );
+    */
     // Changed RD SCRIPTHUD
     cgDC.Assets.gradientBar = trap_R_RegisterShaderNoMip(ASSET_GRADIENTBAR);
     cgDC.Assets.fxBasePic = trap_R_RegisterShaderNoMip(ART_FX_BASE);
@@ -2272,8 +2272,8 @@ void CG_Shutdown(void) {
 CG_EventHandling
 ==================
  type 0 - no event handling
-      1 - team menu
-      2 - hud editor
+ 1 - team menu
+ 2 - hud editor
 
  */
 #ifndef MISSIONPACK
@@ -2297,7 +2297,7 @@ SnapVectorTowards
 
 Round a vector to integers for more efficient network
 transmission, but make sure that it rounds towards a given point
-rather than blindly truncating.  This prevents it from truncating
+rather than blindly truncating. This prevents it from truncating
 into a wall.
 ======================
  */

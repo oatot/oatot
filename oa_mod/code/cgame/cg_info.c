@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -24,13 +24,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "cg_local.h"
 
-#define MAX_LOADING_PLAYER_ICONS    16
-#define MAX_LOADING_ITEM_ICONS      26
+#define MAX_LOADING_PLAYER_ICONS 16
+#define MAX_LOADING_ITEM_ICONS 26
 
-static int          loadingPlayerIconCount;
-static int          loadingItemIconCount;
-static qhandle_t    loadingPlayerIcons[MAX_LOADING_PLAYER_ICONS];
-static qhandle_t    loadingItemIcons[MAX_LOADING_ITEM_ICONS];
+static int loadingPlayerIconCount;
+static int loadingItemIconCount;
+static qhandle_t loadingPlayerIcons[MAX_LOADING_PLAYER_ICONS];
+static qhandle_t loadingItemIcons[MAX_LOADING_ITEM_ICONS];
 
 /*
 ===================
@@ -38,8 +38,8 @@ CG_DrawLoadingIcons
 ===================
 */
 static void CG_DrawLoadingIcons(void) {
-    int     n;
-    int     x, y;
+    int n;
+    int x, y;
     for (n = 0; n < loadingPlayerIconCount; n++) {
         x = 16 + n * 78;
         y = 324 - 40;
@@ -72,7 +72,7 @@ CG_LoadingItem
 ===================
 */
 void CG_LoadingItem(int itemNum) {
-    gitem_t*     item;
+    gitem_t* item;
     item = &bg_itemlist[itemNum];
     if (item->icon && loadingItemIconCount < MAX_LOADING_ITEM_ICONS) {
         loadingItemIcons[loadingItemIconCount++] = trap_R_RegisterShaderNoMip(item->icon);
@@ -86,11 +86,11 @@ CG_LoadingClient
 ===================
 */
 void CG_LoadingClient(int clientNum) {
-    const char*      info;
-    char*            skin;
-    char            personality[MAX_QPATH];
-    char            model[MAX_QPATH];
-    char            iconName[MAX_QPATH];
+    const char* info;
+    char* skin;
+    char personality[MAX_QPATH];
+    char model[MAX_QPATH];
+    char iconName[MAX_QPATH];
     info = CG_ConfigString(CS_PLAYERS + clientNum);
     if (loadingPlayerIconCount < MAX_LOADING_PLAYER_ICONS) {
         Q_strncpyz(model, Info_ValueForKey(info, "model"), sizeof(model));
@@ -130,14 +130,14 @@ Draw all the status / pacifier stuff during level loading
 ====================
 */
 void CG_DrawInformation(void) {
-    const char*  s;
-    const char*  info;
-    const char*  sysInfo;
-    int         y;
-    int         value;
-    qhandle_t   levelshot;
-    qhandle_t   detail;
-    char        buf[1024];
+    const char* s;
+    const char* info;
+    const char* sysInfo;
+    int y;
+    int value;
+    qhandle_t levelshot;
+    qhandle_t detail;
+    char buf[1024];
     info = CG_ConfigString(CS_SERVERINFO);
     sysInfo = CG_ConfigString(CS_SYSTEMINFO);
     s = Info_ValueForKey(info, "mapname");

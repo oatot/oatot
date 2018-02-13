@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_dmnet.c
+ * name: ai_dmnet.c
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /MissionPack/code/game/ai_dmnet.c $
  *
@@ -48,21 +48,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "ai_dmnet.h"
 #include "ai_team.h"
 //data file headers
-#include "chars.h"          //characteristics
-#include "inv.h"            //indexes into the inventory
-#include "syn.h"            //synonyms
-#include "match.h"          //string matching types and vars
+#include "chars.h" //characteristics
+#include "inv.h" //indexes into the inventory
+#include "syn.h" //synonyms
+#include "match.h" //string matching types and vars
 
 // for the voice chats
 #include "../../ui/menudef.h"
 
 //goal flag, see ../botlib/be_ai_goal.h for the other GFL_*
-#define GFL_AIR         128
+#define GFL_AIR 128
 
 int numnodeswitches;
 char nodeswitch[MAX_NODESWITCHES + 1][144];
 
-#define LOOKAHEAD_DISTANCE          300
+#define LOOKAHEAD_DISTANCE 300
 
 extern bot_goal_t dom_points_bot[MAX_DOMINATION_POINTS];
 
@@ -209,11 +209,11 @@ int BotNearbyGoal(bot_state_t* bs, int tfl, bot_goal_t* ltg, float range) {
     /*
     if (ret)
     {
-        char buf[128];
-        //get the goal at the top of the stack
-        trap_BotGetTopGoal(bs->gs, &goal);
-        trap_BotGoalName(goal.number, buf, sizeof(buf));
-        BotAI_Print(PRT_MESSAGE, "%1.1f: new nearby goal %s\n", FloatTime(), buf);
+    char buf[128];
+    //get the goal at the top of the stack
+    trap_BotGetTopGoal(bs->gs, &goal);
+    trap_BotGoalName(goal.number, buf, sizeof(buf));
+    BotAI_Print(PRT_MESSAGE, "%1.1f: new nearby goal %s\n", FloatTime(), buf);
     }
     */
     return ret;
@@ -241,9 +241,9 @@ int BotReachedGoal(bot_state_t* bs, bot_goal_t* goal) {
 
             avoidtime = trap_BotAvoidGoalTime(bs->gs, goal->number);
             if (avoidtime > 0) {
-                t = trap_AAS_AreaTravelTimeToGoalArea(bs->areanum, bs->origin, goal->areanum, bs->tfl);
-                if ((float) t * 0.009 < avoidtime)
-                    return qtrue;
+            t = trap_AAS_AreaTravelTimeToGoalArea(bs->areanum, bs->origin, goal->areanum, bs->tfl);
+            if ((float) t * 0.009 < avoidtime)
+            return qtrue;
             }
             */
             return qtrue;
@@ -584,31 +584,31 @@ int BotGetLongTermGoal(bot_state_t* bs, int tfl, int retreat, bot_goal_t* goal) 
         return qtrue;
     }
     //if (bs->ltgtype == LTG_DOMHOLD &&
-    //          bs->defendaway_time < FloatTime()) {
+    // bs->defendaway_time < FloatTime()) {
     //check for bot typing status message
     /*if (bs->teammessage_time && bs->teammessage_time < FloatTime()) {
-        trap_BotGoalName(bs->teamgoal.number, buf, sizeof(buf));
-        BotAI_BotInitialChat(bs, "dd_start_pointb", buf, NULL);
-        trap_BotEnterChat(bs->cs, 0, CHAT_TEAM);
-        //BotVoiceChatOnly(bs, -1, VOICECHAT_ONDEFENSE);
-        bs->teammessage_time = 0;
+    trap_BotGoalName(bs->teamgoal.number, buf, sizeof(buf));
+    BotAI_BotInitialChat(bs, "dd_start_pointb", buf, NULL);
+    trap_BotEnterChat(bs->cs, 0, CHAT_TEAM);
+    //BotVoiceChatOnly(bs, -1, VOICECHAT_ONDEFENSE);
+    bs->teammessage_time = 0;
     }*/
     //set the bot goal
-    //  memcpy(goal, &bs->teamgoal, sizeof(bot_goal_t));
+    // memcpy(goal, &bs->teamgoal, sizeof(bot_goal_t));
     //if very close... go away for some time
-    //  VectorSubtract(goal->origin, bs->origin, dir);
-    //  if (VectorLengthSquared(dir) < Square(30)) {
+    // VectorSubtract(goal->origin, bs->origin, dir);
+    // if (VectorLengthSquared(dir) < Square(30)) {
     /*trap_BotResetAvoidReach(bs->ms);
     bs->defendaway_time = FloatTime() + 3 + 3 * random();
     if (BotHasPersistantPowerupAndWeapon(bs)) {
-        bs->defendaway_range = 100;
+    bs->defendaway_range = 100;
     }
     else {
-        bs->defendaway_range = 350;
+    bs->defendaway_range = 350;
     }*/
-    //              memcpy(&bs->teamgoal, &dom_points_bot[((rand()) % (level.domination_points_count))], sizeof(bot_goal_t));
-    //            BotAlternateRoute(bs, &bs->teamgoal);
-    //          BotSetTeamStatus(bs);
+    // memcpy(&bs->teamgoal, &dom_points_bot[((rand()) % (level.domination_points_count))], sizeof(bot_goal_t));
+    // BotAlternateRoute(bs, &bs->teamgoal);
+    // BotSetTeamStatus(bs);
     //}
     //return qtrue;
     // }

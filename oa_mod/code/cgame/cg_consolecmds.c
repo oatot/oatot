@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -189,7 +189,7 @@ static void CG_spWin_f(void) {
     // leilei - Unlock stuff!!! Trophies crap.
     {
         char berf[4];
-        //const char    *info;
+        //const char *info;
         int trophyearn;
         int trophyhad;
         // trophyearn = 1 = GOLD!!!
@@ -199,7 +199,7 @@ static void CG_spWin_f(void) {
         trophyearn = 1; // gold... if we're good
         //info = CG_ConfigString( CS_SERVERINFO );
         //s = Info_ValueForKey( info, "mapname" );
-        trap_Cvar_VariableStringBuffer("ui_currentMap", berf, sizeof(berf));  // get map number instead for list consistency
+        trap_Cvar_VariableStringBuffer("ui_currentMap", berf, sizeof(berf)); // get map number instead for list consistency
         trophyhad = CG_Cvar_Got(va("ui_sp_unlock_%s", berf));
         if (trophyhad > trophyearn) {
             trophyearn = 0;
@@ -216,7 +216,7 @@ static void CG_spWin_f(void) {
             trap_Cvar_Set(va("ui_sp_unlock_%s", berf), va("%i", trophyearn)); // YA YUO DID IT!!!1
         }
         // leilei - get all the total trophies. Should really be done in the single player ui scripts, but
-        //      doing it here could make a nice verifier for legitimacy :)
+        // doing it here could make a nice verifier for legitimacy :)
         {
             int tropees = 0;
             int tropgold = 0;
@@ -444,13 +444,13 @@ CG_TeamMenu_f
  */
 /*
 static void CG_TeamMenu_f( void ) {
-    if (trap_Key_GetCatcher() & KEYCATCH_CGAME) {
-        CG_EventHandling(CGAME_EVENT_NONE);
-        trap_Key_SetCatcher(0);
-    } else {
-        CG_EventHandling(CGAME_EVENT_TEAMMENU);
-        //trap_Key_SetCatcher(KEYCATCH_CGAME);
-    }
+ if (trap_Key_GetCatcher() & KEYCATCH_CGAME) {
+ CG_EventHandling(CGAME_EVENT_NONE);
+ trap_Key_SetCatcher(0);
+ } else {
+ CG_EventHandling(CGAME_EVENT_TEAMMENU);
+ //trap_Key_SetCatcher(KEYCATCH_CGAME);
+ }
 }
 
  */
@@ -462,8 +462,8 @@ CG_EditHud_f
  */
 /*
 static void CG_EditHud_f( void ) {
-    //cls.keyCatchers ^= KEYCATCH_CGAME;
-    //VM_Call (cgvm, CG_EVENT_HANDLING, (cls.keyCatchers & KEYCATCH_CGAME) ? CGAME_EVENT_EDITHUD : CGAME_EVENT_NONE);
+ //cls.keyCatchers ^= KEYCATCH_CGAME;
+ //VM_Call (cgvm, CG_EVENT_HANDLING, (cls.keyCatchers & KEYCATCH_CGAME) ? CGAME_EVENT_EDITHUD : CGAME_EVENT_NONE);
 }
 
  */
@@ -495,14 +495,14 @@ static void CG_StartOrbit_f(void) {
 
 /*
 static void CG_Camera_f( void ) {
-    char name[1024];
-    trap_Argv( 1, name, sizeof(name));
-    if (trap_loadCamera(name)) {
-        cg.cameraMode = qtrue;
-        trap_startCamera(cg.time);
-    } else {
-        CG_Printf ("Unable to load camera %s\n",name);
-    }
+ char name[1024];
+ trap_Argv( 1, name, sizeof(name));
+ if (trap_loadCamera(name)) {
+ cg.cameraMode = qtrue;
+ trap_startCamera(cg.time);
+ } else {
+ CG_Printf ("Unable to load camera %s\n",name);
+ }
 }
 
  */
@@ -561,7 +561,7 @@ static consoleCommand_t commands[] = {
     { "scoresUp", CG_scrollScoresUp_f},
 #endif
     { "startOrbit", CG_StartOrbit_f},
-    //  { "camera", CG_Camera_f },
+    // { "camera", CG_Camera_f },
     { "loaddeferred", CG_LoadDeferredPlayers},
     { "+acc", CG_AccDown_f},
     { "-acc", CG_AccUp_f},

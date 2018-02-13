@@ -6,7 +6,7 @@ Portions Copyright (C) 2009 Karl F. Kuglin
 This file is part of the Open Arena source code.
 
 Originally copied from Tremulous under GPL version 2 including any later
-version.  The code has been modified to fit the needs of Open Arena.
+version. The code has been modified to fit the needs of Open Arena.
 
 Open Arena source code is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License as
@@ -15,7 +15,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -83,7 +83,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define MAX_ADMIN_SHOWBANS 10
 
 // important note: QVM does not seem to allow a single char to be a
-// member of a struct at init time.  flag has been converted to char*
+// member of a struct at init time. flag has been converted to char*
 
 typedef struct {
     char* keyword;

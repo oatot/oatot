@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -50,7 +50,7 @@ int CG_Text_Width(const char* text, float scale, int limit) {
     glyphInfo_t* glyph;
     float useScale;
     // FIXME: see ui_main.c, same problem
-    //  const unsigned char *s = text;
+    // const unsigned char *s = text;
     const char* s = text;
     fontInfo_t* font = &cgDC.Assets.textFont;
     if (scale <= cg_smallFont.value) {
@@ -87,7 +87,7 @@ int CG_Text_Height(const char* text, float scale, int limit) {
     glyphInfo_t* glyph;
     float useScale;
     // TTimo: FIXME
-    //  const unsigned char *s = text;
+    // const unsigned char *s = text;
     const char* s = text;
     fontInfo_t* font = &cgDC.Assets.textFont;
     if (scale <= cg_smallFont.value) {
@@ -142,7 +142,7 @@ void CG_Text_Paint(float x, float y, float scale, vec4_t color, const char* text
     useScale = scale * font->glyphScale;
     if (text) {
         // TTimo: FIXME
-        //      const unsigned char *s = text;
+        // const unsigned char *s = text;
         const char* s = text;
         trap_R_SetColor(color);
         memcpy(&newColor[0], &color[0], sizeof(vec4_t));
@@ -304,7 +304,7 @@ void CG_Draw3DModelEyes(float x, float y, float w, float h, qhandle_t model, qha
     VectorCopy(origin, ent.origin);
     // leilei - deal with the eyes here
     VectorCopy(eyep, ent.eyepos[0]);
-    //  speed *= 0.05f;
+    // speed *= 0.05f;
     {
         vec3_t angers, right, fawed, awp, ah;
         VectorCopy(angles, angers);
@@ -362,7 +362,7 @@ void CG_DrawHead(float x, float y, float w, float h, int clientNum, vec3_t headA
         VectorAdd(origin, ci->headOffset, origin);
         //CG_Draw3DModel( x, y, w, h, ci->headModel, ci->headSkin, origin, headAngles );
         CG_Draw3DModelEyes(x, y, w, h, ci->headModel, ci->headSkin, origin, headAngles, ci->eyepos);
-        //  CG_Draw3DModel( x, y, w, h, ci->headModel, ci->headSkin, origin, headAngles );
+        // CG_Draw3DModel( x, y, w, h, ci->headModel, ci->headSkin, origin, headAngles );
     } else if (cg_drawIcons.integer) {
         CG_DrawPic(x, y, w, h, ci->modelIcon);
     }
@@ -552,7 +552,7 @@ static void CG_DrawStatusBar(void) {
     vec3_t origin;
     qhandle_t handle;
     static float colors[4][4] = {
-        //      { 0.2, 1.0, 0.2, 1.0 } , { 1.0, 0.2, 0.2, 1.0 }, {0.5, 0.5, 0.5, 1} };
+        // { 0.2, 1.0, 0.2, 1.0 } , { 1.0, 0.2, 0.2, 1.0 }, {0.5, 0.5, 0.5, 1} };
         { 1.0f, 0.69f, 0.0f, 1.0f}, // normal
         { 1.0f, 0.2f, 0.2f, 1.0f}, // low health
         { 0.5f, 0.5f, 0.5f, 1.0f}, // weapon firing
@@ -893,54 +893,54 @@ CG_DrawDoubleDominationThings
  */
 
 /*static float CG_DrawDoubleDominationThings( float y ) {
-    char        *s;
-    int         w;
-    int         statusA, statusB;
-    statusA = cgs.redflag;
-    statusB = cgs.blueflag;
+ char *s;
+ int w;
+ int statusA, statusB;
+ statusA = cgs.redflag;
+ statusB = cgs.blueflag;
 
-    if(statusA == TEAM_NONE) {
-        s = va("Point A not spawned");
-    } else
-    if(statusA == TEAM_FREE) {
-        s = va("Point A is not controlled");
-    } else
-    if(statusA == TEAM_RED) {
-        s = va("Point A is controlled by RED");
-    } else
-    if(statusA == TEAM_BLUE) {
-        s = va("Point A is controlled by BLUE");
-    } else
-        s = va("Point A has an error");
-    w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
-    CG_DrawSmallString( 635 - w, y + 2, s, 1.0F);
-    y+=SMALLCHAR_HEIGHT+4;
+ if(statusA == TEAM_NONE) {
+ s = va("Point A not spawned");
+ } else
+ if(statusA == TEAM_FREE) {
+ s = va("Point A is not controlled");
+ } else
+ if(statusA == TEAM_RED) {
+ s = va("Point A is controlled by RED");
+ } else
+ if(statusA == TEAM_BLUE) {
+ s = va("Point A is controlled by BLUE");
+ } else
+ s = va("Point A has an error");
+ w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+ CG_DrawSmallString( 635 - w, y + 2, s, 1.0F);
+ y+=SMALLCHAR_HEIGHT+4;
 
-    if(statusB == TEAM_NONE) {
-        s = va("Point B not spawned");
-    } else
-    if(statusB == TEAM_FREE) {
-        s = va("Point B is not controlled");
-    } else
-    if(statusB == TEAM_RED) {
-        s = va("Point B is controlled by RED");
-    } else
-    if(statusB == TEAM_BLUE) {
-        s = va("Point B is controlled by BLUE");
-    } else
-        s = va("Point B has an error");
-    w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
-    CG_DrawSmallString( 635 - w, y + 2, s, 1.0F);
+ if(statusB == TEAM_NONE) {
+ s = va("Point B not spawned");
+ } else
+ if(statusB == TEAM_FREE) {
+ s = va("Point B is not controlled");
+ } else
+ if(statusB == TEAM_RED) {
+ s = va("Point B is controlled by RED");
+ } else
+ if(statusB == TEAM_BLUE) {
+ s = va("Point B is controlled by BLUE");
+ } else
+ s = va("Point B has an error");
+ w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+ CG_DrawSmallString( 635 - w, y + 2, s, 1.0F);
 
-    if( ( ( statusB == statusA ) && ( statusA == TEAM_RED ) ) ||
-        ( ( statusB == statusA ) && ( statusA == TEAM_BLUE ) ) ) {
-        s = va("Capture in: %i",(cgs.timetaken+10*1000-cg.time)/1000+1);
-        w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
-        y+=SMALLCHAR_HEIGHT+4;
-        CG_DrawSmallString( 635 - w, y + 2, s, 1.0F);
-    }
+ if( ( ( statusB == statusA ) && ( statusA == TEAM_RED ) ) ||
+ ( ( statusB == statusA ) && ( statusA == TEAM_BLUE ) ) ) {
+ s = va("Capture in: %i",(cgs.timetaken+10*1000-cg.time)/1000+1);
+ w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+ y+=SMALLCHAR_HEIGHT+4;
+ CG_DrawSmallString( 635 - w, y + 2, s, 1.0F);
+ }
 
-    return y + SMALLCHAR_HEIGHT+4;
+ return y + SMALLCHAR_HEIGHT+4;
 }*/
 
 /*
@@ -1067,7 +1067,7 @@ static float CG_DrawEliminationTimer(float y) {
         msec += 1000; //5-1 instead of 4-0
         /***
         Lots of stuff
-         ****/
+        ****/
         if (cg.warmup == 0) {
             st = va("Round in: %i", sec + 1);
             if (sec != cg.warmupCount) {
@@ -1116,7 +1116,7 @@ static float CG_DrawEliminationTimer(float y) {
         }
         /*
         Lots of stuff
-         */
+        */
     }
     seconds = msec / 1000;
     mins = seconds / 60;
@@ -1234,8 +1234,8 @@ static float CG_DrawTeamOverlay(float y, qboolean right, qboolean upper) {
                 if (len > lwidth) {
                     len = lwidth;
                 }
-                //              xx = x + TINYCHAR_WIDTH * 2 + TINYCHAR_WIDTH * pwidth +
-                //                  ((lwidth/2 - len/2) * TINYCHAR_WIDTH);
+                // xx = x + TINYCHAR_WIDTH * 2 + TINYCHAR_WIDTH * pwidth +
+                // ((lwidth/2 - len/2) * TINYCHAR_WIDTH);
                 xx = x + TINYCHAR_WIDTH * 2 + TINYCHAR_WIDTH * pwidth;
                 CG_DrawStringExt(xx, y,
                                  p, hcolor, qfalse, qfalse, TINYCHAR_WIDTH, TINYCHAR_HEIGHT,
@@ -1415,7 +1415,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
         y = CG_DrawTeamOverlay(y, qtrue, qtrue);
     }
     /*if ( cgs.gametype == GT_DOUBLE_D ) {
-        y = CG_DrawDoubleDominationThings(y);
+    y = CG_DrawDoubleDominationThings(y);
     }
     else*/
     if (cgs.gametype == GT_LMS && cg.showScores) {
@@ -1440,7 +1440,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     if (cgs.gametype == GT_ELIMINATION || cgs.gametype == GT_CTF_ELIMINATION || cgs.gametype == GT_LMS) {
         y = CG_DrawEliminationTimer(y);
         /*if (cgs.clientinfo[ cg.clientNum ].isDead)
-            y = CG_DrawEliminationDeathMessage( y);*/
+        y = CG_DrawEliminationDeathMessage( y);*/
     }
     y = CG_DrawFollowMessage(y);
     if (cg_drawTimer.integer) {
@@ -1679,7 +1679,7 @@ static float CG_DrawPowerups(float y) {
         }
         item = BG_FindItemForPowerup(i);
         if (item && item->giType == IT_PERSISTANT_POWERUP) {
-            continue;    //Don't draw persistant powerups here!
+            continue; //Don't draw persistant powerups here!
         }
         // insert into the list
         for (j = 0; j < active; j++) {
@@ -1818,7 +1818,7 @@ static void CG_DrawTeamInfo(void) {
         chatHeight = TEAMCHAT_HEIGHT;
     }
     if (chatHeight <= 0) {
-        return;    // disabled
+        return; // disabled
     }
     if (cgs.teamLastChatPos != cgs.teamChatPos) {
         if (cg.time - cgs.teamChatMsgTimes[cgs.teamLastChatPos % chatHeight] > cg_teamChatTime.integer) {
@@ -1932,19 +1932,19 @@ static void CG_DrawReward(void) {
     }
     trap_R_SetColor(color);
     /*
-    count = cg.rewardCount[0]/10;               // number of big rewards to draw
+    count = cg.rewardCount[0]/10; // number of big rewards to draw
 
     if (count) {
-        y = 4;
-        x = 320 - count * ICON_SIZE;
-        for ( i = 0; i < count; i++ ) {
-            CG_DrawPic( x, y, (ICON_SIZE*2)-4, (ICON_SIZE*2)-4, cg.rewardShader[0] );
-            x += (ICON_SIZE*2);
-        }
+    y = 4;
+    x = 320 - count * ICON_SIZE;
+    for ( i = 0; i < count; i++ ) {
+    CG_DrawPic( x, y, (ICON_SIZE*2)-4, (ICON_SIZE*2)-4, cg.rewardShader[0] );
+    x += (ICON_SIZE*2);
+    }
     }
 
-    count = cg.rewardCount[0] - count*10;       // number of small rewards to draw
-     */
+    count = cg.rewardCount[0] - count*10; // number of small rewards to draw
+    */
     if (cg.rewardCount[0] >= 10) {
         y = 56;
         x = 320 - ICON_SIZE / 2;
@@ -3009,11 +3009,11 @@ CG_DrawIntermission
 void trap_Cmd_ExecuteText(int exec_when, const char* text); // leilei - for unlocks only...
 
 static void CG_DrawIntermission(void) {
-    //  int key;
+    // int key;
 #ifdef MISSIONPACK
     //if (cg_singlePlayer.integer) {
-    //  CG_DrawCenterString();
-    //  return;
+    // CG_DrawCenterString();
+    // return;
     //}
 #else
     if (cgs.gametype == GT_SINGLE_PLAYER) {
@@ -3304,10 +3304,10 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
         return;
     }
     /*
-        if (cg.cameraMode) {
-            return;
-        }
-     */
+    if (cg.cameraMode) {
+    return;
+    }
+    */
     if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR /*|| cg.snap->ps.pm_type == PM_SPECTATOR*/) {
         CG_DrawSpectator();
         if (stereoFrame == STEREO_CENTER) {
@@ -3402,7 +3402,7 @@ void CG_DrawActive(stereoFrame_t stereoView) {
 #ifdef SCRIPTHUD
         menuDef_t* loading = Menus_FindByName("Loading");
         if (loading == NULL)
-            //  if(!loading)
+            // if(!loading)
 #endif
             // end loadingscreen
             CG_DrawInformation();
@@ -3466,7 +3466,7 @@ CG_DrawLoadingScreen
 void CG_DrawLoadingScreen(void) {
     menuDef_t* loading = Menus_FindByName("Loading");
     if (loading != NULL) {
-        //  if(loading) {
+        // if(loading) {
         Menu_Paint(loading, qtrue);
     } else {
         CG_DrawInformation();

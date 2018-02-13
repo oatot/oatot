@@ -11,27 +11,27 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Quake III Arena source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 //
 
 /*****************************************************************************
- * name:		be_ai_char.h
+ * name: be_ai_char.h
  *
- * desc:		bot characters
+ * desc: bot characters
  *
  * $Archive: /source/code/botlib/be_ai_char.h $
  *
  *****************************************************************************/
 
 //loads a bot character from a file
-int BotLoadCharacter(char *charfile, float skill);
+int BotLoadCharacter(char* charfile, float skill);
 //frees a bot character
 void BotFreeCharacter(int character);
 //returns a float characteristic
@@ -43,6 +43,6 @@ int Characteristic_Integer(int character, int index);
 //returns a bounded integer characteristic
 int Characteristic_BInteger(int character, int index, int min, int max);
 //returns a string characteristic
-void Characteristic_String(int character, int index, char *buf, int size);
+void Characteristic_String(int character, int index, char* buf, int size);
 //free cached bot characters
 void BotShutdownCharacters(void);

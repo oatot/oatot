@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -24,10 +24,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "ui_shared.h"
 
-#define SCROLL_TIME_START     500
-#define SCROLL_TIME_ADJUST    150
+#define SCROLL_TIME_START 500
+#define SCROLL_TIME_ADJUST 150
 #define SCROLL_TIME_ADJUSTOFFSET 40
-#define SCROLL_TIME_FLOOR     20
+#define SCROLL_TIME_FLOOR 20
 
 typedef struct scrollInfo_s {
     int nextScrollTime;
@@ -510,7 +510,7 @@ qboolean PC_Script_Parse(int handle, const char** out) {
         }
         Q_strcat(script, MAX_SCRIPTSIZE, " ");
     }
-    return qfalse; // bk001105 - LCC   missing return value
+    return qfalse; // bk001105 - LCC missing return value
 }
 
 // display, window, menu, item code
@@ -2558,8 +2558,8 @@ qboolean Item_HandleKey(itemDef_t* item, int key, qboolean down) {
         return Item_Slider_HandleKey(item, key, down);
         break;
     //case ITEM_TYPE_IMAGE:
-    //  Item_Image_Paint(item);
-    //  break;
+    // Item_Image_Paint(item);
+    // break;
     default:
         return qfalse;
         break;
@@ -2663,7 +2663,7 @@ void Menus_Activate(menuDef_t* menu) {
         Item_RunScript(&item, menu->onOpen);
     }
     if (menu->soundName && *menu->soundName) {
-        //      DC->stopBackgroundTrack();                  // you don't want to do this since it will reset s_rawend
+        // DC->stopBackgroundTrack(); // you don't want to do this since it will reset s_rawend
         DC->startBackgroundTrack(menu->soundName, menu->soundName);
     }
     Display_CloseCinematics();
@@ -2860,10 +2860,10 @@ void Menu_HandleKey(menuDef_t* menu, int key, qboolean down) {
             }
         }
         break;
-    //      case K_JOY1:
-    //      case K_JOY2:
-    //      case K_JOY3:
-    //      case K_JOY4:
+    // case K_JOY1:
+    // case K_JOY2:
+    // case K_JOY3:
+    // case K_JOY4:
     case K_AUX1:
     case K_AUX2:
     case K_AUX3:
@@ -3036,7 +3036,7 @@ int Item_Text_AutoWrapped_Lines(itemDef_t* item) {
 
 #define MAX_AUTOWRAP_CACHE 16
 #define MAX_AUTOWRAP_LINES 32
-#define MAX_AUTOWRAP_TEXT   512
+#define MAX_AUTOWRAP_TEXT 512
 
 typedef struct {
     //this is used purely for checking for cache hits
@@ -3556,7 +3556,7 @@ static bind_t g_bindings[] = {
     {"tauntGauntlet", K_F5, -1, -1, -1},
     {"scoresUp", K_KP_PGUP, -1, -1, -1},
     {"scoresDown", K_KP_PGDN, -1, -1, -1},
-    // bk001205 - this one below was:  '-1'
+    // bk001205 - this one below was: '-1'
     {"messagemode", -1, -1, -1, -1},
     {"messagemode2", -1, -1, -1, -1},
     {"messagemode3", -1, -1, -1, -1},
@@ -3619,14 +3619,14 @@ void Controls_GetConfig(void) {
         g_bindings[i].bind1 = twokeys[0];
         g_bindings[i].bind2 = twokeys[1];
     }
-    //s_controls.invertmouse.curvalue  = DC->getCVarValue( "m_pitch" ) < 0;
-    //s_controls.smoothmouse.curvalue  = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "m_filter" ) );
-    //s_controls.alwaysrun.curvalue    = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "cl_run" ) );
-    //s_controls.autoswitch.curvalue   = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "cg_autoswitch" ) );
-    //s_controls.sensitivity.curvalue  = UI_ClampCvar( 2, 30, Controls_GetCvarValue( "sensitivity" ) );
-    //s_controls.joyenable.curvalue    = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "in_joystick" ) );
+    //s_controls.invertmouse.curvalue = DC->getCVarValue( "m_pitch" ) < 0;
+    //s_controls.smoothmouse.curvalue = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "m_filter" ) );
+    //s_controls.alwaysrun.curvalue = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "cl_run" ) );
+    //s_controls.autoswitch.curvalue = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "cg_autoswitch" ) );
+    //s_controls.sensitivity.curvalue = UI_ClampCvar( 2, 30, Controls_GetCvarValue( "sensitivity" ) );
+    //s_controls.joyenable.curvalue = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "in_joystick" ) );
     //s_controls.joythreshold.curvalue = UI_ClampCvar( 0.05, 0.75, Controls_GetCvarValue( "joy_threshold" ) );
-    //s_controls.freelook.curvalue     = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "cl_freelook" ) );
+    //s_controls.freelook.curvalue = UI_ClampCvar( 0, 1, Controls_GetCvarValue( "cl_freelook" ) );
 }
 
 /*
@@ -3646,9 +3646,9 @@ void Controls_SetConfig(qboolean restart) {
         }
     }
     //if ( s_controls.invertmouse.curvalue )
-    //  DC->setCVar("m_pitch", va("%f),-fabs( DC->getCVarValue( "m_pitch" ) ) );
+    // DC->setCVar("m_pitch", va("%f),-fabs( DC->getCVarValue( "m_pitch" ) ) );
     //else
-    //  trap_Cvar_SetValue( "m_pitch", fabs( trap_Cvar_VariableValue( "m_pitch" ) ) );
+    // trap_Cvar_SetValue( "m_pitch", fabs( trap_Cvar_VariableValue( "m_pitch" ) ) );
     //trap_Cvar_SetValue( "m_filter", s_controls.smoothmouse.curvalue );
     //trap_Cvar_SetValue( "cl_run", s_controls.alwaysrun.curvalue );
     //trap_Cvar_SetValue( "cg_autoswitch", s_controls.autoswitch.curvalue );
@@ -3672,14 +3672,14 @@ void Controls_SetDefaults(void) {
         g_bindings[i].bind1 = g_bindings[i].defaultbind1;
         g_bindings[i].bind2 = g_bindings[i].defaultbind2;
     }
-    //s_controls.invertmouse.curvalue  = Controls_GetCvarDefault( "m_pitch" ) < 0;
-    //s_controls.smoothmouse.curvalue  = Controls_GetCvarDefault( "m_filter" );
-    //s_controls.alwaysrun.curvalue    = Controls_GetCvarDefault( "cl_run" );
-    //s_controls.autoswitch.curvalue   = Controls_GetCvarDefault( "cg_autoswitch" );
-    //s_controls.sensitivity.curvalue  = Controls_GetCvarDefault( "sensitivity" );
-    //s_controls.joyenable.curvalue    = Controls_GetCvarDefault( "in_joystick" );
+    //s_controls.invertmouse.curvalue = Controls_GetCvarDefault( "m_pitch" ) < 0;
+    //s_controls.smoothmouse.curvalue = Controls_GetCvarDefault( "m_filter" );
+    //s_controls.alwaysrun.curvalue = Controls_GetCvarDefault( "cl_run" );
+    //s_controls.autoswitch.curvalue = Controls_GetCvarDefault( "cg_autoswitch" );
+    //s_controls.sensitivity.curvalue = Controls_GetCvarDefault( "sensitivity" );
+    //s_controls.joyenable.curvalue = Controls_GetCvarDefault( "in_joystick" );
     //s_controls.joythreshold.curvalue = Controls_GetCvarDefault( "joy_threshold" );
-    //s_controls.freelook.curvalue     = Controls_GetCvarDefault( "cl_freelook" );
+    //s_controls.freelook.curvalue = Controls_GetCvarDefault( "cl_freelook" );
 }
 
 int BindingIDFromName(const char* name) {
@@ -3738,15 +3738,15 @@ void Item_Slider_Paint(itemDef_t* item) {
     float x, y;
     menuDef_t* parent = (menuDef_t*) item->parent;
     // Changed RD
-    /*  if (item->window.flags & WINDOW_HASFOCUS) {
-            lowLight[0] = 0.8 * parent->focusColor[0];
-            lowLight[1] = 0.8 * parent->focusColor[1];
-            lowLight[2] = 0.8 * parent->focusColor[2];
-            lowLight[3] = 0.8 * parent->focusColor[3];
-            LerpColor(parent->focusColor,lowLight,newColor,0.5+0.5*sin(DC->realTime / PULSE_DIVISOR));
-        } else {
-            memcpy(&newColor, &item->window.foreColor, sizeof(vec4_t));
-        } */
+    /* if (item->window.flags & WINDOW_HASFOCUS) {
+    lowLight[0] = 0.8 * parent->focusColor[0];
+    lowLight[1] = 0.8 * parent->focusColor[1];
+    lowLight[2] = 0.8 * parent->focusColor[2];
+    lowLight[3] = 0.8 * parent->focusColor[3];
+    LerpColor(parent->focusColor,lowLight,newColor,0.5+0.5*sin(DC->realTime / PULSE_DIVISOR));
+    } else {
+    memcpy(&newColor, &item->window.foreColor, sizeof(vec4_t));
+    } */
     Fade(&item->window.flags, &item->window.foreColor[3], parent->fadeClamp, &item->window.nextTime, parent->fadeCycle, qtrue, parent->fadeAmount);
     memcpy(&newColor, &item->window.foreColor, sizeof(vec4_t));
     // end changed RD
@@ -3997,11 +3997,11 @@ void Item_Model_Paint(itemDef_t* item) {
         backLerpWhole = floor(modelPtr->backlerp);
         modelPtr->frame += (backLerpWhole);
         if ((modelPtr->frame - modelPtr->startframe) > modelPtr->numframes) {
-            modelPtr->frame = modelPtr->startframe + modelPtr->frame % modelPtr->numframes;    // todo: ignoring loopframes
+            modelPtr->frame = modelPtr->startframe + modelPtr->frame % modelPtr->numframes; // todo: ignoring loopframes
         }
         modelPtr->oldframe += (backLerpWhole);
         if ((modelPtr->oldframe - modelPtr->startframe) > modelPtr->numframes) {
-            modelPtr->oldframe = modelPtr->startframe + modelPtr->oldframe % modelPtr->numframes;    // todo: ignoring loopframes
+            modelPtr->oldframe = modelPtr->startframe + modelPtr->oldframe % modelPtr->numframes; // todo: ignoring loopframes
         }
         modelPtr->backlerp = modelPtr->backlerp - backLerpWhole;
     }
@@ -4417,8 +4417,8 @@ void Item_Paint(itemDef_t* item) {
         Item_ListBox_Paint(item);
         break;
     //case ITEM_TYPE_IMAGE:
-    //  Item_Image_Paint(item);
-    //  break;
+    // Item_Image_Paint(item);
+    // break;
     case ITEM_TYPE_MODEL:
         Item_Model_Paint(item);
         break;
@@ -4753,10 +4753,10 @@ void KeywordHash_Add(keywordHash_t* table[], keywordHash_t* key) {
     int hash;
     hash = KeywordHash_Key(key->keyword);
     /*
-        if (table[hash]) {
-            int collision = qtrue;
-        }
-     */
+    if (table[hash]) {
+    int collision = qtrue;
+    }
+    */
     key->next = table[hash];
     table[hash] = key;
 }
@@ -4828,7 +4828,7 @@ qboolean ItemParse_asset_model(itemDef_t* item, int handle) {
         return qfalse;
     }
     item->asset = DC->registerModel(temp);
-    //  modelPtr->angle = rand() % 360;
+    // modelPtr->angle = rand() % 360;
     modelPtr->angle = 0; // leilei - don't do this because it makes menu changing inconsistent
     return qtrue;
 }

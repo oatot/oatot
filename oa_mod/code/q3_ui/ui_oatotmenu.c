@@ -1,24 +1,24 @@
 #include "ui_local.h"
 
-#define ART_BACK0           "menu/" MENU_OATOT_DIR "/myback_0"
-#define ART_BACK1           "menu/" MENU_OATOT_DIR "/myback_1"
-#define ART_MAKEBET0        "menu/" MENU_OATOT_DIR "/makebet_0"
-#define ART_MAKEBET1        "menu/" MENU_OATOT_DIR "/makebet_1"
-#define ART_DISCARDBET0     "menu/" MENU_OATOT_DIR "/discardbet_0"
-#define ART_DISCARDBET1     "menu/" MENU_OATOT_DIR "/discardbet_1"
-#define ART_EDITBET0        "menu/" MENU_OATOT_DIR "/editbet_0"
-#define ART_EDITBET1        "menu/" MENU_OATOT_DIR "/editbet_1"
-#define ART_BACKGROUND      "menu/" MENU_ART_DIR   "/addbotframe"
+#define ART_BACK0 "menu/" MENU_OATOT_DIR "/myback_0"
+#define ART_BACK1 "menu/" MENU_OATOT_DIR "/myback_1"
+#define ART_MAKEBET0 "menu/" MENU_OATOT_DIR "/makebet_0"
+#define ART_MAKEBET1 "menu/" MENU_OATOT_DIR "/makebet_1"
+#define ART_DISCARDBET0 "menu/" MENU_OATOT_DIR "/discardbet_0"
+#define ART_DISCARDBET1 "menu/" MENU_OATOT_DIR "/discardbet_1"
+#define ART_EDITBET0 "menu/" MENU_OATOT_DIR "/editbet_0"
+#define ART_EDITBET1 "menu/" MENU_OATOT_DIR "/editbet_1"
+#define ART_BACKGROUND "menu/" MENU_ART_DIR "/addbotframe"
 
-#define ID_BET0          0
-#define ID_BET1          1
-#define ID_BET2          2
-#define ID_BET3          3
-#define ID_BET4          4
-#define ID_BACK          5
-#define ID_MAKEBET       6
-#define ID_DISCARDBET    7
-#define ID_EDITBET       8
+#define ID_BET0 0
+#define ID_BET1 1
+#define ID_BET2 2
+#define ID_BET3 3
+#define ID_BET4 4
+#define ID_BACK 5
+#define ID_MAKEBET 6
+#define ID_DISCARDBET 7
+#define ID_EDITBET 8
 
 #define SIZE_OF_LIST 5
 
@@ -39,19 +39,18 @@ const char* betCurrency_items[] = {
     NULL
 };
 
-
 typedef struct {
     menuframework_s menu;
-    menutext_s      banner;
-    menutext_s      info;
-    menubitmap_s    back;
-    menubitmap_s    makeBet;
-    menubitmap_s    discardBet;
-    menubitmap_s    editBet;
+    menutext_s banner;
+    menutext_s info;
+    menubitmap_s back;
+    menubitmap_s makeBet;
+    menubitmap_s discardBet;
+    menubitmap_s editBet;
 
     menutext_s activeBets[SIZE_OF_LIST];
 
-    int     selected;
+    int selected;
 } oatotmenu_t;
 
 static oatotmenu_t s_oatotmenu;
@@ -258,22 +257,22 @@ static void OatotMenu_Cache(void) {
 }
 
 static void setBet(menutext_s* menu, int y, int id, char* text) {
-    menu->generic.type        = MTYPE_PTEXT;
-    menu->color               = color_red;
-    menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
-    menu->generic.x           = 320;
-    menu->generic.y           = y;
-    menu->generic.id          = id;
-    menu->generic.callback    = Bet_Event;
+    menu->generic.type = MTYPE_PTEXT;
+    menu->color = color_red;
+    menu->generic.flags = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
+    menu->generic.x = 320;
+    menu->generic.y = y;
+    menu->generic.id = id;
+    menu->generic.callback = Bet_Event;
     if (id < oatotinfo.bets_n) {
         // Bet actually exists.
-        menu->color           = color_orange;
+        menu->color = color_orange;
     } else {
         // Bet doesn't exist, let's hide it.
         menu->generic.flags |= QMF_INACTIVE | QMF_GRAYED;
     }
-    menu->style               = UI_CENTER | UI_SMALLFONT;
-    menu->string              = text;
+    menu->style = UI_CENTER | UI_SMALLFONT;
+    menu->string = text;
 }
 
 /*
@@ -294,27 +293,27 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.menu.fullscreen = qfalse;
     s_oatotmenu.menu.draw = UI_OatotMenu_Draw;
     // Banner.
-    s_oatotmenu.banner.generic.type   = MTYPE_BTEXT;
-    s_oatotmenu.banner.generic.x      = 320;
-    s_oatotmenu.banner.generic.y      = 80;
-    s_oatotmenu.banner.string         = "ACTIVE BETS";
-    s_oatotmenu.banner.color          = color_white;
-    s_oatotmenu.banner.style          = UI_CENTER | UI_SMALLFONT;
+    s_oatotmenu.banner.generic.type = MTYPE_BTEXT;
+    s_oatotmenu.banner.generic.x = 320;
+    s_oatotmenu.banner.generic.y = 80;
+    s_oatotmenu.banner.string = "ACTIVE BETS";
+    s_oatotmenu.banner.color = color_white;
+    s_oatotmenu.banner.style = UI_CENTER | UI_SMALLFONT;
     // Info.
-    s_oatotmenu.info.generic.type     = MTYPE_TEXT;
+    s_oatotmenu.info.generic.type = MTYPE_TEXT;
     if (game_stage != FORMING_TEAMS) {
         if (oatotinfo.bets_n == 0 && game_stage == MAKING_BETS) {
-            s_oatotmenu.info.string        = "No active bets yet, press MAKE BET to make one.";
+            s_oatotmenu.info.string = "No active bets yet, press MAKE BET to make one.";
         } else {
             s_oatotmenu.info.generic.flags = QMF_HIDDEN;
         }
     } else {
-        s_oatotmenu.info.string            = "Betting is not yet started.";
+        s_oatotmenu.info.string = "Betting is not yet started.";
     }
-    s_oatotmenu.info.generic.x        = 320;
-    s_oatotmenu.info.generic.y        = 170;
-    s_oatotmenu.info.color            = color_orange;
-    s_oatotmenu.info.style            = UI_CENTER | UI_SMALLFONT;
+    s_oatotmenu.info.generic.x = 320;
+    s_oatotmenu.info.generic.y = 170;
+    s_oatotmenu.info.color = color_orange;
+    s_oatotmenu.info.style = UI_CENTER | UI_SMALLFONT;
     // Initialize horse, amount and currency menu components.
     y = FIRST_BET_Y;
     for (i = 0; i < SIZE_OF_LIST; i++) {
@@ -322,64 +321,64 @@ void UI_OatotMenuInternal(void) {
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.
-    s_oatotmenu.back.generic.type       = MTYPE_BITMAP;
-    s_oatotmenu.back.generic.name       = ART_BACK0;
-    s_oatotmenu.back.generic.flags      = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_oatotmenu.back.generic.id         = ID_BACK;
-    s_oatotmenu.back.generic.callback   = OatotMenu_Event;
-    s_oatotmenu.back.generic.x          = 120 - 90;
-    s_oatotmenu.back.generic.y          = 410 - 45;
-    s_oatotmenu.back.width              = 90;
-    s_oatotmenu.back.height             = 45;
-    s_oatotmenu.back.focuspic           = ART_BACK1;
+    s_oatotmenu.back.generic.type = MTYPE_BITMAP;
+    s_oatotmenu.back.generic.name = ART_BACK0;
+    s_oatotmenu.back.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_oatotmenu.back.generic.id = ID_BACK;
+    s_oatotmenu.back.generic.callback = OatotMenu_Event;
+    s_oatotmenu.back.generic.x = 120 - 90;
+    s_oatotmenu.back.generic.y = 410 - 45;
+    s_oatotmenu.back.width = 90;
+    s_oatotmenu.back.height = 45;
+    s_oatotmenu.back.focuspic = ART_BACK1;
     // Button makeBet.
-    s_oatotmenu.makeBet.generic.type        = MTYPE_BITMAP;
-    s_oatotmenu.makeBet.generic.name        = ART_MAKEBET0;
+    s_oatotmenu.makeBet.generic.type = MTYPE_BITMAP;
+    s_oatotmenu.makeBet.generic.name = ART_MAKEBET0;
     if (game_stage == MAKING_BETS) {
-        s_oatotmenu.makeBet.generic.flags   = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+        s_oatotmenu.makeBet.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
-        s_oatotmenu.makeBet.generic.flags   = QMF_GRAYED;
+        s_oatotmenu.makeBet.generic.flags = QMF_GRAYED;
     }
-    s_oatotmenu.makeBet.generic.id          = ID_MAKEBET;
-    s_oatotmenu.makeBet.generic.callback    = OatotMenu_Event;
-    s_oatotmenu.makeBet.generic.statusbar   = MakeBet_StatusBar;
-    s_oatotmenu.makeBet.generic.x           = 120 + BUTTON_HORIZONTAL_SPACING - 125;
-    s_oatotmenu.makeBet.generic.y           = 410 - 45;
-    s_oatotmenu.makeBet.width               = 125;
-    s_oatotmenu.makeBet.height              = 45;
-    s_oatotmenu.makeBet.focuspic            = ART_MAKEBET1;
+    s_oatotmenu.makeBet.generic.id = ID_MAKEBET;
+    s_oatotmenu.makeBet.generic.callback = OatotMenu_Event;
+    s_oatotmenu.makeBet.generic.statusbar = MakeBet_StatusBar;
+    s_oatotmenu.makeBet.generic.x = 120 + BUTTON_HORIZONTAL_SPACING - 125;
+    s_oatotmenu.makeBet.generic.y = 410 - 45;
+    s_oatotmenu.makeBet.width = 125;
+    s_oatotmenu.makeBet.height = 45;
+    s_oatotmenu.makeBet.focuspic = ART_MAKEBET1;
     // Button discardBet.
-    s_oatotmenu.discardBet.generic.type         = MTYPE_BITMAP;
-    s_oatotmenu.discardBet.generic.name         = ART_DISCARDBET0;
-   if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
-        s_oatotmenu.discardBet.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_oatotmenu.discardBet.generic.type = MTYPE_BITMAP;
+    s_oatotmenu.discardBet.generic.name = ART_DISCARDBET0;
+    if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
+        s_oatotmenu.discardBet.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
-        s_oatotmenu.discardBet.generic.flags    = QMF_GRAYED;
+        s_oatotmenu.discardBet.generic.flags = QMF_GRAYED;
     }
-    s_oatotmenu.discardBet.generic.id           = ID_DISCARDBET;
-    s_oatotmenu.discardBet.generic.callback     = OatotMenu_Event;
-    s_oatotmenu.discardBet.generic.statusbar    = DiscardBet_StatusBar;
-    s_oatotmenu.discardBet.generic.x            = 120 + BUTTON_HORIZONTAL_SPACING * 2 - 125;
-    s_oatotmenu.discardBet.generic.y            = 410 - 45;
-    s_oatotmenu.discardBet.width                = 125;
-    s_oatotmenu.discardBet.height               = 45;
-    s_oatotmenu.discardBet.focuspic             = ART_DISCARDBET1;
+    s_oatotmenu.discardBet.generic.id = ID_DISCARDBET;
+    s_oatotmenu.discardBet.generic.callback = OatotMenu_Event;
+    s_oatotmenu.discardBet.generic.statusbar = DiscardBet_StatusBar;
+    s_oatotmenu.discardBet.generic.x = 120 + BUTTON_HORIZONTAL_SPACING * 2 - 125;
+    s_oatotmenu.discardBet.generic.y = 410 - 45;
+    s_oatotmenu.discardBet.width = 125;
+    s_oatotmenu.discardBet.height = 45;
+    s_oatotmenu.discardBet.focuspic = ART_DISCARDBET1;
     // Button editBet.
-    s_oatotmenu.editBet.generic.type         = MTYPE_BITMAP;
-    s_oatotmenu.editBet.generic.name         = ART_EDITBET0;
-   if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
-        s_oatotmenu.editBet.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_oatotmenu.editBet.generic.type = MTYPE_BITMAP;
+    s_oatotmenu.editBet.generic.name = ART_EDITBET0;
+    if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
+        s_oatotmenu.editBet.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
-        s_oatotmenu.editBet.generic.flags    = QMF_GRAYED;
+        s_oatotmenu.editBet.generic.flags = QMF_GRAYED;
     }
-    s_oatotmenu.editBet.generic.id           = ID_EDITBET;
-    s_oatotmenu.editBet.generic.callback     = OatotMenu_Event;
-    s_oatotmenu.editBet.generic.statusbar    = EditBet_StatusBar;
-    s_oatotmenu.editBet.generic.x            = 120 + BUTTON_HORIZONTAL_SPACING * 3 - 125;
-    s_oatotmenu.editBet.generic.y            = 410 - 45;
-    s_oatotmenu.editBet.width                = 125;
-    s_oatotmenu.editBet.height               = 45;
-    s_oatotmenu.editBet.focuspic             = ART_EDITBET1;
+    s_oatotmenu.editBet.generic.id = ID_EDITBET;
+    s_oatotmenu.editBet.generic.callback = OatotMenu_Event;
+    s_oatotmenu.editBet.generic.statusbar = EditBet_StatusBar;
+    s_oatotmenu.editBet.generic.x = 120 + BUTTON_HORIZONTAL_SPACING * 3 - 125;
+    s_oatotmenu.editBet.generic.y = 410 - 45;
+    s_oatotmenu.editBet.width = 125;
+    s_oatotmenu.editBet.height = 45;
+    s_oatotmenu.editBet.focuspic = ART_EDITBET1;
 }
 
 /*
@@ -393,7 +392,7 @@ void UI_OatotMenu(void) {
     OatotMenu_Cache();
     memset(&s_oatotmenu, 0, sizeof(oatotmenu_t));
     trap_Cmd_ExecuteText(EXEC_APPEND, "getActiveBets\n");
-    trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
+    trap_Cvar_Set("cl_paused", "0"); // We cannot send server commands while paused!
     UI_OatotMenuInternal();
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.banner);
     Menu_AddItem(&s_oatotmenu.menu, (void*) &s_oatotmenu.info);

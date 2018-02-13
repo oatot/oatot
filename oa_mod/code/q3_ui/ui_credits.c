@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -38,7 +38,7 @@ typedef struct {
     menuframework_s menu;
 } creditsmenu_t;
 
-static creditsmenu_t    s_credits;
+static creditsmenu_t s_credits;
 
 /*
 =================
@@ -60,7 +60,7 @@ UI_CreditMenu_Draw
 ===============
 */
 static void UI_CreditMenu_Draw(void) {
-    int     y;
+    int y;
     y = 12;
     UI_DrawProportionalString(320, y, "Thank you for playing", UI_CENTER | UI_SMALLFONT, color_white);
     y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;

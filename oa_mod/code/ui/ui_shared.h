@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -41,40 +41,40 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define MAX_COLOR_RANGES 10
 #define MAX_OPEN_MENUS 16
 
-#define WINDOW_MOUSEOVER   0x00000001 // mouse is over it, non exclusive
-#define WINDOW_HASFOCUS    0x00000002 // has cursor focus, exclusive
-#define WINDOW_VISIBLE    0x00000004 // is visible
-#define WINDOW_GREY      0x00000008 // is visible but grey ( non-active )
-#define WINDOW_DECORATION   0x00000010 // for decoration only, no mouse, keyboard, etc.. 
-#define WINDOW_FADINGOUT   0x00000020 // fading out, non-active
-#define WINDOW_FADINGIN    0x00000040 // fading in
+#define WINDOW_MOUSEOVER 0x00000001 // mouse is over it, non exclusive
+#define WINDOW_HASFOCUS 0x00000002 // has cursor focus, exclusive
+#define WINDOW_VISIBLE 0x00000004 // is visible
+#define WINDOW_GREY 0x00000008 // is visible but grey ( non-active )
+#define WINDOW_DECORATION 0x00000010 // for decoration only, no mouse, keyboard, etc.. 
+#define WINDOW_FADINGOUT 0x00000020 // fading out, non-active
+#define WINDOW_FADINGIN 0x00000040 // fading in
 #define WINDOW_MOUSEOVERTEXT 0x00000080 // mouse is over it, non exclusive
 #define WINDOW_INTRANSITION 0x00000100 // window is in transition
 #define WINDOW_FORECOLORSET 0x00000200 // forecolor was explicitly set ( used to color alpha images or not )
-#define WINDOW_HORIZONTAL   0x00000400 // for list boxes and sliders, vertical is default this is set of horizontal
+#define WINDOW_HORIZONTAL 0x00000400 // for list boxes and sliders, vertical is default this is set of horizontal
 #define WINDOW_LB_LEFTARROW 0x00000800 // mouse is over left/up arrow
 #define WINDOW_LB_RIGHTARROW 0x00001000 // mouse is over right/down arrow
-#define WINDOW_LB_THUMB    0x00002000 // mouse is over thumb
-#define WINDOW_LB_PGUP    0x00004000 // mouse is over page up
-#define WINDOW_LB_PGDN    0x00008000 // mouse is over page down
-#define WINDOW_ORBITING    0x00010000 // item is in orbit
-#define WINDOW_OOB_CLICK   0x00020000 // close on out of bounds click
-#define WINDOW_WRAPPED    0x00040000 // manually wrap text
-#define WINDOW_AUTOWRAPPED   0x00080000 // auto wrap text
-#define WINDOW_FORCED     0x00100000 // forced open
-#define WINDOW_POPUP     0x00200000 // popup
+#define WINDOW_LB_THUMB 0x00002000 // mouse is over thumb
+#define WINDOW_LB_PGUP 0x00004000 // mouse is over page up
+#define WINDOW_LB_PGDN 0x00008000 // mouse is over page down
+#define WINDOW_ORBITING 0x00010000 // item is in orbit
+#define WINDOW_OOB_CLICK 0x00020000 // close on out of bounds click
+#define WINDOW_WRAPPED 0x00040000 // manually wrap text
+#define WINDOW_AUTOWRAPPED 0x00080000 // auto wrap text
+#define WINDOW_FORCED 0x00100000 // forced open
+#define WINDOW_POPUP 0x00200000 // popup
 #define WINDOW_BACKCOLORSET 0x00400000 // backcolor was explicitly set 
 #define WINDOW_TIMEDVISIBLE 0x00800000 // visibility timing ( NOT implemented )
 // Changed RD
 #define WINDOW_ENDTRANSITION 0x01000000
-#define WINDOW_NOTRANSITION   0x02000000
-#define WINDOW_FOCUSDISABLE   0x04000000
+#define WINDOW_NOTRANSITION 0x02000000
+#define WINDOW_FOCUSDISABLE 0x04000000
 // end changed RD
 
 // CGAME cursor type bits
-#define CURSOR_NONE     0x00000001
-#define CURSOR_ARROW    0x00000002
-#define CURSOR_SIZER    0x00000004
+#define CURSOR_NONE 0x00000001
+#define CURSOR_ARROW 0x00000002
+#define CURSOR_SIZER 0x00000004
 
 #ifdef CGAME
 #define STRING_POOL_SIZE 128*1024
@@ -86,32 +86,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define MAX_SCRIPT_ARGS 12
 #define MAX_EDITFIELD 256
 
-#define ART_FX_BASE   "menu/art/fx_base"
-#define ART_FX_BLUE   "menu/art/fx_blue"
-#define ART_FX_CYAN   "menu/art/fx_cyan"
-#define ART_FX_GREEN  "menu/art/fx_grn"
-#define ART_FX_RED   "menu/art/fx_red"
-#define ART_FX_TEAL   "menu/art/fx_teal"
-#define ART_FX_WHITE  "menu/art/fx_white"
-#define ART_FX_YELLOW  "menu/art/fx_yel"
+#define ART_FX_BASE "menu/art/fx_base"
+#define ART_FX_BLUE "menu/art/fx_blue"
+#define ART_FX_CYAN "menu/art/fx_cyan"
+#define ART_FX_GREEN "menu/art/fx_grn"
+#define ART_FX_RED "menu/art/fx_red"
+#define ART_FX_TEAL "menu/art/fx_teal"
+#define ART_FX_WHITE "menu/art/fx_white"
+#define ART_FX_YELLOW "menu/art/fx_yel"
 
 #define ASSET_GRADIENTBAR "ui/assets/gradientbar2.tga"
-#define ASSET_SCROLLBAR             "ui/assets/scrollbar.tga"
-#define ASSET_SCROLLBAR_ARROWDOWN   "ui/assets/scrollbar_arrow_dwn_a.tga"
-#define ASSET_SCROLLBAR_ARROWUP     "ui/assets/scrollbar_arrow_up_a.tga"
-#define ASSET_SCROLLBAR_ARROWLEFT   "ui/assets/scrollbar_arrow_left.tga"
-#define ASSET_SCROLLBAR_ARROWRIGHT  "ui/assets/scrollbar_arrow_right.tga"
-#define ASSET_SCROLL_THUMB          "ui/assets/scrollbar_thumb.tga"
-#define ASSET_SLIDER_BAR      "ui/assets/slider2.tga"
-#define ASSET_SLIDER_THUMB     "ui/assets/sliderbutt_1.tga"
+#define ASSET_SCROLLBAR "ui/assets/scrollbar.tga"
+#define ASSET_SCROLLBAR_ARROWDOWN "ui/assets/scrollbar_arrow_dwn_a.tga"
+#define ASSET_SCROLLBAR_ARROWUP "ui/assets/scrollbar_arrow_up_a.tga"
+#define ASSET_SCROLLBAR_ARROWLEFT "ui/assets/scrollbar_arrow_left.tga"
+#define ASSET_SCROLLBAR_ARROWRIGHT "ui/assets/scrollbar_arrow_right.tga"
+#define ASSET_SCROLL_THUMB "ui/assets/scrollbar_thumb.tga"
+#define ASSET_SLIDER_BAR "ui/assets/slider2.tga"
+#define ASSET_SLIDER_THUMB "ui/assets/sliderbutt_1.tga"
 // Changed RD
-#define ASSET_SLIDER_THUMB_SEL  "ui/assets/sliderbutt_1.tga"
-#define ASSET_CHECKBOX    "ui/assets/checkbox_unchecked.tga"
-#define ASSET_CHECKBOX_SEL   "ui/assets/checkbox_checked.tga"
+#define ASSET_SLIDER_THUMB_SEL "ui/assets/sliderbutt_1.tga"
+#define ASSET_CHECKBOX "ui/assets/checkbox_unchecked.tga"
+#define ASSET_CHECKBOX_SEL "ui/assets/checkbox_checked.tga"
 #define CHECKBOX_WIDTH 16.0
 #define CHECKBOX_HEIGHT 16.0
-#define ASSET_COMBO     "ui/assets/pulldownarrow.tga"
-#define ASSET_COMBO_SEL    "ui/assets/pulldownarrow_sel.tga"
+#define ASSET_COMBO "ui/assets/pulldownarrow.tga"
+#define ASSET_COMBO_SEL "ui/assets/pulldownarrow_sel.tga"
 #define COMBO_WIDTH 16.0
 #define COMBO_HEIGHT 16.0
 // end changed RD
@@ -120,7 +120,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define SLIDER_HEIGHT 16.0
 #define SLIDER_THUMB_WIDTH 12.0
 #define SLIDER_THUMB_HEIGHT 20.0
-#define NUM_CROSSHAIRS   10
+#define NUM_CROSSHAIRS 10
 
 typedef struct {
     const char* command;
@@ -203,7 +203,7 @@ typedef struct listBoxDef_s {
 } listBoxDef_t;
 
 typedef struct editFieldDef_s {
-    float minVal; //    edit field limits
+    float minVal; // edit field limits
     float maxVal; //
     float defVal; //
     float range; //
@@ -261,8 +261,8 @@ typedef struct comboDef_s {
 
 #define CVAR_ENABLE 0x00000001
 #define CVAR_DISABLE 0x00000002
-#define CVAR_SHOW   0x00000004
-#define CVAR_HIDE   0x00000008
+#define CVAR_SHOW 0x00000004
+#define CVAR_HIDE 0x00000008
 
 typedef struct itemDef_s {
     Window window; // common positional, border, style, layout info
@@ -290,7 +290,7 @@ typedef struct itemDef_s {
     const char* cvar; // associated cvar
     const char* cvarTest; // associated cvar for enable actions
     const char* enableCvar; // enable, disable, show, or hide based on value, this can contain a list
-    int cvarFlags; //   what type of action to take on cvarenables
+    int cvarFlags; // what type of action to take on cvarenables
     sfxHandle_t focusSound;
     int numColors; // number of color ranges
     colorRangeDef_t colorRanges[MAX_COLOR_RANGES];
@@ -553,16 +553,16 @@ void Item_Text_AutoWrapped_Paint(itemDef_t* item);
 // Knightmare- screen item alignment types
 // Adapted from an i3d thread that applies this to the JK2 source http://forums.inside3d.com/viewtopic.php?f=1&t=5159&p=49084
 
-#define ALIGN_STRETCH    0
-#define ALIGN_CENTER   1
+#define ALIGN_STRETCH 0
+#define ALIGN_CENTER 1
 #define ALIGN_LETTERBOX 2
-#define ALIGN_TOP   3
-#define ALIGN_BOTTOM   4
-#define ALIGN_RIGHT   5
-#define ALIGN_LEFT   6
-#define ALIGN_TOPRIGHT   7
-#define ALIGN_TOPLEFT   8
-#define ALIGN_BOTTOMRIGHT   9
+#define ALIGN_TOP 3
+#define ALIGN_BOTTOM 4
+#define ALIGN_RIGHT 5
+#define ALIGN_LEFT 6
+#define ALIGN_TOPRIGHT 7
+#define ALIGN_TOPLEFT 8
+#define ALIGN_BOTTOMRIGHT 9
 #define ALIGN_BOTTOMLEFT 10
 #define ALIGN_TOP_STRETCH 11
 #define ALIGN_BOTTOM_STRETCH 12

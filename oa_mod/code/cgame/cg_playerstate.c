@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -35,10 +35,10 @@ If the ammo has gone low enough to generate the warning, play a sound
 ==============
 */
 void CG_CheckAmmo(void) {
-    int     i;
-    int     total;
-    int     previous;
-    int     weapons;
+    int i;
+    int total;
+    int previous;
+    int weapons;
     // see about how many seconds of ammo we have remaining
     weapons = cg.snap->ps.stats[ STAT_WEAPONS ];
     total = 0;
@@ -83,14 +83,14 @@ CG_DamageFeedback
 ==============
 */
 void CG_DamageFeedback(int yawByte, int pitchByte, int damage) {
-    float       left, front, up;
-    float       kick;
-    int         health;
-    float       scale;
-    vec3_t      dir;
-    vec3_t      angles;
-    float       dist;
-    float       yaw, pitch;
+    float left, front, up;
+    float kick;
+    int health;
+    float scale;
+    vec3_t dir;
+    vec3_t angles;
+    float dist;
+    float yaw, pitch;
     // show the attacking player's head and name in corner
     cg.attackerTime = cg.time;
     // the lower on health you are, the greater the view kick will be
@@ -186,9 +186,9 @@ CG_CheckPlayerstateEvents
 ==============
 */
 void CG_CheckPlayerstateEvents(playerState_t* ps, playerState_t* ops) {
-    int         i;
-    int         event;
-    centity_t*   cent;
+    int i;
+    int event;
+    centity_t* cent;
     if (ps->externalEvent && ps->externalEvent != ops->externalEvent) {
         cent = &cg_entities[ ps->clientNum ];
         cent->currentState.event = ps->externalEvent;
@@ -221,7 +221,7 @@ CG_CheckChangedPredictableEvents
 void CG_CheckChangedPredictableEvents(playerState_t* ps) {
     int i;
     int event;
-    centity_t*   cent;
+    centity_t* cent;
     cent = &cg.predictedPlayerEntity;
     for (i = ps->eventSequence - MAX_PS_EVENTS; i < ps->eventSequence; i++) {
         //
@@ -265,7 +265,7 @@ CG_CheckLocalSounds
 ==================
 */
 void CG_CheckLocalSounds(playerState_t* ps, playerState_t* ops) {
-    int         highScore, reward;
+    int highScore, reward;
     sfxHandle_t sfx;
     // don't play the sounds if the player just changed teams
     if (ps->persistant[PERS_TEAM] != ops->persistant[PERS_TEAM]) {
@@ -275,7 +275,7 @@ void CG_CheckLocalSounds(playerState_t* ps, playerState_t* ops) {
     if (ps->persistant[PERS_HITS] > ops->persistant[PERS_HITS]) {
 #ifdef MISSIONPACK
         int health, armor;
-        armor  = ps->persistant[PERS_ATTACKEE_ARMOR] & 0xff;
+        armor = ps->persistant[PERS_ATTACKEE_ARMOR] & 0xff;
         health = ps->persistant[PERS_ATTACKEE_ARMOR] >> 8;
         if (armor > 50) {
             trap_S_StartLocalSound(cgs.media.hitSoundHighArmor, CHAN_LOCAL_SOUND);
@@ -404,7 +404,7 @@ void CG_CheckLocalSounds(playerState_t* ps, playerState_t* ops) {
     }
     // timelimit warnings
     if (cgs.timelimit > 0 && cgs.timelimit <= 1000) {
-        int     msec;
+        int msec;
         msec = cg.time - cgs.levelStartTime;
         if (!(cg.timelimitWarnings & 4) && msec > (cgs.timelimit * 60 + 2) * 1000) {
             cg.timelimitWarnings |= 1 | 2 | 4;

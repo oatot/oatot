@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 /*
 =============================================================================
 
-  MODEL TESTING
+ MODEL TESTING
 
 The viewthing and gun positioning tools from Q2 have been integrated and
 enhanced into a single model testing facility.
@@ -38,15 +38,15 @@ The names must be the full pathname after the basedir, like
 "models/weapons/v_launch/tris.md3" or "players/male/tris.md3"
 
 Testmodel will create a fake entity 100 units in front of the current view
-position, directly facing the viewer.  It will remain immobile, so you can
+position, directly facing the viewer. It will remain immobile, so you can
 move around it to view it from different angles.
 
 Testgun will cause the model to follow the player around and supress the real
-view weapon model.  The default frame 0 of most guns is completely off screen,
+view weapon model. The default frame 0 of most guns is completely off screen,
 so you will probably have to cycle a couple frames to see it.
 
 "nextframe", "prevframe", "nextskin", and "prevskin" commands will change the
-frame or skin of the testmodel.  These are bound to F5, F6, F7, and F8 in
+frame or skin of the testmodel. These are bound to F5, F6, F7, and F8 in
 q3default.cfg.
 
 If a gun is being tested, the "gun_x", "gun_y", and "gun_z" variables will let
@@ -68,7 +68,7 @@ can then be moved around
 =================
 */
 void CG_TestModel_f(void) {
-    vec3_t      angles;
+    vec3_t angles;
     memset(&cg.testModelEntity, 0, sizeof(cg.testModelEntity));
     if (trap_Argc() < 2) {
         return;
@@ -132,7 +132,7 @@ void CG_TestModelPrevSkin_f(void) {
 }
 
 static void CG_AddTestModel(void) {
-    int     i;
+    int i;
     // re-register the model, because the level may have changed
     cg.testModelEntity.hModel = trap_R_RegisterModel(cg.testModelName);
     if (! cg.testModelEntity.hModel) {
@@ -165,8 +165,8 @@ Sets the coordinates of the rendered window
 =================
 */
 static void CG_CalcVrect(void) {
-    int     size;
-    int     size2;
+    int size;
+    int size2;
     // the intermission should allways be full screen
     if (cg.snap->ps.pm_type == PM_INTERMISSION) {
         size = 100;
@@ -176,7 +176,7 @@ static void CG_CalcVrect(void) {
             trap_Cvar_Set("cg_viewsize", "30");
             size = 30;
         } else if (cg_viewsize.integer > 120) {
-            trap_Cvar_Set("cg_viewsize", "120");    // leilei - increased to 120 for retro sbar disabling
+            trap_Cvar_Set("cg_viewsize", "120"); // leilei - increased to 120 for retro sbar disabling
             size = 120;
         } else {
             size = cg_viewsize.integer;
@@ -201,7 +201,7 @@ static void CG_CalcVrect(void) {
             nudged = 24;
         }
         nudged = nudged * (cgs.glconfig.vidHeight / 480.0);
-        cg.refdef.y = (cgs.glconfig.vidHeight  - cg.refdef.height) / 2 - nudged;
+        cg.refdef.y = (cgs.glconfig.vidHeight - cg.refdef.height) / 2 - nudged;
     }
 }
 
@@ -219,13 +219,13 @@ CG_OffsetThirdPersonView
 */
 #define FOCUS_DISTANCE 512
 static void CG_OffsetThirdPersonView(void) {
-    vec3_t      forward, right, up;
-    vec3_t      view;
-    vec3_t      focusAngles;
-    vec3_t      focusPoint;
-    float       focusDist;
-    float       forwardScale, sideScale;
-    float       range = cg_thirdPersonRange.value;
+    vec3_t forward, right, up;
+    vec3_t view;
+    vec3_t focusAngles;
+    vec3_t focusPoint;
+    float focusDist;
+    float forwardScale, sideScale;
+    float range = cg_thirdPersonRange.value;
     cg.refdef.vieworg[2] += cg.predictedPlayerState.viewheight;
     VectorCopy(cg.refdefViewAngles, focusAngles);
     // if dead, look at killer
@@ -234,13 +234,13 @@ static void CG_OffsetThirdPersonView(void) {
         focusAngles[YAW] = cg.predictedPlayerState.stats[STAT_DEAD_YAW];
         cg.refdefViewAngles[YAW] = cg.predictedPlayerState.stats[STAT_DEAD_YAW];
     }
-    if (cg_deathcam.integer == 2 && (cg.predictedPlayerState.stats[STAT_HEALTH] <= 0)) {    // leilei - deathcam
+    if (cg_deathcam.integer == 2 && (cg.predictedPlayerState.stats[STAT_HEALTH] <= 0)) { // leilei - deathcam
         range = 100;
         //origin = cg.refdef.vieworg;
-        //  focusAngles[YAW] = cg.refdefViewAngles[YAW];
-        //  focusAngles[PITCH] = cg.refdefViewAngles[PITCH];
+        // focusAngles[YAW] = cg.refdefViewAngles[YAW];
+        // focusAngles[PITCH] = cg.refdefViewAngles[PITCH];
     }
-    if (cg_cameramode.integer && (cg.predictedPlayerState.stats[STAT_HEALTH] > 0)) {    // leilei this mode is off to the player's right
+    if (cg_cameramode.integer && (cg.predictedPlayerState.stats[STAT_HEALTH] > 0)) { // leilei this mode is off to the player's right
         // and should look towards a 3d crosshair
         AngleVectors(focusAngles, forward, NULL, NULL);
         VectorMA(cg.refdef.vieworg, FOCUS_DISTANCE, forward, focusPoint);
@@ -262,13 +262,13 @@ static void CG_OffsetThirdPersonView(void) {
         VectorSubtract(focusPoint, cg.refdef.vieworg, focusPoint);
         focusDist = sqrt(focusPoint[0] * focusPoint[0] + focusPoint[1] * focusPoint[1]);
         if (focusDist < 1) {
-            focusDist = 1;  // should never happen
+            focusDist = 1; // should never happen
         }
         cg.refdefViewAngles[PITCH] = -180 / M_PI * atan2(focusPoint[2], focusDist);
         // leilei - make it look to a 3d cursor
-        //cg.refdefViewAngles[YAW] -= cg_thirdPersonAngle.value;     // can't do this right now.
+        //cg.refdefViewAngles[YAW] -= cg_thirdPersonAngle.value; // can't do this right now.
         {
-            vec3_t          forward, up;
+            vec3_t forward, up;
             cg.refdef.vieworg[2] -= 24;
             AngleVectors(cg.refdefViewAngles, forward, NULL, up);
             VectorMA(cg.refdef.vieworg, 1, forward, cg.refdef.vieworg);
@@ -276,7 +276,7 @@ static void CG_OffsetThirdPersonView(void) {
         }
     } else {
         if (focusAngles[PITCH] > 45) {
-            focusAngles[PITCH] = 45;        // don't go too far overhead
+            focusAngles[PITCH] = 45; // don't go too far overhead
         }
         AngleVectors(focusAngles, forward, NULL, NULL);
         VectorMA(cg.refdef.vieworg, FOCUS_DISTANCE, forward, focusPoint);
@@ -289,28 +289,28 @@ static void CG_OffsetThirdPersonView(void) {
         VectorMA(view, -range * forwardScale, forward, view);
         VectorMA(view, -range * sideScale, right, view);
         // trace a ray from the origin to the viewpoint to make sure the view isn't
-        // in a solid block.  Use an 8 by 8 block to prevent the view from near clipping anything
+        // in a solid block. Use an 8 by 8 block to prevent the view from near clipping anything
         /*
-            if (!cg_cameraMode.integer) {
-                CG_Trace( &trace, cg.refdef.vieworg, mins, maxs, view, cg.predictedPlayerState.clientNum, MASK_SOLID );
+        if (!cg_cameraMode.integer) {
+        CG_Trace( &trace, cg.refdef.vieworg, mins, maxs, view, cg.predictedPlayerState.clientNum, MASK_SOLID );
 
-                if ( trace.fraction != 1.0 ) {
-                    VectorCopy( trace.endpos, view );
-                    view[2] += (1.0 - trace.fraction) * 32;
-                    // try another trace to this position, because a tunnel may have the ceiling
-                    // close enough that this is poking out
+        if ( trace.fraction != 1.0 ) {
+        VectorCopy( trace.endpos, view );
+        view[2] += (1.0 - trace.fraction) * 32;
+        // try another trace to this position, because a tunnel may have the ceiling
+        // close enough that this is poking out
 
-                    CG_Trace( &trace, cg.refdef.vieworg, mins, maxs, view, cg.predictedPlayerState.clientNum, MASK_SOLID );
-                    VectorCopy( trace.endpos, view );
-                }
-            }
+        CG_Trace( &trace, cg.refdef.vieworg, mins, maxs, view, cg.predictedPlayerState.clientNum, MASK_SOLID );
+        VectorCopy( trace.endpos, view );
+        }
+        }
         */
         VectorCopy(view, cg.refdef.vieworg);
         // select pitch to look at focus point from vieword
         VectorSubtract(focusPoint, cg.refdef.vieworg, focusPoint);
         focusDist = sqrt(focusPoint[0] * focusPoint[0] + focusPoint[1] * focusPoint[1]);
         if (focusDist < 1) {
-            focusDist = 1;  // should never happen
+            focusDist = 1; // should never happen
         }
         cg.refdefViewAngles[PITCH] = -180 / M_PI * atan2(focusPoint[2], focusDist);
         cg.refdefViewAngles[YAW] -= cg_thirdPersonAngle.value;
@@ -319,7 +319,7 @@ static void CG_OffsetThirdPersonView(void) {
 
 // this causes a compiler bug on mac MrC compiler
 static void CG_StepOffset(void) {
-    int     timeDelta;
+    int timeDelta;
     // smooth out stair climbing
     timeDelta = cg.time - cg.stepTime;
     if (timeDelta < STEP_TIME) {
@@ -335,15 +335,15 @@ CG_OffsetFirstPersonView
 ===============
 */
 static void CG_OffsetFirstPersonView(void) {
-    float*           origin;
-    float*           angles;
-    float           bob;
-    float           ratio;
-    float           delta;
-    float           speed;
-    float           f;
-    vec3_t          predictedVelocity;
-    int             timeDelta;
+    float* origin;
+    float* angles;
+    float bob;
+    float ratio;
+    float delta;
+    float speed;
+    float f;
+    vec3_t predictedVelocity;
+    int timeDelta;
     if (cg.snap->ps.pm_type == PM_INTERMISSION) {
         return;
     }
@@ -394,12 +394,12 @@ static void CG_OffsetFirstPersonView(void) {
         speed = cg.xyspeed > 200 ? cg.xyspeed : 200;
         delta = cg.bobfracsin * cg_bobpitch.value * speed;
         if (cg.predictedPlayerState.pm_flags & PMF_DUCKED) {
-            delta *= 3;    // crouching
+            delta *= 3; // crouching
         }
         angles[PITCH] += delta;
         delta = cg.bobfracsin * cg_bobroll.value * speed;
         if (cg.predictedPlayerState.pm_flags & PMF_DUCKED) {
-            delta *= 3;    // crouching accentuates roll
+            delta *= 3; // crouching accentuates roll
         }
         if (cg.bobcycle & 1) {
             delta = -delta;
@@ -440,8 +440,8 @@ static void CG_OffsetFirstPersonView(void) {
     // pivot the eye based on a neck length
 #if 0
     {
-#define NECK_LENGTH     8
-        vec3_t          forward, up;
+#define NECK_LENGTH 8
+        vec3_t forward, up;
         cg.refdef.vieworg[2] -= NECK_LENGTH;
         AngleVectors(cg.refdefViewAngles, forward, NULL, up);
         VectorMA(cg.refdef.vieworg, 3, forward, cg.refdef.vieworg);
@@ -479,14 +479,14 @@ Fixed fov at intermissions, otherwise account for fov variable and zooms.
 #define WAVE_FREQUENCY 0.4
 
 static int CG_CalcFov(void) {
-    float   x;
-    float   phase;
-    float   v;
-    int     contents;
-    float   fov_x, fov_y;
-    float   zoomFov;
-    float   f;
-    int     inwater;
+    float x;
+    float phase;
+    float v;
+    int contents;
+    float fov_x, fov_y;
+    float zoomFov;
+    float f;
+    int inwater;
     if (cg.predictedPlayerState.pm_type == PM_INTERMISSION) {
         // if in intermission, use a fixed value
         fov_x = 90;
@@ -572,9 +572,9 @@ CG_DamageBlendBlob
 ===============
 */
 static void CG_DamageBlendBlob(void) {
-    int         t;
-    int         maxTime;
-    refEntity_t     ent;
+    int t;
+    int maxTime;
+    refEntity_t ent;
     if (!cg.damageValue) {
         return;
     }
@@ -613,7 +613,7 @@ Sets cg.refdef view values
 ===============
 */
 static int CG_CalcViewValues(void) {
-    playerState_t*   ps;
+    playerState_t* ps;
     memset(&cg.refdef, 0, sizeof(cg.refdef));
     // strings for in game rendering
     // Q_strncpyz( cg.refdef.text[0], "Park Ranger", sizeof(cg.refdef.text[0]) );
@@ -644,8 +644,8 @@ static int CG_CalcViewValues(void) {
     }
     // add error decay
     if (cg_errorDecay.value > 0) {
-        int     t;
-        float   f;
+        int t;
+        float f;
         t = cg.time - cg.predictedErrorTime;
         f = (cg_errorDecay.value - t) / cg_errorDecay.value;
         if (f > 0 && f < 1) {
@@ -663,7 +663,7 @@ static int CG_CalcViewValues(void) {
     }
     // leilei - View-from-the-model-eyes feature, aka "fullbody awareness" lol
     if (cg_cameraEyes.integer && !cg.renderingThirdPerson) {
-        vec3_t      forward, up;
+        vec3_t forward, up;
         cg.refdefViewAngles[ROLL] = headang[ROLL];
         cg.refdefViewAngles[PITCH] = headang[PITCH];
         cg.refdefViewAngles[YAW] = headang[YAW];
@@ -694,8 +694,8 @@ CG_PowerupTimerSounds
 =====================
 */
 static void CG_PowerupTimerSounds(void) {
-    int     i;
-    int     t;
+    int i;
+    int t;
     // powerup timers going away
     for (i = 0; i < MAX_POWERUPS; i++) {
         t = cg.snap->ps.powerups[i];
@@ -753,7 +753,7 @@ Generates and draws a game scene and status information at the given time.
 =================
 */
 void CG_DrawActiveFrame(int serverTime, stereoFrame_t stereoView, qboolean demoPlayback) {
-    int     inwater;
+    int inwater;
     cg.time = serverTime;
     cg.demoPlayback = demoPlayback;
     // update cvars
@@ -810,7 +810,7 @@ void CG_DrawActiveFrame(int serverTime, stereoFrame_t stereoView, qboolean demoP
     }
     // build the render lists
     if (!cg.hyperspace) {
-        CG_AddPacketEntities();         // adter calcViewValues, so predicted player state is correct
+        CG_AddPacketEntities(); // adter calcViewValues, so predicted player state is correct
         CG_AddMarks();
         CG_AddLocalEntities();
     }

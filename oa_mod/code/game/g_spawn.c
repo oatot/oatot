@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -23,11 +23,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "g_local.h"
 
-qboolean    G_SpawnString(const char* key, const char* defaultString, char** out) {
-    int     i;
+qboolean G_SpawnString(const char* key, const char* defaultString, char** out) {
+    int i;
     if (!level.spawning) {
         *out = (char*)defaultString;
-        //      G_Error( "G_SpawnString() called while not spawning" );
+        // G_Error( "G_SpawnString() called while not spawning" );
     }
     for (i = 0; i < level.numSpawnVars; i++) {
         if (Q_strequal(key, level.spawnVars[i][0])) {
@@ -39,25 +39,25 @@ qboolean    G_SpawnString(const char* key, const char* defaultString, char** out
     return qfalse;
 }
 
-qboolean    G_SpawnFloat(const char* key, const char* defaultString, float* out) {
-    char*        s;
-    qboolean    present;
+qboolean G_SpawnFloat(const char* key, const char* defaultString, float* out) {
+    char* s;
+    qboolean present;
     present = G_SpawnString(key, defaultString, &s);
     *out = atof(s);
     return present;
 }
 
-qboolean    G_SpawnInt(const char* key, const char* defaultString, int* out) {
-    char*        s;
-    qboolean    present;
+qboolean G_SpawnInt(const char* key, const char* defaultString, int* out) {
+    char* s;
+    qboolean present;
     present = G_SpawnString(key, defaultString, &s);
     *out = atoi(s);
     return present;
 }
 
-qboolean    G_SpawnVector(const char* key, const char* defaultString, float* out) {
-    char*        s;
-    qboolean    present;
+qboolean G_SpawnVector(const char* key, const char* defaultString, float* out) {
+    char* s;
+    qboolean present;
     present = G_SpawnString(key, defaultString, &s);
     sscanf(s, "%f %f %f", &out[0], &out[1], &out[2]);
     return present;
@@ -69,21 +69,21 @@ qboolean    G_SpawnVector(const char* key, const char* defaultString, float* out
 typedef enum {
     F_INT,
     F_FLOAT,
-    F_LSTRING,          // string on disk, pointer in memory, TAG_LEVEL
-    F_GSTRING,          // string on disk, pointer in memory, TAG_GAME
+    F_LSTRING, // string on disk, pointer in memory, TAG_LEVEL
+    F_GSTRING, // string on disk, pointer in memory, TAG_GAME
     F_VECTOR,
     F_ANGLEHACK,
-    F_ENTITY,           // index on disk, pointer in memory
-    F_ITEM,             // index on disk, pointer in memory
-    F_CLIENT,           // index on disk, pointer in memory
+    F_ENTITY, // index on disk, pointer in memory
+    F_ITEM, // index on disk, pointer in memory
+    F_CLIENT, // index on disk, pointer in memory
     F_IGNORE
 } fieldtype_t;
 
 typedef struct {
-    char*    name;
-    int     ofs;
+    char* name;
+    int ofs;
     fieldtype_t type;
-    //  int     flags;
+    // int flags;
 } field_t;
 
 field_t fields[] = {
@@ -112,7 +112,7 @@ field_t fields[] = {
 };
 
 typedef struct {
-    char*    name;
+    char* name;
     void (*spawn)(gentity_t* ent);
 } spawn_t;
 
@@ -201,7 +201,7 @@ spawn_t spawns[] = {
     {"info_player_dom_blue", SP_info_player_deathmatch},
 
     {"info_null", SP_info_null},
-    {"info_notnull", SP_info_notnull},      // use target_position instead
+    {"info_notnull", SP_info_notnull}, // use target_position instead
     {"info_camp", SP_info_camp},
 
     {"func_plat", SP_func_plat},
@@ -213,7 +213,7 @@ spawn_t spawns[] = {
     {"func_pendulum", SP_func_pendulum},
     {"func_train", SP_func_train},
     {"func_group", SP_info_null},
-    {"func_timer", SP_func_timer},          // rename trigger_timer?
+    {"func_timer", SP_func_timer}, // rename trigger_timer?
 
     // Triggers are brush objects that cause an effect when contacted
     // by a living player, usually involving firing targets.
@@ -323,8 +323,8 @@ so message texts can be multi-line
 =============
 */
 char* G_NewString(const char* string) {
-    char*    newb, *new_p;
-    int     i, l;
+    char* newb, *new_p;
+    int i, l;
     l = strlen(string) + 1;
     //KK-OAX Changed to Tremulous's BG_Alloc
     newb = BG_Alloc(l);
@@ -355,8 +355,8 @@ in a gentity
 */
 void G_ParseField(const char* key, const char* value, gentity_t* ent) {
     field_t* f;
-    byte*    b;
-    float   v;
+    byte* b;
+    float v;
     vec3_t vec;
     for (f = fields; f->name; f++) {
         if (Q_strequal(f->name, key)) {
@@ -402,9 +402,9 @@ level.spawnVars[], then call the class specfic spawn function
 ===================
 */
 void G_SpawnGEntityFromSpawnVars(void) {
-    int         i;
-    gentity_t*   ent;
-    char*        s, *value, *gametypeName;
+    int i;
+    gentity_t* ent;
+    char* s, *value, *gametypeName;
     static char* gametypeNames[] = {"ffa", "tournament", "single", "team", "ctf", "oneflag", "obelisk", "harvester",
                                     "elimination", "ctf", "lms", "dd", "dom", "pos"
                                    };
@@ -483,8 +483,8 @@ G_AddSpawnVarToken
 ====================
 */
 char* G_AddSpawnVarToken(const char* string) {
-    int     l;
-    char*    dest;
+    int l;
+    char* dest;
     l = strlen(string);
     if (level.numSpawnVarChars + l + 1 > MAX_SPAWN_VARS_CHARS) {
         G_Error("G_AddSpawnVarToken: MAX_SPAWN_VARS");
@@ -506,8 +506,8 @@ This does not actually spawn an entity.
 ====================
 */
 qboolean G_ParseSpawnVars(void) {
-    char        keyname[MAX_TOKEN_CHARS];
-    char        com_token[MAX_TOKEN_CHARS];
+    char keyname[MAX_TOKEN_CHARS];
+    char com_token[MAX_TOKEN_CHARS];
     level.numSpawnVars = 0;
     level.numSpawnVarChars = 0;
     // parse the opening brace
@@ -547,12 +547,12 @@ qboolean G_ParseSpawnVars(void) {
 /*QUAKED worldspawn (0 0 0) ?
 
 Every map should have exactly one worldspawn.
-"music"     music wav file
-"gravity"   800 is default gravity
-"message"   Text to print during connection process
+"music" music wav file
+"gravity" 800 is default gravity
+"message" Text to print during connection process
 */
 void SP_worldspawn(void) {
-    char*    s;
+    char* s;
     G_SpawnString("classname", "", &s);
     if (!Q_strequal(s, "worldspawn")) {
         G_Error("SP_worldspawn: The first entity isn't 'worldspawn'");
@@ -567,8 +567,8 @@ void SP_worldspawn(void) {
         trap_SetConfigstring(CS_MUSIC, s);
     }
     G_SpawnString("message", "", &s);
-    trap_SetConfigstring(CS_MESSAGE, s);                 // map specific message
-    trap_SetConfigstring(CS_MOTD, g_motd.string);        // message of the day
+    trap_SetConfigstring(CS_MESSAGE, s); // map specific message
+    trap_SetConfigstring(CS_MOTD, g_motd.string); // message of the day
     G_SpawnString("gravity", "800", &s);
     trap_Cvar_Set("g_gravity", s);
     G_SpawnString("enableFS", "0", &s);
@@ -590,7 +590,7 @@ void SP_worldspawn(void) {
     if (g_restarted.integer) {
         trap_Cvar_Set("g_restarted", "0");
         level.warmupTime = 0;
-    } else if (g_doWarmup.integer) {   // Turn it on
+    } else if (g_doWarmup.integer) { // Turn it on
         level.warmupTime = -1;
         trap_SetConfigstring(CS_WARMUP, va("%i", level.warmupTime));
         G_LogPrintf("Warmup:\n");
@@ -619,6 +619,6 @@ void G_SpawnEntitiesFromString(void) {
     while (G_ParseSpawnVars()) {
         G_SpawnGEntityFromSpawnVars();
     }
-    level.spawning = qfalse;            // any future calls to G_Spawn*() will be errors
+    level.spawning = qfalse; // any future calls to G_Spawn*() will be errors
 }
 

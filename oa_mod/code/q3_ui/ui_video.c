@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -32,10 +32,10 @@ DRIVER INFORMATION MENU
 =======================================================================
 */
 
-#define DRIVERINFO_FRAMEL   "menu/" MENU_ART_DIR "/frame2_l"
-#define DRIVERINFO_FRAMER   "menu/" MENU_ART_DIR "/frame1_r"
-#define DRIVERINFO_BACK0    "menu/" MENU_ART_DIR "/back_0"
-#define DRIVERINFO_BACK1    "menu/" MENU_ART_DIR "/back_1"
+#define DRIVERINFO_FRAMEL "menu/" MENU_ART_DIR "/frame2_l"
+#define DRIVERINFO_FRAMER "menu/" MENU_ART_DIR "/frame1_r"
+#define DRIVERINFO_BACK0 "menu/" MENU_ART_DIR "/back_0"
+#define DRIVERINFO_BACK1 "menu/" MENU_ART_DIR "/back_1"
 
 static char* driverinfo_artlist[] = {
     DRIVERINFO_FRAMEL,
@@ -45,17 +45,17 @@ static char* driverinfo_artlist[] = {
     NULL,
 };
 
-#define ID_DRIVERINFOBACK   100
+#define ID_DRIVERINFOBACK 100
 
 typedef struct {
     menuframework_s menu;
-    menutext_s      banner;
-    menubitmap_s    back;
-    menubitmap_s    framel;
-    menubitmap_s    framer;
-    char            stringbuff[1024];
-    char*           strings[64];
-    int             numstrings;
+    menutext_s banner;
+    menubitmap_s back;
+    menubitmap_s framel;
+    menubitmap_s framer;
+    char stringbuff[1024];
+    char* strings[64];
+    int numstrings;
 } driverinfo_t;
 
 static driverinfo_t s_driverinfo;
@@ -126,44 +126,44 @@ UI_DriverInfo_Menu
 =================
 */
 static void UI_DriverInfo_Menu(void) {
-    char*   eptr;
-    int     i;
-    int     len;
+    char* eptr;
+    int i;
+    int len;
     // zero set all our globals
     memset(&s_driverinfo, 0, sizeof(driverinfo_t));
     DriverInfo_Cache();
     s_driverinfo.menu.fullscreen = qtrue;
-    s_driverinfo.menu.draw       = DriverInfo_MenuDraw;
-    s_driverinfo.banner.generic.type  = MTYPE_BTEXT;
-    s_driverinfo.banner.generic.x     = 320;
-    s_driverinfo.banner.generic.y     = 16;
-    s_driverinfo.banner.string        = "DRIVER INFO";
-    s_driverinfo.banner.color         = color_white;
-    s_driverinfo.banner.style         = UI_CENTER;
-    s_driverinfo.framel.generic.type  = MTYPE_BITMAP;
-    s_driverinfo.framel.generic.name  = DRIVERINFO_FRAMEL;
+    s_driverinfo.menu.draw = DriverInfo_MenuDraw;
+    s_driverinfo.banner.generic.type = MTYPE_BTEXT;
+    s_driverinfo.banner.generic.x = 320;
+    s_driverinfo.banner.generic.y = 16;
+    s_driverinfo.banner.string = "DRIVER INFO";
+    s_driverinfo.banner.color = color_white;
+    s_driverinfo.banner.style = UI_CENTER;
+    s_driverinfo.framel.generic.type = MTYPE_BITMAP;
+    s_driverinfo.framel.generic.name = DRIVERINFO_FRAMEL;
     s_driverinfo.framel.generic.flags = QMF_INACTIVE;
-    s_driverinfo.framel.generic.x     = 0;
-    s_driverinfo.framel.generic.y     = 78;
-    s_driverinfo.framel.width         = 256;
-    s_driverinfo.framel.height        = 329;
-    s_driverinfo.framer.generic.type  = MTYPE_BITMAP;
-    s_driverinfo.framer.generic.name  = DRIVERINFO_FRAMER;
+    s_driverinfo.framel.generic.x = 0;
+    s_driverinfo.framel.generic.y = 78;
+    s_driverinfo.framel.width = 256;
+    s_driverinfo.framel.height = 329;
+    s_driverinfo.framer.generic.type = MTYPE_BITMAP;
+    s_driverinfo.framer.generic.name = DRIVERINFO_FRAMER;
     s_driverinfo.framer.generic.flags = QMF_INACTIVE;
-    s_driverinfo.framer.generic.x     = 376;
-    s_driverinfo.framer.generic.y     = 76;
-    s_driverinfo.framer.width         = 256;
-    s_driverinfo.framer.height        = 334;
-    s_driverinfo.back.generic.type     = MTYPE_BITMAP;
-    s_driverinfo.back.generic.name     = DRIVERINFO_BACK0;
-    s_driverinfo.back.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_driverinfo.framer.generic.x = 376;
+    s_driverinfo.framer.generic.y = 76;
+    s_driverinfo.framer.width = 256;
+    s_driverinfo.framer.height = 334;
+    s_driverinfo.back.generic.type = MTYPE_BITMAP;
+    s_driverinfo.back.generic.name = DRIVERINFO_BACK0;
+    s_driverinfo.back.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_driverinfo.back.generic.callback = DriverInfo_Event;
-    s_driverinfo.back.generic.id       = ID_DRIVERINFOBACK;
-    s_driverinfo.back.generic.x        = 0;
-    s_driverinfo.back.generic.y        = 480 - 64;
-    s_driverinfo.back.width            = 128;
-    s_driverinfo.back.height           = 64;
-    s_driverinfo.back.focuspic         = DRIVERINFO_BACK1;
+    s_driverinfo.back.generic.id = ID_DRIVERINFOBACK;
+    s_driverinfo.back.generic.x = 0;
+    s_driverinfo.back.generic.y = 480 - 64;
+    s_driverinfo.back.width = 128;
+    s_driverinfo.back.height = 64;
+    s_driverinfo.back.focuspic = DRIVERINFO_BACK1;
     // TTimo: overflow with particularly long GL extensions (such as the gf3)
     // https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=399
     // NOTE: could have pushed the size of stringbuff, but the list is already out of the screen
@@ -188,7 +188,7 @@ static void UI_DriverInfo_Menu(void) {
         len = strlen(s_driverinfo.strings[i]);
         if (len > 32) {
             s_driverinfo.strings[i][len - 1] = '>';
-            s_driverinfo.strings[i][len]   = '\0';
+            s_driverinfo.strings[i][len] = '\0';
         }
     }
     Menu_AddItem(&s_driverinfo.menu, &s_driverinfo.banner);
@@ -206,55 +206,55 @@ GRAPHICS OPTIONS MENU
 =======================================================================
 */
 
-#define GRAPHICSOPTIONS_FRAMEL  "menu/" MENU_ART_DIR "/frame2_l"
-#define GRAPHICSOPTIONS_FRAMER  "menu/" MENU_ART_DIR "/frame1_r"
-#define GRAPHICSOPTIONS_BACK0   "menu/" MENU_ART_DIR "/back_0"
-#define GRAPHICSOPTIONS_BACK1   "menu/" MENU_ART_DIR "/back_1"
+#define GRAPHICSOPTIONS_FRAMEL "menu/" MENU_ART_DIR "/frame2_l"
+#define GRAPHICSOPTIONS_FRAMER "menu/" MENU_ART_DIR "/frame1_r"
+#define GRAPHICSOPTIONS_BACK0 "menu/" MENU_ART_DIR "/back_0"
+#define GRAPHICSOPTIONS_BACK1 "menu/" MENU_ART_DIR "/back_1"
 #define GRAPHICSOPTIONS_ACCEPT0 "menu/" MENU_ART_DIR "/accept_0"
 #define GRAPHICSOPTIONS_ACCEPT1 "menu/" MENU_ART_DIR "/accept_1"
 
-#define ID_BACK2        101
-#define ID_FULLSCREEN   102
-#define ID_LIST         103
-#define ID_MODE         104
-#define ID_DRIVERINFO   105
-#define ID_GRAPHICS     106
-#define ID_DISPLAY      107
-#define ID_SOUND        108
-#define ID_NETWORK      109
-#define ID_RATIO                110
+#define ID_BACK2 101
+#define ID_FULLSCREEN 102
+#define ID_LIST 103
+#define ID_MODE 104
+#define ID_DRIVERINFO 105
+#define ID_GRAPHICS 106
+#define ID_DISPLAY 107
+#define ID_SOUND 108
+#define ID_NETWORK 109
+#define ID_RATIO 110
 
 typedef struct {
     menuframework_s menu;
 
-    menutext_s      banner;
-    menubitmap_s    framel;
-    menubitmap_s    framer;
+    menutext_s banner;
+    menubitmap_s framel;
+    menubitmap_s framer;
 
-    menutext_s      graphics;
-    menutext_s      display;
-    menutext_s      sound;
-    menutext_s      network;
+    menutext_s graphics;
+    menutext_s display;
+    menutext_s sound;
+    menutext_s network;
 
-    menulist_s      list;
-    menulist_s              ratio;
-    menulist_s      mode;
-    menulist_s      driver;
-    menuslider_s    tq;
-    menulist_s      fs;
-    menulist_s      lighting;
-    menulist_s      flares;
-    menulist_s      bloom;
-    menulist_s      allow_extensions;
-    menulist_s      texturebits;
-    menulist_s      geometry;
-    menulist_s      filter;
-    menulist_s      aniso;
-    menulist_s      drawfps;
-    menutext_s      driverinfo;
+    menulist_s list;
+    menulist_s ratio;
+    menulist_s mode;
+    menulist_s driver;
+    menuslider_s tq;
+    menulist_s fs;
+    menulist_s lighting;
+    menulist_s flares;
+    menulist_s bloom;
+    menulist_s allow_extensions;
+    menulist_s texturebits;
+    menulist_s geometry;
+    menulist_s filter;
+    menulist_s aniso;
+    menulist_s drawfps;
+    menutext_s driverinfo;
 
-    menubitmap_s    apply;
-    menubitmap_s    back;
+    menubitmap_s apply;
+    menubitmap_s back;
 } graphicsoptions_t;
 
 typedef struct {
@@ -273,8 +273,8 @@ typedef struct {
     qboolean extensions;
 } InitialVideoOptions_s;
 
-static InitialVideoOptions_s    s_ivo;
-static graphicsoptions_t        s_graphicsoptions;
+static InitialVideoOptions_s s_ivo;
+static graphicsoptions_t s_graphicsoptions;
 
 static InitialVideoOptions_s s_ivo_templates[] = {
     {
@@ -316,14 +316,14 @@ static const char* builtinResolutions[ ] = {
 };
 
 static const char* knownRatios[ ][2] = {
-    { "1.25:1", "5:4"   },
-    { "1.33:1", "4:3"   },
-    { "1.50:1", "3:2"   },
-    { "1.56:1", "14:9"  },
+    { "1.25:1", "5:4" },
+    { "1.33:1", "4:3" },
+    { "1.50:1", "3:2" },
+    { "1.56:1", "14:9" },
     { "1.60:1", "16:10" },
-    { "1.67:1", "5:3"   },
-    { "1.78:1", "16:9"  },
-    { NULL, NULL    }
+    { "1.67:1", "5:3" },
+    { "1.78:1", "16:9" },
+    { NULL, NULL }
 };
 
 #define MAX_RESOLUTIONS 32
@@ -429,18 +429,18 @@ GraphicsOptions_GetInitialVideo
 =================
 */
 static void GraphicsOptions_GetInitialVideo(void) {
-    s_ivo.driver      = s_graphicsoptions.driver.curvalue;
-    s_ivo.mode        = s_graphicsoptions.mode.curvalue;
-    s_ivo.fullscreen  = s_graphicsoptions.fs.curvalue;
-    s_ivo.extensions  = s_graphicsoptions.allow_extensions.curvalue;
-    s_ivo.tq          = s_graphicsoptions.tq.curvalue;
-    s_ivo.lighting    = s_graphicsoptions.lighting.curvalue;
-    s_ivo.flares      = s_graphicsoptions.flares.curvalue;
-    s_ivo.bloom      = s_graphicsoptions.bloom.curvalue;
-    s_ivo.drawfps     = s_graphicsoptions.drawfps.curvalue;
-    s_ivo.geometry    = s_graphicsoptions.geometry.curvalue;
-    s_ivo.filter      = s_graphicsoptions.filter.curvalue;
-    s_ivo.aniso      = s_graphicsoptions.aniso.curvalue;
+    s_ivo.driver = s_graphicsoptions.driver.curvalue;
+    s_ivo.mode = s_graphicsoptions.mode.curvalue;
+    s_ivo.fullscreen = s_graphicsoptions.fs.curvalue;
+    s_ivo.extensions = s_graphicsoptions.allow_extensions.curvalue;
+    s_ivo.tq = s_graphicsoptions.tq.curvalue;
+    s_ivo.lighting = s_graphicsoptions.lighting.curvalue;
+    s_ivo.flares = s_graphicsoptions.flares.curvalue;
+    s_ivo.bloom = s_graphicsoptions.bloom.curvalue;
+    s_ivo.drawfps = s_graphicsoptions.drawfps.curvalue;
+    s_ivo.geometry = s_graphicsoptions.geometry.curvalue;
+    s_ivo.filter = s_graphicsoptions.filter.curvalue;
+    s_ivo.aniso = s_graphicsoptions.aniso.curvalue;
     s_ivo.texturebits = s_graphicsoptions.texturebits.curvalue;
 }
 
@@ -510,8 +510,8 @@ static void GraphicsOptions_CheckConfig(void) {
         if (s_ivo_templates[i].aniso != s_graphicsoptions.aniso.curvalue) {
             continue;
         }
-        //      if ( s_ivo_templates[i].texturebits != s_graphicsoptions.texturebits.curvalue )
-        //          continue;
+        // if ( s_ivo_templates[i].texturebits != s_graphicsoptions.texturebits.curvalue )
+        // continue;
         s_graphicsoptions.list.curvalue = i;
         return;
     }
@@ -684,18 +684,18 @@ static void GraphicsOptions_Event(void* ptr, int event) {
         break;
     case ID_LIST:
         ivo = &s_ivo_templates[s_graphicsoptions.list.curvalue];
-        s_graphicsoptions.mode.curvalue        = GraphicsOptions_FindDetectedResolution(ivo->mode);
-        s_graphicsoptions.ratio.curvalue       = resToRatio[ s_graphicsoptions.mode.curvalue ];
-        s_graphicsoptions.tq.curvalue          = ivo->tq;
-        s_graphicsoptions.lighting.curvalue    = ivo->lighting;
+        s_graphicsoptions.mode.curvalue = GraphicsOptions_FindDetectedResolution(ivo->mode);
+        s_graphicsoptions.ratio.curvalue = resToRatio[ s_graphicsoptions.mode.curvalue ];
+        s_graphicsoptions.tq.curvalue = ivo->tq;
+        s_graphicsoptions.lighting.curvalue = ivo->lighting;
         s_graphicsoptions.texturebits.curvalue = ivo->texturebits;
-        s_graphicsoptions.geometry.curvalue    = ivo->geometry;
-        s_graphicsoptions.filter.curvalue      = ivo->filter;
-        s_graphicsoptions.aniso.curvalue       = ivo->aniso;
-        s_graphicsoptions.fs.curvalue          = ivo->fullscreen;
-        s_graphicsoptions.flares.curvalue      = ivo->flares;
-        s_graphicsoptions.bloom.curvalue      = ivo->bloom;
-        s_graphicsoptions.drawfps.curvalue      = ivo->drawfps;
+        s_graphicsoptions.geometry.curvalue = ivo->geometry;
+        s_graphicsoptions.filter.curvalue = ivo->filter;
+        s_graphicsoptions.aniso.curvalue = ivo->aniso;
+        s_graphicsoptions.fs.curvalue = ivo->fullscreen;
+        s_graphicsoptions.flares.curvalue = ivo->flares;
+        s_graphicsoptions.bloom.curvalue = ivo->bloom;
+        s_graphicsoptions.drawfps.curvalue = ivo->drawfps;
         break;
     case ID_DRIVERINFO:
         UI_DriverInfo_Menu();
@@ -878,217 +878,217 @@ void GraphicsOptions_MenuInit(void) {
     GraphicsOptions_Cache();
     s_graphicsoptions.menu.wrapAround = qtrue;
     s_graphicsoptions.menu.fullscreen = qtrue;
-    s_graphicsoptions.menu.draw       = GraphicsOptions_MenuDraw;
-    s_graphicsoptions.banner.generic.type  = MTYPE_BTEXT;
-    s_graphicsoptions.banner.generic.x     = 320;
-    s_graphicsoptions.banner.generic.y     = 16;
-    s_graphicsoptions.banner.string        = "SYSTEM SETUP";
-    s_graphicsoptions.banner.color         = color_white;
-    s_graphicsoptions.banner.style         = UI_CENTER;
-    s_graphicsoptions.framel.generic.type  = MTYPE_BITMAP;
-    s_graphicsoptions.framel.generic.name  = GRAPHICSOPTIONS_FRAMEL;
+    s_graphicsoptions.menu.draw = GraphicsOptions_MenuDraw;
+    s_graphicsoptions.banner.generic.type = MTYPE_BTEXT;
+    s_graphicsoptions.banner.generic.x = 320;
+    s_graphicsoptions.banner.generic.y = 16;
+    s_graphicsoptions.banner.string = "SYSTEM SETUP";
+    s_graphicsoptions.banner.color = color_white;
+    s_graphicsoptions.banner.style = UI_CENTER;
+    s_graphicsoptions.framel.generic.type = MTYPE_BITMAP;
+    s_graphicsoptions.framel.generic.name = GRAPHICSOPTIONS_FRAMEL;
     s_graphicsoptions.framel.generic.flags = QMF_INACTIVE;
-    s_graphicsoptions.framel.generic.x     = 0;
-    s_graphicsoptions.framel.generic.y     = 78;
-    s_graphicsoptions.framel.width         = 256;
-    s_graphicsoptions.framel.height        = 329;
-    s_graphicsoptions.framer.generic.type  = MTYPE_BITMAP;
-    s_graphicsoptions.framer.generic.name  = GRAPHICSOPTIONS_FRAMER;
+    s_graphicsoptions.framel.generic.x = 0;
+    s_graphicsoptions.framel.generic.y = 78;
+    s_graphicsoptions.framel.width = 256;
+    s_graphicsoptions.framel.height = 329;
+    s_graphicsoptions.framer.generic.type = MTYPE_BITMAP;
+    s_graphicsoptions.framer.generic.name = GRAPHICSOPTIONS_FRAMER;
     s_graphicsoptions.framer.generic.flags = QMF_INACTIVE;
-    s_graphicsoptions.framer.generic.x     = 376;
-    s_graphicsoptions.framer.generic.y     = 76;
-    s_graphicsoptions.framer.width         = 256;
-    s_graphicsoptions.framer.height        = 334;
-    s_graphicsoptions.graphics.generic.type     = MTYPE_PTEXT;
-    s_graphicsoptions.graphics.generic.flags    = QMF_RIGHT_JUSTIFY;
-    s_graphicsoptions.graphics.generic.id       = ID_GRAPHICS;
+    s_graphicsoptions.framer.generic.x = 376;
+    s_graphicsoptions.framer.generic.y = 76;
+    s_graphicsoptions.framer.width = 256;
+    s_graphicsoptions.framer.height = 334;
+    s_graphicsoptions.graphics.generic.type = MTYPE_PTEXT;
+    s_graphicsoptions.graphics.generic.flags = QMF_RIGHT_JUSTIFY;
+    s_graphicsoptions.graphics.generic.id = ID_GRAPHICS;
     s_graphicsoptions.graphics.generic.callback = GraphicsOptions_Event;
-    s_graphicsoptions.graphics.generic.x        = 216;
-    s_graphicsoptions.graphics.generic.y        = 240 - 2 * PROP_HEIGHT;
-    s_graphicsoptions.graphics.string           = "GRAPHICS";
-    s_graphicsoptions.graphics.style            = UI_RIGHT;
-    s_graphicsoptions.graphics.color            = color_red;
-    s_graphicsoptions.display.generic.type      = MTYPE_PTEXT;
-    s_graphicsoptions.display.generic.flags     = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_graphicsoptions.display.generic.id        = ID_DISPLAY;
-    s_graphicsoptions.display.generic.callback  = GraphicsOptions_Event;
-    s_graphicsoptions.display.generic.x         = 216;
-    s_graphicsoptions.display.generic.y         = 240 - PROP_HEIGHT;
-    s_graphicsoptions.display.string            = "DISPLAY";
-    s_graphicsoptions.display.style             = UI_RIGHT;
-    s_graphicsoptions.display.color             = color_red;
-    s_graphicsoptions.sound.generic.type        = MTYPE_PTEXT;
-    s_graphicsoptions.sound.generic.flags       = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_graphicsoptions.sound.generic.id          = ID_SOUND;
-    s_graphicsoptions.sound.generic.callback    = GraphicsOptions_Event;
-    s_graphicsoptions.sound.generic.x           = 216;
-    s_graphicsoptions.sound.generic.y           = 240;
-    s_graphicsoptions.sound.string              = "SOUND";
-    s_graphicsoptions.sound.style               = UI_RIGHT;
-    s_graphicsoptions.sound.color               = color_red;
-    s_graphicsoptions.network.generic.type      = MTYPE_PTEXT;
-    s_graphicsoptions.network.generic.flags     = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_graphicsoptions.network.generic.id        = ID_NETWORK;
-    s_graphicsoptions.network.generic.callback  = GraphicsOptions_Event;
-    s_graphicsoptions.network.generic.x         = 216;
-    s_graphicsoptions.network.generic.y         = 240 + PROP_HEIGHT;
-    s_graphicsoptions.network.string            = "NETWORK";
-    s_graphicsoptions.network.style             = UI_RIGHT;
-    s_graphicsoptions.network.color             = color_red;
+    s_graphicsoptions.graphics.generic.x = 216;
+    s_graphicsoptions.graphics.generic.y = 240 - 2 * PROP_HEIGHT;
+    s_graphicsoptions.graphics.string = "GRAPHICS";
+    s_graphicsoptions.graphics.style = UI_RIGHT;
+    s_graphicsoptions.graphics.color = color_red;
+    s_graphicsoptions.display.generic.type = MTYPE_PTEXT;
+    s_graphicsoptions.display.generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_graphicsoptions.display.generic.id = ID_DISPLAY;
+    s_graphicsoptions.display.generic.callback = GraphicsOptions_Event;
+    s_graphicsoptions.display.generic.x = 216;
+    s_graphicsoptions.display.generic.y = 240 - PROP_HEIGHT;
+    s_graphicsoptions.display.string = "DISPLAY";
+    s_graphicsoptions.display.style = UI_RIGHT;
+    s_graphicsoptions.display.color = color_red;
+    s_graphicsoptions.sound.generic.type = MTYPE_PTEXT;
+    s_graphicsoptions.sound.generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_graphicsoptions.sound.generic.id = ID_SOUND;
+    s_graphicsoptions.sound.generic.callback = GraphicsOptions_Event;
+    s_graphicsoptions.sound.generic.x = 216;
+    s_graphicsoptions.sound.generic.y = 240;
+    s_graphicsoptions.sound.string = "SOUND";
+    s_graphicsoptions.sound.style = UI_RIGHT;
+    s_graphicsoptions.sound.color = color_red;
+    s_graphicsoptions.network.generic.type = MTYPE_PTEXT;
+    s_graphicsoptions.network.generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_graphicsoptions.network.generic.id = ID_NETWORK;
+    s_graphicsoptions.network.generic.callback = GraphicsOptions_Event;
+    s_graphicsoptions.network.generic.x = 216;
+    s_graphicsoptions.network.generic.y = 240 + PROP_HEIGHT;
+    s_graphicsoptions.network.string = "NETWORK";
+    s_graphicsoptions.network.style = UI_RIGHT;
+    s_graphicsoptions.network.color = color_red;
     y = 240 - 7 * (BIGCHAR_HEIGHT + 2);
-    s_graphicsoptions.list.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.list.generic.name     = "Graphics Settings:";
-    s_graphicsoptions.list.generic.flags    = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.list.generic.x        = 400;
-    s_graphicsoptions.list.generic.y        = y;
+    s_graphicsoptions.list.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.list.generic.name = "Graphics Settings:";
+    s_graphicsoptions.list.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.list.generic.x = 400;
+    s_graphicsoptions.list.generic.y = y;
     s_graphicsoptions.list.generic.callback = GraphicsOptions_Event;
-    s_graphicsoptions.list.generic.id       = ID_LIST;
-    s_graphicsoptions.list.itemnames        = s_graphics_options_names;
+    s_graphicsoptions.list.generic.id = ID_LIST;
+    s_graphicsoptions.list.itemnames = s_graphics_options_names;
     y += 2 * (BIGCHAR_HEIGHT + 2);
-    s_graphicsoptions.driver.generic.type  = MTYPE_SPINCONTROL;
-    s_graphicsoptions.driver.generic.name  = "GL Driver:";
+    s_graphicsoptions.driver.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.driver.generic.name = "GL Driver:";
     s_graphicsoptions.driver.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.driver.generic.x     = 400;
-    s_graphicsoptions.driver.generic.y     = y;
-    s_graphicsoptions.driver.itemnames     = s_driver_names;
-    s_graphicsoptions.driver.curvalue      = (uis.glconfig.driverType == GLDRV_VOODOO);
+    s_graphicsoptions.driver.generic.x = 400;
+    s_graphicsoptions.driver.generic.y = y;
+    s_graphicsoptions.driver.itemnames = s_driver_names;
+    s_graphicsoptions.driver.curvalue = (uis.glconfig.driverType == GLDRV_VOODOO);
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_allowExtensions"
-    s_graphicsoptions.allow_extensions.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.allow_extensions.generic.name     = "GL Extensions:";
-    s_graphicsoptions.allow_extensions.generic.flags    = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.allow_extensions.generic.x        = 400;
-    s_graphicsoptions.allow_extensions.generic.y        = y;
-    s_graphicsoptions.allow_extensions.itemnames        = enabled_names;
+    s_graphicsoptions.allow_extensions.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.allow_extensions.generic.name = "GL Extensions:";
+    s_graphicsoptions.allow_extensions.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.allow_extensions.generic.x = 400;
+    s_graphicsoptions.allow_extensions.generic.y = y;
+    s_graphicsoptions.allow_extensions.itemnames = enabled_names;
     y += BIGCHAR_HEIGHT + 2;
-    s_graphicsoptions.ratio.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.ratio.generic.name     = "Aspect Ratio:";
-    s_graphicsoptions.ratio.generic.flags    = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.ratio.generic.x        = 400;
-    s_graphicsoptions.ratio.generic.y        = y;
-    s_graphicsoptions.ratio.itemnames        = ratios;
+    s_graphicsoptions.ratio.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.ratio.generic.name = "Aspect Ratio:";
+    s_graphicsoptions.ratio.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.ratio.generic.x = 400;
+    s_graphicsoptions.ratio.generic.y = y;
+    s_graphicsoptions.ratio.itemnames = ratios;
     s_graphicsoptions.ratio.generic.callback = GraphicsOptions_Event;
-    s_graphicsoptions.ratio.generic.id       = ID_RATIO;
+    s_graphicsoptions.ratio.generic.id = ID_RATIO;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_mode"
-    s_graphicsoptions.mode.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.mode.generic.name     = "Resolution:";
-    s_graphicsoptions.mode.generic.flags    = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.mode.generic.x        = 400;
-    s_graphicsoptions.mode.generic.y        = y;
-    s_graphicsoptions.mode.itemnames        = resolutions;
+    s_graphicsoptions.mode.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.mode.generic.name = "Resolution:";
+    s_graphicsoptions.mode.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.mode.generic.x = 400;
+    s_graphicsoptions.mode.generic.y = y;
+    s_graphicsoptions.mode.itemnames = resolutions;
     s_graphicsoptions.mode.generic.callback = GraphicsOptions_Event;
-    s_graphicsoptions.mode.generic.id       = ID_MODE;
+    s_graphicsoptions.mode.generic.id = ID_MODE;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_fullscreen"
-    s_graphicsoptions.fs.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.fs.generic.name     = "Fullscreen:";
-    s_graphicsoptions.fs.generic.flags    = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.fs.generic.x        = 400;
-    s_graphicsoptions.fs.generic.y        = y;
-    s_graphicsoptions.fs.itemnames        = enabled_names;
+    s_graphicsoptions.fs.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.fs.generic.name = "Fullscreen:";
+    s_graphicsoptions.fs.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.fs.generic.x = 400;
+    s_graphicsoptions.fs.generic.y = y;
+    s_graphicsoptions.fs.itemnames = enabled_names;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_vertexLight"
-    s_graphicsoptions.lighting.generic.type  = MTYPE_SPINCONTROL;
-    s_graphicsoptions.lighting.generic.name  = "Lighting:";
+    s_graphicsoptions.lighting.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.lighting.generic.name = "Lighting:";
     s_graphicsoptions.lighting.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.lighting.generic.x     = 400;
-    s_graphicsoptions.lighting.generic.y     = y;
-    s_graphicsoptions.lighting.itemnames     = lighting_names;
+    s_graphicsoptions.lighting.generic.x = 400;
+    s_graphicsoptions.lighting.generic.y = y;
+    s_graphicsoptions.lighting.itemnames = lighting_names;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_flares"
-    s_graphicsoptions.flares.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.flares.generic.name     = "Flares:";
-    s_graphicsoptions.flares.generic.flags    = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.flares.generic.x        = 400;
-    s_graphicsoptions.flares.generic.y        = y;
-    s_graphicsoptions.flares.itemnames        = enabled_names;
+    s_graphicsoptions.flares.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.flares.generic.name = "Flares:";
+    s_graphicsoptions.flares.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.flares.generic.x = 400;
+    s_graphicsoptions.flares.generic.y = y;
+    s_graphicsoptions.flares.itemnames = enabled_names;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_bloom"
-    s_graphicsoptions.bloom.generic.type     = MTYPE_SPINCONTROL;
-    s_graphicsoptions.bloom.generic.name      = "Bloom:";
-    s_graphicsoptions.bloom.generic.flags     = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.bloom.generic.x         = 400;
-    s_graphicsoptions.bloom.generic.y         = y;
-    s_graphicsoptions.bloom.itemnames         = enabled_names;
+    s_graphicsoptions.bloom.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.bloom.generic.name = "Bloom:";
+    s_graphicsoptions.bloom.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.bloom.generic.x = 400;
+    s_graphicsoptions.bloom.generic.y = y;
+    s_graphicsoptions.bloom.itemnames = enabled_names;
     y += BIGCHAR_HEIGHT + 2;
-    s_graphicsoptions.drawfps.generic.type    = MTYPE_SPINCONTROL;
-    s_graphicsoptions.drawfps.generic.name    = "Draw FPS:";
-    s_graphicsoptions.drawfps.generic.flags   = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.drawfps.generic.x       = 400;
-    s_graphicsoptions.drawfps.generic.y       = y;
-    s_graphicsoptions.drawfps.itemnames       = enabled_names;
+    s_graphicsoptions.drawfps.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.drawfps.generic.name = "Draw FPS:";
+    s_graphicsoptions.drawfps.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.drawfps.generic.x = 400;
+    s_graphicsoptions.drawfps.generic.y = y;
+    s_graphicsoptions.drawfps.itemnames = enabled_names;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_lodBias" & "subdivisions"
-    s_graphicsoptions.geometry.generic.type  = MTYPE_SPINCONTROL;
-    s_graphicsoptions.geometry.generic.name  = "Geometric Detail:";
+    s_graphicsoptions.geometry.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.geometry.generic.name = "Geometric Detail:";
     s_graphicsoptions.geometry.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.geometry.generic.x     = 400;
-    s_graphicsoptions.geometry.generic.y     = y;
-    s_graphicsoptions.geometry.itemnames     = quality_names;
+    s_graphicsoptions.geometry.generic.x = 400;
+    s_graphicsoptions.geometry.generic.y = y;
+    s_graphicsoptions.geometry.itemnames = quality_names;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_picmip"
-    s_graphicsoptions.tq.generic.type   = MTYPE_SLIDER;
-    s_graphicsoptions.tq.generic.name   = "Texture Detail:";
-    s_graphicsoptions.tq.generic.flags  = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.tq.generic.x      = 400;
-    s_graphicsoptions.tq.generic.y      = y;
-    s_graphicsoptions.tq.minvalue       = 0;
-    s_graphicsoptions.tq.maxvalue       = 3;
+    s_graphicsoptions.tq.generic.type = MTYPE_SLIDER;
+    s_graphicsoptions.tq.generic.name = "Texture Detail:";
+    s_graphicsoptions.tq.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.tq.generic.x = 400;
+    s_graphicsoptions.tq.generic.y = y;
+    s_graphicsoptions.tq.minvalue = 0;
+    s_graphicsoptions.tq.maxvalue = 3;
     s_graphicsoptions.tq.generic.callback = GraphicsOptions_TQEvent;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_textureBits"
-    s_graphicsoptions.texturebits.generic.type  = MTYPE_SPINCONTROL;
-    s_graphicsoptions.texturebits.generic.name  = "Texture Quality:";
+    s_graphicsoptions.texturebits.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.texturebits.generic.name = "Texture Quality:";
     s_graphicsoptions.texturebits.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.texturebits.generic.x     = 400;
-    s_graphicsoptions.texturebits.generic.y     = y;
-    s_graphicsoptions.texturebits.itemnames     = tq_names;
+    s_graphicsoptions.texturebits.generic.x = 400;
+    s_graphicsoptions.texturebits.generic.y = y;
+    s_graphicsoptions.texturebits.itemnames = tq_names;
     y += BIGCHAR_HEIGHT + 2;
     // references/modifies "r_textureMode"
-    s_graphicsoptions.filter.generic.type   = MTYPE_SPINCONTROL;
-    s_graphicsoptions.filter.generic.name   = "Texture Filter:";
-    s_graphicsoptions.filter.generic.flags  = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.filter.generic.x      = 400;
-    s_graphicsoptions.filter.generic.y      = y;
-    s_graphicsoptions.filter.itemnames      = filter_names;
+    s_graphicsoptions.filter.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.filter.generic.name = "Texture Filter:";
+    s_graphicsoptions.filter.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.filter.generic.x = 400;
+    s_graphicsoptions.filter.generic.y = y;
+    s_graphicsoptions.filter.itemnames = filter_names;
     y += 2 + BIGCHAR_HEIGHT;
-    s_graphicsoptions.aniso.generic.type   = MTYPE_SPINCONTROL;
-    s_graphicsoptions.aniso.generic.name    = "Anisotropy:";
-    s_graphicsoptions.aniso.generic.flags   = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
-    s_graphicsoptions.aniso.generic.x       = 400;
-    s_graphicsoptions.aniso.generic.y       = y;
-    s_graphicsoptions.aniso.itemnames      = aniso_names;
+    s_graphicsoptions.aniso.generic.type = MTYPE_SPINCONTROL;
+    s_graphicsoptions.aniso.generic.name = "Anisotropy:";
+    s_graphicsoptions.aniso.generic.flags = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
+    s_graphicsoptions.aniso.generic.x = 400;
+    s_graphicsoptions.aniso.generic.y = y;
+    s_graphicsoptions.aniso.itemnames = aniso_names;
     y += 2 * BIGCHAR_HEIGHT;
-    s_graphicsoptions.driverinfo.generic.type     = MTYPE_PTEXT;
-    s_graphicsoptions.driverinfo.generic.flags    = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_graphicsoptions.driverinfo.generic.type = MTYPE_PTEXT;
+    s_graphicsoptions.driverinfo.generic.flags = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
     s_graphicsoptions.driverinfo.generic.callback = GraphicsOptions_Event;
-    s_graphicsoptions.driverinfo.generic.id       = ID_DRIVERINFO;
-    s_graphicsoptions.driverinfo.generic.x        = 320;
-    s_graphicsoptions.driverinfo.generic.y        = y;
-    s_graphicsoptions.driverinfo.string           = "Driver Info";
-    s_graphicsoptions.driverinfo.style            = UI_CENTER | UI_SMALLFONT;
-    s_graphicsoptions.driverinfo.color            = color_red;
+    s_graphicsoptions.driverinfo.generic.id = ID_DRIVERINFO;
+    s_graphicsoptions.driverinfo.generic.x = 320;
+    s_graphicsoptions.driverinfo.generic.y = y;
+    s_graphicsoptions.driverinfo.string = "Driver Info";
+    s_graphicsoptions.driverinfo.style = UI_CENTER | UI_SMALLFONT;
+    s_graphicsoptions.driverinfo.color = color_red;
     y += BIGCHAR_HEIGHT + 2;
-    s_graphicsoptions.back.generic.type     = MTYPE_BITMAP;
-    s_graphicsoptions.back.generic.name     = GRAPHICSOPTIONS_BACK0;
-    s_graphicsoptions.back.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_graphicsoptions.back.generic.type = MTYPE_BITMAP;
+    s_graphicsoptions.back.generic.name = GRAPHICSOPTIONS_BACK0;
+    s_graphicsoptions.back.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_graphicsoptions.back.generic.callback = GraphicsOptions_Event;
-    s_graphicsoptions.back.generic.id       = ID_BACK2;
-    s_graphicsoptions.back.generic.x        = 0;
-    s_graphicsoptions.back.generic.y        = 480 - 64;
-    s_graphicsoptions.back.width            = 128;
-    s_graphicsoptions.back.height           = 64;
-    s_graphicsoptions.back.focuspic         = GRAPHICSOPTIONS_BACK1;
-    s_graphicsoptions.apply.generic.type     = MTYPE_BITMAP;
-    s_graphicsoptions.apply.generic.name     = GRAPHICSOPTIONS_ACCEPT0;
-    s_graphicsoptions.apply.generic.flags    = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS | QMF_HIDDEN | QMF_INACTIVE;
+    s_graphicsoptions.back.generic.id = ID_BACK2;
+    s_graphicsoptions.back.generic.x = 0;
+    s_graphicsoptions.back.generic.y = 480 - 64;
+    s_graphicsoptions.back.width = 128;
+    s_graphicsoptions.back.height = 64;
+    s_graphicsoptions.back.focuspic = GRAPHICSOPTIONS_BACK1;
+    s_graphicsoptions.apply.generic.type = MTYPE_BITMAP;
+    s_graphicsoptions.apply.generic.name = GRAPHICSOPTIONS_ACCEPT0;
+    s_graphicsoptions.apply.generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS | QMF_HIDDEN | QMF_INACTIVE;
     s_graphicsoptions.apply.generic.callback = GraphicsOptions_ApplyChanges;
-    s_graphicsoptions.apply.generic.x        = 640;
-    s_graphicsoptions.apply.generic.y        = 480 - 64;
-    s_graphicsoptions.apply.width            = 128;
-    s_graphicsoptions.apply.height           = 64;
-    s_graphicsoptions.apply.focuspic         = GRAPHICSOPTIONS_ACCEPT1;
+    s_graphicsoptions.apply.generic.x = 640;
+    s_graphicsoptions.apply.generic.y = 480 - 64;
+    s_graphicsoptions.apply.width = 128;
+    s_graphicsoptions.apply.height = 64;
+    s_graphicsoptions.apply.focuspic = GRAPHICSOPTIONS_ACCEPT1;
     Menu_AddItem(&s_graphicsoptions.menu, (void*) &s_graphicsoptions.banner);
     Menu_AddItem(&s_graphicsoptions.menu, (void*) &s_graphicsoptions.framel);
     Menu_AddItem(&s_graphicsoptions.menu, (void*) &s_graphicsoptions.framer);

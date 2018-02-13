@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -66,7 +66,7 @@ Used for CTF Elimination oneway
 ========================
 */
 void SendAttackingTeamMessageToAllClients(void) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED) {
             AttackingTeamMessage(g_entities + i);
@@ -76,7 +76,7 @@ void SendAttackingTeamMessageToAllClients(void) {
 
 //the elimination start function
 void StartEliminationRound(void) {
-    int     countsLiving[TEAM_NUM_TEAMS];
+    int countsLiving[TEAM_NUM_TEAMS];
     countsLiving[TEAM_BLUE] = TeamLivingCount(-1, TEAM_BLUE);
     countsLiving[TEAM_RED] = TeamLivingCount(-1, TEAM_RED);
     if ((countsLiving[TEAM_BLUE] == 0) || (countsLiving[TEAM_RED] == 0)) {
@@ -104,7 +104,7 @@ void StartEliminationRound(void) {
     }
     SendEliminationMessageToAllClients();
     if (g_elimination_ctf_oneway.integer) {
-        SendAttackingTeamMessageToAllClients();    //Ensure that evaryone know who should attack.
+        SendAttackingTeamMessageToAllClients(); //Ensure that evaryone know who should attack.
     }
     EnableWeapons();
     OpenEliminationDoors();
@@ -154,7 +154,7 @@ void WarmupEliminationRound(void) {
 
 //LMS - Last man Stading functions:
 void StartLMSRound(void) {
-    int     countsLiving;
+    int countsLiving;
     countsLiving = TeamLivingCount(-1, TEAM_FREE);
     if (countsLiving < 2) {
         trap_SendServerCommand(-1, "print \"Not enough players to start the round\n\"");
@@ -299,10 +299,10 @@ void CheckElimination(void) {
     }
     //This might be better placed another place:
     if (g_elimination_activewarmup.integer < 1) {
-        g_elimination_activewarmup.integer = 1;    //We need at least 1 second to spawn all players
+        g_elimination_activewarmup.integer = 1; //We need at least 1 second to spawn all players
     }
     if (g_elimination_activewarmup.integer >= g_elimination_warmup.integer) { //This must not be true
-        g_elimination_warmup.integer = g_elimination_activewarmup.integer + 1;    //Increase warmup
+        g_elimination_warmup.integer = g_elimination_activewarmup.integer + 1; //Increase warmup
     }
     //Force respawn
     if (level.roundNumber != level.roundNumberStarted && level.time > level.roundStartTime - 1000 * g_elimination_activewarmup.integer && !level.roundRespawned) {
@@ -387,10 +387,10 @@ void CheckLMS(void) {
     }
     //This might be better placed another place:
     if (g_elimination_activewarmup.integer < 2) {
-        g_elimination_activewarmup.integer = 2;    //We need at least 2 seconds to spawn all players
+        g_elimination_activewarmup.integer = 2; //We need at least 2 seconds to spawn all players
     }
     if (g_elimination_activewarmup.integer >= g_elimination_warmup.integer) { //This must not be true
-        g_elimination_warmup.integer = g_elimination_activewarmup.integer + 1;    //Increase warmup
+        g_elimination_warmup.integer = g_elimination_activewarmup.integer + 1; //Increase warmup
     }
     //Force respawn
     if (level.roundNumber != level.roundNumberStarted && level.time > level.roundStartTime - 1000 * g_elimination_activewarmup.integer && !level.roundRespawned) {

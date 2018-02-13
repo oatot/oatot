@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -41,7 +41,7 @@ void dllEntry(long (QDECL* syscallptr)(long arg, ...)) {
 //}
 
 int PASSFLOAT(float x) {
-    float   floatTemp;
+    float floatTemp;
     floatTemp = x;
     return *(int*)&floatTemp;
 }
@@ -177,7 +177,7 @@ void trap_R_DrawStretchPic(float x, float y, float w, float h, float s1, float t
     syscall(UI_R_DRAWSTRETCHPIC, PASSFLOAT(x), PASSFLOAT(y), PASSFLOAT(w), PASSFLOAT(h), PASSFLOAT(s1), PASSFLOAT(t1), PASSFLOAT(s2), PASSFLOAT(t2), hShader);
 }
 
-void    trap_R_ModelBounds(clipHandle_t model, vec3_t mins, vec3_t maxs) {
+void trap_R_ModelBounds(clipHandle_t model, vec3_t mins, vec3_t maxs) {
     syscall(UI_R_MODELBOUNDS, model, mins, maxs);
 }
 
@@ -365,18 +365,18 @@ int trap_RealTime(qtime_t* qtime) {
     return syscall(UI_REAL_TIME, qtime);
 }
 
-// this returns a handle.  arg0 is the name in the format "idlogo.roq", set arg1 to NULL, alteredstates to qfalse (do not alter gamestate)
+// this returns a handle. arg0 is the name in the format "idlogo.roq", set arg1 to NULL, alteredstates to qfalse (do not alter gamestate)
 int trap_CIN_PlayCinematic(const char* arg0, int xpos, int ypos, int width, int height, int bits) {
     return syscall(UI_CIN_PLAYCINEMATIC, arg0, xpos, ypos, width, height, bits);
 }
 
-// stops playing the cinematic and ends it.  should always return FMV_EOF
+// stops playing the cinematic and ends it. should always return FMV_EOF
 // cinematics must be stopped in reverse order of when they are started
 e_status trap_CIN_StopCinematic(int handle) {
     return syscall(UI_CIN_STOPCINEMATIC, handle);
 }
 
-// will run a frame of the cinematic but will not draw it.  Will return FMV_EOF if the end of the cinematic has been reached.
+// will run a frame of the cinematic but will not draw it. Will return FMV_EOF if the end of the cinematic has been reached.
 e_status trap_CIN_RunCinematic(int handle) {
     return syscall(UI_CIN_RUNCINEMATIC, handle);
 }
@@ -391,7 +391,7 @@ void trap_CIN_SetExtents(int handle, int x, int y, int w, int h) {
     syscall(UI_CIN_SETEXTENTS, handle, x, y, w, h);
 }
 
-void    trap_R_RemapShader(const char* oldShader, const char* newShader, const char* timeOffset) {
+void trap_R_RemapShader(const char* oldShader, const char* newShader, const char* timeOffset) {
     syscall(UI_R_REMAP_SHADER, oldShader, newShader, timeOffset);
 }
 

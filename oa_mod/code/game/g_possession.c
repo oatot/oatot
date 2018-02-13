@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,10 +22,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "g_local.h"
 
-static gentity_t*    possessionFlag;
+static gentity_t* possessionFlag;
 
 static void Possession_create_neutral_obelisk(gentity_t* target) {
-    gitem_t*         it;
+    gitem_t* it;
     if (possessionFlag) {
         return;
     }
@@ -47,7 +47,7 @@ static qboolean EntityFilterNoBotsOrHumanOnly(const gentity_t* item) {
 }
 
 void Possession_SpawnFlag(void) {
-    gentity_t*   ent = NULL;
+    gentity_t* ent = NULL;
     if (possessionFlag) {
         return;
     }

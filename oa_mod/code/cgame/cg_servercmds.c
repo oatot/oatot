@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -35,15 +35,15 @@ typedef struct {
 #ifdef MISSIONPACK // bk001204
 
 static const orderTask_t validOrders[] = {
-    { VOICECHAT_GETFLAG,                        TEAMTASK_OFFENSE },
-    { VOICECHAT_OFFENSE,                        TEAMTASK_OFFENSE },
-    { VOICECHAT_DEFEND,                         TEAMTASK_DEFENSE },
-    { VOICECHAT_DEFENDFLAG,                 TEAMTASK_DEFENSE },
-    { VOICECHAT_PATROL,                         TEAMTASK_PATROL },
-    { VOICECHAT_CAMP,                               TEAMTASK_CAMP },
-    { VOICECHAT_FOLLOWME,                       TEAMTASK_FOLLOW },
-    { VOICECHAT_RETURNFLAG,                 TEAMTASK_RETRIEVE },
-    { VOICECHAT_FOLLOWFLAGCARRIER,  TEAMTASK_ESCORT }
+    { VOICECHAT_GETFLAG, TEAMTASK_OFFENSE },
+    { VOICECHAT_OFFENSE, TEAMTASK_OFFENSE },
+    { VOICECHAT_DEFEND, TEAMTASK_DEFENSE },
+    { VOICECHAT_DEFENDFLAG, TEAMTASK_DEFENSE },
+    { VOICECHAT_PATROL, TEAMTASK_PATROL },
+    { VOICECHAT_CAMP, TEAMTASK_CAMP },
+    { VOICECHAT_FOLLOWME, TEAMTASK_FOLLOW },
+    { VOICECHAT_RETURNFLAG, TEAMTASK_RETRIEVE },
+    { VOICECHAT_FOLLOWFLAGCARRIER, TEAMTASK_ESCORT }
 };
 
 static const int numValidOrders = sizeof(validOrders) / sizeof(orderTask_t);
@@ -134,7 +134,7 @@ CG_ParseScores
 =================
 */
 static void CG_ParseScores(void) {
-    int     i, powerups;
+    int i, powerups;
     cg.numScores = atoi(CG_Argv(1));
     if (cg.numScores > MAX_CLIENTS) {
         cg.numScores = MAX_CLIENTS;
@@ -187,12 +187,12 @@ static void CG_ParseScores(void) {
 }
 
 static void CG_ParseAccuracy(void) {
-    int     i;
+    int i;
     for (i = WP_MACHINEGUN; i < WP_NUM_WEAPONS; i++) {
         cg.accuracys[i - WP_MACHINEGUN][0] = atoi(CG_Argv((i - WP_MACHINEGUN) * 2 + 1));
         cg.accuracys[i - WP_MACHINEGUN][1] = atoi(CG_Argv((i - WP_MACHINEGUN) * 2 + 2));
 #if DEBUG
-        CG_Printf("W: %i   shots: %i   Hits: %i\n", i, cg.accuracys[i][0], cg.accuracys[i][1]);
+        CG_Printf("W: %i shots: %i Hits: %i\n", i, cg.accuracys[i][0], cg.accuracys[i][1]);
 #endif
     }
 }
@@ -362,8 +362,8 @@ CG_ParseTeamInfo
 =================
 */
 static void CG_ParseTeamInfo(void) {
-    int     i;
-    int     client;
+    int i;
+    int client;
     numSortedTeamPlayers = atoi(CG_Argv(1));
     if (numSortedTeamPlayers < 0 || numSortedTeamPlayers > TEAM_MAXOVERLAY) {
         CG_Error("CG_ParseTeamInfo: numSortedTeamPlayers out of range (%d)",
@@ -394,8 +394,8 @@ and whenever the server updates any serverinfo flagged cvars
 ================
 */
 void CG_ParseServerinfo(void) {
-    const char*  info;
-    char*    mapname;
+    const char* info;
+    char* mapname;
     info = CG_ConfigString(CS_SERVERINFO);
     cgs.gametype = atoi(Info_ValueForKey(info, "g_gametype"));
     //By default do as normal:
@@ -405,7 +405,7 @@ void CG_ParseServerinfo(void) {
         cgs.ffa_gt = 1;
     }
     trap_Cvar_Set("g_gametype", va("%i", cgs.gametype));
-    cgs.gameStage = atoi(Info_ValueForKey(info, "g_gameStage"));     // oatot
+    cgs.gameStage = atoi(Info_ValueForKey(info, "g_gameStage")); // oatot
     cgs.dmflags = atoi(Info_ValueForKey(info, "dmflags"));
     cgs.videoflags = atoi(Info_ValueForKey(info, "videoflags"));
     cgs.elimflags = atoi(Info_ValueForKey(info, "elimflags"));
@@ -439,8 +439,8 @@ CG_ParseWarmup
 ==================
 */
 static void CG_ParseWarmup(void) {
-    const char*  info;
-    int         warmup;
+    const char* info;
+    int warmup;
     info = CG_ConfigString(CS_WARMUP);
     warmup = atoi(info);
     cg.warmupCount = -1;
@@ -530,8 +530,8 @@ CG_ConfigStringModified
 ================
 */
 static void CG_ConfigStringModified(void) {
-    const char*  str;
-    int     num;
+    const char* str;
+    int num;
     num = atoi(CG_Argv(1));
     // get the gamestate from the client system, which will have the
     // new configstring already integrated
@@ -584,7 +584,7 @@ static void CG_ConfigStringModified(void) {
     } else if (num >= CS_MODELS && num < CS_MODELS + MAX_MODELS) {
         cgs.gameModels[ num - CS_MODELS ] = trap_R_RegisterModel(str);
     } else if (num >= CS_SOUNDS && num < CS_SOUNDS + MAX_SOUNDS) {
-        if (str[0] != '*') {     // player specific sounds don't register here
+        if (str[0] != '*') { // player specific sounds don't register here
             cgs.gameSounds[ num - CS_SOUNDS] = trap_S_RegisterSound(str, qfalse);
         }
     } else if (num >= CS_PLAYERS && num < CS_PLAYERS + MAX_CLIENTS) {
@@ -711,12 +711,12 @@ static void CG_MapRestart(void) {
     trap_Cvar_Set("cg_thirdPerson", "0");
 }
 
-#define MAX_VOICEFILESIZE   16384
-#define MAX_VOICEFILES      8
-#define MAX_VOICECHATS      64
-#define MAX_VOICESOUNDS     64
-#define MAX_CHATSIZE        64
-#define MAX_HEADMODELS      64
+#define MAX_VOICEFILESIZE 16384
+#define MAX_VOICEFILES 8
+#define MAX_VOICECHATS 64
+#define MAX_VOICESOUNDS 64
+#define MAX_CHATSIZE 64
+#define MAX_HEADMODELS 64
 
 typedef struct voiceChat_s {
     char id[64];
@@ -1001,7 +1001,7 @@ voiceChatList_t* CG_VoiceChatListForClient(int clientNum) {
     return &voiceChatLists[0];
 }
 
-#define MAX_VOICECHATBUFFER     32
+#define MAX_VOICECHATBUFFER 32
 
 typedef struct bufferedVoiceChat_s {
     int clientNum;
@@ -1142,7 +1142,7 @@ void CG_VoiceChat(int mode) {
     color = atoi(CG_Argv(3));
     cmd = CG_Argv(4);
     if (cg_noTaunt.integer != 0) {
-        if (strequals(cmd, VOICECHAT_KILLINSULT)  || strequals(cmd, VOICECHAT_TAUNT) ||
+        if (strequals(cmd, VOICECHAT_KILLINSULT) || strequals(cmd, VOICECHAT_TAUNT) ||
                 strequals(cmd, VOICECHAT_DEATHINSULT) || strequals(cmd, VOICECHAT_KILLGAUNTLET) ||
                 strequals(cmd, VOICECHAT_PRAISE)) {
             return;
@@ -1178,8 +1178,8 @@ Cmd_Argc() / Cmd_Argv()
 =================
 */
 static void CG_ServerCommand(void) {
-    const char*  cmd;
-    char        text[MAX_SAY_TEXT];
+    const char* cmd;
+    char text[MAX_SAY_TEXT];
     cmd = CG_Argv(0);
     if (!cmd[0]) {
         // server claimed the command
@@ -1212,7 +1212,7 @@ static void CG_ServerCommand(void) {
     if (strequals(cmd, "print")) {
         CG_Printf("%s", CG_Argv(1));
 #ifdef MISSIONPACK
-        cmd = CG_Argv(1);           // yes, this is obviously a hack, but so is the way we hear about
+        cmd = CG_Argv(1); // yes, this is obviously a hack, but so is the way we hear about
         // votes passing or failing
         if (Q_strequaln(cmd, "vote failed", 11) || Q_strequaln(cmd, "team vote failed", 16)) {
             trap_S_StartLocalSound(cgs.media.voteFailed, CHAN_ANNOUNCER);
@@ -1308,7 +1308,7 @@ static void CG_ServerCommand(void) {
         return;
     }
     // loaddeferred can be both a servercmd and a consolecmd
-    if (strequals(cmd, "loaddefered")) {      // FIXME: spelled wrong, but not changing for demo
+    if (strequals(cmd, "loaddefered")) { // FIXME: spelled wrong, but not changing for demo
         CG_LoadDeferredPlayers();
         return;
     }

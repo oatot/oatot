@@ -11,7 +11,7 @@ option) any later version.
 
 Unlagged source code is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 for more details.
 
 You should have received a copy of the GNU General Public License
@@ -30,20 +30,20 @@ void CG_Bullet(vec3_t end, int sourceEntityNum, vec3_t normal, qboolean flesh, i
 
 // and this as well
 //Must be in sync with g_weapon.c
-#define MACHINEGUN_SPREAD   200
-#define CHAINGUN_SPREAD     600
+#define MACHINEGUN_SPREAD 200
+#define CHAINGUN_SPREAD 600
 
 /*
 =======================
 CG_PredictWeaponEffects
 
-Draws predicted effects for the railgun, shotgun, and machinegun.  The
+Draws predicted effects for the railgun, shotgun, and machinegun. The
 lightning gun is done in CG_LightningBolt, since it was just a matter
 of setting the right origin and angles.
 =======================
 */
 void CG_PredictWeaponEffects(centity_t* cent) {
-    vec3_t      muzzlePoint, forward, right, up;
+    vec3_t muzzlePoint, forward, right, up;
     entityState_t* ent = &cent->currentState;
     // if the client isn't us, forget it
     if (cent->currentState.number != cg.predictedPlayerState.clientNum) {
@@ -71,55 +71,55 @@ void CG_PredictWeaponEffects(centity_t* cent) {
             // you definitely *will* want something like this to test the backward reconciliation
             // to make sure it's working *exactly* right
             /*if ( cg_debugDelag.integer ) {
-                * Sago: There are some problems with some unlagged code. People will just have to trust it
-                // trace forward
-                CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cent->currentState.number, CONTENTS_BODY|CONTENTS_SOLID );
+            * Sago: There are some problems with some unlagged code. People will just have to trust it
+            // trace forward
+            CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cent->currentState.number, CONTENTS_BODY|CONTENTS_SOLID );
 
-                // did we hit another player?
-                if ( trace.fraction < 1.0f && (trace.contents & CONTENTS_BODY) ) {
-                    // if we have two snapshots (we're interpolating)
-                    if ( cg.nextSnap ) {
-                        centity_t *c = &cg_entities[trace.entityNum];
-                        vec3_t origin1, origin2;
+            // did we hit another player?
+            if ( trace.fraction < 1.0f && (trace.contents & CONTENTS_BODY) ) {
+            // if we have two snapshots (we're interpolating)
+            if ( cg.nextSnap ) {
+            centity_t *c = &cg_entities[trace.entityNum];
+            vec3_t origin1, origin2;
 
-                        // figure the two origins used for interpolation
-                        BG_EvaluateTrajectory( &c->currentState.pos, cg.snap->serverTime, origin1 );
-                        BG_EvaluateTrajectory( &c->nextState.pos, cg.nextSnap->serverTime, origin2 );
+            // figure the two origins used for interpolation
+            BG_EvaluateTrajectory( &c->currentState.pos, cg.snap->serverTime, origin1 );
+            BG_EvaluateTrajectory( &c->nextState.pos, cg.nextSnap->serverTime, origin2 );
 
-                        // print some debugging stuff exactly like what the server does
+            // print some debugging stuff exactly like what the server does
 
-                        // it starts with "Int:" to let you know the target was interpolated
-                        CG_Printf("^3Int: time: %d, j: %d, k: %d, origin: %0.2f %0.2f %0.2f\n",
-                                cg.oldTime, cg.snap->serverTime, cg.nextSnap->serverTime,
-                                c->lerpOrigin[0], c->lerpOrigin[1], c->lerpOrigin[2]);
-                        CG_Printf("^5frac: %0.4f, origin1: %0.2f %0.2f %0.2f, origin2: %0.2f %0.2f %0.2f\n",
-                            cg.frameInterpolation, origin1[0], origin1[1], origin1[2], origin2[0], origin2[1], origin2[2]);
-                    }
-                    else {
-                        // we haven't got a next snapshot
-                        // the client clock has either drifted ahead (seems to happen once per server frame
-                        // when you play locally) or the client is using timenudge
-                        // in any case, CG_CalcEntityLerpPositions extrapolated rather than interpolated
-                        centity_t *c = &cg_entities[trace.entityNum];
-                        vec3_t origin1, origin2;
+            // it starts with "Int:" to let you know the target was interpolated
+            CG_Printf("^3Int: time: %d, j: %d, k: %d, origin: %0.2f %0.2f %0.2f\n",
+            cg.oldTime, cg.snap->serverTime, cg.nextSnap->serverTime,
+            c->lerpOrigin[0], c->lerpOrigin[1], c->lerpOrigin[2]);
+            CG_Printf("^5frac: %0.4f, origin1: %0.2f %0.2f %0.2f, origin2: %0.2f %0.2f %0.2f\n",
+            cg.frameInterpolation, origin1[0], origin1[1], origin1[2], origin2[0], origin2[1], origin2[2]);
+            }
+            else {
+            // we haven't got a next snapshot
+            // the client clock has either drifted ahead (seems to happen once per server frame
+            // when you play locally) or the client is using timenudge
+            // in any case, CG_CalcEntityLerpPositions extrapolated rather than interpolated
+            centity_t *c = &cg_entities[trace.entityNum];
+            vec3_t origin1, origin2;
 
-                        c->currentState.pos.trTime = TR_LINEAR_STOP;
-                        c->currentState.pos.trTime = cg.snap->serverTime;
-                        c->currentState.pos.trDuration = 1000 / sv_fps.integer;
+            c->currentState.pos.trTime = TR_LINEAR_STOP;
+            c->currentState.pos.trTime = cg.snap->serverTime;
+            c->currentState.pos.trDuration = 1000 / sv_fps.integer;
 
-                        BG_EvaluateTrajectory( &c->currentState.pos, cg.snap->serverTime, origin1 );
-                        BG_EvaluateTrajectory( &c->currentState.pos, cg.snap->serverTime + 1000 / sv_fps.integer, origin2 );
+            BG_EvaluateTrajectory( &c->currentState.pos, cg.snap->serverTime, origin1 );
+            BG_EvaluateTrajectory( &c->currentState.pos, cg.snap->serverTime + 1000 / sv_fps.integer, origin2 );
 
-                        // print some debugging stuff exactly like what the server does
+            // print some debugging stuff exactly like what the server does
 
-                        // it starts with "Ext:" to let you know the target was extrapolated
-                        CG_Printf("^3Ext: time: %d, j: %d, k: %d, origin: %0.2f %0.2f %0.2f\n",
-                                cg.oldTime, cg.snap->serverTime, cg.snap->serverTime,
-                                c->lerpOrigin[0], c->lerpOrigin[1], c->lerpOrigin[2]);
-                        CG_Printf("^5frac: %0.4f, origin1: %0.2f %0.2f %0.2f, origin2: %0.2f %0.2f %0.2f\n",
-                            cg.frameInterpolation, origin1[0], origin1[1], origin1[2], origin2[0], origin2[1], origin2[2]);
-                    }
-                }
+            // it starts with "Ext:" to let you know the target was extrapolated
+            CG_Printf("^3Ext: time: %d, j: %d, k: %d, origin: %0.2f %0.2f %0.2f\n",
+            cg.oldTime, cg.snap->serverTime, cg.snap->serverTime,
+            c->lerpOrigin[0], c->lerpOrigin[1], c->lerpOrigin[2]);
+            CG_Printf("^5frac: %0.4f, origin1: %0.2f %0.2f %0.2f, origin2: %0.2f %0.2f %0.2f\n",
+            cg.frameInterpolation, origin1[0], origin1[1], origin1[2], origin2[0], origin2[1], origin2[2]);
+            }
+            }
             }*/
             // find the rail's end point
             CG_Trace(&trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID);
@@ -159,7 +159,7 @@ void CG_PredictWeaponEffects(centity_t* cent) {
             VectorAdd(muzzlePoint, v, v);
             if (cgs.glconfig.hardwareType != GLHW_RAGEPRO) {
                 // ragepro can't alpha fade, so don't even bother with smoke
-                vec3_t          up;
+                vec3_t up;
                 contents = trap_CM_PointContents(muzzlePoint, 0);
                 if (!(contents & CONTENTS_WATER)) {
                     VectorSet(up, 0, 0, 8);
@@ -249,163 +249,163 @@ void CG_PredictWeaponEffects(centity_t* cent) {
 =================
 CG_AddBoundingBox
 
-Draws a bounding box around a player.  Called from CG_Player.
+Draws a bounding box around a player. Called from CG_Player.
 =================
 */
 /*void CG_AddBoundingBox( centity_t *cent ) {
-    polyVert_t verts[4];
-    clientInfo_t *ci;
-    int i;
-    vec3_t mins = {-15, -15, -24};
-    vec3_t maxs = {15, 15, 32};
-    float extx, exty, extz;
-    vec3_t corners[8];
-    qhandle_t bboxShader, bboxShader_nocull;
+ polyVert_t verts[4];
+ clientInfo_t *ci;
+ int i;
+ vec3_t mins = {-15, -15, -24};
+ vec3_t maxs = {15, 15, 32};
+ float extx, exty, extz;
+ vec3_t corners[8];
+ qhandle_t bboxShader, bboxShader_nocull;
 
-    if ( !cg_drawBBox.integer ) {
-        return;
-    }
+ if ( !cg_drawBBox.integer ) {
+ return;
+ }
 
-    // don't draw it if it's us in first-person
-    if ( cent->currentState.number == cg.predictedPlayerState.clientNum &&
-            !cg.renderingThirdPerson ) {
-        return;
-    }
+ // don't draw it if it's us in first-person
+ if ( cent->currentState.number == cg.predictedPlayerState.clientNum &&
+ !cg.renderingThirdPerson ) {
+ return;
+ }
 
-    // don't draw it for dead players
-    if ( cent->currentState.eFlags & EF_DEAD ) {
-        return;
-    }
+ // don't draw it for dead players
+ if ( cent->currentState.eFlags & EF_DEAD ) {
+ return;
+ }
 
-    // get the shader handles
-    bboxShader = trap_R_RegisterShader( "bbox" );
-    bboxShader_nocull = trap_R_RegisterShader( "bbox_nocull" );
+ // get the shader handles
+ bboxShader = trap_R_RegisterShader( "bbox" );
+ bboxShader_nocull = trap_R_RegisterShader( "bbox_nocull" );
 
-    // if they don't exist, forget it
-    if ( !bboxShader || !bboxShader_nocull ) {
-        return;
-    }
+ // if they don't exist, forget it
+ if ( !bboxShader || !bboxShader_nocull ) {
+ return;
+ }
 
-    // get the player's client info
-    ci = &cgs.clientinfo[cent->currentState.clientNum];
+ // get the player's client info
+ ci = &cgs.clientinfo[cent->currentState.clientNum];
 
-    // if it's us
-    if ( cent->currentState.number == cg.predictedPlayerState.clientNum ) {
-        // use the view height
-        maxs[2] = cg.predictedPlayerState.viewheight + 6;
-    }
-    else {
-        int x, zd, zu;
+ // if it's us
+ if ( cent->currentState.number == cg.predictedPlayerState.clientNum ) {
+ // use the view height
+ maxs[2] = cg.predictedPlayerState.viewheight + 6;
+ }
+ else {
+ int x, zd, zu;
 
-        // otherwise grab the encoded bounding box
-        x = (cent->currentState.solid & 255);
-        zd = ((cent->currentState.solid>>8) & 255);
-        zu = ((cent->currentState.solid>>16) & 255) - 32;
+ // otherwise grab the encoded bounding box
+ x = (cent->currentState.solid & 255);
+ zd = ((cent->currentState.solid>>8) & 255);
+ zu = ((cent->currentState.solid>>16) & 255) - 32;
 
-        mins[0] = mins[1] = -x;
-        maxs[0] = maxs[1] = x;
-        mins[2] = -zd;
-        maxs[2] = zu;
-    }
+ mins[0] = mins[1] = -x;
+ maxs[0] = maxs[1] = x;
+ mins[2] = -zd;
+ maxs[2] = zu;
+ }
 
-    // get the extents (size)
-    extx = maxs[0] - mins[0];
-    exty = maxs[1] - mins[1];
-    extz = maxs[2] - mins[2];
+ // get the extents (size)
+ extx = maxs[0] - mins[0];
+ exty = maxs[1] - mins[1];
+ extz = maxs[2] - mins[2];
 
-    // set the polygon's texture coordinates
-    verts[0].st[0] = 0;
-    verts[0].st[1] = 0;
-    verts[1].st[0] = 0;
-    verts[1].st[1] = 1;
-    verts[2].st[0] = 1;
-    verts[2].st[1] = 1;
-    verts[3].st[0] = 1;
-    verts[3].st[1] = 0;
+ // set the polygon's texture coordinates
+ verts[0].st[0] = 0;
+ verts[0].st[1] = 0;
+ verts[1].st[0] = 0;
+ verts[1].st[1] = 1;
+ verts[2].st[0] = 1;
+ verts[2].st[1] = 1;
+ verts[3].st[0] = 1;
+ verts[3].st[1] = 0;
 
-    // set the polygon's vertex colors
-    if ( ci->team == TEAM_RED ) {
-        for ( i = 0; i < 4; i++ ) {
-            verts[i].modulate[0] = 160;
-            verts[i].modulate[1] = 0;
-            verts[i].modulate[2] = 0;
-            verts[i].modulate[3] = 255;
-        }
-    }
-    else if ( ci->team == TEAM_BLUE ) {
-        for ( i = 0; i < 4; i++ ) {
-            verts[i].modulate[0] = 0;
-            verts[i].modulate[1] = 0;
-            verts[i].modulate[2] = 192;
-            verts[i].modulate[3] = 255;
-        }
-    }
-    else {
-        for ( i = 0; i < 4; i++ ) {
-            verts[i].modulate[0] = 0;
-            verts[i].modulate[1] = 128;
-            verts[i].modulate[2] = 0;
-            verts[i].modulate[3] = 255;
-        }
-    }
+ // set the polygon's vertex colors
+ if ( ci->team == TEAM_RED ) {
+ for ( i = 0; i < 4; i++ ) {
+ verts[i].modulate[0] = 160;
+ verts[i].modulate[1] = 0;
+ verts[i].modulate[2] = 0;
+ verts[i].modulate[3] = 255;
+ }
+ }
+ else if ( ci->team == TEAM_BLUE ) {
+ for ( i = 0; i < 4; i++ ) {
+ verts[i].modulate[0] = 0;
+ verts[i].modulate[1] = 0;
+ verts[i].modulate[2] = 192;
+ verts[i].modulate[3] = 255;
+ }
+ }
+ else {
+ for ( i = 0; i < 4; i++ ) {
+ verts[i].modulate[0] = 0;
+ verts[i].modulate[1] = 128;
+ verts[i].modulate[2] = 0;
+ verts[i].modulate[3] = 255;
+ }
+ }
 
-    VectorAdd( cent->lerpOrigin, maxs, corners[3] );
+ VectorAdd( cent->lerpOrigin, maxs, corners[3] );
 
-    VectorCopy( corners[3], corners[2] );
-    corners[2][0] -= extx;
+ VectorCopy( corners[3], corners[2] );
+ corners[2][0] -= extx;
 
-    VectorCopy( corners[2], corners[1] );
-    corners[1][1] -= exty;
+ VectorCopy( corners[2], corners[1] );
+ corners[1][1] -= exty;
 
-    VectorCopy( corners[1], corners[0] );
-    corners[0][0] += extx;
+ VectorCopy( corners[1], corners[0] );
+ corners[0][0] += extx;
 
-    for ( i = 0; i < 4; i++ ) {
-        VectorCopy( corners[i], corners[i + 4] );
-        corners[i + 4][2] -= extz;
-    }
+ for ( i = 0; i < 4; i++ ) {
+ VectorCopy( corners[i], corners[i + 4] );
+ corners[i + 4][2] -= extz;
+ }
 
-    // top
-    VectorCopy( corners[0], verts[0].xyz );
-    VectorCopy( corners[1], verts[1].xyz );
-    VectorCopy( corners[2], verts[2].xyz );
-    VectorCopy( corners[3], verts[3].xyz );
-    trap_R_AddPolyToScene( bboxShader, 4, verts );
+ // top
+ VectorCopy( corners[0], verts[0].xyz );
+ VectorCopy( corners[1], verts[1].xyz );
+ VectorCopy( corners[2], verts[2].xyz );
+ VectorCopy( corners[3], verts[3].xyz );
+ trap_R_AddPolyToScene( bboxShader, 4, verts );
 
-    // bottom
-    VectorCopy( corners[7], verts[0].xyz );
-    VectorCopy( corners[6], verts[1].xyz );
-    VectorCopy( corners[5], verts[2].xyz );
-    VectorCopy( corners[4], verts[3].xyz );
-    trap_R_AddPolyToScene( bboxShader, 4, verts );
+ // bottom
+ VectorCopy( corners[7], verts[0].xyz );
+ VectorCopy( corners[6], verts[1].xyz );
+ VectorCopy( corners[5], verts[2].xyz );
+ VectorCopy( corners[4], verts[3].xyz );
+ trap_R_AddPolyToScene( bboxShader, 4, verts );
 
-    // top side
-    VectorCopy( corners[3], verts[0].xyz );
-    VectorCopy( corners[2], verts[1].xyz );
-    VectorCopy( corners[6], verts[2].xyz );
-    VectorCopy( corners[7], verts[3].xyz );
-    trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
+ // top side
+ VectorCopy( corners[3], verts[0].xyz );
+ VectorCopy( corners[2], verts[1].xyz );
+ VectorCopy( corners[6], verts[2].xyz );
+ VectorCopy( corners[7], verts[3].xyz );
+ trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
 
-    // left side
-    VectorCopy( corners[2], verts[0].xyz );
-    VectorCopy( corners[1], verts[1].xyz );
-    VectorCopy( corners[5], verts[2].xyz );
-    VectorCopy( corners[6], verts[3].xyz );
-    trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
+ // left side
+ VectorCopy( corners[2], verts[0].xyz );
+ VectorCopy( corners[1], verts[1].xyz );
+ VectorCopy( corners[5], verts[2].xyz );
+ VectorCopy( corners[6], verts[3].xyz );
+ trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
 
-    // right side
-    VectorCopy( corners[0], verts[0].xyz );
-    VectorCopy( corners[3], verts[1].xyz );
-    VectorCopy( corners[7], verts[2].xyz );
-    VectorCopy( corners[4], verts[3].xyz );
-    trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
+ // right side
+ VectorCopy( corners[0], verts[0].xyz );
+ VectorCopy( corners[3], verts[1].xyz );
+ VectorCopy( corners[7], verts[2].xyz );
+ VectorCopy( corners[4], verts[3].xyz );
+ trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
 
-    // bottom side
-    VectorCopy( corners[1], verts[0].xyz );
-    VectorCopy( corners[0], verts[1].xyz );
-    VectorCopy( corners[4], verts[2].xyz );
-    VectorCopy( corners[5], verts[3].xyz );
-    trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
+ // bottom side
+ VectorCopy( corners[1], verts[0].xyz );
+ VectorCopy( corners[0], verts[1].xyz );
+ VectorCopy( corners[4], verts[2].xyz );
+ VectorCopy( corners[5], verts[3].xyz );
+ trap_R_AddPolyToScene( bboxShader_nocull, 4, verts );
 }*/
 
 /*

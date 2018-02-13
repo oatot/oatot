@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_cmd.c
+ * name: ai_cmd.c
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /MissionPack/code/game/ai_cmd.c $
  *
@@ -48,10 +48,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "ai_dmnet.h"
 #include "ai_team.h"
 //
-#include "chars.h"              //characteristics
-#include "inv.h"                //indexes into the inventory
-#include "syn.h"                //synonyms
-#include "match.h"              //string matching types and vars
+#include "chars.h" //characteristics
+#include "inv.h" //indexes into the inventory
+#include "syn.h" //synonyms
+#include "match.h" //string matching types and vars
 
 // for the voice chats
 #include "../../ui/menudef.h"
@@ -609,7 +609,7 @@ void BotMatch_HelpAccompany(bot_state_t* bs, bot_match_t* match) {
         if (!bs->teamgoal_time) {
             bs->teamgoal_time = FloatTime() + TEAM_ACCOMPANY_TIME;
         }
-        bs->formation_dist = 3.5 * 32;      //3.5 meter
+        bs->formation_dist = 3.5 * 32; //3.5 meter
         bs->arrive_time = 0;
         //
         BotSetTeamStatus(bs);
@@ -681,7 +681,7 @@ For Double Domination
 ==================
 */
 void BotMatch_TakeA(bot_state_t* bs, bot_match_t* match) {
-    //  char itemname[MAX_MESSAGE_SIZE];
+    // char itemname[MAX_MESSAGE_SIZE];
     char netname[MAX_MESSAGE_SIZE];
     int client;
     if (!TeamPlayIsOn()) {
@@ -695,9 +695,9 @@ void BotMatch_TakeA(bot_state_t* bs, bot_match_t* match) {
     /*trap_BotMatchVariable(match, KEYAREA, itemname, sizeof(itemname));
     //
     if (!BotGetMessageTeamGoal(bs, itemname, &bs->teamgoal)) {
-        //BotAI_BotInitialChat(bs, "cannotfind", itemname, NULL);
-        //trap_BotEnterChat(bs->cs, bs->client, CHAT_TEAM);
-        return;
+    //BotAI_BotInitialChat(bs, "cannotfind", itemname, NULL);
+    //trap_BotEnterChat(bs->cs, bs->client, CHAT_TEAM);
+    return;
     }*/
     //
     trap_BotMatchVariable(match, NETNAME, netname, sizeof(netname));
@@ -735,7 +735,7 @@ For Double Domination
 ==================
 */
 void BotMatch_TakeB(bot_state_t* bs, bot_match_t* match) {
-    //  char itemname[MAX_MESSAGE_SIZE];
+    // char itemname[MAX_MESSAGE_SIZE];
     char netname[MAX_MESSAGE_SIZE];
     int client;
     if (!TeamPlayIsOn()) {
@@ -749,9 +749,9 @@ void BotMatch_TakeB(bot_state_t* bs, bot_match_t* match) {
     /*trap_BotMatchVariable(match, KEYAREA, itemname, sizeof(itemname));
     //
     if (!BotGetMessageTeamGoal(bs, itemname, &bs->teamgoal)) {
-        //BotAI_BotInitialChat(bs, "cannotfind", itemname, NULL);
-        //trap_BotEnterChat(bs->cs, bs->client, CHAT_TEAM);
-        //return;
+    //BotAI_BotInitialChat(bs, "cannotfind", itemname, NULL);
+    //trap_BotEnterChat(bs->cs, bs->client, CHAT_TEAM);
+    //return;
     }*/
     //
     trap_BotMatchVariable(match, NETNAME, netname, sizeof(netname));
@@ -1960,25 +1960,25 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
     }
     //react to the found message
     switch (match.type) {
-    case MSG_HELP:                  //someone calling for help
-    case MSG_ACCOMPANY: {           //someone calling for company
+    case MSG_HELP: //someone calling for help
+    case MSG_ACCOMPANY: { //someone calling for company
         BotMatch_HelpAccompany(bs, &match);
         break;
     }
-    case MSG_DEFENDKEYAREA: {       //teamplay defend a key area
+    case MSG_DEFENDKEYAREA: { //teamplay defend a key area
         BotMatch_DefendKeyArea(bs, &match);
         break;
     }
-    case MSG_CAMP: {                //camp somewhere
+    case MSG_CAMP: { //camp somewhere
         BotMatch_Camp(bs, &match);
         break;
     }
-    case MSG_PATROL: {              //patrol between several key areas
+    case MSG_PATROL: { //patrol between several key areas
         BotMatch_Patrol(bs, &match);
         break;
     }
     //CTF & 1FCTF
-    case MSG_GETFLAG: {             //ctf get the enemy flag
+    case MSG_GETFLAG: { //ctf get the enemy flag
         BotMatch_GetFlag(bs, &match);
         break;
     }
@@ -1993,7 +1993,7 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
         break;
     }
     //CTF & 1FCTF & Harvester
-    case MSG_RUSHBASE: {            //ctf rush to the base
+    case MSG_RUSHBASE: { //ctf rush to the base
         BotMatch_RushBase(bs, &match);
         break;
     }
@@ -2016,11 +2016,11 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
         BotMatch_GetItem(bs, &match);
         break;
     }
-    case MSG_JOINSUBTEAM: {         //join a sub team
+    case MSG_JOINSUBTEAM: { //join a sub team
         BotMatch_JoinSubteam(bs, &match);
         break;
     }
-    case MSG_LEAVESUBTEAM: {        //leave a sub team
+    case MSG_LEAVESUBTEAM: { //leave a sub team
         BotMatch_LeaveSubteam(bs, &match);
         break;
     }
@@ -2028,26 +2028,26 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
         BotMatch_WhichTeam(bs, &match);
         break;
     }
-    case MSG_CHECKPOINT: {          //remember a check point
+    case MSG_CHECKPOINT: { //remember a check point
         BotMatch_CheckPoint(bs, &match);
         break;
     }
-    case MSG_CREATENEWFORMATION: {  //start the creation of a new formation
+    case MSG_CREATENEWFORMATION: { //start the creation of a new formation
         trap_EA_SayTeam(bs->client, "the part of my brain to create formations has been damaged");
         break;
     }
-    case MSG_FORMATIONPOSITION: {   //tell someone his/her position in the formation
+    case MSG_FORMATIONPOSITION: { //tell someone his/her position in the formation
         trap_EA_SayTeam(bs->client, "the part of my brain to create formations has been damaged");
         break;
     }
-    case MSG_FORMATIONSPACE: {      //set the formation space
+    case MSG_FORMATIONSPACE: { //set the formation space
         BotMatch_FormationSpace(bs, &match);
         break;
     }
-    case MSG_DOFORMATION: {         //form a certain formation
+    case MSG_DOFORMATION: { //form a certain formation
         break;
     }
-    case MSG_DISMISS: {             //dismiss someone
+    case MSG_DISMISS: { //dismiss someone
         BotMatch_Dismiss(bs, &match);
         break;
     }
@@ -2055,7 +2055,7 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
         BotMatch_StartTeamLeaderShip(bs, &match);
         break;
     }
-    case MSG_STOPTEAMLEADERSHIP: {  //someone will stop being the team leader
+    case MSG_STOPTEAMLEADERSHIP: { //someone will stop being the team leader
         BotMatch_StopTeamLeaderShip(bs, &match);
         break;
     }
@@ -2063,7 +2063,7 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
         BotMatch_WhoIsTeamLeader(bs, &match);
         break;
     }
-    case MSG_WHATAREYOUDOING: {     //ask a bot what he/she is doing
+    case MSG_WHATAREYOUDOING: { //ask a bot what he/she is doing
         BotMatch_WhatAreYouDoing(bs, &match);
         break;
     }
@@ -2083,7 +2083,7 @@ int BotMatchMessage(bot_state_t* bs, char* message) {
         BotMatch_Kill(bs, &match);
         break;
     }
-    case MSG_ENTERGAME: {           //someone entered the game
+    case MSG_ENTERGAME: { //someone entered the game
         BotMatch_EnterGame(bs, &match);
         break;
     }

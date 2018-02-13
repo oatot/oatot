@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "g_local.h"
 
 /*QUAKED func_group (0 0 0) ?
-Used to group brushes together just for editor convenience.  They are turned into normal brushes by the utilities.
+Used to group brushes together just for editor convenience. They are turned into normal brushes by the utilities.
 */
 
 /*QUAKED info_camp (0 0.5 0) (-4 -4 -4) (4 4 4)
@@ -70,7 +70,7 @@ TELEPORTERS
 */
 
 void TeleportPlayer(gentity_t* player, vec3_t origin, vec3_t angles) {
-    gentity_t*   tent;
+    gentity_t* tent;
     qboolean noAngles;
     noAngles = (angles[0] > 999999.0);
     // use temp events at source and destination to prevent the effect
@@ -89,7 +89,7 @@ void TeleportPlayer(gentity_t* player, vec3_t origin, vec3_t angles) {
         // spit the player out
         AngleVectors(angles, player->client->ps.velocity, NULL, NULL);
         VectorScale(player->client->ps.velocity, 400, player->client->ps.velocity);
-        player->client->ps.pm_time = 160;       // hold time
+        player->client->ps.pm_time = 160; // hold time
         player->client->ps.pm_flags |= PMF_TIME_KNOCKBACK;
         // set angles
         SetClientViewAngle(player, angles);
@@ -124,7 +124,7 @@ void SP_misc_teleporter_dest(gentity_t* ent) {
 //===========================================================
 
 /*QUAKED misc_model (1 0 0) (-16 -16 -16) (16 16 16)
-"model"     arbitrary .md3 file to display
+"model" arbitrary .md3 file to display
 */
 void SP_misc_model(gentity_t* ent) {
 #if 0
@@ -142,9 +142,9 @@ void SP_misc_model(gentity_t* ent) {
 //===========================================================
 
 void locateCamera(gentity_t* ent) {
-    vec3_t      dir;
-    gentity_t*   target;
-    gentity_t*   owner;
+    vec3_t dir;
+    gentity_t* target;
+    gentity_t* owner;
     owner = G_PickTarget(ent->target);
     if (!owner) {
         G_Printf("Couldn't find target for misc_partal_surface\n");
@@ -198,11 +198,11 @@ void SP_misc_portal_surface(gentity_t* ent) {
 }
 
 /*QUAKED misc_portal_camera (0 0 1) (-8 -8 -8) (8 8 8) slowrotate fastrotate noswing
-The target for a misc_portal_director.  You can set either angles or target another entity to determine the direction of view.
+The target for a misc_portal_director. You can set either angles or target another entity to determine the direction of view.
 "roll" an angle modifier to orient the camera around the target vector;
 */
 void SP_misc_portal_camera(gentity_t* ent) {
-    float   roll;
+    float roll;
     VectorClear(ent->r.mins);
     VectorClear(ent->r.maxs);
     trap_LinkEntity(ent);
@@ -213,15 +213,15 @@ void SP_misc_portal_camera(gentity_t* ent) {
 /*
 ======================================================================
 
-  SHOOTERS
+ SHOOTERS
 
 ======================================================================
 */
 
 void Use_Shooter(gentity_t* ent, gentity_t* other, gentity_t* activator) {
-    vec3_t      dir;
-    float       deg;
-    vec3_t      up, right;
+    vec3_t dir;
+    float deg;
+    vec3_t up, right;
     // see if we have a target
     if (ent->enemy) {
         VectorSubtract(ent->enemy->r.currentOrigin, ent->s.origin, dir);
@@ -304,8 +304,8 @@ static void PortalDie(gentity_t* self, gentity_t* inflictor, gentity_t* attacker
 }
 
 void DropPortalDestination(gentity_t* player) {
-    gentity_t*   ent;
-    vec3_t      snapped;
+    gentity_t* ent;
+    vec3_t snapped;
     // create the portal destination
     ent = G_Spawn();
     ent->s.modelindex = G_ModelIndex("models/powerups/teleporter/tele_exit.md3");
@@ -331,7 +331,7 @@ void DropPortalDestination(gentity_t* player) {
 }
 
 static void PortalTouch(gentity_t* self, gentity_t* other, trace_t* trace) {
-    gentity_t*   destination;
+    gentity_t* destination;
     // see if we will even let other try to use it
     if (other->health <= 0) {
         return;
@@ -339,16 +339,16 @@ static void PortalTouch(gentity_t* self, gentity_t* other, trace_t* trace) {
     if (!other->client) {
         return;
     }
-    //  if( other->client->ps.persistant[PERS_TEAM] != self->spawnflags ) {
-    //      return;
-    //  }
-    if (other->client->ps.powerups[PW_NEUTRALFLAG]) {        // only happens in One Flag CTF
+    // if( other->client->ps.persistant[PERS_TEAM] != self->spawnflags ) {
+    // return;
+    // }
+    if (other->client->ps.powerups[PW_NEUTRALFLAG]) { // only happens in One Flag CTF
         Drop_Item(other, BG_FindItemForPowerup(PW_NEUTRALFLAG), 0);
         other->client->ps.powerups[PW_NEUTRALFLAG] = 0;
-    } else if (other->client->ps.powerups[PW_REDFLAG]) {     // only happens in standard CTF
+    } else if (other->client->ps.powerups[PW_REDFLAG]) { // only happens in standard CTF
         Drop_Item(other, BG_FindItemForPowerup(PW_REDFLAG), 0);
         other->client->ps.powerups[PW_REDFLAG] = 0;
-    } else if (other->client->ps.powerups[PW_BLUEFLAG]) {    // only happens in standard CTF
+    } else if (other->client->ps.powerups[PW_BLUEFLAG]) { // only happens in standard CTF
         Drop_Item(other, BG_FindItemForPowerup(PW_BLUEFLAG), 0);
         other->client->ps.powerups[PW_BLUEFLAG] = 0;
     }
@@ -377,9 +377,9 @@ static void PortalEnable(gentity_t* self) {
 }
 
 void DropPortalSource(gentity_t* player) {
-    gentity_t*   ent;
-    gentity_t*   destination;
-    vec3_t      snapped;
+    gentity_t* ent;
+    gentity_t* destination;
+    vec3_t snapped;
     // create the portal source
     ent = G_Spawn();
     ent->s.modelindex = G_ModelIndex("models/powerups/teleporter/tele_enter.md3");
@@ -397,7 +397,7 @@ void DropPortalSource(gentity_t* player) {
     trap_LinkEntity(ent);
     ent->count = player->client->portalID;
     player->client->portalID = 0;
-    //  ent->spawnflags = player->client->ps.persistant[PERS_TEAM];
+    // ent->spawnflags = player->client->ps.persistant[PERS_TEAM];
     ent->nextthink = level.time + 1000;
     ent->think = PortalEnable;
     // find the destination
@@ -411,13 +411,13 @@ void DropPortalSource(gentity_t* player) {
 }
 
 static int countItems(const char* itemname, qboolean exclude_no_bots) {
-    gentity_t*   spot;
-    int         count;
+    gentity_t* spot;
+    int count;
     count = 0;
     spot = NULL;
     while ((spot = G_Find(spot, FOFS(classname), itemname)) != NULL) {
         if (exclude_no_bots && spot->flags & (FL_NO_BOTS | FL_NO_HUMANS)) {
-            continue;    //Do not count no_humans or no_bots items
+            continue; //Do not count no_humans or no_bots items
         }
         count++;
     }

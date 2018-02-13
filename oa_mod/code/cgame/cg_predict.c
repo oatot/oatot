@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,12 +27,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "cg_local.h"
 
-static pmove_t     cg_pmove;
+static pmove_t cg_pmove;
 
-static int         cg_numSolidEntities;
-static centity_t*   cg_solidEntities[MAX_ENTITIES_IN_SNAPSHOT];
-static int         cg_numTriggerEntities;
-static centity_t*   cg_triggerEntities[MAX_ENTITIES_IN_SNAPSHOT];
+static int cg_numSolidEntities;
+static centity_t* cg_solidEntities[MAX_ENTITIES_IN_SNAPSHOT];
+static int cg_numTriggerEntities;
+static centity_t* cg_triggerEntities[MAX_ENTITIES_IN_SNAPSHOT];
 
 /*
 ====================
@@ -44,10 +44,10 @@ efficient collision detection
 ====================
 */
 void CG_BuildSolidList(void) {
-    int         i;
-    centity_t*   cent;
-    snapshot_t*  snap;
-    entityState_t*   ent;
+    int i;
+    centity_t* cent;
+    snapshot_t* snap;
+    entityState_t* ent;
     cg_numSolidEntities = 0;
     cg_numTriggerEntities = 0;
     if (cg.nextSnap && !cg.nextFrameTeleport && !cg.thisFrameTeleport) {
@@ -79,13 +79,13 @@ CG_ClipMoveToEntities
 */
 static void CG_ClipMoveToEntities(const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
                                   int skipNumber, int mask, trace_t* tr) {
-    int         i, x, zd, zu;
-    trace_t     trace;
-    entityState_t*   ent;
-    clipHandle_t    cmodel;
-    vec3_t      bmins, bmaxs;
-    vec3_t      origin, angles;
-    centity_t*   cent;
+    int i, x, zd, zu;
+    trace_t trace;
+    entityState_t* ent;
+    clipHandle_t cmodel;
+    vec3_t bmins, bmaxs;
+    vec3_t origin, angles;
+    centity_t* cent;
     for (i = 0; i < cg_numSolidEntities; i++) {
         cent = cg_solidEntities[ i ];
         ent = &cent->currentState;
@@ -111,7 +111,7 @@ static void CG_ClipMoveToEntities(const vec3_t start, const vec3_t mins, const v
             VectorCopy(cent->lerpOrigin, origin);
         }
         trap_CM_TransformedBoxTrace(&trace, start, end,
-                                    mins, maxs, cmodel,  mask, origin, angles);
+                                    mins, maxs, cmodel, mask, origin, angles);
         if (trace.allsolid || trace.fraction < tr->fraction) {
             trace.entityNum = ent->number;
             *tr = trace;
@@ -129,8 +129,8 @@ static void CG_ClipMoveToEntities(const vec3_t start, const vec3_t mins, const v
 CG_Trace
 ================
 */
-void    CG_Trace(trace_t* result, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
-                 int skipNumber, int mask) {
+void CG_Trace(trace_t* result, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
+              int skipNumber, int mask) {
     trace_t t;
     trap_CM_BoxTrace(&t, start, end, mins, maxs, 0, mask);
     t.entityNum = t.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
@@ -144,12 +144,12 @@ void    CG_Trace(trace_t* result, const vec3_t start, const vec3_t mins, const v
 CG_PointContents
 ================
 */
-int     CG_PointContents(const vec3_t point, int passEntityNum) {
-    int         i;
-    entityState_t*   ent;
-    centity_t*   cent;
+int CG_PointContents(const vec3_t point, int passEntityNum) {
+    int i;
+    entityState_t* ent;
+    centity_t* cent;
     clipHandle_t cmodel;
-    int         contents;
+    int contents;
     contents = trap_CM_PointContents(point, 0);
     for (i = 0; i < cg_numSolidEntities; i++) {
         cent = cg_solidEntities[ i ];
@@ -178,18 +178,18 @@ cg.snap->player_state and cg.nextFrame->player_state
 ========================
 */
 static void CG_InterpolatePlayerState(qboolean grabAngles) {
-    float           f;
-    int             i;
-    playerState_t*   out;
-    snapshot_t*      prev, *next;
+    float f;
+    int i;
+    playerState_t* out;
+    snapshot_t* prev, *next;
     out = &cg.predictedPlayerState;
     prev = cg.snap;
     next = cg.nextSnap;
     *out = cg.snap->ps;
     // if we are still allowing local input, short circuit the view angles
     if (grabAngles) {
-        usercmd_t   cmd;
-        int         cmdNum;
+        usercmd_t cmd;
+        int cmdNum;
         cmdNum = trap_GetCurrentCmdNumber();
         trap_GetUserCmd(cmdNum, &cmd);
         PM_UpdateViewAngles(out, &cmd);
@@ -204,7 +204,7 @@ static void CG_InterpolatePlayerState(qboolean grabAngles) {
     f = (float)(cg.time - prev->serverTime) / (next->serverTime - prev->serverTime);
     i = next->ps.bobCycle;
     if (i < prev->ps.bobCycle) {
-        i += 256;       // handle wraparound
+        i += 256; // handle wraparound
     }
     out->bobCycle = prev->ps.bobCycle + f * (i - prev->ps.bobCycle);
     for (i = 0; i < 3; i++) {
@@ -224,11 +224,11 @@ CG_TouchItem
 ===================
 */
 static void CG_TouchItem(centity_t* cent) {
-    gitem_t*     item;
+    gitem_t* item;
     //For instantgib
-    qboolean    canBePicked;
+    qboolean canBePicked;
     if (cgs.gametype == GT_ELIMINATION || cgs.gametype == GT_LMS) {
-        return;    //No weapon pickup in elimination
+        return; //No weapon pickup in elimination
     }
     //normally we can
     canBePicked = qtrue;
@@ -247,7 +247,7 @@ static void CG_TouchItem(centity_t* cent) {
         return;
     }
     if (!BG_CanItemBeGrabbed(cgs.gametype, &cent->currentState, &cg.predictedPlayerState)) {
-        return;     // can't hold it
+        return; // can't hold it
     }
     item = &bg_itemlist[ cent->currentState.modelindex ];
     // Special case for flags.
@@ -284,7 +284,7 @@ static void CG_TouchItem(centity_t* cent) {
     //Currently we don't predict anything in Double Domination because it looks like we take a flag
     if (cgs.gametype == GT_DOUBLE_D) {
         if (cgs.redflag == TEAM_NONE) {
-            return;    //Can never pick if just one flag is NONE (because then the other is too)
+            return; //Can never pick if just one flag is NONE (because then the other is too)
         }
         if (item->giTag == PW_REDFLAG) { //at point A
             if (cgs.redflag != cg.predictedPlayerState.persistant[PERS_TEAM]) { //not already taken
@@ -324,12 +324,12 @@ Predict push triggers and items
 =========================
 */
 static void CG_TouchTriggerPrediction(void) {
-    int         i;
-    trace_t     trace;
-    entityState_t*   ent;
+    int i;
+    trace_t trace;
+    entityState_t* ent;
     clipHandle_t cmodel;
-    centity_t*   cent;
-    qboolean    spectator;
+    centity_t* cent;
+    qboolean spectator;
     // dead clients don't activate triggers
     if (cg.predictedPlayerState.stats[STAT_HEALTH] <= 0) {
         return;
@@ -384,14 +384,14 @@ static int IsUnacceptableError(playerState_t* ps, playerState_t* pps) {
     VectorSubtract(pps->origin, ps->origin, delta);
     if (VectorLengthSquared(delta) > 0.1f * 0.1f) {
         if (cg_showmiss.integer) {
-            CG_Printf("delta: %.2f  ", VectorLength(delta));
+            CG_Printf("delta: %.2f ", VectorLength(delta));
         }
         return 2;
     }
     VectorSubtract(pps->velocity, ps->velocity, delta);
     if (VectorLengthSquared(delta) > 0.1f * 0.1f) {
         if (cg_showmiss.integer) {
-            CG_Printf("delta: %.2f  ", VectorLength(delta));
+            CG_Printf("delta: %.2f ", VectorLength(delta));
         }
         return 3;
     }
@@ -500,7 +500,7 @@ This means that on an internet connection, quite a few pmoves may be issued
 each frame.
 
 OPTIMIZE: don't re-simulate unless the newly arrived snapshot playerState_t
-differs from the predicted one.  Would require saving all intermediate
+differs from the predicted one. Would require saving all intermediate
 playerState_t during prediction.
 
 We detect prediction errors and allow them to be decayed off over several frames
@@ -508,11 +508,11 @@ to ease the jerk.
 =================
 */
 void CG_PredictPlayerState(void) {
-    int         cmdNum, current;
-    playerState_t   oldPlayerState;
-    qboolean    moved;
-    usercmd_t   oldestCmd;
-    usercmd_t   latestCmd;
+    int cmdNum, current;
+    playerState_t oldPlayerState;
+    qboolean moved;
+    usercmd_t oldestCmd;
+    usercmd_t latestCmd;
     //unlagged - optimized prediction
     int stateIndex = 0, predictCmd = 0; //Sago: added initializing
     int numPredicted = 0, numPlayedBack = 0; // debug code
@@ -545,7 +545,7 @@ void CG_PredictPlayerState(void) {
         cg_pmove.tracemask = MASK_PLAYERSOLID;
     }
     if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) {
-        cg_pmove.tracemask &= ~CONTENTS_BODY;   // spectators can fly through bodies
+        cg_pmove.tracemask &= ~CONTENTS_BODY; // spectators can fly through bodies
     }
     cg_pmove.noFootsteps = (cgs.dmflags & DF_NO_FOOTSTEPS) > 0;
     // save the state before the pmove so we can detect transitions
@@ -557,7 +557,7 @@ void CG_PredictPlayerState(void) {
     cmdNum = current - CMD_BACKUP + 1;
     trap_GetUserCmd(cmdNum, &oldestCmd);
     if (oldestCmd.serverTime > cg.snap->ps.commandTime
-            && oldestCmd.serverTime < cg.time) {    // special check for map_restart
+            && oldestCmd.serverTime < cg.time) { // special check for map_restart
         if (cg_showmiss.integer) {
             CG_Printf("exceeded PACKET_BACKUP on commands\n");
         }
@@ -588,21 +588,21 @@ void CG_PredictPlayerState(void) {
     //unlagged - optimized prediction
     // Like the comments described above, a player's state is entirely
     // re-predicted from the last valid snapshot every client frame, which
-    // can be really, really, really slow.  Every old command has to be
-    // run again.  For every client frame that is *not* directly after a
+    // can be really, really, really slow. Every old command has to be
+    // run again. For every client frame that is *not* directly after a
     // snapshot, this is unnecessary, since we have no new information.
     // For those, we'll play back the predictions from the last frame and
-    // predict only the newest commands.  Essentially, we'll be doing
+    // predict only the newest commands. Essentially, we'll be doing
     // an incremental predict instead of a full predict.
     //
     // If we have a new snapshot, we can compare its player state's command
-    // time to the command times in the queue to find a match.  If we find
+    // time to the command times in the queue to find a match. If we find
     // a matching state, and the predicted version has not deviated, we can
     // use the predicted state as a base - and also do an incremental predict.
     //
     // With this method, we get incremental predicts on every client frame
     // except a frame following a new snapshot in which there was a prediction
-    // error.  This yeilds anywhere from a 15% to 40% performance increase,
+    // error. This yeilds anywhere from a 15% to 40% performance increase,
     // depending on how much of a bottleneck the CPU is.
     if (cg_optimizePrediction.integer) {
         if (cg.nextFrameTeleport || cg.thisFrameTeleport) {
@@ -682,7 +682,7 @@ void CG_PredictPlayerState(void) {
         // we want to compare
         if (cg.predictedPlayerState.commandTime == oldPlayerState.commandTime) {
             vec3_t delta;
-            float   len;
+            float len;
             if (cg.thisFrameTeleport) {
                 // a teleport will not cause an error decay
                 VectorClear(cg.predictedError);
@@ -706,8 +706,8 @@ void CG_PredictPlayerState(void) {
                         CG_Printf("Prediction miss: %f\n", len);
                     }
                     if (cg_errorDecay.integer) {
-                        int     t;
-                        float   f;
+                        int t;
+                        float f;
                         t = cg.time - cg.predictedErrorTime;
                         f = (cg_errorDecay.value - t) / cg_errorDecay.value;
                         if (f < 0) {

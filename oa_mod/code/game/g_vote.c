@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -35,7 +35,7 @@ int allowedVote(const char* commandStr) {
     char voteNames[MAX_CVAR_VALUE_STRING];
     trap_Cvar_VariableStringBuffer("g_voteNames", voteNames, sizeof(voteNames));
     if (Q_strequal(voteNames, "*")) {
-        return qtrue;    //if star, everything is allowed
+        return qtrue; //if star, everything is allowed
     }
     length = strlen(commandStr);
     if (length > MAX_VOTENAME_LENGTH - 3) {
@@ -62,7 +62,7 @@ getMappage
 
 t_mappage getMappage(int page) {
     t_mappage result;
-    fileHandle_t    file;
+    fileHandle_t file;
     char* token, *pointer;
     char buffer[MAX_MAPNAME_BUFFER];
     int i, nummaps, maplen;
@@ -123,19 +123,19 @@ allowedMap
 
 int allowedMap(const char* mapname) {
     int length;
-    fileHandle_t    file;           //To check that the map actually exists.
-    char                buffer[MAX_MAPS_TEXT];
-    char*                token, *pointer;
-    qboolean            found;
+    fileHandle_t file; //To check that the map actually exists.
+    char buffer[MAX_MAPS_TEXT];
+    char* token, *pointer;
+    qboolean found;
     trap_FS_FOpenFile(va("maps/%s.bsp", mapname), &file, FS_READ);
     if (!file) {
-        return qfalse;    //maps/MAPNAME.bsp does not exist
+        return qfalse; //maps/MAPNAME.bsp does not exist
     }
     trap_FS_FCloseFile(file);
     //Now read the file votemaps.cfg to see what maps are allowed
     trap_FS_FOpenFile(g_votemaps.string, &file, FS_READ);
     if (!file) {
-        return qtrue;    //if no file, everything is allowed
+        return qtrue; //if no file, everything is allowed
     }
     length = strlen(mapname);
     if (length > MAX_MAPNAME_LENGTH - 3) {
@@ -171,7 +171,7 @@ int allowedGametype(const char* gametypeStr) {
     char voteGametypes[MAX_CVAR_VALUE_STRING];
     trap_Cvar_VariableStringBuffer("g_voteGametypes", voteGametypes, sizeof(voteGametypes));
     if (Q_strequal(voteGametypes, "*")) {
-        return qtrue;    //if star, everything is allowed
+        return qtrue; //if star, everything is allowed
     }
     length = strlen(gametypeStr);
     if (length > MAX_GAMETYPENAME_LENGTH - 3) {
@@ -231,9 +231,9 @@ int allowedFraglimit(int limit) {
     return qtrue;
 }
 
-#define MAX_CUSTOM_VOTES    12
+#define MAX_CUSTOM_VOTES 12
 
-char            custom_vote_info[1024];
+char custom_vote_info[1024];
 
 /*
 ==================
@@ -243,10 +243,10 @@ VoteParseCustomVotes
 ==================
  */
 int VoteParseCustomVotes(void) {
-    fileHandle_t    file;
-    char            buffer[4 * 1024];
-    int             commands;
-    char*    token, *pointer;
+    fileHandle_t file;
+    char buffer[4 * 1024];
+    int commands;
+    char* token, *pointer;
     trap_FS_FOpenFile(g_votecustom.string, &file, FS_READ);
     if (!file) {
         return 0;
@@ -279,10 +279,10 @@ getCustomVote
  */
 t_customvote getCustomVote(char* votecommand) {
     t_customvote result;
-    fileHandle_t    file;
-    char            buffer[4 * 1024];
-    char*    token, *pointer;
-    char    key[MAX_TOKEN_CHARS];
+    fileHandle_t file;
+    char buffer[4 * 1024];
+    char* token, *pointer;
+    char key[MAX_TOKEN_CHARS];
     trap_FS_FOpenFile(g_votecustom.string, &file, FS_READ);
     if (!file) {
         memset(&result, 0, sizeof(result));
@@ -416,7 +416,7 @@ void CountVotes(void) {
             continue; //Don't count spectators
         }
         if (g_entities[i].r.svFlags & SVF_BOT) {
-            continue;    //Is a bot
+            continue; //Is a bot
         }
         //The client can vote
         level.numVotingClients++;

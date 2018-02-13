@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -763,7 +763,7 @@ void CG_EntityEvent(centity_t* cent, vec3_t position) {
         }
     case EV_JUMP_PAD:
         DEBUGNAME("EV_JUMP_PAD");
-        //      CG_Printf( "EV_JUMP_PAD w/effect #%i\n", es->eventParm );
+        // CG_Printf( "EV_JUMP_PAD w/effect #%i\n", es->eventParm );
         {
             vec3_t up = {0, 0, 1};
             CG_SmokePuff(cent->lerpOrigin, up,
@@ -893,7 +893,7 @@ void CG_EntityEvent(centity_t* cent, vec3_t position) {
     //
     case EV_NOAMMO:
         DEBUGNAME("EV_NOAMMO");
-        //      trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
+        // trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
         if (es->number == cg.snap->ps.clientNum) {
             CG_OutOfAmmoChange();
         }

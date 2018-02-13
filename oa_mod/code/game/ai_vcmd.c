@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_vcmd.c
+ * name: ai_vcmd.c
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /MissionPack/code/game/ai_vcmd.c $
  *
@@ -49,10 +49,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "ai_team.h"
 #include "ai_vcmd.h"
 //
-#include "chars.h"              //characteristics
-#include "inv.h"                //indexes into the inventory
-#include "syn.h"                //synonyms
-#include "match.h"              //string matching types and vars
+#include "chars.h" //characteristics
+#include "inv.h" //indexes into the inventory
+#include "syn.h" //synonyms
+#include "match.h" //string matching types and vars
 
 // for the voice chats
 #include "../../ui/menudef.h"
@@ -335,7 +335,7 @@ void BotVoiceChat_FollowMe(bot_state_t* bs, int client, int mode) {
     bs->teamgoal_time = FloatTime() + TEAM_ACCOMPANY_TIME;
     //set the ltg type
     bs->ltgtype = LTG_TEAMACCOMPANY;
-    bs->formation_dist = 3.5 * 32;      //3.5 meter
+    bs->formation_dist = 3.5 * 32; //3.5 meter
     bs->arrive_time = 0;
     //
     BotSetTeamStatus(bs);
@@ -498,7 +498,7 @@ int BotVoiceChatCommand(bot_state_t* bs, int mode, char* voiceChat) {
         return qfalse;
     }
     if (mode == SAY_ALL) {
-        return qfalse;  // don't do anything with voice chats to everyone
+        return qfalse; // don't do anything with voice chats to everyone
     }
     Q_strncpyz(buf, voiceChat, sizeof(buf));
     cmd = buf;

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -23,10 +23,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "ui_local.h"
 
 void UI_SPArena_Start(const char* arenaInfo) {
-    char*    map;
-    int     level;
-    int     n;
-    char*    txt;
+    char* map;
+    int level;
+    int n;
+    char* txt;
     n = (int)trap_Cvar_VariableValue("sv_maxclients");
     if (n < 8) {
         trap_Cvar_SetValue("sv_maxclients", 8);

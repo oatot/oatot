@@ -14,7 +14,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -33,8 +33,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define POOLSIZE ( 256 * 1024 )
 #endif
 
-#define FREEMEMCOOKIE  ((int)0xDEADBE3F)  // Any unlikely to be used value
-#define ROUNDBITS    (unsigned int)31          // Round to 32 bytes
+#define FREEMEMCOOKIE ((int)0xDEADBE3F) // Any unlikely to be used value
+#define ROUNDBITS (unsigned int)31 // Round to 32 bytes
 
 typedef struct freeMemNode_s {
     // Size of ROUNDBITS
@@ -87,13 +87,13 @@ void* BG_Alloc(unsigned int size) {
                 prev = fmn->prev;
                 next = fmn->next;
                 if (prev) {
-                    prev->next = next;    // Point previous node to next
+                    prev->next = next; // Point previous node to next
                 }
                 if (next) {
-                    next->prev = prev;    // Point next node to previous
+                    next->prev = prev; // Point next node to previous
                 }
                 if (fmn == freeHead) {
-                    freeHead = next;    // Set head pointer to next
+                    freeHead = next; // Set head pointer to next
                 }
                 ptr = (int*) fmn;
                 break; // Stop the loop, this is fine
@@ -176,11 +176,11 @@ void BG_DefragmentMemory(void) {
                 }
                 if (fmn->next) {
                     if (!(fmn->next->prev = fmn->prev)) {
-                        freeHead = fmn->next;    // We're removing the head node
+                        freeHead = fmn->next; // We're removing the head node
                     }
                 }
                 startfmn->size += fmn->size;
-                memset(fmn, 0, sizeof(freeMemNode_t));  // A redundant call, really.
+                memset(fmn, 0, sizeof(freeMemNode_t)); // A redundant call, really.
                 startfmn = freeHead;
                 endfmn = fmn = NULL; // Break out of current loop
             } else {
@@ -188,7 +188,7 @@ void BG_DefragmentMemory(void) {
             }
         }
         if (endfmn) {
-            startfmn = startfmn->next;    // endfmn acts as a 'restart' flag here
+            startfmn = startfmn->next; // endfmn acts as a 'restart' flag here
         }
     }
 }

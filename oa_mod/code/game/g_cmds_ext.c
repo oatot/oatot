@@ -13,7 +13,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 
-#include  "g_local.h"
+#include "g_local.h"
 
 /*
 =================
@@ -177,7 +177,7 @@ void G_SanitiseString(char* in, char* out, int len) {
             skip = qfalse;
         }
         if (Q_IsColorString(in)) {
-            in += 2;    // skip color code
+            in += 2; // skip color code
             continue;
         }
         if (*in < 32) {
@@ -275,7 +275,7 @@ int G_FloodLimited(gentity_t* ent) {
     return ms;
 }
 
-static void QDECL G_AdminMessage(const char* prefix, const char* fmt, ...)  __attribute__((format(printf, 2, 3)));
+static void QDECL G_AdminMessage(const char* prefix, const char* fmt, ...) __attribute__((format(printf, 2, 3)));
 
 /*
 =================
@@ -287,9 +287,9 @@ Prepend *prefix, or '[SERVER]' if no *prefix is given
 */
 static void QDECL G_AdminMessage(const char* prefix, const char* fmt, ...) {
     va_list argptr;
-    char    string[ 1024 ];
-    char    outstring[ 1024 ];
-    int     i;
+    char string[ 1024 ];
+    char outstring[ 1024 ];
+    int i;
     // Format the text
     va_start(argptr, fmt);
     Q_vsnprintf(string, sizeof(string), fmt, argptr);
@@ -364,9 +364,9 @@ Returns -1 if invalid
 */
 int G_ClientNumberFromString(char* s) {
     gclient_t* cl;
-    int       i;
-    char      s2[ MAX_NAME_LENGTH ];
-    char      n2[ MAX_NAME_LENGTH ];
+    int i;
+    char s2[ MAX_NAME_LENGTH ];
+    char n2[ MAX_NAME_LENGTH ];
     // numeric values are just slot numbers
     for (i = 0; s[ i ] && isdigit(s[ i ]); i++);
     if (!s[ i ]) {
@@ -421,7 +421,7 @@ Remove case and control characters
 void SanitizeString(char* in, char* out) {
     while (*in) {
         if (*in == 27) {
-            in += 2;        // skip color code
+            in += 2; // skip color code
             continue;
         }
         if (*in < 32) {

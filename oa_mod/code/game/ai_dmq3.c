@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_dmq3.c
+ * name: ai_dmq3.c
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /MissionPack/code/game/ai_dmq3.c $
  *
@@ -48,21 +48,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "ai_dmnet.h"
 #include "ai_team.h"
 //
-#include "chars.h"    //characteristics
-#include "inv.h"    //indexes into the inventory
-#include "syn.h"    //synonyms
-#include "match.h"    //string matching types and vars
+#include "chars.h" //characteristics
+#include "inv.h" //indexes into the inventory
+#include "syn.h" //synonyms
+#include "match.h" //string matching types and vars
 
 // for the voice chats
 #include "../../ui/menudef.h" // sos001205 - for q3_ui also
 
 // from aasfile.h
-#define AREACONTENTS_MOVER    1024
+#define AREACONTENTS_MOVER 1024
 #define AREACONTENTS_MODELNUMSHIFT 24
 #define AREACONTENTS_MAXMODELNUM 0xFF
-#define AREACONTENTS_MODELNUM   (AREACONTENTS_MAXMODELNUM << AREACONTENTS_MODELNUMSHIFT)
+#define AREACONTENTS_MODELNUM (AREACONTENTS_MAXMODELNUM << AREACONTENTS_MODELNUMSHIFT)
 
-#define IDEAL_ATTACKDIST   140
+#define IDEAL_ATTACKDIST 140
 
 #define MAX_WAYPOINTS 128
 
@@ -123,7 +123,7 @@ int untrap_BotGetLevelItemGoal(int start, char* classname, void /* struct bot_go
     start = trap_BotGetLevelItemGoal(start, classname, goal);
     while (start > -1) {
         if (!trap_AAS_ValueForBSPEpairKey(start, "gametype", allowedGametypes, MAX_EPAIRKEY)) {
-            return start;    //No gametype flag
+            return start; //No gametype flag
         }
         if (gametype >= GT_FFA && gametype < ARRAY_LEN(gametypeNames)) {
             gametypeName = gametypeNames[gametype];
@@ -639,7 +639,7 @@ void BotCTFSeekGoals(bot_state_t* bs) {
             }
         }
         return;
-    }       //if the enemy has our flag
+    } //if the enemy has our flag
     else if (flagstatus == 2) {
         //
         if (bs->owndecision_time < FloatTime()) {
@@ -678,7 +678,7 @@ void BotCTFSeekGoals(bot_state_t* bs) {
             }
         }
         return;
-    }       //if both flags Not at their bases
+    } //if both flags Not at their bases
     else if (flagstatus == 3) {
         //
         if (bs->owndecision_time < FloatTime()) {
@@ -852,26 +852,26 @@ BotDomSeekGoals
  */
 
 /*void BotDomSeekGoals(bot_state_t *bs) {
-    int index;
-    bs->ltgtype = LTG_DOMHOLD; //For debugging we are forcing roam
+ int index;
+ bs->ltgtype = LTG_DOMHOLD; //For debugging we are forcing roam
 
-    index=0;
-    //dom_points_bot[i]
+ index=0;
+ //dom_points_bot[i]
 
-    if(bs->ltgtype == LTG_DOMHOLD) {
-        //index = 0;
-        index = ((rand()) % (level.domination_points_count));
-    }
+ if(bs->ltgtype == LTG_DOMHOLD) {
+ //index = 0;
+ index = ((rand()) % (level.domination_points_count));
+ }
 
-    //if(bs->ltgtype == LTG_DOMROAM) {
+ //if(bs->ltgtype == LTG_DOMROAM) {
 
-    //}
+ //}
 
-    memcpy(&bs->teamgoal, &dom_points_bot[index], sizeof(bot_goal_t));
+ memcpy(&bs->teamgoal, &dom_points_bot[index], sizeof(bot_goal_t));
 
-    BotAlternateRoute(bs, &bs->teamgoal);
+ BotAlternateRoute(bs, &bs->teamgoal);
 
-    BotSetTeamStatus(bs);
+ BotSetTeamStatus(bs);
 }*/
 
 /*
@@ -882,11 +882,11 @@ BotDDSeekGoals
 
 void BotDDSeekGoals(bot_state_t* bs) {
     /*if (bs->ltgtype == LTG_TEAMHELP ||
-            bs->ltgtype == LTG_TEAMACCOMPANY ||
-            bs->ltgtype == LTG_CAMPORDER ||
-            bs->ltgtype == LTG_PATROL ||
-            bs->ltgtype == LTG_GETITEM) {
-        return;
+    bs->ltgtype == LTG_TEAMACCOMPANY ||
+    bs->ltgtype == LTG_CAMPORDER ||
+    bs->ltgtype == LTG_PATROL ||
+    bs->ltgtype == LTG_GETITEM) {
+    return;
     }*/
     if (bs->ltgtype == LTG_POINTA) {
         memcpy(&bs->teamgoal, &ctf_redflag, sizeof(bot_goal_t));
@@ -1019,7 +1019,7 @@ void Bot1FCTFSeekGoals(bot_state_t* bs) {
             }
         }
         return;
-    }       //enemy team has the flag
+    } //enemy team has the flag
     else if (bs->neutralflagstatus == 2) {
         if (bs->owndecision_time < FloatTime()) {
             c = BotEnemyFlagCarrierVisible(bs);
@@ -1496,7 +1496,7 @@ void BotTeamGoals(bot_state_t* bs, int retreat) {
         BotDDSeekGoals(bs);
     }
     //if(gametype == GT_DOMINATION) //Don't care about retreat
-    //  BotDomSeekGoals(bs);
+    // BotDomSeekGoals(bs);
     // reset the order time which is used to see if
     // we decided to refuse an order
     bs->order_time = 0;
@@ -2636,12 +2636,12 @@ BotHasPersistantPowerupAndWeapon
 int BotHasPersistantPowerupAndWeapon(bot_state_t* bs) {
     // if the bot does not have a persistant powerup
     //Sago - FIXME - This causes problems if there are no persistant powerups
-    /*  if (!bs->inventory[INVENTORY_SCOUT] &&
-            !bs->inventory[INVENTORY_GUARD] &&
-            !bs->inventory[INVENTORY_DOUBLER] &&
-            !bs->inventory[INVENTORY_AMMOREGEN] ) {
-            return qfalse;
-        }*/
+    /* if (!bs->inventory[INVENTORY_SCOUT] &&
+    !bs->inventory[INVENTORY_GUARD] &&
+    !bs->inventory[INVENTORY_DOUBLER] &&
+    !bs->inventory[INVENTORY_AMMOREGEN] ) {
+    return qfalse;
+    }*/
     //if the bot is very low on health
     if (bs->inventory[INVENTORY_HEALTH] < 60) {
         return qfalse;
@@ -2934,7 +2934,7 @@ bot_moveresult_t BotAttackMove(bot_state_t* bs, int tfl) {
     if (bs->attackcrouch_time < FloatTime() - 1) {
         if (random() < jumper) {
             movetype = MOVE_JUMP;
-        }           //wait at least one second before crouching again
+        } //wait at least one second before crouching again
         else if (bs->attackcrouch_time < FloatTime() - 1 && random() < croucher) {
             bs->attackcrouch_time = FloatTime() + croucher * 5;
         }
@@ -3021,7 +3021,7 @@ bot_moveresult_t BotAttackMove(bot_state_t* bs, int tfl) {
         bs->attackstrafe_time = 0;
     }
     //bot couldn't do any usefull movement
-    //  bs->attackchase_time = AAS_Time() + 6;
+    // bs->attackchase_time = AAS_Time() + 6;
     return moveresult;
 }
 
@@ -3041,8 +3041,8 @@ int BotSameTeam(bot_state_t* bs, int entnum) {
     }
     if (gametype >= GT_TEAM && g_ffa_gt != 1) {
         /*Sago: I don't know why they decided to check the configstring instead of the real value.
-         For some reason bots sometimes gets a wrong config string when chaning gametypes.
-         Now we check the real value: */
+        For some reason bots sometimes gets a wrong config string when chaning gametypes.
+        Now we check the real value: */
         if (level.clients[bs->client].sess.sessionTeam == level.clients[entnum].sess.sessionTeam) {
             return qtrue;
         }
@@ -3749,7 +3749,7 @@ void BotAimAtEnemy(bot_state_t* bs) {
                                                    dist * 10 / wi.speed, 0.1f, 0, 0, qfalse);
                     VectorCopy(move.endpos, bestorigin);
                     //BotAI_Print(PRT_MESSAGE, "%1.1f predicted speed = %f, frames = %f\n", FloatTime(), VectorLength(dir), dist * 10 / wi.speed);
-                }                   //if not that skilled do linear prediction
+                } //if not that skilled do linear prediction
                 else if (aim_skill > 0.4) {
                     VectorSubtract(entinfo.origin, bs->origin, dir);
                     //distance towards the enemy
@@ -4509,8 +4509,8 @@ int BotIsGoingToActivateEntity(bot_state_t* bs, int entitynum) {
 ==================
 BotGetActivateGoal
 
-  returns the number of the bsp entity to activate
-  goal->entitynum will be set to the game entity to activate
+ returns the number of the bsp entity to activate
+ goal->entitynum will be set to the game entity to activate
 ==================
  */
 //#define OBSTACLEDEBUG
@@ -4667,7 +4667,7 @@ int BotGetActivateGoal(bot_state_t* bs, int entitynum, bot_activategoal_t* activ
                 activategoal->time = FloatTime() + t * 0.01 + 5;
             }
             return ent;
-        }           // invisible trigger multiple box
+        } // invisible trigger multiple box
         else if (strequals(classname, "trigger_multiple")) {
             //
             if (!BotTriggerMultipleActivateGoal(bs, ent, activategoal)) {
@@ -4696,7 +4696,7 @@ int BotGetActivateGoal(bot_state_t* bs, int entitynum, bot_activategoal_t* activ
         } else if (strequals(classname, "func_timer")) {
             // just skip the func_timer
             continue;
-        }           // the actual button or trigger might be linked through a target_relay or target_delay
+        } // the actual button or trigger might be linked through a target_relay or target_delay
         else if (strequals(classname, "target_relay") || strequals(classname, "target_delay")) {
             if (trap_AAS_ValueForBSPEpairKey(ent, "targetname", targetname[i + 1], sizeof(targetname[0]))) {
                 i++;
@@ -5040,7 +5040,7 @@ void BotCheckConsoleMessages(bot_state_t* bs) {
                     } else {
                         BotAI_Print(PRT_MESSAGE, "**** no valid reply ****\n");
                     }
-                }                   //if at a valid chat position and not chatting already and not in teamplay
+                } //if at a valid chat position and not chatting already and not in teamplay
                 else if (bs->ainode != AINode_Stand && BotValidChatPosition(bs) && !TeamPlayIsOn()) {
                     chat_reply = trap_Characteristic_BFloat(bs->character, CHARACTERISTIC_CHAT_REPLY, 0, 1);
                     if (random() < 1.5 / (NumBots() + 1) && random() < chat_reply) {
@@ -5171,7 +5171,7 @@ void BotCheckEvents(bot_state_t* bs, entityState_t* state) {
             }
             //
             bs->num_deaths++;
-        }               //else if this client was killed by the bot
+        } //else if this client was killed by the bot
         else if (attacker == bs->client) {
             bs->enemydeathtype = mod;
             bs->lastkilledplayer = target;
@@ -5202,14 +5202,14 @@ void BotCheckEvents(bot_state_t* bs, entityState_t* state) {
         trap_GetConfigstring(CS_SOUNDS + state->eventParm, buf, sizeof(buf));
         /*
         if (strequals(buf, "sound/teamplay/flagret_red.wav")) {
-            //red flag is returned
-            bs->redflagstatus = 0;
-            bs->flagstatuschanged = qtrue;
+        //red flag is returned
+        bs->redflagstatus = 0;
+        bs->flagstatuschanged = qtrue;
         }
         else if (strequals(buf, "sound/teamplay/flagret_blu.wav")) {
-            //blue flag is returned
-            bs->blueflagstatus = 0;
-            bs->flagstatuschanged = qtrue;
+        //blue flag is returned
+        bs->blueflagstatus = 0;
+        bs->flagstatuschanged = qtrue;
         }
         else*/
         if (strequals(buf, "sound/items/kamikazerespawn.wav")) {

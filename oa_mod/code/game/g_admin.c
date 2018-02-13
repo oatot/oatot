@@ -16,7 +16,7 @@ and Travis Maurer.
 
 The functionality of this code mimics the behaviour of the currently
 inactive project shrubet (http://www.etstats.com/shrubet/index.php?ver=2)
-by Ryan Mannion.   However, shrubet was a closed-source project and
+by Ryan Mannion. However, shrubet was a closed-source project and
 none of it's code has been copied, only it's functionality.
 
 Open Arena Source code is free software; you can redistribute it
@@ -26,7 +26,7 @@ or (at your option) any later version.
 
 Open Arena Source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -49,9 +49,9 @@ static char g_bfb[ 32000 ];
 g_admin_cmd_t g_admin_cmds[ ] = {
     {
         "adjustban", G_admin_adjustban, "b",
-        "change the duration or reason of a ban.  duration is specified as "
+        "change the duration or reason of a ban. duration is specified as "
         "numbers followed by units 'w' (weeks), 'd' (days), 'h' (hours) or "
-        "'m' (minutes), or seconds if no units are specified.  if the duration is"
+        "'m' (minutes), or seconds if no units are specified. if the duration is"
         " preceded by a + or -, the ban duration will be extended or shortened by"
         " the specified amount",
         "[^3ban#^7] (^5duration^7) (^5reason^7)"
@@ -85,13 +85,13 @@ g_admin_cmd_t g_admin_cmds[ ] = {
     },
     //KK-OAX
     {
-        "disorient",    G_admin_disorient,  "d",
+        "disorient", G_admin_disorient, "d",
         "disorient a player by flipping player's view and controls",
         "[^3name|slot#^7] (^hreason^7)"
     },
     //{"fling", G_admin_fling, "d",
-    //  "throws the player specified",
-    //  "[^3name|slot#^7]"
+    // "throws the player specified",
+    // "[^3name|slot#^7]"
     //},
 
     {
@@ -149,7 +149,7 @@ g_admin_cmd_t g_admin_cmds[ ] = {
     },
     //KK-OAX
     {
-        "orient",   G_admin_orient, "d",
+        "orient", G_admin_orient, "d",
         "orient a player after a !disorient", "[^3name|slot#^7]"
     },
 
@@ -288,7 +288,7 @@ qboolean G_admin_permission(gentity_t* ent, char flag) {
                     }
                     // flags with significance only for individuals (
                     // like ADMF_INCOGNITO and ADMF_IMMUTABLE are NOT covered
-                    // by the '*' wildcard.  They must be specified manually.
+                    // by the '*' wildcard. They must be specified manually.
                     return (flag != ADMF_INCOGNITO && flag != ADMF_IMMUTABLE);
                 }
                 flags++;
@@ -311,7 +311,7 @@ qboolean G_admin_permission(gentity_t* ent, char flag) {
                     }
                     // flags with significance only for individuals (
                     // like ADMF_INCOGNITO and ADMF_IMMUTABLE are NOT covered
-                    // by the '*' wildcard.  They must be specified manually.
+                    // by the '*' wildcard. They must be specified manually.
                     return (flag != ADMF_INCOGNITO && flag != ADMF_IMMUTABLE);
                 }
                 flags++;
@@ -418,11 +418,11 @@ static void admin_writeconfig(void) {
     }
     for (i = 0; i < MAX_ADMIN_LEVELS && g_admin_levels[ i ]; i++) {
         trap_FS_Write("[level]\n", 8, f);
-        trap_FS_Write("level   = ", 10, f);
+        trap_FS_Write("level = ", 10, f);
         writeFile_int(g_admin_levels[ i ]->level, f);
-        trap_FS_Write("name    = ", 10, f);
+        trap_FS_Write("name = ", 10, f);
         writeFile_string(g_admin_levels[ i ]->name, f);
-        trap_FS_Write("flags   = ", 10, f);
+        trap_FS_Write("flags = ", 10, f);
         writeFile_string(g_admin_levels[ i ]->flags, f);
         trap_FS_Write("\n", 1, f);
     }
@@ -432,13 +432,13 @@ static void admin_writeconfig(void) {
             continue;
         }
         trap_FS_Write("[admin]\n", 8, f);
-        trap_FS_Write("name    = ", 10, f);
+        trap_FS_Write("name = ", 10, f);
         writeFile_string(g_admin_admins[ i ]->name, f);
-        trap_FS_Write("guid    = ", 10, f);
+        trap_FS_Write("guid = ", 10, f);
         writeFile_string(g_admin_admins[ i ]->guid, f);
-        trap_FS_Write("level   = ", 10, f);
+        trap_FS_Write("level = ", 10, f);
         writeFile_int(g_admin_admins[ i ]->level, f);
-        trap_FS_Write("flags   = ", 10, f);
+        trap_FS_Write("flags = ", 10, f);
         writeFile_string(g_admin_admins[ i ]->flags, f);
         trap_FS_Write("\n", 1, f);
     }
@@ -450,19 +450,19 @@ static void admin_writeconfig(void) {
             continue;
         }
         trap_FS_Write("[ban]\n", 6, f);
-        trap_FS_Write("name    = ", 10, f);
+        trap_FS_Write("name = ", 10, f);
         writeFile_string(g_admin_bans[ i ]->name, f);
-        trap_FS_Write("guid    = ", 10, f);
+        trap_FS_Write("guid = ", 10, f);
         writeFile_string(g_admin_bans[ i ]->guid, f);
-        trap_FS_Write("ip      = ", 10, f);
+        trap_FS_Write("ip = ", 10, f);
         writeFile_string(g_admin_bans[ i ]->ip, f);
-        trap_FS_Write("reason  = ", 10, f);
+        trap_FS_Write("reason = ", 10, f);
         writeFile_string(g_admin_bans[ i ]->reason, f);
-        trap_FS_Write("made    = ", 10, f);
+        trap_FS_Write("made = ", 10, f);
         writeFile_string(g_admin_bans[ i ]->made, f);
         trap_FS_Write("expires = ", 10, f);
         writeFile_int(g_admin_bans[ i ]->expires, f);
-        trap_FS_Write("banner  = ", 10, f);
+        trap_FS_Write("banner = ", 10, f);
         writeFile_string(g_admin_bans[ i ]->banner, f);
         trap_FS_Write("\n", 1, f);
     }
@@ -471,11 +471,11 @@ static void admin_writeconfig(void) {
         trap_FS_Write("[command]\n", 10, f);
         trap_FS_Write("command = ", 10, f);
         writeFile_string(g_admin_commands[ i ]->command, f);
-        trap_FS_Write("exec    = ", 10, f);
+        trap_FS_Write("exec = ", 10, f);
         writeFile_string(g_admin_commands[ i ]->exec, f);
-        trap_FS_Write("desc    = ", 10, f);
+        trap_FS_Write("desc = ", 10, f);
         writeFile_string(g_admin_commands[ i ]->desc, f);
-        trap_FS_Write("levels  = ", 10, f);
+        trap_FS_Write("levels = ", 10, f);
         for (j = 0; g_admin_commands[ i ]->levels[ j ] != -1; j++) {
             Q_strcat(levels, sizeof(levels),
                      va("%i ", g_admin_commands[ i ]->levels[ j ]));
@@ -492,19 +492,19 @@ static void admin_writeconfig(void) {
             continue;
         }
         trap_FS_Write("[warning]\n", 10, f);
-        trap_FS_Write("name    = ", 10, f);
+        trap_FS_Write("name = ", 10, f);
         writeFile_string(g_admin_warnings[ i ]->name, f);
-        trap_FS_Write("guid    = ", 10, f);
+        trap_FS_Write("guid = ", 10, f);
         writeFile_string(g_admin_warnings[ i ]->guid, f);
-        trap_FS_Write("ip      = ", 10, f);
+        trap_FS_Write("ip = ", 10, f);
         writeFile_string(g_admin_warnings[ i ]->ip, f);
         trap_FS_Write("warning = ", 10, f);
         writeFile_string(g_admin_warnings[ i ]->warning, f);
-        trap_FS_Write("made    = ", 10, f);
+        trap_FS_Write("made = ", 10, f);
         writeFile_string(g_admin_warnings[ i ]->made, f);
         trap_FS_Write("expires = ", 10, f);
         writeFile_int(g_admin_warnings[ i ]->expires, f);
-        trap_FS_Write("warner  = ", 10, f);
+        trap_FS_Write("warner = ", 10, f);
         writeFile_string(g_admin_warnings[ i ]->warner, f);
         trap_FS_Write("\n", 1, f);
     }
@@ -549,7 +549,7 @@ static void admin_default_levels(void) {
     admin_level_maxname = 15;
 }
 
-//  return a level for a player entity.
+// return a level for a player entity.
 int G_admin_level(gentity_t* ent) {
     int i;
     if (!ent) {
@@ -1255,12 +1255,12 @@ qboolean G_admin_setlevel(gentity_t* ent, int skiparg) {
         }
     }
     if (matches == 0) {
-        ADMP("^3!setlevel:^7 no match.  use !listplayers or !listadmins to "
+        ADMP("^3!setlevel:^7 no match. use !listplayers or !listadmins to "
              "find an appropriate number to use instead of name.\n");
         return qfalse;
     }
     if (matches > 1) {
-        ADMP("^3!setlevel:^7 more than one match.  Use the admin number "
+        ADMP("^3!setlevel:^7 more than one match. Use the admin number "
              "instead:\n");
         admin_listadmins(ent, 0, name);
         return qfalse;
@@ -1946,7 +1946,7 @@ qboolean G_admin_listadmins(gentity_t* ent, int skiparg) {
                 drawn, search));
     } else {
         ADMBP_begin();
-        ADMBP(va("^3!listadmins:^7 showing admin %d - %d of %d.  ",
+        ADMBP(va("^3!listadmins:^7 showing admin %d - %d of %d. ",
                  (found) ? (start + 1) : 0,
                  ((start + MAX_ADMIN_LISTITEMS) > found) ?
                  found : (start + MAX_ADMIN_LISTITEMS),
@@ -2198,7 +2198,7 @@ qboolean G_admin_showbans(gentity_t* ent, int skiparg) {
             }
         Com_sprintf(n2, sizeof(n2), "%*s", max_banner + colorlen,
                     g_admin_bans[ i ]->banner);
-        ADMBP(va("%4i %s^7 %-15s %-8s %s^7 %-10s\n     \\__ %s\n",
+        ADMBP(va("%4i %s^7 %-15s %-8s %s^7 %-10s\n \\__ %s\n",
                  (i + 1),
                  n1,
                  g_admin_bans[ i ]->ip,
@@ -2208,7 +2208,7 @@ qboolean G_admin_showbans(gentity_t* ent, int skiparg) {
                  g_admin_bans[ i ]->reason));
     }
     if (name_match[ 0 ] || ip_match) {
-        ADMBP(va("^3!showbans:^7 found %d matching bans by %s.  ",
+        ADMBP(va("^3!showbans:^7 found %d matching bans by %s. ",
                  count,
                  (ip_match) ? "IP" : "name"));
     } else {
@@ -2219,7 +2219,7 @@ qboolean G_admin_showbans(gentity_t* ent, int skiparg) {
                  found));
     }
     if (i <= max)
-        ADMBP(va("  run !showbans %d%s%s to see more",
+        ADMBP(va(" run !showbans %d%s%s to see more",
                  i + 1,
                  (filter[ 0 ]) ? " " : "",
                  (filter[ 0 ]) ? filter : ""));
@@ -2706,7 +2706,7 @@ qboolean G_admin_slap(gentity_t* ent, int skiparg) {
     char damage[4];
     gentity_t* vic;
     int soundIndex;
-    //KK-Too many Parameters Check removed.  It'll truncate the reason message.
+    //KK-Too many Parameters Check removed. It'll truncate the reason message.
     if (G_SayArgc() < 2 + skiparg) {
         ADMP("^/slap usage: ^7!slap [name|slot#] [reason] [damage]");
         return qfalse;
@@ -2772,7 +2772,7 @@ int G_admin_warn_check(gentity_t* ent) {
     int t;
     int numWarnings = 0;
     t = trap_RealTime(NULL);
-    ip   = ent->client->pers.ip;
+    ip = ent->client->pers.ip;
     //We Don't Want to Count Warnings for the LocalHost
     if (!*ip) {
         return 0;
@@ -2904,7 +2904,7 @@ qboolean G_admin_shuffle(gentity_t* ent, int skipargs) {
 ================
  G_admin_print
 
- This function facilitates the ADMP define.  ADMP() is similar to CP except
+ This function facilitates the ADMP define. ADMP() is similar to CP except
  that it prints the message to the server console if ent is not defined.
 ================
 */

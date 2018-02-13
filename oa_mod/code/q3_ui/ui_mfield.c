@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -31,14 +31,14 @@ x, y, are in pixels
 ===================
 */
 void MField_Draw(mfield_t* edit, int x, int y, int style, vec4_t color) {
-    int     len;
-    int     charw;
-    int     drawLen;
-    int     prestep;
-    int     cursorChar;
-    char    str[MAX_STRING_CHARS];
+    int len;
+    int charw;
+    int drawLen;
+    int prestep;
+    int cursorChar;
+    char str[MAX_STRING_CHARS];
     drawLen = edit->widthInChars;
-    len     = strlen(edit->buffer) + 1;
+    len = strlen(edit->buffer) + 1;
     // guarantee that cursor will be visible
     if (len <= drawLen) {
         prestep = 0;
@@ -95,8 +95,8 @@ MField_Paste
 ================
 */
 void MField_Paste(mfield_t* edit) {
-    char    pasteBuffer[64];
-    int     pasteLen, i;
+    char pasteBuffer[64];
+    int pasteLen, i;
     trap_GetClipboardData(pasteBuffer, 64);
     // send as if typed, so insert / overstrike works properly
     pasteLen = strlen(pasteBuffer);
@@ -116,7 +116,7 @@ Key events are used for non-printable characters, others are gotten from char ev
 =================
 */
 void MField_KeyDownEvent(mfield_t* edit, int key) {
-    int     len;
+    int len;
     // shift-insert is paste
     if ((key == K_INS) && trap_Key_IsDown(K_SHIFT)) {
         MField_Paste(edit);
@@ -173,17 +173,17 @@ MField_CharEvent
 ==================
 */
 void MField_CharEvent(mfield_t* edit, int ch) {
-    int     len;
-    if (ch == 'v' - 'a' + 1) {   // ctrl-v is paste
+    int len;
+    if (ch == 'v' - 'a' + 1) { // ctrl-v is paste
         MField_Paste(edit);
         return;
     }
-    if (ch == 'c' - 'a' + 1) {   // ctrl-c clears the field
+    if (ch == 'c' - 'a' + 1) { // ctrl-c clears the field
         MField_Clear(edit);
         return;
     }
     len = strlen(edit->buffer);
-    if (ch == 'h' - 'a' + 1)   {     // ctrl-h is backspace
+    if (ch == 'h' - 'a' + 1) { // ctrl-h is backspace
         if (edit->cursor > 0) {
             memmove(edit->buffer + edit->cursor - 1,
                     edit->buffer + edit->cursor, len + 1 - edit->cursor);
@@ -194,12 +194,12 @@ void MField_CharEvent(mfield_t* edit, int ch) {
         }
         return;
     }
-    if (ch == 'a' - 'a' + 1) {   // ctrl-a is home
+    if (ch == 'a' - 'a' + 1) { // ctrl-a is home
         edit->cursor = 0;
         edit->scroll = 0;
         return;
     }
-    if (ch == 'e' - 'a' + 1) {   // ctrl-e is end
+    if (ch == 'e' - 'a' + 1) { // ctrl-e is end
         edit->cursor = len;
         edit->scroll = edit->cursor - edit->widthInChars + 1;
         if (edit->scroll < 0) {
@@ -269,9 +269,9 @@ void MenuField_Init(menufield_s* m) {
     } else {
         l = 0;
     }
-    m->generic.left   = m->generic.x - l;
-    m->generic.top    = m->generic.y;
-    m->generic.right  = m->generic.x + w + m->field.widthInChars * w;
+    m->generic.left = m->generic.x - l;
+    m->generic.top = m->generic.y;
+    m->generic.right = m->generic.x + w + m->field.widthInChars * w;
     m->generic.bottom = m->generic.y + h;
 }
 
@@ -281,12 +281,12 @@ MenuField_Draw
 ==================
 */
 void MenuField_Draw(menufield_s* f) {
-    int     x;
-    int     y;
-    int     w;
-    int     style;
+    int x;
+    int y;
+    int w;
+    int style;
     qboolean focus;
-    float*   color;
+    float* color;
     x = f->generic.x;
     y = f->generic.y;
     if (f->generic.flags & QMF_SMALLFONT) {

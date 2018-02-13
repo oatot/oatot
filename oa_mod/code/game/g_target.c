@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -28,8 +28,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 Gives the activator all the items pointed to.
 */
 void Use_Target_Give(gentity_t* ent, gentity_t* other, gentity_t* activator) {
-    gentity_t*   t;
-    trace_t     trace;
+    gentity_t* t;
+    trace_t trace;
     if (!activator->client) {
         return;
     }
@@ -125,8 +125,8 @@ void SP_target_score(gentity_t* ent) {
 //==========================================================
 
 /*QUAKED target_print (1 0 0) (-8 -8 -8) (8 8 8) redteam blueteam private
-"message"   text to print
-If "private", only the activator gets the message.  If no checks, all clients get the message.
+"message" text to print
+If "private", only the activator gets the message. If no checks, all clients get the message.
 */
 void Use_Target_Print(gentity_t* ent, gentity_t* other, gentity_t* activator) {
     if (activator->client && (ent->spawnflags & 4)) {
@@ -152,7 +152,7 @@ void SP_target_print(gentity_t* ent) {
 //==========================================================
 
 /*QUAKED target_speaker (1 0 0) (-8 -8 -8) (8 8 8) looped-on looped-off global activator
-"noise"     wav file to play
+"noise" wav file to play
 
 A global sound will play full volume throughout the level.
 Activator sounds will play on the player that activated the target.
@@ -161,16 +161,16 @@ Normal sounds play each time the target is used.
 Looped sounds will be toggled by use functions.
 Multiple identical looping sounds will just increase volume without any speed cost.
 "wait" : Seconds between auto triggerings, 0 = don't auto trigger
-"random"    wait variance, default is 0
+"random" wait variance, default is 0
 */
 void Use_Target_Speaker(gentity_t* ent, gentity_t* other, gentity_t* activator) {
-    if (ent->spawnflags & 3) {  // looping sound toggles
+    if (ent->spawnflags & 3) { // looping sound toggles
         if (ent->s.loopSound) {
-            ent->s.loopSound = 0;    // turn it off
+            ent->s.loopSound = 0; // turn it off
         } else {
-            ent->s.loopSound = ent->noise_index;    // start it
+            ent->s.loopSound = ent->noise_index; // start it
         }
-    } else {    // normal sound
+    } else { // normal sound
         if (ent->spawnflags & 8) {
             G_AddEvent(activator, EV_GENERAL_SOUND, ent->noise_index);
         } else if (ent->spawnflags & 4) {
@@ -182,8 +182,8 @@ void Use_Target_Speaker(gentity_t* ent, gentity_t* other, gentity_t* activator) 
 }
 
 void SP_target_speaker(gentity_t* ent) {
-    char    buffer[MAX_QPATH];
-    char*    s;
+    char buffer[MAX_QPATH];
+    char* s;
     G_SpawnFloat("wait", "0", &ent->wait);
     G_SpawnFloat("random", "0", &ent->random);
     if (!G_SpawnString("noise", "NOSOUND", &s)) {
@@ -222,7 +222,7 @@ void SP_target_speaker(gentity_t* ent) {
 //==========================================================
 
 /*QUAKED target_laser (0 .5 .8) (-8 -8 -8) (8 8 8) START_ON
-When triggered, fires a laser.  You can either set a target or a direction.
+When triggered, fires a laser. You can either set a target or a direction.
 */
 void target_laser_think(gentity_t* self) {
     vec3_t end;
@@ -302,11 +302,11 @@ void SP_target_laser(gentity_t* self) {
 //==========================================================
 
 void target_teleporter_use(gentity_t* self, gentity_t* other, gentity_t* activator) {
-    gentity_t*   dest;
+    gentity_t* dest;
     if (!activator->client) {
         return;
     }
-    dest =  G_PickTarget(self->target);
+    dest = G_PickTarget(self->target);
     if (!dest) {
         G_Printf("Couldn't find teleporter destination\n");
         return;
@@ -341,7 +341,7 @@ void target_relay_use(gentity_t* self, gentity_t* other, gentity_t* activator) {
         return;
     }
     if (self->spawnflags & 4) {
-        gentity_t*   ent;
+        gentity_t* ent;
         ent = G_PickTarget(self->target);
         if (ent && ent->use) {
             ent->use(ent, self, activator);
@@ -410,7 +410,7 @@ in site, closest in distance
 */
 void SP_target_location(gentity_t* self) {
     self->think = target_location_linkup;
-    self->nextthink = level.time + 200;  // Let them all spawn first
+    self->nextthink = level.time + 200; // Let them all spawn first
     G_SetOrigin(self, self->s.origin);
 }
 

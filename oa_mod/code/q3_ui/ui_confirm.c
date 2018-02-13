@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -30,19 +30,19 @@ CONFIRMATION MENU
 
 #include "ui_local.h"
 
-#define ART_CONFIRM_FRAME   "menu/" MENU_ART_DIR "/cut_frame"
+#define ART_CONFIRM_FRAME "menu/" MENU_ART_DIR "/cut_frame"
 
-#define ID_CONFIRM_NO       10
-#define ID_CONFIRM_YES      11
+#define ID_CONFIRM_NO 10
+#define ID_CONFIRM_YES 11
 
 typedef struct {
     menuframework_s menu;
 
-    menutext_s      no;
-    menutext_s      yes;
+    menutext_s no;
+    menutext_s yes;
 
-    int             slashX;
-    const char*     question;
+    int slashX;
+    const char* question;
     void (*draw)(void);
     void (*action)(qboolean result);
 
@@ -50,7 +50,7 @@ typedef struct {
     const char** lines;
 } confirmMenu_t;
 
-static confirmMenu_t    s_confirm;
+static confirmMenu_t s_confirm;
 
 /*
 =================
@@ -58,7 +58,7 @@ ConfirmMenu_Event
 =================
 */
 static void ConfirmMenu_Event(void* ptr, int event) {
-    qboolean    result;
+    qboolean result;
     if (event != QM_ACTIVATED) {
         return;
     }
@@ -155,7 +155,7 @@ void UI_ConfirmMenu_Style(const char* question, int style, void (*draw)(void), v
     ConfirmMenu_Cache();
     n1 = UI_ProportionalStringWidth("YES/NO");
     n2 = UI_ProportionalStringWidth("YES") + PROP_GAP_WIDTH;
-    n3 = UI_ProportionalStringWidth("/")  + PROP_GAP_WIDTH;
+    n3 = UI_ProportionalStringWidth("/") + PROP_GAP_WIDTH;
     l1 = 320 - (n1 / 2);
     l2 = l1 + n2;
     l3 = l2 + n3;
@@ -164,8 +164,8 @@ void UI_ConfirmMenu_Style(const char* question, int style, void (*draw)(void), v
     s_confirm.draw = draw;
     s_confirm.action = action;
     s_confirm.style = style;
-    s_confirm.menu.draw       = ConfirmMenu_Draw;
-    s_confirm.menu.key        = ConfirmMenu_Key;
+    s_confirm.menu.draw = ConfirmMenu_Draw;
+    s_confirm.menu.key = ConfirmMenu_Key;
     s_confirm.menu.wrapAround = qtrue;
     trap_GetClientState(&cstate);
     if (cstate.connState >= CA_CONNECTED) {
@@ -173,26 +173,26 @@ void UI_ConfirmMenu_Style(const char* question, int style, void (*draw)(void), v
     } else {
         s_confirm.menu.fullscreen = qtrue;
     }
-    s_confirm.yes.generic.type      = MTYPE_PTEXT;
-    s_confirm.yes.generic.flags     = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_confirm.yes.generic.callback  = ConfirmMenu_Event;
-    s_confirm.yes.generic.id        = ID_CONFIRM_YES;
-    s_confirm.yes.generic.x         = l1;
-    s_confirm.yes.generic.y         = 264;
-    s_confirm.yes.string            = "YES";
-    s_confirm.yes.color             = color_red;
-    s_confirm.yes.style             = UI_LEFT;
-    s_confirm.no.generic.type       = MTYPE_PTEXT;
-    s_confirm.no.generic.flags      = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_confirm.no.generic.callback   = ConfirmMenu_Event;
-    s_confirm.no.generic.id         = ID_CONFIRM_NO;
-    s_confirm.no.generic.x          = l3;
-    s_confirm.no.generic.y          = 264;
-    s_confirm.no.string             = "NO";
-    s_confirm.no.color              = color_red;
-    s_confirm.no.style              = UI_LEFT;
-    Menu_AddItem(&s_confirm.menu,   &s_confirm.yes);
-    Menu_AddItem(&s_confirm.menu,   &s_confirm.no);
+    s_confirm.yes.generic.type = MTYPE_PTEXT;
+    s_confirm.yes.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_confirm.yes.generic.callback = ConfirmMenu_Event;
+    s_confirm.yes.generic.id = ID_CONFIRM_YES;
+    s_confirm.yes.generic.x = l1;
+    s_confirm.yes.generic.y = 264;
+    s_confirm.yes.string = "YES";
+    s_confirm.yes.color = color_red;
+    s_confirm.yes.style = UI_LEFT;
+    s_confirm.no.generic.type = MTYPE_PTEXT;
+    s_confirm.no.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_confirm.no.generic.callback = ConfirmMenu_Event;
+    s_confirm.no.generic.id = ID_CONFIRM_NO;
+    s_confirm.no.generic.x = l3;
+    s_confirm.no.generic.y = 264;
+    s_confirm.no.string = "NO";
+    s_confirm.no.color = color_red;
+    s_confirm.no.style = UI_LEFT;
+    Menu_AddItem(&s_confirm.menu, &s_confirm.yes);
+    Menu_AddItem(&s_confirm.menu, &s_confirm.no);
     UI_PushMenu(&s_confirm.menu);
     Menu_SetCursorToItem(&s_confirm.menu, &s_confirm.no);
 }
@@ -222,8 +222,8 @@ void UI_Message(const char** lines) {
     l1 = 320 - (n1 / 2);
     s_confirm.lines = lines;
     s_confirm.style = UI_CENTER | UI_INVERSE | UI_SMALLFONT;
-    s_confirm.menu.draw       = MessageMenu_Draw;
-    s_confirm.menu.key        = ConfirmMenu_Key;
+    s_confirm.menu.draw = MessageMenu_Draw;
+    s_confirm.menu.key = ConfirmMenu_Key;
     s_confirm.menu.wrapAround = qtrue;
     trap_GetClientState(&cstate);
     if (cstate.connState >= CA_CONNECTED) {
@@ -231,16 +231,16 @@ void UI_Message(const char** lines) {
     } else {
         s_confirm.menu.fullscreen = qtrue;
     }
-    s_confirm.yes.generic.type      = MTYPE_PTEXT;
-    s_confirm.yes.generic.flags     = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_confirm.yes.generic.callback  = ConfirmMenu_Event;
-    s_confirm.yes.generic.id        = ID_CONFIRM_YES;
-    s_confirm.yes.generic.x         = l1;
-    s_confirm.yes.generic.y         = 280;
-    s_confirm.yes.string            = "OK";
-    s_confirm.yes.color             = color_red;
-    s_confirm.yes.style             = UI_LEFT;
-    Menu_AddItem(&s_confirm.menu,   &s_confirm.yes);
+    s_confirm.yes.generic.type = MTYPE_PTEXT;
+    s_confirm.yes.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_confirm.yes.generic.callback = ConfirmMenu_Event;
+    s_confirm.yes.generic.id = ID_CONFIRM_YES;
+    s_confirm.yes.generic.x = l1;
+    s_confirm.yes.generic.y = 280;
+    s_confirm.yes.string = "OK";
+    s_confirm.yes.color = color_red;
+    s_confirm.yes.style = UI_LEFT;
+    Menu_AddItem(&s_confirm.menu, &s_confirm.yes);
     UI_PushMenu(&s_confirm.menu);
     Menu_SetCursorToItem(&s_confirm.menu, &s_confirm.yes);
 }

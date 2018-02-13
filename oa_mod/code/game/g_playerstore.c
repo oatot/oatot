@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -49,7 +49,7 @@ void LogAcc(int clientNum) {
     Com_sprintf(buffer, sizeof(buffer), "Accuracy: %i ", clientNum);
     for (i = 0; i < WP_NUM_WEAPONS; ++i) {
         char* tmp = va("%sf%i\\%i\\h%i\\%i", first ? "" : "\\", i, level.clients[clientNum].accuracy[i][0], i, level.clients[clientNum].accuracy[i][1]);
-        if (strlen(tmp) + strlen(buffer) + 1 + 1 < sizeof(buffer)) { /* +1 \n +1 \0 */
+        if (strlen(tmp) + strlen(buffer) + 1 + 1 < sizeof(buffer)) { /* +1 \n 1 \0 */
             strcat(buffer, tmp);
         }
         first = qfalse;

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "ui_local.h"
 
-#define VOTEMENU_BACK0          "menu/" MENU_ART_DIR "/back_0"
-#define VOTEMENU_BACK1          "menu/" MENU_ART_DIR "/back_1"
-#define ART_FIGHT0              "menu/" MENU_ART_DIR "/accept_0"
-#define ART_FIGHT1              "menu/" MENU_ART_DIR "/accept_1"
-#define ART_BACKGROUND          "menu/" MENU_ART_DIR "/addbotframe"
+#define VOTEMENU_BACK0 "menu/" MENU_ART_DIR "/back_0"
+#define VOTEMENU_BACK1 "menu/" MENU_ART_DIR "/back_1"
+#define ART_FIGHT0 "menu/" MENU_ART_DIR "/accept_0"
+#define ART_FIGHT1 "menu/" MENU_ART_DIR "/accept_1"
+#define ART_BACKGROUND "menu/" MENU_ART_DIR "/addbotframe"
 
 static char* votemenu_Gametype_artlist[] = {
     VOTEMENU_BACK0,
@@ -36,63 +36,63 @@ static char* votemenu_Gametype_artlist[] = {
     NULL
 };
 
-#define ID_BACK     100
-#define ID_GO       101
-#define ID_FFA        102
-#define ID_Tourney       103
-#define ID_TDM       104
-#define ID_CTF       105
-#define ID_1FCTF       106
-#define ID_Overload       107
-#define ID_Harvester      108
+#define ID_BACK 100
+#define ID_GO 101
+#define ID_FFA 102
+#define ID_Tourney 103
+#define ID_TDM 104
+#define ID_CTF 105
+#define ID_1FCTF 106
+#define ID_Overload 107
+#define ID_Harvester 108
 #define ID_Elimination 109
-#define ID_CTFe         110
-#define ID_LMS          111
-#define ID_DOUBLED      112
-#define ID_DOM          113
-#define ID_POS          114
+#define ID_CTFe 110
+#define ID_LMS 111
+#define ID_DOUBLED 112
+#define ID_DOM 113
+#define ID_POS 114
 
 #define Gametype_MENU_VERTICAL_SPACING 19
 
 typedef struct {
     menuframework_s menu;
-    menutext_s      banner;
-    menubitmap_s    back;
-    menubitmap_s    go;
+    menutext_s banner;
+    menubitmap_s back;
+    menubitmap_s go;
 
     //Buttons:
-    menutext_s      bFFA;
-    menutext_s      bTourney;
-    menutext_s      bTDM;
-    menutext_s      bCTF;
-    menutext_s      b1FCTF;
-    menutext_s      bOverload;
-    menutext_s      bHarvester;
-    menutext_s      bElimination;
-    menutext_s      bCTFe;
-    menutext_s      bLMS;
-    menutext_s      bDOUBLED;
-    menutext_s      bDOM;
-    menutext_s      bPOS;
+    menutext_s bFFA;
+    menutext_s bTourney;
+    menutext_s bTDM;
+    menutext_s bCTF;
+    menutext_s b1FCTF;
+    menutext_s bOverload;
+    menutext_s bHarvester;
+    menutext_s bElimination;
+    menutext_s bCTFe;
+    menutext_s bLMS;
+    menutext_s bDOUBLED;
+    menutext_s bDOM;
+    menutext_s bPOS;
 
     //Allowed:
-    qboolean        FFA;
-    qboolean        Tourney;
-    qboolean        TDM;
-    qboolean        CTF;
-    qboolean        _1FCTF;
-    qboolean        Overload;
-    qboolean        Harvester;
-    qboolean        Elimination;
-    qboolean        CTFe;
-    qboolean        LMS;
-    qboolean        DOUBLED;
-    qboolean        DOM;
-    qboolean        POS;
+    qboolean FFA;
+    qboolean Tourney;
+    qboolean TDM;
+    qboolean CTF;
+    qboolean _1FCTF;
+    qboolean Overload;
+    qboolean Harvester;
+    qboolean Elimination;
+    qboolean CTFe;
+    qboolean LMS;
+    qboolean DOUBLED;
+    qboolean DOM;
+    qboolean POS;
     int selection;
 } votemenu_t;
 
-static votemenu_t   s_votemenu_Gametype;
+static votemenu_t s_votemenu_Gametype;
 
 void UI_VoteGametypeMenuInternal(void);
 
@@ -181,20 +181,20 @@ static void VoteMenu_Gametype_Event(void* ptr, int event) {
 }
 
 static void setGametypeMenutext(menutext_s* menu, int y, int id, qboolean active, char* text) {
-    menu->generic.type            = MTYPE_PTEXT;
-    menu->color               = color_red;
-    menu->generic.flags       = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
+    menu->generic.type = MTYPE_PTEXT;
+    menu->color = color_red;
+    menu->generic.flags = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
     if (!active) {
-        menu->generic.flags   |= QMF_INACTIVE | QMF_GRAYED;
+        menu->generic.flags |= QMF_INACTIVE | QMF_GRAYED;
     } else if (s_votemenu_Gametype.selection == id) {
-        menu->color       = color_orange;
+        menu->color = color_orange;
     }
-    menu->generic.x           = 320;
-    menu->generic.y           = y;
-    menu->generic.id          = id;
-    menu->generic.callback    = VoteMenu_Gametype_Event;
-    menu->string              = text;
-    menu->style               = UI_CENTER | UI_SMALLFONT;
+    menu->generic.x = 320;
+    menu->generic.y = y;
+    menu->generic.id = id;
+    menu->generic.callback = VoteMenu_Gametype_Event;
+    menu->string = text;
+    menu->style = UI_CENTER | UI_SMALLFONT;
 }
 
 /*
@@ -237,12 +237,12 @@ void UI_VoteGametypeMenuInternal(void) {
     s_votemenu_Gametype.menu.wrapAround = qtrue;
     s_votemenu_Gametype.menu.fullscreen = qfalse;
     s_votemenu_Gametype.menu.draw = UI_VoteMenu_Gametype_Draw;
-    s_votemenu_Gametype.banner.generic.type  = MTYPE_BTEXT;
-    s_votemenu_Gametype.banner.generic.x      = 320;
-    s_votemenu_Gametype.banner.generic.y      = 16;
-    s_votemenu_Gametype.banner.string         = "CALL VOTE GAMETYPE";
-    s_votemenu_Gametype.banner.color          = color_white;
-    s_votemenu_Gametype.banner.style          = UI_CENTER;
+    s_votemenu_Gametype.banner.generic.type = MTYPE_BTEXT;
+    s_votemenu_Gametype.banner.generic.x = 320;
+    s_votemenu_Gametype.banner.generic.y = 16;
+    s_votemenu_Gametype.banner.string = "CALL VOTE GAMETYPE";
+    s_votemenu_Gametype.banner.color = color_white;
+    s_votemenu_Gametype.banner.style = UI_CENTER;
     y = 98;
     setGametypeMenutext(&s_votemenu_Gametype.bFFA, y, ID_FFA, s_votemenu_Gametype.FFA, "Free for all");
     y += Gametype_MENU_VERTICAL_SPACING;
@@ -270,26 +270,26 @@ void UI_VoteGametypeMenuInternal(void) {
     y += Gametype_MENU_VERTICAL_SPACING;
     setGametypeMenutext(&s_votemenu_Gametype.bPOS, y, ID_POS, s_votemenu_Gametype.POS, "Possession");
     y += Gametype_MENU_VERTICAL_SPACING;
-    s_votemenu_Gametype.back.generic.type      = MTYPE_BITMAP;
-    s_votemenu_Gametype.back.generic.name     = VOTEMENU_BACK0;
-    s_votemenu_Gametype.back.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_votemenu_Gametype.back.generic.type = MTYPE_BITMAP;
+    s_votemenu_Gametype.back.generic.name = VOTEMENU_BACK0;
+    s_votemenu_Gametype.back.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_votemenu_Gametype.back.generic.callback = VoteMenu_Gametype_Event;
-    s_votemenu_Gametype.back.generic.id    = ID_BACK;
-    s_votemenu_Gametype.back.generic.x         = 320 - 128;
-    s_votemenu_Gametype.back.generic.y         = y;
-    s_votemenu_Gametype.back.width             = 128;
-    s_votemenu_Gametype.back.height            = 64;
-    s_votemenu_Gametype.back.focuspic         = VOTEMENU_BACK1;
-    s_votemenu_Gametype.go.generic.type    = MTYPE_BITMAP;
-    s_votemenu_Gametype.go.generic.name     = ART_FIGHT0;
-    s_votemenu_Gametype.go.generic.flags    = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_votemenu_Gametype.back.generic.id = ID_BACK;
+    s_votemenu_Gametype.back.generic.x = 320 - 128;
+    s_votemenu_Gametype.back.generic.y = y;
+    s_votemenu_Gametype.back.width = 128;
+    s_votemenu_Gametype.back.height = 64;
+    s_votemenu_Gametype.back.focuspic = VOTEMENU_BACK1;
+    s_votemenu_Gametype.go.generic.type = MTYPE_BITMAP;
+    s_votemenu_Gametype.go.generic.name = ART_FIGHT0;
+    s_votemenu_Gametype.go.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_votemenu_Gametype.go.generic.callback = VoteMenu_Gametype_Event;
-    s_votemenu_Gametype.go.generic.id      = ID_GO;
-    s_votemenu_Gametype.go.generic.x           = 320;
-    s_votemenu_Gametype.go.generic.y           = 256 + 128 - 64;
-    s_votemenu_Gametype.go.width           = 128;
-    s_votemenu_Gametype.go.height          = 64;
-    s_votemenu_Gametype.go.focuspic         = ART_FIGHT1;
+    s_votemenu_Gametype.go.generic.id = ID_GO;
+    s_votemenu_Gametype.go.generic.x = 320;
+    s_votemenu_Gametype.go.generic.y = 256 + 128 - 64;
+    s_votemenu_Gametype.go.width = 128;
+    s_votemenu_Gametype.go.height = 64;
+    s_votemenu_Gametype.go.focuspic = ART_FIGHT1;
 }
 
 /*

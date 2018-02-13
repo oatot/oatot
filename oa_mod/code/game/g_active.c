@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -34,8 +34,8 @@ global pain sound events for all clients.
 ===============
 */
 void P_DamageFeedback(gentity_t* player) {
-    gclient_t*   client;
-    float   count;
+    gclient_t* client;
+    float count;
     vec3_t angles;
     client = player->client;
     if (client->ps.pm_type == PM_DEAD) {
@@ -44,7 +44,7 @@ void P_DamageFeedback(gentity_t* player) {
     // total points of damage shot at the player this frame
     count = client->damage_blood + client->damage_armor;
     if (count == 0) {
-        return;     // didn't take any damage
+        return; // didn't take any damage
     }
     if (count > 255) {
         count = 255;
@@ -84,10 +84,10 @@ Check for lava / slime contents and drowning
 =============
 */
 void P_WorldEffects(gentity_t* ent) {
-    qboolean    envirosuit;
-    int         waterlevel;
+    qboolean envirosuit;
+    int waterlevel;
     if (ent->client->noclip) {
-        ent->client->airOutTime = level.time + 12000;   // don't need air
+        ent->client->airOutTime = level.time + 12000; // don't need air
         return;
     }
     waterlevel = ent->waterlevel;
@@ -166,9 +166,9 @@ ClientImpacts
 ==============
 */
 void ClientImpacts(gentity_t* ent, pmove_t* pm) {
-    int     i, j;
+    int i, j;
     trace_t trace;
-    gentity_t*   other;
+    gentity_t* other;
     memset(&trace, 0, sizeof(trace));
     for (i = 0; i < pm->numtouch; i++) {
         for (j = 0; j < i; j++) {
@@ -177,7 +177,7 @@ void ClientImpacts(gentity_t* ent, pmove_t* pm) {
             }
         }
         if (j != i) {
-            continue;   // duplicated
+            continue; // duplicated
         }
         other = &g_entities[ pm->touchents[i] ];
         if ((ent->r.svFlags & SVF_BOT) && (ent->touch)) {
@@ -198,13 +198,13 @@ Find all trigger entities that ent's current position touches.
 Spectators will only interact with teleporters.
 ============
 */
-void    G_TouchTriggers(gentity_t* ent) {
-    int         i, num;
-    int         touch[MAX_GENTITIES];
-    gentity_t*   hit;
-    trace_t     trace;
-    vec3_t      mins, maxs;
-    static vec3_t   range = { 40, 40, 52 };
+void G_TouchTriggers(gentity_t* ent) {
+    int i, num;
+    int touch[MAX_GENTITIES];
+    gentity_t* hit;
+    trace_t trace;
+    vec3_t mins, maxs;
+    static vec3_t range = { 40, 40, 52 };
     if (!ent->client) {
         return;
     }
@@ -270,7 +270,7 @@ SpectatorThink
 */
 void SpectatorThink(gentity_t* ent, usercmd_t* ucmd) {
     pmove_t pm;
-    gclient_t*   client;
+    gclient_t* client;
     client = ent->client;
     if ((g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION) &&
             client->sess.spectatorState != SPECTATOR_FOLLOW &&
@@ -285,7 +285,7 @@ void SpectatorThink(gentity_t* ent, usercmd_t* ucmd) {
         memset(&pm, 0, sizeof(pm));
         pm.ps = &client->ps;
         pm.cmd = *ucmd;
-        pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;   // spectators can fly through bodies
+        pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY; // spectators can fly through bodies
         pm.trace = trap_Trace;
         pm.pointcontents = trap_PointContents;
         // perform a pmove
@@ -352,8 +352,8 @@ Actions that happen once a second
 ==================
 */
 static void ClientTimerActions(gentity_t* ent, int msec) {
-    gclient_t*   client;
-    int         maxHealth;
+    gclient_t* client;
+    int maxHealth;
     client = ent->client;
     client->timeResidual += msec;
     while (client->timeResidual >= 1000) {
@@ -510,7 +510,7 @@ void ClientIntermissionThink(gclient_t* client) {
     client->ps.eFlags &= ~EF_FIRING;
     // the level will exit when everyone wants to or after timeouts
     if (g_entities[client->ps.clientNum].r.svFlags & SVF_BOT) {
-        return;    //Bots cannot mark themself as ready
+        return; //Bots cannot mark themself as ready
     }
     // swap and latch button actions
     client->oldbuttons = client->buttons;
@@ -530,12 +530,12 @@ but any server game effects are handled here
 ================
 */
 void ClientEvents(gentity_t* ent, int oldEventSequence) {
-    int     i, j;
-    int     event;
+    int i, j;
+    int event;
     gclient_t* client;
-    int     damage;
+    int damage;
     vec3_t origin, angles;
-    //  qboolean    fired;
+    // qboolean fired;
     gitem_t* item;
     gentity_t* drop;
     client = ent->client;
@@ -548,7 +548,7 @@ void ClientEvents(gentity_t* ent, int oldEventSequence) {
         case EV_FALL_MEDIUM:
         case EV_FALL_FAR:
             if (ent->s.eType != ET_PLAYER) {
-                break;      // not in the player model
+                break; // not in the player model
             }
             if (g_dmflags.integer & DF_NO_FALLING) {
                 break;
@@ -564,7 +564,7 @@ void ClientEvents(gentity_t* ent, int oldEventSequence) {
         case EV_FIRE_WEAPON:
             FireWeapon(ent);
             break;
-        case EV_USE_ITEM1:      // teleporter
+        case EV_USE_ITEM1: // teleporter
             // drop flags in CTF
             item = NULL;
             j = 0;
@@ -610,23 +610,23 @@ void ClientEvents(gentity_t* ent, int oldEventSequence) {
             SelectSpawnPoint(ent->client->ps.origin, origin, angles, 0);
             TeleportPlayer(ent, origin, angles);
             break;
-        case EV_USE_ITEM2:      // medkit
+        case EV_USE_ITEM2: // medkit
             ent->health = ent->client->ps.stats[STAT_MAX_HEALTH] + 25;
             break;
-        case EV_USE_ITEM3:      // kamikaze
+        case EV_USE_ITEM3: // kamikaze
             // make sure the invulnerability is off
             ent->client->invulnerabilityTime = 0;
             // start the kamikze
             G_StartKamikaze(ent);
             break;
-        case EV_USE_ITEM4:      // portal
+        case EV_USE_ITEM4: // portal
             if (ent->client->portalID) {
                 DropPortalSource(ent);
             } else {
                 DropPortalDestination(ent);
             }
             break;
-        case EV_USE_ITEM5:      // invulnerability
+        case EV_USE_ITEM5: // invulnerability
             ent->client->invulnerabilityTime = level.time + 10000;
             break;
         default:
@@ -642,7 +642,7 @@ StuckInOtherClient
 */
 static int StuckInOtherClient(gentity_t* ent) {
     int i;
-    gentity_t*   ent2;
+    gentity_t* ent2;
     ent2 = &g_entities[0];
     for (i = 0; i < MAX_CLIENTS; i++, ent2++) {
         if (ent2 == ent) {
@@ -729,11 +729,11 @@ once for each server frame, which makes for smooth demo recording.
 ==============
 */
 void ClientThink_real(gentity_t* ent) {
-    gclient_t*   client;
-    pmove_t     pm;
-    int         oldEventSequence;
-    int         msec;
-    usercmd_t*   ucmd;
+    gclient_t* client;
+    pmove_t pm;
+    int oldEventSequence;
+    int msec;
+    usercmd_t* ucmd;
     client = ent->client;
     // don't think if the client is not yet connected (and thus not yet spawned in)
     if (client->pers.connected != CON_CONNECTED) {
@@ -744,11 +744,11 @@ void ClientThink_real(gentity_t* ent) {
     // sanity check the command time to prevent speedup cheating
     if (ucmd->serverTime > level.time + 200) {
         ucmd->serverTime = level.time + 200;
-        //      G_Printf("serverTime <<<<<\n" );
+        // G_Printf("serverTime <<<<<\n" );
     }
     if (ucmd->serverTime < level.time - 1000) {
         ucmd->serverTime = level.time - 1000;
-        //      G_Printf("serverTime >>>>>\n" );
+        // G_Printf("serverTime >>>>>\n" );
     }
     //Here comes the unlagged bit!
     //unlagged - backward reconciliation #4
@@ -759,14 +759,14 @@ void ClientThink_real(gentity_t* ent) {
     //unlagged - backward reconciliation #4
     //unlagged - lag simulation #3
     // if the client wants to simulate outgoing packet loss
-    /*  if ( client->pers.plOut ) {
-            // see if a random value is below the threshhold
-            float thresh = (float)client->pers.plOut / 100.0f;
-            if ( random() < thresh ) {
-                // do nothing at all if it is - this is a lost command
-                return;
-            }
-        }*/
+    /* if ( client->pers.plOut ) {
+    // see if a random value is below the threshhold
+    float thresh = (float)client->pers.plOut / 100.0f;
+    if ( random() < thresh ) {
+    // do nothing at all if it is - this is a lost command
+    return;
+    }
+    }*/
     //unlagged - lag simulation #3
     //unlagged - true ping
     // save the estimated ping in a queue for averaging later
@@ -792,29 +792,29 @@ void ClientThink_real(gentity_t* ent) {
     //unlagged - true ping
     //unlagged - lag simulation #2
     // keep a queue of past commands
-    /*  client->pers.cmdqueue[client->pers.cmdhead] = client->pers.cmd;
-        client->pers.cmdhead++;
-        if ( client->pers.cmdhead >= MAX_LATENT_CMDS ) {
-            client->pers.cmdhead -= MAX_LATENT_CMDS;
-        }
+    /* client->pers.cmdqueue[client->pers.cmdhead] = client->pers.cmd;
+    client->pers.cmdhead++;
+    if ( client->pers.cmdhead >= MAX_LATENT_CMDS ) {
+    client->pers.cmdhead -= MAX_LATENT_CMDS;
+    }
 
-        // if the client wants latency in commands (client-to-server latency)
-        if ( client->pers.latentCmds ) {
-            // save the actual command time
-            int time = ucmd->serverTime;
+    // if the client wants latency in commands (client-to-server latency)
+    if ( client->pers.latentCmds ) {
+    // save the actual command time
+    int time = ucmd->serverTime;
 
-            // find out which index in the queue we want
-            int cmdindex = client->pers.cmdhead - client->pers.latentCmds - 1;
-            while ( cmdindex < 0 ) {
-                cmdindex += MAX_LATENT_CMDS;
-            }
+    // find out which index in the queue we want
+    int cmdindex = client->pers.cmdhead - client->pers.latentCmds - 1;
+    while ( cmdindex < 0 ) {
+    cmdindex += MAX_LATENT_CMDS;
+    }
 
-            // read in the old command
-            client->pers.cmd = client->pers.cmdqueue[cmdindex];
+    // read in the old command
+    client->pers.cmd = client->pers.cmdqueue[cmdindex];
 
-            // adjust the real ping to reflect the new latency
-            client->pers.realPing += time - ucmd->serverTime;
-        }*/
+    // adjust the real ping to reflect the new latency
+    client->pers.realPing += time - ucmd->serverTime;
+    }*/
     //unlagged - lag simulation #2
     //unlagged - backward reconciliation #4
     // save the command time *before* pmove_fixed messes with the serverTime,
@@ -830,10 +830,10 @@ void ClientThink_real(gentity_t* ent) {
     //unlagged - lag simulation #1
     // if the client is adding latency to received snapshots (server-to-client latency)
     /*if ( client->pers.latentSnaps ) {
-        // adjust the real ping
-        client->pers.realPing += client->pers.latentSnaps * (1000 / sv_fps.integer);
-        // adjust the attack time so backward reconciliation will work
-        client->attackTime -= client->pers.latentSnaps * (1000 / sv_fps.integer);
+    // adjust the real ping
+    client->pers.realPing += client->pers.latentSnaps * (1000 / sv_fps.integer);
+    // adjust the attack time so backward reconciliation will work
+    client->attackTime -= client->pers.latentSnaps * (1000 / sv_fps.integer);
     }*/
     //unlagged - lag simulation #1
     //unlagged - true ping
@@ -859,7 +859,7 @@ void ClientThink_real(gentity_t* ent) {
     if (pmove_fixed.integer || client->pers.pmoveFixed) {
         ucmd->serverTime = ((ucmd->serverTime + pmove_msec.integer - 1) / pmove_msec.integer) * pmove_msec.integer;
         //if (ucmd->serverTime - client->ps.commandTime <= 0)
-        //  return;
+        // return;
     }
     //
     // check for exiting intermission
@@ -983,17 +983,17 @@ void ClientThink_real(gentity_t* ent) {
     // since that's the case, it makes no sense to store the extra info
     // in the client's snapshot entity, so let's save a little bandwidth
     /*
-        if (g_smoothClients.integer) {
-            BG_PlayerStateToEntityStateExtraPolate( &ent->client->ps, &ent->s, ent->client->ps.commandTime, qtrue );
-        }
-        else {
+    if (g_smoothClients.integer) {
+    BG_PlayerStateToEntityStateExtraPolate( &ent->client->ps, &ent->s, ent->client->ps.commandTime, qtrue );
+    }
+    else {
     */
     BG_PlayerStateToEntityState(&ent->client->ps, &ent->s, qtrue);
-    //  }
+    // }
     //unlagged - smooth clients #2
     SendPendingPredictableEvents(&ent->client->ps);
     if (!(ent->client->ps.eFlags & EF_FIRING)) {
-        client->fireHeld = qfalse;      // for grapple
+        client->fireHeld = qfalse; // for grapple
     }
     // use the snapped origin for linking so it matches client predicted versions
     VectorCopy(ent->s.pos.trBase, ent->r.currentOrigin);
@@ -1031,7 +1031,7 @@ void ClientThink_real(gentity_t* ent) {
         // pressing attack or use is the normal respawn method
         if ((level.time > client->respawnTime) &&
                 (((g_forcerespawn.integer > 0) &&
-                  (level.time - client->respawnTime  > g_forcerespawn.integer * 1000)) ||
+                  (level.time - client->respawnTime > g_forcerespawn.integer * 1000)) ||
                  (((g_gametype.integer == GT_LMS) ||
                    (g_gametype.integer == GT_ELIMINATION) ||
                    (g_gametype.integer == GT_CTF_ELIMINATION)) &&
@@ -1085,11 +1085,11 @@ SpectatorClientEndFrame
 ==================
 */
 void SpectatorClientEndFrame(gentity_t* ent) {
-    gclient_t*   cl;
+    gclient_t* cl;
     int i, preservedScore[MAX_PERSISTANT]; //for keeping in elimination
     // if we are doing a chase cam or a remote view, grab the latest info
     if (ent->client->sess.spectatorState == SPECTATOR_FOLLOW) {
-        int     clientNum, flags;
+        int clientNum, flags;
         clientNum = ent->client->sess.spectatorClient;
         // team follow1 and team follow2 go to whatever clients are playing
         if (clientNum == -1) {
@@ -1142,7 +1142,7 @@ while a slow client may have multiple ClientEndFrame between ClientThink.
 ==============
 */
 void ClientEndFrame(gentity_t* ent) {
-    int         i;
+    int i;
     //unlagged - smooth clients #1
     int frames;
     //unlagged - smooth clients #1
@@ -1193,20 +1193,20 @@ void ClientEndFrame(gentity_t* ent) {
     //Unlagged: Commented out
     // add the EF_CONNECTION flag if we haven't gotten commands recently
     /*if ( level.time - ent->client->lastCmdTime > 1000 ) {
-        ent->s.eFlags |= EF_CONNECTION;
+    ent->s.eFlags |= EF_CONNECTION;
     } else {
-        ent->s.eFlags &= ~EF_CONNECTION;
+    ent->s.eFlags &= ~EF_CONNECTION;
     }*/
-    ent->client->ps.stats[STAT_HEALTH] = ent->health;   // FIXME: get rid of ent->health...
+    ent->client->ps.stats[STAT_HEALTH] = ent->health; // FIXME: get rid of ent->health...
     G_SetClientSound(ent);
     //Unlagged: Always do the else clause
     // set the latest infor
-    /*  if (g_smoothClients.integer) {
-            BG_PlayerStateToEntityStateExtraPolate( &ent->client->ps, &ent->s, ent->client->ps.commandTime, qtrue );
-        }
-        else { */
+    /* if (g_smoothClients.integer) {
+    BG_PlayerStateToEntityStateExtraPolate( &ent->client->ps, &ent->s, ent->client->ps.commandTime, qtrue );
+    }
+    else { */
     BG_PlayerStateToEntityState(&ent->client->ps, &ent->s, qtrue);
-    //  }
+    // }
     SendPendingPredictableEvents(&ent->client->ps);
     //unlagged - smooth clients #1
     // mark as not missing updates initially
@@ -1233,7 +1233,7 @@ void ClientEndFrame(gentity_t* ent) {
     G_StoreHistory(ent);
     //unlagged - backward reconciliation #1
     // set the bit for the reachability area the client is currently in
-    //  i = trap_AAS_PointReachabilityAreaIndex( ent->client->ps.origin );
-    //  ent->client->areabits[i >> 3] |= 1 << (i & 7);
+    // i = trap_AAS_PointReachabilityAreaIndex( ent->client->ps.origin );
+    // ent->client->areabits[i >> 3] |= 1 << (i & 7);
 }
 

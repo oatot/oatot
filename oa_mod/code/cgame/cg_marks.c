@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -32,10 +32,10 @@ MARK POLYS
 ===================================================================
 */
 
-markPoly_t cg_activeMarkPolys;         // double linked list
-markPoly_t*  cg_freeMarkPolys;          // single linked list
+markPoly_t cg_activeMarkPolys; // double linked list
+markPoly_t* cg_freeMarkPolys; // single linked list
 markPoly_t cg_markPolys[MAX_MARK_POLYS];
-static      int markTotal;
+static int markTotal;
 
 /*
 ===================
@@ -44,8 +44,8 @@ CG_InitMarkPolys
 This is called at startup and for tournement restarts
 ===================
 */
-void    CG_InitMarkPolys(void) {
-    int     i;
+void CG_InitMarkPolys(void) {
+    int i;
     memset(cg_markPolys, 0, sizeof(cg_markPolys));
     cg_activeMarkPolys.nextMark = &cg_activeMarkPolys;
     cg_activeMarkPolys.prevMark = &cg_activeMarkPolys;
@@ -79,8 +79,8 @@ CG_AllocMark
 Will allways succeed, even if it requires freeing an old active mark
 ===================
 */
-markPoly_t*  CG_AllocMark(void) {
-    markPoly_t*  le;
+markPoly_t* CG_AllocMark(void) {
+    markPoly_t* le;
     int time;
     if (!cg_freeMarkPolys) {
         // no free entities, so free the one at the end of the chain
@@ -113,20 +113,20 @@ passed to the renderer.
 =================
 */
 #define MAX_MARK_FRAGMENTS 128
-#define MAX_MARK_POINTS     384
+#define MAX_MARK_POINTS 384
 
 void CG_ImpactMark(qhandle_t markShader, const vec3_t origin, const vec3_t dir,
                    float orientation, float red, float green, float blue, float alpha,
                    qboolean alphaFade, float radius, qboolean temporary) {
-    vec3_t          axis[3];
-    float           texCoordScale;
-    vec3_t          originalPoints[4];
-    byte            colors[4];
-    int             i, j;
-    int             numFragments;
+    vec3_t axis[3];
+    float texCoordScale;
+    vec3_t originalPoints[4];
+    byte colors[4];
+    int i, j;
+    int numFragments;
     markFragment_t markFragments[MAX_MARK_FRAGMENTS], *mf;
-    vec3_t          markPoints[MAX_MARK_POINTS];
-    vec3_t          projection;
+    vec3_t markPoints[MAX_MARK_POINTS];
+    vec3_t projection;
     if (!cg_addMarks.integer) {
         return;
     }
@@ -134,7 +134,7 @@ void CG_ImpactMark(qhandle_t markShader, const vec3_t origin, const vec3_t dir,
         CG_Error("CG_ImpactMark called with <= 0 radius");
     }
     //if ( markTotal >= MAX_MARK_POLYS ) {
-    //  return;
+    // return;
     //}
     // create the texture axis
     VectorNormalize2(dir, axis[0]);
@@ -159,16 +159,16 @@ void CG_ImpactMark(qhandle_t markShader, const vec3_t origin, const vec3_t dir,
     colors[2] = blue * 255;
     colors[3] = alpha * 255;
     for (i = 0, mf = markFragments; i < numFragments; i++, mf++) {
-        polyVert_t*  v;
+        polyVert_t* v;
         polyVert_t verts[MAX_VERTS_ON_POLY];
-        markPoly_t*  mark;
+        markPoly_t* mark;
         // we have an upper limit on the complexity of polygons
         // that we store persistantly
         if (mf->numPoints > MAX_VERTS_ON_POLY) {
             mf->numPoints = MAX_VERTS_ON_POLY;
         }
         for (j = 0, v = verts; j < mf->numPoints; j++, v++) {
-            vec3_t      delta;
+            vec3_t delta;
             VectorCopy(markPoints[mf->firstPoint + j], v->xyz);
             VectorSubtract(v->xyz, origin, delta);
             v->st[0] = 0.5 + DotProduct(delta, axis[1]) * texCoordScale;
@@ -200,14 +200,14 @@ void CG_ImpactMark(qhandle_t markShader, const vec3_t origin, const vec3_t dir,
 CG_AddMarks
 ===============
 */
-#define MARK_TOTAL_TIME     10000
-#define MARK_FADE_TIME      1000
+#define MARK_TOTAL_TIME 10000
+#define MARK_FADE_TIME 1000
 
 void CG_AddMarks(void) {
-    int         j;
-    markPoly_t*  mp, *next;
-    int         t;
-    int         fade;
+    int j;
+    markPoly_t* mp, *next;
+    int t;
+    int fade;
     if (!cg_addMarks.integer) {
         return;
     }

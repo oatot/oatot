@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -24,23 +24,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "ui_local.h"
 
-#define UI_TIMER_GESTURE        2300
-#define UI_TIMER_JUMP           1000
-#define UI_TIMER_LAND           130
+#define UI_TIMER_GESTURE 2300
+#define UI_TIMER_JUMP 1000
+#define UI_TIMER_LAND 130
 #define UI_TIMER_WEAPON_SWITCH 300
-#define UI_TIMER_ATTACK         500
-#define UI_TIMER_MUZZLE_FLASH   20
-#define UI_TIMER_WEAPON_DELAY   250
+#define UI_TIMER_ATTACK 500
+#define UI_TIMER_MUZZLE_FLASH 20
+#define UI_TIMER_WEAPON_DELAY 250
 
-#define JUMP_HEIGHT             56
+#define JUMP_HEIGHT 56
 
-#define SWINGSPEED              0.3f
+#define SWINGSPEED 0.3f
 
-#define SPIN_SPEED              0.9f
-#define COAST_TIME              1000
+#define SPIN_SPEED 0.9f
+#define COAST_TIME 1000
 
-static int          dp_realtime;
-static float        jumpHeight;
+static int dp_realtime;
+static float jumpHeight;
 
 /*
 ===============
@@ -48,8 +48,8 @@ UI_PlayerInfo_SetWeapon
 ===============
 */
 static void UI_PlayerInfo_SetWeapon(playerInfo_t* pi, weapon_t weaponNum) {
-    gitem_t*    item;
-    char        path[MAX_QPATH];
+    gitem_t* item;
+    char path[MAX_QPATH];
     pi->currentWeapon = weaponNum;
 tryagain:
     pi->realWeapon = weaponNum;
@@ -184,7 +184,7 @@ UI_TorsoSequencing
 ===============
 */
 static void UI_TorsoSequencing(playerInfo_t* pi) {
-    int     currentAnim;
+    int currentAnim;
     currentAnim = pi->torsoAnim & ~ANIM_TOGGLEBIT;
     if (pi->weapon != pi->currentWeapon) {
         if (currentAnim != TORSO_DROP) {
@@ -221,7 +221,7 @@ UI_LegsSequencing
 ===============
 */
 static void UI_LegsSequencing(playerInfo_t* pi) {
-    int     currentAnim;
+    int currentAnim;
     currentAnim = pi->legsAnim & ~ANIM_TOGGLEBIT;
     if (pi->legsAnimationTimer > 0) {
         if (currentAnim == LEGS_JUMP) {
@@ -248,8 +248,8 @@ UI_PositionEntityOnTag
 */
 static void UI_PositionEntityOnTag(refEntity_t* entity, const refEntity_t* parent,
                                    clipHandle_t parentModel, char* tagName) {
-    int             i;
-    orientation_t   lerped;
+    int i;
+    orientation_t lerped;
     // lerp the tag
     trap_CM_LerpTag(&lerped, parentModel, parent->oldframe, parent->frame,
                     1.0 - parent->backlerp, tagName);
@@ -270,9 +270,9 @@ UI_PositionRotatedEntityOnTag
 */
 static void UI_PositionRotatedEntityOnTag(refEntity_t* entity, const refEntity_t* parent,
         clipHandle_t parentModel, char* tagName) {
-    int             i;
-    orientation_t   lerped;
-    vec3_t          tempAxis[3];
+    int i;
+    orientation_t lerped;
+    vec3_t tempAxis[3];
     // lerp the tag
     trap_CM_LerpTag(&lerped, parentModel, parent->oldframe, parent->frame,
                     1.0 - parent->backlerp, tagName);
@@ -309,7 +309,7 @@ UI_RunLerpFrame
 ===============
 */
 static void UI_RunLerpFrame(playerInfo_t* ci, lerpFrame_t* lf, int newAnimation) {
-    int         f;
+    int f;
     animation_t* anim;
     // see if the animation sequence is switching
     if (newAnimation != lf->animationNumber || !lf->animation) {
@@ -323,7 +323,7 @@ static void UI_RunLerpFrame(playerInfo_t* ci, lerpFrame_t* lf, int newAnimation)
         // get the next frame based on the animation
         anim = lf->animation;
         if (dp_realtime < lf->animationTime) {
-            lf->frameTime = lf->animationTime;      // initial lerp
+            lf->frameTime = lf->animationTime; // initial lerp
         } else {
             lf->frameTime = lf->oldFrameTime + anim->frameLerp;
         }
@@ -399,9 +399,9 @@ UI_SwingAngles
 */
 static void UI_SwingAngles(float destination, float swingTolerance, float clampTolerance,
                            float speed, float* angle, qboolean* swinging) {
-    float   swing;
-    float   move;
-    float   scale;
+    float swing;
+    float move;
+    float scale;
     if (!*swinging) {
         // see if a swing should be started
         swing = AngleSubtract(*angle, destination);
@@ -454,8 +454,8 @@ UI_MovedirAdjustment
 ======================
 */
 static float UI_MovedirAdjustment(playerInfo_t* pi) {
-    vec3_t      relativeAngles;
-    vec3_t      moveVector;
+    vec3_t relativeAngles;
+    vec3_t moveVector;
     VectorSubtract(pi->viewAngles, pi->moveAngles, relativeAngles);
     AngleVectors(relativeAngles, moveVector, NULL, NULL);
     if (Q_fabs(moveVector[0]) < 0.01) {
@@ -483,7 +483,7 @@ static float UI_MovedirAdjustment(playerInfo_t* pi) {
         return 22;
     }
     if (moveVector[1] > 0 && moveVector[0] == 0) {
-        return  -45;
+        return -45;
     }
     return -22;
 }
@@ -494,9 +494,9 @@ UI_PlayerAngles
 ===============
 */
 static void UI_PlayerAngles(playerInfo_t* pi, vec3_t legs[3], vec3_t torso[3], vec3_t head[3]) {
-    vec3_t      legsAngles, torsoAngles, headAngles;
-    float       dest;
-    float       adjust;
+    vec3_t legsAngles, torsoAngles, headAngles;
+    float dest;
+    float adjust;
     VectorCopy(pi->viewAngles, headAngles);
     headAngles[YAW] = AngleMod(headAngles[YAW]);
     VectorClear(legsAngles);
@@ -506,9 +506,9 @@ static void UI_PlayerAngles(playerInfo_t* pi, vec3_t legs[3], vec3_t torso[3], v
     if ((pi->legsAnim & ~ANIM_TOGGLEBIT) != LEGS_IDLE
             || (pi->torsoAnim & ~ANIM_TOGGLEBIT) != TORSO_STAND) {
         // if not standing still, always point all in the same direction
-        pi->torso.yawing = qtrue;   // always center
+        pi->torso.yawing = qtrue; // always center
         pi->torso.pitching = qtrue; // always center
-        pi->legs.yawing = qtrue;    // always center
+        pi->legs.yawing = qtrue; // always center
     }
     // adjust legs for movement dir
     adjust = UI_MovedirAdjustment(pi);
@@ -542,7 +542,7 @@ UI_PlayerFloatSprite
 ===============
 */
 static void UI_PlayerFloatSprite(playerInfo_t* pi, vec3_t origin, qhandle_t shader) {
-    refEntity_t     ent;
+    refEntity_t ent;
     memset(&ent, 0, sizeof(ent));
     VectorCopy(origin, ent.origin);
     ent.origin[2] += 48;
@@ -558,11 +558,11 @@ static void UI_PlayerFloatSprite(playerInfo_t* pi, vec3_t origin, qhandle_t shad
 UI_MachinegunSpinAngle
 ======================
 */
-float   UI_MachinegunSpinAngle(playerInfo_t* pi) {
-    int     delta;
-    float   angle;
-    float   speed;
-    int     torsoAnim;
+float UI_MachinegunSpinAngle(playerInfo_t* pi) {
+    int delta;
+    float angle;
+    float speed;
+    int torsoAnim;
     delta = dp_realtime - pi->barrelTime;
     if (pi->barrelSpinning) {
         angle = pi->barrelAngle + delta * SPIN_SPEED;
@@ -573,7 +573,7 @@ float   UI_MachinegunSpinAngle(playerInfo_t* pi) {
         speed = 0.5 * (SPIN_SPEED + (float)(COAST_TIME - delta) / COAST_TIME);
         angle = pi->barrelAngle + delta * speed;
     }
-    torsoAnim = pi->torsoAnim  & ~ANIM_TOGGLEBIT;
+    torsoAnim = pi->torsoAnim & ~ANIM_TOGGLEBIT;
     if (torsoAnim == TORSO_ATTACK2) {
         torsoAnim = TORSO_ATTACK;
     }
@@ -591,19 +591,19 @@ UI_DrawPlayer
 ===============
 */
 void UI_DrawPlayer(float x, float y, float w, float h, playerInfo_t* pi, int time) {
-    refdef_t        refdef;
-    refEntity_t     legs;
-    refEntity_t     torso;
-    refEntity_t     head;
-    refEntity_t     gun;
-    refEntity_t     barrel;
-    refEntity_t     flash;
-    vec3_t          origin;
-    int             renderfx;
-    vec3_t          mins = {-16, -16, -24};
-    vec3_t          maxs = {16, 16, 32};
-    float           len;
-    float           xx;
+    refdef_t refdef;
+    refEntity_t legs;
+    refEntity_t torso;
+    refEntity_t head;
+    refEntity_t gun;
+    refEntity_t barrel;
+    refEntity_t flash;
+    vec3_t origin;
+    int renderfx;
+    vec3_t mins = {-16, -16, -24};
+    vec3_t maxs = {16, 16, 32};
+    float len;
+    float xx;
     if (!pi->legsModel || !pi->torsoModel || !pi->headModel || !pi->animations[0].numFrames) {
         return;
     }
@@ -737,9 +737,9 @@ void UI_DrawPlayer(float x, float y, float w, float h, playerInfo_t* pi, int tim
     //
     // add an accent light
     //
-    origin[0] -= 100;   // + = behind, - = in front
-    origin[1] += 100;   // + = left, - = right
-    origin[2] += 100;   // + = above, - = below
+    origin[0] -= 100; // + = behind, - = in front
+    origin[1] += 100; // + = left, - = right
+    origin[2] += 100; // + = above, - = below
     trap_R_AddLightToScene(origin, 500, 1.0, 1.0, 1.0);
     origin[0] -= 100;
     origin[1] -= 100;
@@ -754,7 +754,7 @@ UI_RegisterClientSkin
 ==========================
 */
 static qboolean UI_RegisterClientSkin(playerInfo_t* pi, const char* modelName, const char* skinName) {
-    char        filename[MAX_QPATH];
+    char filename[MAX_QPATH];
     Com_sprintf(filename, sizeof(filename), "models/players/%s/lower_%s.skin", modelName, skinName);
     pi->legsSkin = trap_R_RegisterSkin(filename);
     Com_sprintf(filename, sizeof(filename), "models/players/%s/upper_%s.skin", modelName, skinName);
@@ -773,14 +773,14 @@ UI_ParseAnimationFile
 ======================
 */
 static qboolean UI_ParseAnimationFile(const char* filename, animation_t* animations) {
-    char*        text_p, *prev;
-    int         len;
-    int         i;
-    char*        token;
-    float       fps;
-    int         skip;
-    char        text[20000];
-    fileHandle_t    f;
+    char* text_p, *prev;
+    int len;
+    int i;
+    char* token;
+    float fps;
+    int skip;
+    char text[20000];
+    fileHandle_t f;
     memset(animations, 0, sizeof(animation_t) * MAX_ANIMATIONS);
     // load the file
     len = trap_FS_FOpenFile(filename, &f, FS_READ);
@@ -797,10 +797,10 @@ static qboolean UI_ParseAnimationFile(const char* filename, animation_t* animati
     trap_FS_FCloseFile(f);
     // parse the text
     text_p = text;
-    skip = 0;   // quite the compiler warning
+    skip = 0; // quite the compiler warning
     // read optional parameters
     while (1) {
-        prev = text_p;  // so we can unget
+        prev = text_p; // so we can unget
         token = COM_Parse(&text_p);
         if (!token) {
             break;
@@ -828,7 +828,7 @@ static qboolean UI_ParseAnimationFile(const char* filename, animation_t* animati
         }
         // if it is a number, start parsing animations
         if (token[0] >= '0' && token[0] <= '9') {
-            text_p = prev;  // unget the token
+            text_p = prev; // unget the token
             break;
         }
         Com_Printf("unknown token '%s' in %s\n", token, filename);
@@ -881,10 +881,10 @@ UI_RegisterClientModelname
 ==========================
 */
 qboolean UI_RegisterClientModelname(playerInfo_t* pi, const char* modelSkinName) {
-    char        modelName[MAX_QPATH];
-    char        skinName[MAX_QPATH];
-    char        filename[MAX_QPATH];
-    char*        slash;
+    char modelName[MAX_QPATH];
+    char skinName[MAX_QPATH];
+    char filename[MAX_QPATH];
+    char* slash;
     pi->torsoModel = 0;
     pi->headModel = 0;
     if (!modelSkinName[0]) {
@@ -959,8 +959,8 @@ UI_PlayerInfo_SetInfo
 ===============
 */
 void UI_PlayerInfo_SetInfo(playerInfo_t* pi, int legsAnim, int torsoAnim, vec3_t viewAngles, vec3_t moveAngles, weapon_t weaponNumber, qboolean chat) {
-    int         currentAnim;
-    weapon_t    weaponNum;
+    int currentAnim;
+    weapon_t weaponNum;
     pi->chat = chat;
     // view angles
     VectorCopy(viewAngles, pi->viewAngles);

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_main.c
+ * name: ai_main.c
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /MissionPack/code/game/ai_main.c $
  *
@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "g_local.h"
 #include "../qcommon/q_shared.h"
-#include "../botlib/botlib.h"       //bot lib interface
+#include "../botlib/botlib.h" //bot lib interface
 #include "../botlib/be_aas.h"
 #include "../botlib/be_ea.h"
 #include "../botlib/be_ai_char.h"
@@ -55,7 +55,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "syn.h"
 
 #ifndef MAX_PATH
-#define MAX_PATH        144
+#define MAX_PATH 144
 #endif
 
 //bot states
@@ -154,7 +154,7 @@ BotAI_GetClientState
 ==================
 */
 int BotAI_GetClientState(int clientNum, playerState_t* state) {
-    gentity_t*   ent;
+    gentity_t* ent;
     ent = &g_entities[clientNum];
     if (!ent->inuse) {
         return qfalse;
@@ -172,7 +172,7 @@ BotAI_GetEntityState
 ==================
 */
 int BotAI_GetEntityState(int entityNum, entityState_t* state) {
-    gentity_t*   ent;
+    gentity_t* ent;
     ent = &g_entities[entityNum];
     memset(state, 0, sizeof(entityState_t));
     if (!ent->inuse) {
@@ -195,7 +195,7 @@ BotAI_GetSnapshotEntity
 ==================
 */
 int BotAI_GetSnapshotEntity(int clientNum, int sequence, entityState_t* state) {
-    int     entNum;
+    int entNum;
     entNum = trap_BotGetSnapshotEntity(clientNum, sequence);
     if (entNum == -1) {
         memset(state, 0, sizeof(entityState_t));
@@ -211,10 +211,10 @@ BotAI_BotInitialChat
 ==================
 */
 void QDECL BotAI_BotInitialChat(bot_state_t* bs, char* type, ...) {
-    int     i, mcontext;
+    int i, mcontext;
     va_list ap;
-    char*    p;
-    char*    vars[MAX_MATCHVARIABLES];
+    char* p;
+    char* vars[MAX_MATCHVARIABLES];
     memset(vars, 0, sizeof(vars));
     va_start(ap, type);
     p = va_arg(ap, char*);
@@ -256,10 +256,10 @@ void BotTestAAS(vec3_t origin) {
         }
         areanum = BotPointAreaNum(origin);
         if (!areanum) {
-            BotAI_Print(PRT_MESSAGE, "\r^1Solid!                              ");
+            BotAI_Print(PRT_MESSAGE, "\r^1Solid! ");
         } else {
             trap_AAS_AreaInfo(areanum, &info);
-            BotAI_Print(PRT_MESSAGE, "\rarea %d, cluster %d       ", areanum, info.cluster);
+            BotAI_Print(PRT_MESSAGE, "\rarea %d, cluster %d ", areanum, info.cluster);
         }
     }
 }
@@ -280,7 +280,7 @@ void BotReportStatus(bot_state_t* bs) {
     } else {
         leader = " ";
     }
-    strcpy(flagstatus, "  ");
+    strcpy(flagstatus, " ");
     if (gametype == GT_CTF || gametype == GT_CTF_ELIMINATION) {
         if (BotCTFCarryingFlag(bs)) {
             if (BotTeam(bs) == TEAM_RED) {
@@ -438,7 +438,7 @@ void BotSetInfoConfigString(bot_state_t* bs) {
     } else {
         leader = " ";
     }
-    strcpy(carrying, "  ");
+    strcpy(carrying, " ");
     if (gametype == GT_CTF || gametype == GT_CTF_ELIMINATION) {
         if (BotCTFCarryingFlag(bs)) {
             strcpy(carrying, "F ");
@@ -900,9 +900,9 @@ void BotInputToUserCommand(bot_input_t* bi, usercmd_t* ucmd, int delta_angles[3]
         temp = ucmd->angles[j] - delta_angles[j];
         /*NOTE: disabled because temp should be mod first
         if ( j == PITCH ) {
-            // don't let the player look up or down more than 90 degrees
-            if ( temp > 16000 ) temp = 16000;
-            else if ( temp < -16000 ) temp = -16000;
+        // don't let the player look up or down more than 90 degrees
+        if ( temp > 16000 ) temp = 16000;
+        else if ( temp < -16000 ) temp = -16000;
         }
         */
         ucmd->angles[j] = temp;
@@ -1138,8 +1138,8 @@ BotWriteSessionData
 ==============
 */
 void BotWriteSessionData(bot_state_t* bs) {
-    const char*  s;
-    const char*  var;
+    const char* s;
+    const char* var;
     s = va(
             "%i %i %i %i %i %i %i %i"
             " %f %f %f"
@@ -1173,8 +1173,8 @@ BotReadSessionData
 ==============
 */
 void BotReadSessionData(bot_state_t* bs) {
-    char    s[MAX_STRING_CHARS];
-    const char*  var;
+    char s[MAX_STRING_CHARS];
+    const char* var;
     var = va("botsession%i", bs->client);
     trap_Cvar_VariableStringBuffer(var, s, sizeof(s));
     sscanf(s,
@@ -1360,7 +1360,7 @@ void BotResetState(bot_state_t* bs) {
     int movestate, goalstate, chatstate, weaponstate;
     bot_settings_t settings;
     int character;
-    playerState_t ps;                           //current player state
+    playerState_t ps; //current player state
     float entergame_time;
     //save some things that should not be reset here
     memcpy(&settings, &bs->settings, sizeof(bot_settings_t));
@@ -1415,8 +1415,8 @@ BotAILoadMap
 ==============
 */
 int BotAILoadMap(int restart) {
-    int         i;
-    vmCvar_t    mapname;
+    int i;
+    vmCvar_t mapname;
     if (!restart) {
         trap_Cvar_Register(&mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
         trap_BotLibLoadMap(mapname.string);
@@ -1440,7 +1440,7 @@ BotAIStartFrame
 */
 int BotAIStartFrame(int time) {
     int i;
-    gentity_t*   ent;
+    gentity_t* ent;
     bot_entitystate_t state;
     int elapsed_time, thinktime;
     static int local_time;
@@ -1458,8 +1458,8 @@ int BotAIStartFrame(int time) {
     trap_Cvar_Update(&bot_pause);
     trap_Cvar_Update(&bot_report);
     if (bot_report.integer) {
-        //      BotTeamplayReport();
-        //      trap_Cvar_Set("bot_report", "0");
+        // BotTeamplayReport();
+        // trap_Cvar_Set("bot_report", "0");
         BotUpdateInfoConfigStrings();
     }
     if (bot_pause.integer) {
@@ -1724,7 +1724,7 @@ BotAISetup
 ==============
 */
 int BotAISetup(int restart) {
-    int         errnum;
+    int errnum;
     trap_Cvar_Register(&bot_thinktime, "bot_thinktime", "100", CVAR_CHEAT);
     trap_Cvar_Register(&bot_memorydump, "bot_memorydump", "0", CVAR_CHEAT);
     trap_Cvar_Register(&bot_saveroutingcache, "bot_saveroutingcache", "0", CVAR_CHEAT);

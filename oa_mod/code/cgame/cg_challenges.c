@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "../cgame/cg_local.h"
 #endif
 
-#define FILENAME    "challenges.dat"
+#define FILENAME "challenges.dat"
 
 //First two static variables that may only be accessed throgh functions in this file
 //The challengeTable is of constant size so there is room for more challenges being added in the furture
@@ -55,7 +55,7 @@ void challenges_init(void) {
     if (fileLen < sizeof(challengeTable)) {
         trap_FS_FCloseFile(file); //Lets remeber to close the file before all returns
         for (i = 0; i < CHALLENGES_MAX; i++) {
-            challengeTable[i] = 0;    //Init all challenges to zero
+            challengeTable[i] = 0; //Init all challenges to zero
         }
         challengesInitialized = qtrue; //Still consider the system loaded!
         return; //Not enough data to actually read

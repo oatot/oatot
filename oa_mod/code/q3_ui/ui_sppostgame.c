@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -30,55 +30,55 @@ SINGLE PLAYER POSTGAME MENU
 
 #include "ui_local.h"
 
-#define MAX_SCOREBOARD_CLIENTS      8
+#define MAX_SCOREBOARD_CLIENTS 8
 
-#define AWARD_PRESENTATION_TIME     2000
+#define AWARD_PRESENTATION_TIME 2000
 
-#define ART_MENU0       "menu/" MENU_ART_DIR "/menu_0"
-#define ART_MENU1       "menu/" MENU_ART_DIR "/menu_1"
-#define ART_REPLAY0     "menu/" MENU_ART_DIR "/replay_0"
-#define ART_REPLAY1     "menu/" MENU_ART_DIR "/replay_1"
-#define ART_NEXT0       "menu/" MENU_ART_DIR "/next_0"
-#define ART_NEXT1       "menu/" MENU_ART_DIR "/next_1"
+#define ART_MENU0 "menu/" MENU_ART_DIR "/menu_0"
+#define ART_MENU1 "menu/" MENU_ART_DIR "/menu_1"
+#define ART_REPLAY0 "menu/" MENU_ART_DIR "/replay_0"
+#define ART_REPLAY1 "menu/" MENU_ART_DIR "/replay_1"
+#define ART_NEXT0 "menu/" MENU_ART_DIR "/next_0"
+#define ART_NEXT1 "menu/" MENU_ART_DIR "/next_1"
 
-#define ID_AGAIN        10
-#define ID_NEXT         11
-#define ID_MENU         12
+#define ID_AGAIN 10
+#define ID_NEXT 11
+#define ID_MENU 12
 
 typedef struct {
     menuframework_s menu;
-    menubitmap_s    item_again;
-    menubitmap_s    item_next;
-    menubitmap_s    item_menu;
+    menubitmap_s item_again;
+    menubitmap_s item_next;
+    menubitmap_s item_menu;
 
-    int             phase;
-    int             ignoreKeysTime;
-    int             starttime;
-    int             scoreboardtime;
-    int             serverId;
+    int phase;
+    int ignoreKeysTime;
+    int starttime;
+    int scoreboardtime;
+    int serverId;
 
-    int             clientNums[MAX_SCOREBOARD_CLIENTS];
-    int             ranks[MAX_SCOREBOARD_CLIENTS];
-    int             scores[MAX_SCOREBOARD_CLIENTS];
+    int clientNums[MAX_SCOREBOARD_CLIENTS];
+    int ranks[MAX_SCOREBOARD_CLIENTS];
+    int scores[MAX_SCOREBOARD_CLIENTS];
 
-    char            placeNames[3][64];
+    char placeNames[3][64];
 
-    int             level;
-    int             numClients;
-    int             won;
-    int             numAwards;
-    int             awardsEarned[6];
-    int             awardsLevels[6];
-    qboolean        playedSound[6];
-    int             lastTier;
-    sfxHandle_t     winnerSound;
+    int level;
+    int numClients;
+    int won;
+    int numAwards;
+    int awardsEarned[6];
+    int awardsLevels[6];
+    qboolean playedSound[6];
+    int lastTier;
+    sfxHandle_t winnerSound;
 } postgameMenuInfo_t;
 
-static postgameMenuInfo_t   postgameMenuInfo;
-static char                 arenainfo[MAX_INFO_VALUE];
+static postgameMenuInfo_t postgameMenuInfo;
+static char arenainfo[MAX_INFO_VALUE];
 
-char*    ui_medalNames[] = {"Accuracy", "Impressive", "Excellent", "Gauntlet", "Frags", "Perfect"};
-char*    ui_medalPicNames[] = {
+char* ui_medalNames[] = {"Accuracy", "Impressive", "Excellent", "Gauntlet", "Frags", "Perfect"};
+char* ui_medalPicNames[] = {
     "menu/medals/medal_accuracy",
     "menu/medals/medal_impressive",
     "menu/medals/medal_excellent",
@@ -87,7 +87,7 @@ char*    ui_medalPicNames[] = {
     "menu/medals/medal_victory"
 };
 
-char*    ui_medalSounds[] = {
+char* ui_medalSounds[] = {
     "sound/feedback/accuracy.wav",
     "sound/feedback/impressive_a.wav",
     "sound/feedback/excellent_a.wav",
@@ -115,11 +115,11 @@ UI_SPPostgameMenu_NextEvent
 =================
 */
 static void UI_SPPostgameMenu_NextEvent(void* ptr, int event) {
-    int         currentSet;
-    int         levelSet;
-    int         level;
-    int         currentLevel;
-    const char*  arenaInfo;
+    int currentSet;
+    int levelSet;
+    int level;
+    int currentLevel;
+    const char* arenaInfo;
     if (event != QM_ACTIVATED) {
         return;
     }
@@ -191,11 +191,11 @@ static sfxHandle_t UI_SPPostgameMenu_MenuKey(int key) {
 static int medalLocations[6] = {144, 448, 88, 504, 32, 560};
 
 static void UI_SPPostgameMenu_DrawAwardsMedals(int max) {
-    int     n;
-    int     medal;
-    int     amount;
-    int     x, y;
-    char    buf[16];
+    int n;
+    int medal;
+    int amount;
+    int x, y;
+    char buf[16];
     for (n = 0; n < max; n++) {
         x = medalLocations[n];
         y = 64;
@@ -215,8 +215,8 @@ static void UI_SPPostgameMenu_DrawAwardsMedals(int max) {
 }
 
 static void UI_SPPostgameMenu_DrawAwardsPresentation(int timer) {
-    int     awardNum;
-    int     atimer;
+    int awardNum;
+    int atimer;
     vec4_t color;
     awardNum = timer / AWARD_PRESENTATION_TIME;
     atimer = timer % AWARD_PRESENTATION_TIME;
@@ -236,9 +236,9 @@ UI_SPPostgameMenu_MenuDrawScoreLine
 =================
 */
 static void UI_SPPostgameMenu_MenuDrawScoreLine(int n, int y) {
-    int     rank;
-    char    name[64];
-    char    info[MAX_INFO_STRING];
+    int rank;
+    char name[64];
+    char info[MAX_INFO_STRING];
     if (n > (postgameMenuInfo.numClients + 1)) {
         n -= (postgameMenuInfo.numClients + 2);
     }
@@ -262,10 +262,10 @@ UI_SPPostgameMenu_MenuDraw
 =================
 */
 static void UI_SPPostgameMenu_MenuDraw(void) {
-    int     timer;
-    int     serverId;
-    int     n;
-    char    info[MAX_INFO_STRING];
+    int timer;
+    int serverId;
+    int n;
+    char info[MAX_INFO_STRING];
     trap_GetConfigString(CS_SYSTEMINFO, info, sizeof(info));
     serverId = atoi(Info_ValueForKey(info, "sv_serverid"));
     if (serverId != postgameMenuInfo.serverId) {
@@ -349,8 +349,8 @@ UI_SPPostgameMenu_Cache
 =================
 */
 void UI_SPPostgameMenu_Cache(void) {
-    int         n;
-    qboolean    buildscript;
+    int n;
+    qboolean buildscript;
     buildscript = trap_Cvar_VariableValue("com_buildscript");
     trap_R_RegisterShaderNoMip(ART_MENU0);
     trap_R_RegisterShaderNoMip(ART_MENU1);
@@ -375,50 +375,50 @@ UI_SPPostgameMenu_Init
 =================
 */
 static void UI_SPPostgameMenu_Init(void) {
-    postgameMenuInfo.menu.wrapAround    = qtrue;
-    postgameMenuInfo.menu.key           = UI_SPPostgameMenu_MenuKey;
-    postgameMenuInfo.menu.draw          = UI_SPPostgameMenu_MenuDraw;
-    postgameMenuInfo.ignoreKeysTime     = uis.realtime + 1500;
+    postgameMenuInfo.menu.wrapAround = qtrue;
+    postgameMenuInfo.menu.key = UI_SPPostgameMenu_MenuKey;
+    postgameMenuInfo.menu.draw = UI_SPPostgameMenu_MenuDraw;
+    postgameMenuInfo.ignoreKeysTime = uis.realtime + 1500;
     UI_SPPostgameMenu_Cache();
-    postgameMenuInfo.item_menu.generic.type         = MTYPE_BITMAP;
-    postgameMenuInfo.item_menu.generic.name         = ART_MENU0;
-    postgameMenuInfo.item_menu.generic.flags        = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS | QMF_INACTIVE;
-    postgameMenuInfo.item_menu.generic.x            = 0;
-    postgameMenuInfo.item_menu.generic.y            = 480 - 64;
-    postgameMenuInfo.item_menu.generic.callback     = UI_SPPostgameMenu_MenuEvent;
-    postgameMenuInfo.item_menu.generic.id           = ID_MENU;
-    postgameMenuInfo.item_menu.width                = 128;
-    postgameMenuInfo.item_menu.height               = 64;
-    postgameMenuInfo.item_menu.focuspic             = ART_MENU1;
-    postgameMenuInfo.item_again.generic.type        = MTYPE_BITMAP;
-    postgameMenuInfo.item_again.generic.name        = ART_REPLAY0;
-    postgameMenuInfo.item_again.generic.flags       = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS | QMF_INACTIVE;
-    postgameMenuInfo.item_again.generic.x           = 320;
-    postgameMenuInfo.item_again.generic.y           = 480 - 64;
-    postgameMenuInfo.item_again.generic.callback    = UI_SPPostgameMenu_AgainEvent;
-    postgameMenuInfo.item_again.generic.id          = ID_AGAIN;
-    postgameMenuInfo.item_again.width               = 128;
-    postgameMenuInfo.item_again.height              = 64;
-    postgameMenuInfo.item_again.focuspic            = ART_REPLAY1;
-    postgameMenuInfo.item_next.generic.type         = MTYPE_BITMAP;
-    postgameMenuInfo.item_next.generic.name         = ART_NEXT0;
-    postgameMenuInfo.item_next.generic.flags        = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS | QMF_INACTIVE;
-    postgameMenuInfo.item_next.generic.x            = 640;
-    postgameMenuInfo.item_next.generic.y            = 480 - 64;
-    postgameMenuInfo.item_next.generic.callback     = UI_SPPostgameMenu_NextEvent;
-    postgameMenuInfo.item_next.generic.id           = ID_NEXT;
-    postgameMenuInfo.item_next.width                = 128;
-    postgameMenuInfo.item_next.height               = 64;
-    postgameMenuInfo.item_next.focuspic             = ART_NEXT1;
+    postgameMenuInfo.item_menu.generic.type = MTYPE_BITMAP;
+    postgameMenuInfo.item_menu.generic.name = ART_MENU0;
+    postgameMenuInfo.item_menu.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS | QMF_INACTIVE;
+    postgameMenuInfo.item_menu.generic.x = 0;
+    postgameMenuInfo.item_menu.generic.y = 480 - 64;
+    postgameMenuInfo.item_menu.generic.callback = UI_SPPostgameMenu_MenuEvent;
+    postgameMenuInfo.item_menu.generic.id = ID_MENU;
+    postgameMenuInfo.item_menu.width = 128;
+    postgameMenuInfo.item_menu.height = 64;
+    postgameMenuInfo.item_menu.focuspic = ART_MENU1;
+    postgameMenuInfo.item_again.generic.type = MTYPE_BITMAP;
+    postgameMenuInfo.item_again.generic.name = ART_REPLAY0;
+    postgameMenuInfo.item_again.generic.flags = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS | QMF_INACTIVE;
+    postgameMenuInfo.item_again.generic.x = 320;
+    postgameMenuInfo.item_again.generic.y = 480 - 64;
+    postgameMenuInfo.item_again.generic.callback = UI_SPPostgameMenu_AgainEvent;
+    postgameMenuInfo.item_again.generic.id = ID_AGAIN;
+    postgameMenuInfo.item_again.width = 128;
+    postgameMenuInfo.item_again.height = 64;
+    postgameMenuInfo.item_again.focuspic = ART_REPLAY1;
+    postgameMenuInfo.item_next.generic.type = MTYPE_BITMAP;
+    postgameMenuInfo.item_next.generic.name = ART_NEXT0;
+    postgameMenuInfo.item_next.generic.flags = QMF_RIGHT_JUSTIFY | QMF_PULSEIFFOCUS | QMF_INACTIVE;
+    postgameMenuInfo.item_next.generic.x = 640;
+    postgameMenuInfo.item_next.generic.y = 480 - 64;
+    postgameMenuInfo.item_next.generic.callback = UI_SPPostgameMenu_NextEvent;
+    postgameMenuInfo.item_next.generic.id = ID_NEXT;
+    postgameMenuInfo.item_next.width = 128;
+    postgameMenuInfo.item_next.height = 64;
+    postgameMenuInfo.item_next.focuspic = ART_NEXT1;
     Menu_AddItem(&postgameMenuInfo.menu, (void*)&postgameMenuInfo.item_menu);
     Menu_AddItem(&postgameMenuInfo.menu, (void*)&postgameMenuInfo.item_again);
     Menu_AddItem(&postgameMenuInfo.menu, (void*)&postgameMenuInfo.item_next);
 }
 
 static void Prepname(int index) {
-    int     len;
-    char    name[64];
-    char    info[MAX_INFO_STRING];
+    int len;
+    char name[64];
+    char info[MAX_INFO_STRING];
     trap_GetConfigString(CS_PLAYERS + postgameMenuInfo.clientNums[index], info, MAX_INFO_STRING);
     Q_strncpyz(name, Info_ValueForKey(info, "n"), sizeof(name));
     Q_CleanStr(name);
@@ -436,14 +436,14 @@ UI_SPPostgameMenu_f
 =================
 */
 void UI_SPPostgameMenu_f(void) {
-    int         playerGameRank;
-    int         playerClientNum;
-    int         n;
-    int         oldFrags, newFrags;
-    const char*  arena;
-    int         awardValues[6];
-    char        map[MAX_QPATH];
-    char        info[MAX_INFO_STRING];
+    int playerGameRank;
+    int playerClientNum;
+    int n;
+    int oldFrags, newFrags;
+    const char* arena;
+    int awardValues[6];
+    char map[MAX_QPATH];
+    char info[MAX_INFO_STRING];
     memset(&postgameMenuInfo, 0, sizeof(postgameMenuInfo));
     trap_GetConfigString(CS_SYSTEMINFO, info, sizeof(info));
     postgameMenuInfo.serverId = atoi(Info_ValueForKey(info, "sv_serverid"));
@@ -457,7 +457,7 @@ void UI_SPPostgameMenu_f(void) {
     postgameMenuInfo.level = atoi(Info_ValueForKey(arenainfo, "num"));
     postgameMenuInfo.numClients = atoi(UI_Argv(1));
     playerClientNum = atoi(UI_Argv(2));
-    playerGameRank = 8;     // in case they ended game as a spectator
+    playerGameRank = 8; // in case they ended game as a spectator
     if (postgameMenuInfo.numClients > MAX_SCOREBOARD_CLIENTS) {
         postgameMenuInfo.numClients = MAX_SCOREBOARD_CLIENTS;
     }

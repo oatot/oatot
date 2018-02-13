@@ -11,7 +11,7 @@ option) any later version.
 
 Unlagged source code is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 for more details.
 
 You should have received a copy of the GNU General Public License
@@ -33,7 +33,7 @@ Clear out the given client's history (should be called when the teleport bit is 
 ============
 */
 void G_ResetHistory(gentity_t* ent) {
-    int     i, time;
+    int i, time;
     // fill up the history with data (assume the current position)
     ent->client->historyHead = NUM_CLIENT_HISTORY - 1;
     for (i = ent->client->historyHead, time = level.time; i >= 0; i--, time -= 50) {
@@ -52,7 +52,7 @@ Keep track of where the client's been
 ============
 */
 void G_StoreHistory(gentity_t* ent) {
-    int     head;
+    int head;
     ent->client->historyHead++;
     if (ent->client->historyHead >= NUM_CLIENT_HISTORY) {
         ent->client->historyHead = 0;
@@ -77,9 +77,9 @@ Returns a vector "frac" times the distance between "start" and "end"
 static void TimeShiftLerp(float frac, vec3_t start, vec3_t end, vec3_t result) {
     // From CG_InterpolateEntityPosition in cg_ents.c:
     /*
-        cent->lerpOrigin[0] = current[0] + f * ( next[0] - current[0] );
-        cent->lerpOrigin[1] = current[1] + f * ( next[1] - current[1] );
-        cent->lerpOrigin[2] = current[2] + f * ( next[2] - current[2] );
+    cent->lerpOrigin[0] = current[0] + f * ( next[0] - current[0] );
+    cent->lerpOrigin[1] = current[1] + f * ( next[1] - current[1] );
+    cent->lerpOrigin[2] = current[2] + f * ( next[2] - current[2] );
     */
     // Making these exactly the same should avoid floating-point error
     result[0] = start[0] + frac * (end[0] - start[0]);
@@ -95,35 +95,35 @@ Move a client back to where he was at the specified "time"
 =================
 */
 void G_TimeShiftClient(gentity_t* ent, int time, qboolean debug, gentity_t* debugger) {
-    int     j, k;
+    int j, k;
     //char msg[2048];
     // this will dump out the head index, and the time for all the stored positions
     /*
-        if ( debug ) {
-            char    str[MAX_STRING_CHARS];
+    if ( debug ) {
+    char str[MAX_STRING_CHARS];
 
-            Com_sprintf(str, sizeof(str), "print \"head: %d, %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n\"",
-                ent->client->historyHead,
-                ent->client->history[0].leveltime,
-                ent->client->history[1].leveltime,
-                ent->client->history[2].leveltime,
-                ent->client->history[3].leveltime,
-                ent->client->history[4].leveltime,
-                ent->client->history[5].leveltime,
-                ent->client->history[6].leveltime,
-                ent->client->history[7].leveltime,
-                ent->client->history[8].leveltime,
-                ent->client->history[9].leveltime,
-                ent->client->history[10].leveltime,
-                ent->client->history[11].leveltime,
-                ent->client->history[12].leveltime,
-                ent->client->history[13].leveltime,
-                ent->client->history[14].leveltime,
-                ent->client->history[15].leveltime,
-                ent->client->history[16].leveltime);
+    Com_sprintf(str, sizeof(str), "print \"head: %d, %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n\"",
+    ent->client->historyHead,
+    ent->client->history[0].leveltime,
+    ent->client->history[1].leveltime,
+    ent->client->history[2].leveltime,
+    ent->client->history[3].leveltime,
+    ent->client->history[4].leveltime,
+    ent->client->history[5].leveltime,
+    ent->client->history[6].leveltime,
+    ent->client->history[7].leveltime,
+    ent->client->history[8].leveltime,
+    ent->client->history[9].leveltime,
+    ent->client->history[10].leveltime,
+    ent->client->history[11].leveltime,
+    ent->client->history[12].leveltime,
+    ent->client->history[13].leveltime,
+    ent->client->history[14].leveltime,
+    ent->client->history[15].leveltime,
+    ent->client->history[16].leveltime);
 
-            trap_SendServerCommand( debugger - g_entities, str );
-        }
+    trap_SendServerCommand( debugger - g_entities, str );
+    }
     */
     // find two entries in the history whose times sandwich "time"
     // assumes no two adjacent records have the same timestamp
@@ -151,8 +151,8 @@ void G_TimeShiftClient(gentity_t* ent, int time, qboolean debug, gentity_t* debu
         // if we haven't wrapped back to the head, we've sandwiched, so
         // we shift the client's position back to where he was at "time"
         if (j != ent->client->historyHead) {
-            float   frac = (float)(time - ent->client->history[j].leveltime) /
-                           (float)(ent->client->history[k].leveltime - ent->client->history[j].leveltime);
+            float frac = (float)(time - ent->client->history[j].leveltime) /
+                         (float)(ent->client->history[k].leveltime - ent->client->history[j].leveltime);
             // interpolate between the two origins to give position at time index "time"
             TimeShiftLerp(frac,
                           ent->client->history[j].currentOrigin, ent->client->history[k].currentOrigin,
@@ -165,26 +165,26 @@ void G_TimeShiftClient(gentity_t* ent, int time, qboolean debug, gentity_t* debu
                           ent->client->history[j].maxs, ent->client->history[k].maxs,
                           ent->r.maxs);
             /*if ( debug && debugger != NULL ) {
-                // print some debugging stuff exactly like what the client does
+            // print some debugging stuff exactly like what the client does
 
-                // it starts with "Rec:" to let you know it backward-reconciled
-                Com_sprintf( msg, sizeof(msg),
-                    "print \"^1Rec: time: %d, j: %d, k: %d, origin: %0.2f %0.2f %0.2f\n"
-                    "^2frac: %0.4f, origin1: %0.2f %0.2f %0.2f, origin2: %0.2f %0.2f %0.2f\n"
-                    "^7level.time: %d, est time: %d, level.time delta: %d, est real ping: %d\n\"",
-                    time, ent->client->history[j].leveltime, ent->client->history[k].leveltime,
-                    ent->r.currentOrigin[0], ent->r.currentOrigin[1], ent->r.currentOrigin[2],
-                    frac,
-                    ent->client->history[j].currentOrigin[0],
-                    ent->client->history[j].currentOrigin[1],
-                    ent->client->history[j].currentOrigin[2],
-                    ent->client->history[k].currentOrigin[0],
-                    ent->client->history[k].currentOrigin[1],
-                    ent->client->history[k].currentOrigin[2],
-                    level.time, level.time + debugger->client->frameOffset,
-                    level.time - time, level.time + debugger->client->frameOffset - time);
+            // it starts with "Rec:" to let you know it backward-reconciled
+            Com_sprintf( msg, sizeof(msg),
+            "print \"^1Rec: time: %d, j: %d, k: %d, origin: %0.2f %0.2f %0.2f\n"
+            "^2frac: %0.4f, origin1: %0.2f %0.2f %0.2f, origin2: %0.2f %0.2f %0.2f\n"
+            "^7level.time: %d, est time: %d, level.time delta: %d, est real ping: %d\n\"",
+            time, ent->client->history[j].leveltime, ent->client->history[k].leveltime,
+            ent->r.currentOrigin[0], ent->r.currentOrigin[1], ent->r.currentOrigin[2],
+            frac,
+            ent->client->history[j].currentOrigin[0],
+            ent->client->history[j].currentOrigin[1],
+            ent->client->history[j].currentOrigin[2],
+            ent->client->history[k].currentOrigin[0],
+            ent->client->history[k].currentOrigin[1],
+            ent->client->history[k].currentOrigin[2],
+            level.time, level.time + debugger->client->frameOffset,
+            level.time - time, level.time + debugger->client->frameOffset - time);
 
-                trap_SendServerCommand( debugger - g_entities, msg );
+            trap_SendServerCommand( debugger - g_entities, msg );
             }*/
             // this will recalculate absmin and absmax
             trap_LinkEntity(ent);
@@ -214,8 +214,8 @@ except for "skip"
 =====================
 */
 void G_TimeShiftAllClients(int time, gentity_t* skip) {
-    int         i;
-    gentity_t*   ent;
+    int i;
+    gentity_t* ent;
     qboolean debug = (skip != NULL && skip->client &&
                       /*skip->client->pers.debugDelag && */ skip->s.weapon == WP_RAILGUN);
     // for every client
@@ -286,8 +286,8 @@ except for "skip"
 =======================
 */
 void G_UnTimeShiftAllClients(gentity_t* skip) {
-    int         i;
-    gentity_t*   ent;
+    int i;
+    gentity_t* ent;
     ent = &g_entities[0];
     for (i = 0; i < MAX_CLIENTS; i++, ent++) {
         if (ent->client && ent->inuse && ent->client->sess.sessionTeam < TEAM_SPECTATOR && ent != skip) {
@@ -319,10 +319,10 @@ Slide on the impacting surface
 ===========================
 */
 
-#define OVERCLIP        1.001f
+#define OVERCLIP 1.001f
 
 void G_PredictPlayerClipVelocity(vec3_t in, vec3_t normal, vec3_t out) {
-    float   backoff;
+    float backoff;
     // find the magnitude of the vector "in" along "normal"
     backoff = DotProduct(in, normal);
     // tilt the plane a bit to avoid floating-point error issues
@@ -345,21 +345,21 @@ Advance the given entity frametime seconds, sliding as appropriate
 #define MAX_CLIP_PLANES 5
 
 qboolean G_PredictPlayerSlideMove(gentity_t* ent, float frametime) {
-    int         bumpcount, numbumps;
-    vec3_t      dir;
-    float       d;
-    int         numplanes;
-    vec3_t      planes[MAX_CLIP_PLANES];
-    vec3_t      primal_velocity, velocity, origin;
-    vec3_t      clipVelocity;
-    int         i, j, k;
+    int bumpcount, numbumps;
+    vec3_t dir;
+    float d;
+    int numplanes;
+    vec3_t planes[MAX_CLIP_PLANES];
+    vec3_t primal_velocity, velocity, origin;
+    vec3_t clipVelocity;
+    int i, j, k;
     trace_t trace;
-    vec3_t      end;
-    float       time_left;
-    float       into;
-    vec3_t      endVelocity;
-    vec3_t      endClipVelocity;
-    //  vec3_t      worldUp = { 0.0f, 0.0f, 1.0f };
+    vec3_t end;
+    float time_left;
+    float into;
+    vec3_t endVelocity;
+    vec3_t endClipVelocity;
+    // vec3_t worldUp = { 0.0f, 0.0f, 1.0f };
     numbumps = 4;
     VectorCopy(ent->s.pos.trDelta, primal_velocity);
     VectorCopy(primal_velocity, velocity);
@@ -383,7 +383,7 @@ qboolean G_PredictPlayerSlideMove(gentity_t* ent, float frametime) {
             VectorCopy(trace.endpos, origin);
         }
         if (trace.fraction == 1) {
-            break;      // moved the entire distance
+            break; // moved the entire distance
         }
         time_left -= time_left * trace.fraction;
         if (numplanes >= MAX_CLIP_PLANES) {
@@ -415,7 +415,7 @@ qboolean G_PredictPlayerSlideMove(gentity_t* ent, float frametime) {
         for (i = 0; i < numplanes; i++) {
             into = DotProduct(velocity, planes[i]);
             if (into >= 0.1) {
-                continue;       // move doesn't interact with the plane
+                continue; // move doesn't interact with the plane
             }
             // slide along the plane
             G_PredictPlayerClipVelocity(velocity, planes[i], clipVelocity);
@@ -427,7 +427,7 @@ qboolean G_PredictPlayerSlideMove(gentity_t* ent, float frametime) {
                     continue;
                 }
                 if (DotProduct(clipVelocity, planes[j]) >= 0.1) {
-                    continue;       // move doesn't interact with the plane
+                    continue; // move doesn't interact with the plane
                 }
                 // try clipping the move to the plane
                 G_PredictPlayerClipVelocity(clipVelocity, planes[j], clipVelocity);
@@ -451,7 +451,7 @@ qboolean G_PredictPlayerSlideMove(gentity_t* ent, float frametime) {
                         continue;
                     }
                     if (DotProduct(clipVelocity, planes[k]) >= 0.1) {
-                        continue;       // move doesn't interact with the plane
+                        continue; // move doesn't interact with the plane
                     }
                     // stop dead at a tripple plane interaction
                     VectorClear(velocity);
@@ -495,7 +495,7 @@ void G_PredictPlayerStepSlideMove(gentity_t* ent, float frametime) {
     // test the player position if they were a stepheight higher
     trap_Trace(&trace, start_o, ent->r.mins, ent->r.maxs, up, ent->s.number, ent->clipmask);
     if (trace.allsolid) {
-        return;     // can't step up
+        return; // can't step up
     }
     stepSize = trace.endpos[2] - start_o[2];
     // try slidemove from this position

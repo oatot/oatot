@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -21,18 +21,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 //
 /**********************************************************************
-    UI_ATOMS.C
+ UI_ATOMS.C
 
-    User interface building blocks and support functions.
+ User interface building blocks and support functions.
 **********************************************************************/
 #include "ui_local.h"
 
-uiStatic_t      uis;
-qboolean        m_entersound;       // after a frame, so caching won't disrupt the sound
+uiStatic_t uis;
+qboolean m_entersound; // after a frame, so caching won't disrupt the sound
 
 void QDECL Com_Error(int level, const char* error, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, error);
     Q_vsnprintf(text, sizeof(text), error, argptr);
     va_end(argptr);
@@ -40,8 +40,8 @@ void QDECL Com_Error(int level, const char* error, ...) {
 }
 
 void QDECL Com_Printf(const char* msg, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, msg);
     Q_vsnprintf(text, sizeof(text), msg, argptr);
     va_end(argptr);
@@ -78,8 +78,8 @@ UI_PushMenu
 =================
 */
 void UI_PushMenu(menuframework_s* menu) {
-    int             i;
-    menucommon_s*   item;
+    int i;
+    menucommon_s* item;
     // avoid stacking menus invoked by hotkeys
     for (i = 0; i < uis.menusp; i++) {
         if (uis.stack[i] == menu) {
@@ -95,7 +95,7 @@ void UI_PushMenu(menuframework_s* menu) {
     }
     uis.activemenu = menu;
     // default cursor position
-    menu->cursor      = 0;
+    menu->cursor = 0;
     menu->cursor_prev = 0;
     m_entersound = qtrue;
     trap_Key_SetCatcher(KEYCATCH_UI);
@@ -131,7 +131,7 @@ void UI_PopMenu(void) {
 }
 
 void UI_ForceMenuOff(void) {
-    uis.menusp     = 0;
+    uis.menusp = 0;
     uis.activemenu = NULL;
     trap_Key_SetCatcher(trap_Key_GetCatcher() & ~KEYCATCH_UI);
     trap_Key_ClearStates();
@@ -168,107 +168,107 @@ static int propMap[128][3] = {
     {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1},
     {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1}, {0, 0, -1},
 
-    {0, 0, PROP_SPACE_WIDTH},       // SPACE
-    {11, 122, 7},   // !
+    {0, 0, PROP_SPACE_WIDTH}, // SPACE
+    {11, 122, 7}, // !
     {154, 181, 14}, // "
-    {55, 122, 17},  // #
-    {79, 122, 18},  // $
+    {55, 122, 17}, // #
+    {79, 122, 18}, // $
     {101, 122, 23}, // %
     {153, 122, 18}, // &
-    {9, 93, 7},     // '
-    {207, 122, 8},  // (
-    {230, 122, 9},  // )
+    {9, 93, 7}, // '
+    {207, 122, 8}, // (
+    {230, 122, 9}, // )
     {177, 122, 18}, // *
-    {30, 152, 18},  // +
-    {85, 181, 7},   // ,
-    {34, 93, 11},   // -
-    {110, 181, 6},  // .
+    {30, 152, 18}, // +
+    {85, 181, 7}, // ,
+    {34, 93, 11}, // -
+    {110, 181, 6}, // .
     {130, 152, 14}, // /
 
-    {22, 64, 17},   // 0
-    {41, 64, 12},   // 1
-    {58, 64, 17},   // 2
-    {78, 64, 18},   // 3
-    {98, 64, 19},   // 4
-    {120, 64, 18},  // 5
-    {141, 64, 18},  // 6
-    {204, 64, 16},  // 7
-    {162, 64, 17},  // 8
-    {182, 64, 18},  // 9
-    {59, 181, 7},   // :
-    {35, 181, 7},   //;
+    {22, 64, 17}, // 0
+    {41, 64, 12}, // 1
+    {58, 64, 17}, // 2
+    {78, 64, 18}, // 3
+    {98, 64, 19}, // 4
+    {120, 64, 18}, // 5
+    {141, 64, 18}, // 6
+    {204, 64, 16}, // 7
+    {162, 64, 17}, // 8
+    {182, 64, 18}, // 9
+    {59, 181, 7}, // :
+    {35, 181, 7}, //;
     {203, 152, 14}, // <
-    {56, 93, 14},   // =
+    {56, 93, 14}, // =
     {228, 152, 14}, // >
     {177, 181, 18}, // ?
 
-    {28, 122, 22},  // @
-    {5, 4, 18},     // A
-    {27, 4, 18},    // B
-    {48, 4, 18},    // C
-    {69, 4, 17},    // D
-    {90, 4, 13},    // E
-    {106, 4, 13},   // F
-    {121, 4, 18},   // G
-    {143, 4, 17},   // H
-    {164, 4, 8},    // I
-    {175, 4, 16},   // J
-    {195, 4, 18},   // K
-    {216, 4, 12},   // L
-    {230, 4, 23},   // M
-    {6, 34, 18},    // N
-    {27, 34, 18},   // O
+    {28, 122, 22}, // @
+    {5, 4, 18}, // A
+    {27, 4, 18}, // B
+    {48, 4, 18}, // C
+    {69, 4, 17}, // D
+    {90, 4, 13}, // E
+    {106, 4, 13}, // F
+    {121, 4, 18}, // G
+    {143, 4, 17}, // H
+    {164, 4, 8}, // I
+    {175, 4, 16}, // J
+    {195, 4, 18}, // K
+    {216, 4, 12}, // L
+    {230, 4, 23}, // M
+    {6, 34, 18}, // N
+    {27, 34, 18}, // O
 
-    {48, 34, 18},   // P
-    {68, 34, 18},   // Q
-    {90, 34, 17},   // R
-    {110, 34, 18},  // S
-    {130, 34, 14},  // T
-    {146, 34, 18},  // U
-    {166, 34, 19},  // V
-    {185, 34, 29},  // W
-    {215, 34, 18},  // X
-    {234, 34, 18},  // Y
-    {5, 64, 14},    // Z
-    {60, 152, 7},   // [
+    {48, 34, 18}, // P
+    {68, 34, 18}, // Q
+    {90, 34, 17}, // R
+    {110, 34, 18}, // S
+    {130, 34, 14}, // T
+    {146, 34, 18}, // U
+    {166, 34, 19}, // V
+    {185, 34, 29}, // W
+    {215, 34, 18}, // X
+    {234, 34, 18}, // Y
+    {5, 64, 14}, // Z
+    {60, 152, 7}, // [
     {106, 151, 13}, // '\'
-    {83, 152, 7},   // ]
+    {83, 152, 7}, // ]
     {128, 122, 17}, // ^
-    {4, 152, 21},   // _
+    {4, 152, 21}, // _
 
-    {134, 181, 5},  // '
-    {5, 4, 18},     // A
-    {27, 4, 18},    // B
-    {48, 4, 18},    // C
-    {69, 4, 17},    // D
-    {90, 4, 13},    // E
-    {106, 4, 13},   // F
-    {121, 4, 18},   // G
-    {143, 4, 17},   // H
-    {164, 4, 8},    // I
-    {175, 4, 16},   // J
-    {195, 4, 18},   // K
-    {216, 4, 12},   // L
-    {230, 4, 23},   // M
-    {6, 34, 18},    // N
-    {27, 34, 18},   // O
+    {134, 181, 5}, // '
+    {5, 4, 18}, // A
+    {27, 4, 18}, // B
+    {48, 4, 18}, // C
+    {69, 4, 17}, // D
+    {90, 4, 13}, // E
+    {106, 4, 13}, // F
+    {121, 4, 18}, // G
+    {143, 4, 17}, // H
+    {164, 4, 8}, // I
+    {175, 4, 16}, // J
+    {195, 4, 18}, // K
+    {216, 4, 12}, // L
+    {230, 4, 23}, // M
+    {6, 34, 18}, // N
+    {27, 34, 18}, // O
 
-    {48, 34, 18},   // P
-    {68, 34, 18},   // Q
-    {90, 34, 17},   // R
-    {110, 34, 18},  // S
-    {130, 34, 14},  // T
-    {146, 34, 18},  // U
-    {166, 34, 19},  // V
-    {185, 34, 29},  // W
-    {215, 34, 18},  // X
-    {234, 34, 18},  // Y
-    {5, 64, 14},    // Z
+    {48, 34, 18}, // P
+    {68, 34, 18}, // Q
+    {90, 34, 17}, // R
+    {110, 34, 18}, // S
+    {130, 34, 14}, // T
+    {146, 34, 18}, // U
+    {166, 34, 19}, // V
+    {185, 34, 29}, // W
+    {215, 34, 18}, // X
+    {234, 34, 18}, // Y
+    {5, 64, 14}, // Z
     {153, 152, 13}, // {
-    {11, 181, 5},   // |
+    {11, 181, 5}, // |
     {180, 152, 13}, // }
-    {79, 93, 17},   // ~
-    {0, 0, -1}      // DEL
+    {79, 93, 17}, // ~
+    {0, 0, -1} // DEL
 };
 
 static int propMapB[26][3] = {
@@ -303,9 +303,9 @@ static int propMapB[26][3] = {
     {158, 139, 25},
 };
 
-#define PROPB_GAP_WIDTH     4
-#define PROPB_SPACE_WIDTH   12
-#define PROPB_HEIGHT        36
+#define PROPB_GAP_WIDTH 4
+#define PROPB_SPACE_WIDTH 12
+#define PROPB_HEIGHT 36
 
 // bk001205 - code below duplicated in cgame/cg_drawtools.c
 // bk001205 - FIXME: does this belong in ui_shared.c?
@@ -316,15 +316,15 @@ UI_DrawBannerString
 */
 static void UI_DrawBannerString2(int x, int y, const char* str, vec4_t color) {
     const char* s;
-    unsigned char   ch; // bk001204 - unsigned
-    float   ax;
-    float   ay;
-    float   aw;
-    float   ah;
-    float   frow;
-    float   fcol;
-    float   fwidth;
-    float   fheight;
+    unsigned char ch; // bk001204 - unsigned
+    float ax;
+    float ay;
+    float aw;
+    float ah;
+    float frow;
+    float fcol;
+    float fwidth;
+    float fheight;
     // draw the colored text
     trap_R_SetColor(color);
     ax = x * uis.xscale + uis.bias;
@@ -351,10 +351,10 @@ static void UI_DrawBannerString2(int x, int y, const char* str, vec4_t color) {
 }
 
 void UI_DrawBannerString(int x, int y, const char* str, int style, vec4_t color) {
-    const char*     s;
-    int             ch;
-    int             width;
-    vec4_t          drawcolor;
+    const char* s;
+    int ch;
+    int width;
+    vec4_t drawcolor;
     // find the width of the drawn text
     s = str;
     width = 0;
@@ -388,10 +388,10 @@ void UI_DrawBannerString(int x, int y, const char* str, int style, vec4_t color)
 }
 
 int UI_ProportionalStringWidth(const char* str) {
-    const char*     s;
-    int             ch;
-    int             charWidth;
-    int             width;
+    const char* s;
+    int ch;
+    int charWidth;
+    int width;
     s = str;
     width = 0;
     while (*s) {
@@ -409,15 +409,15 @@ int UI_ProportionalStringWidth(const char* str) {
 
 static void UI_DrawProportionalString2(int x, int y, const char* str, vec4_t color, float sizeScale, qhandle_t charset) {
     const char* s;
-    unsigned char   ch; // bk001204 - unsigned
-    float   ax;
-    float   ay;
-    float   aw = 0; // bk001204 - init
-    float   ah;
-    float   frow;
-    float   fcol;
-    float   fwidth;
-    float   fheight;
+    unsigned char ch; // bk001204 - unsigned
+    float ax;
+    float ay;
+    float aw = 0; // bk001204 - init
+    float ah;
+    float frow;
+    float fcol;
+    float fwidth;
+    float fheight;
     // draw the colored text
     trap_R_SetColor(color);
     ax = x * uis.xscale + uis.bias;
@@ -461,8 +461,8 @@ UI_DrawProportionalString
 */
 void UI_DrawProportionalString(int x, int y, const char* str, int style, vec4_t color) {
     vec4_t drawcolor;
-    int     width;
-    float   sizeScale;
+    int width;
+    float sizeScale;
     sizeScale = UI_ProportionalSizeScale(style);
     switch (style & UI_FORMATMASK) {
     case UI_CENTER:
@@ -516,7 +516,7 @@ void UI_DrawProportionalString_AutoWrapped(int x, int y, int xmax, int ystep, co
     char* s1, *s2, *s3;
     char c_bcp;
     char buf[1024];
-    float   sizeScale;
+    float sizeScale;
     if (!str || str[0] == '\0') {
         return;
     }
@@ -570,15 +570,15 @@ UI_DrawString2
 */
 static void UI_DrawString2(int x, int y, const char* str, vec4_t color, int charw, int charh) {
     const char* s;
-    char    ch;
+    char ch;
     int forceColor = qfalse; //APSFIXME;
     vec4_t tempcolor;
-    float   ax;
-    float   ay;
-    float   aw;
-    float   ah;
-    float   frow;
-    float   fcol;
+    float ax;
+    float ay;
+    float aw;
+    float ah;
+    float frow;
+    float fcol;
     if (y < -charh)
         // offscreen
     {
@@ -619,12 +619,12 @@ UI_DrawString
 =================
 */
 void UI_DrawString(int x, int y, const char* str, int style, vec4_t color) {
-    int     len;
-    int     charw;
-    int     charh;
+    int len;
+    int charw;
+    int charh;
     vec4_t newcolor;
     vec4_t lowlight;
-    float*   drawcolor;
+    float* drawcolor;
     vec4_t dropcolor;
     if (!str) {
         return;
@@ -656,12 +656,12 @@ void UI_DrawString(int x, int y, const char* str, int style, vec4_t color) {
     case UI_CENTER:
         // center justify at x
         len = strlen(str);
-        x   = x - len * charw / 2;
+        x = x - len * charw / 2;
         break;
     case UI_RIGHT:
         // right justify at x
         len = strlen(str);
-        x   = x - len * charw;
+        x = x - len * charw;
         break;
     default:
         // left justify at x
@@ -681,7 +681,7 @@ UI_DrawChar
 =================
 */
 void UI_DrawChar(int x, int y, int ch, int style, vec4_t color) {
-    char    buff[2];
+    char buff[2];
     buff[0] = ch;
     buff[1] = '\0';
     UI_DrawString(x, y, buff, style, color);
@@ -749,7 +749,7 @@ UI_KeyEvent
 =================
 */
 void UI_KeyEvent(int key, int down) {
-    sfxHandle_t     s;
+    sfxHandle_t s;
     if (!uis.activemenu) {
         return;
     }
@@ -772,8 +772,8 @@ UI_MouseEvent
 =================
 */
 void UI_MouseEvent(int dx, int dy) {
-    int             i;
-    menucommon_s*   m;
+    int i;
+    menucommon_s* m;
     if (!uis.activemenu) {
         return;
     }
@@ -864,8 +864,8 @@ void UI_Cache_f(void) {
     UI_AddBots_Cache();
     UI_RemoveBots_Cache();
     UI_SetupMenu_Cache();
-    //  UI_LoadConfig_Cache();
-    //  UI_SaveConfigMenu_Cache();
+    // UI_LoadConfig_Cache();
+    // UI_SaveConfigMenu_Cache();
     UI_BotSelectMenu_Cache();
     UI_CDKeyMenu_Cache();
     UI_ModsMenu_Cache();
@@ -877,8 +877,8 @@ UI_ConsoleCommand
 =================
 */
 qboolean UI_ConsoleCommand(int realTime) {
-    char*    cmd;
-    int     i;
+    char* cmd;
+    int i;
     uis.frametime = realTime - uis.realtime;
     uis.realtime = realTime;
     cmd = UI_Argv(0);
@@ -995,7 +995,7 @@ void UI_Init(void) {
     // initialize the menu system
     Menu_Cache();
     uis.activemenu = NULL;
-    uis.menusp     = 0;
+    uis.menusp = 0;
 }
 
 /*
@@ -1014,27 +1014,27 @@ void UI_AdjustFrom640(float* x, float* y, float* w, float* h) {
 }
 
 void UI_DrawNamedPic(float x, float y, float width, float height, const char* picname) {
-    qhandle_t   hShader;
+    qhandle_t hShader;
     hShader = trap_R_RegisterShaderNoMip(picname);
     UI_AdjustFrom640(&x, &y, &width, &height);
     trap_R_DrawStretchPic(x, y, width, height, 0, 0, 1, 1, hShader);
 }
 
 void UI_DrawHandlePic(float x, float y, float w, float h, qhandle_t hShader) {
-    float   s0;
-    float   s1;
-    float   t0;
-    float   t1;
-    if (w < 0) {     // flip about vertical
-        w  = -w;
+    float s0;
+    float s1;
+    float t0;
+    float t1;
+    if (w < 0) { // flip about vertical
+        w = -w;
         s0 = 1;
         s1 = 0;
     } else {
         s0 = 0;
         s1 = 1;
     }
-    if (h < 0) {     // flip about horizontal
-        h  = -h;
+    if (h < 0) { // flip about horizontal
+        h = -h;
         t0 = 1;
         t1 = 0;
     } else {
@@ -1095,7 +1095,7 @@ UI_Refresh
 */
 void UI_Refresh(int realtime) {
     uis.frametime = realtime - uis.realtime;
-    uis.realtime  = realtime;
+    uis.realtime = realtime;
     if (!(trap_Key_GetCatcher() & KEYCATCH_UI)) {
         return;
     }

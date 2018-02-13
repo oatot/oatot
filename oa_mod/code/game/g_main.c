@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -31,248 +31,248 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 level_locals_t level;
 
 typedef struct {
-    vmCvar_t*    vmCvar;
-    char*        cvarName;
-    char*        defaultString;
-    int         cvarFlags;
-    int         modificationCount;  // for tracking changes
-    qboolean    trackChange;        // track this variable, and announce if changed
-    qboolean teamShader;        // track and if changed, update shader state
+    vmCvar_t* vmCvar;
+    char* cvarName;
+    char* defaultString;
+    int cvarFlags;
+    int modificationCount; // for tracking changes
+    qboolean trackChange; // track this variable, and announce if changed
+    qboolean teamShader; // track and if changed, update shader state
 } cvarTable_t;
 
-gentity_t       g_entities[MAX_GENTITIES];
-gclient_t       g_clients[MAX_CLIENTS];
+gentity_t g_entities[MAX_GENTITIES];
+gclient_t g_clients[MAX_CLIENTS];
 
 extern int enableQ;
 
-vmCvar_t    g_gametype;
-vmCvar_t    g_dmflags;
-vmCvar_t        g_videoflags;
-vmCvar_t    g_elimflags;
-vmCvar_t    g_voteflags;
-vmCvar_t    g_fraglimit;
-vmCvar_t    g_timelimit;
-vmCvar_t    g_capturelimit;
-vmCvar_t    g_friendlyFire;
-vmCvar_t    g_password;
-vmCvar_t    g_needpass;
-vmCvar_t    g_maxclients;
-vmCvar_t    g_maxGameClients;
-vmCvar_t    g_dedicated;
-vmCvar_t    g_speed;
-vmCvar_t    g_gravity;
-vmCvar_t    g_gravityModifier;
-vmCvar_t        g_damageModifier;
-vmCvar_t    g_cheats;
-vmCvar_t    g_knockback;
-vmCvar_t    g_quadfactor;
-vmCvar_t    g_forcerespawn;
-vmCvar_t    g_respawntime;
-vmCvar_t    g_inactivity;
-vmCvar_t    g_debugMove;
-vmCvar_t    g_debugDamage;
-vmCvar_t    g_debugAlloc;
-vmCvar_t    g_weaponRespawn;
-vmCvar_t    g_weaponTeamRespawn;
-vmCvar_t    g_motd;
-vmCvar_t        g_motdfile;
-vmCvar_t        g_votemaps;
-vmCvar_t        g_votecustom;
-vmCvar_t    g_synchronousClients;
-vmCvar_t    g_warmup;
-vmCvar_t    g_doWarmup;
-vmCvar_t    g_restarted;
-vmCvar_t    g_logfile;
-vmCvar_t    g_logfileSync;
-vmCvar_t    g_blood;
-vmCvar_t    g_podiumDist;
-vmCvar_t    g_podiumDrop;
-vmCvar_t    g_allowVote;
-vmCvar_t    g_teamAutoJoin;
-vmCvar_t    g_teamForceBalance;
-vmCvar_t    g_banIPs;
-vmCvar_t    g_filterBan;
-vmCvar_t    g_smoothClients;
-vmCvar_t    pmove_fixed;
-vmCvar_t    pmove_msec;
-vmCvar_t        pmove_float;
-vmCvar_t    g_rankings;
-vmCvar_t    g_listEntity;
-vmCvar_t    g_obeliskHealth;
-vmCvar_t    g_obeliskRegenPeriod;
-vmCvar_t    g_obeliskRegenAmount;
-vmCvar_t    g_obeliskRespawnDelay;
-vmCvar_t    g_cubeTimeout;
+vmCvar_t g_gametype;
+vmCvar_t g_dmflags;
+vmCvar_t g_videoflags;
+vmCvar_t g_elimflags;
+vmCvar_t g_voteflags;
+vmCvar_t g_fraglimit;
+vmCvar_t g_timelimit;
+vmCvar_t g_capturelimit;
+vmCvar_t g_friendlyFire;
+vmCvar_t g_password;
+vmCvar_t g_needpass;
+vmCvar_t g_maxclients;
+vmCvar_t g_maxGameClients;
+vmCvar_t g_dedicated;
+vmCvar_t g_speed;
+vmCvar_t g_gravity;
+vmCvar_t g_gravityModifier;
+vmCvar_t g_damageModifier;
+vmCvar_t g_cheats;
+vmCvar_t g_knockback;
+vmCvar_t g_quadfactor;
+vmCvar_t g_forcerespawn;
+vmCvar_t g_respawntime;
+vmCvar_t g_inactivity;
+vmCvar_t g_debugMove;
+vmCvar_t g_debugDamage;
+vmCvar_t g_debugAlloc;
+vmCvar_t g_weaponRespawn;
+vmCvar_t g_weaponTeamRespawn;
+vmCvar_t g_motd;
+vmCvar_t g_motdfile;
+vmCvar_t g_votemaps;
+vmCvar_t g_votecustom;
+vmCvar_t g_synchronousClients;
+vmCvar_t g_warmup;
+vmCvar_t g_doWarmup;
+vmCvar_t g_restarted;
+vmCvar_t g_logfile;
+vmCvar_t g_logfileSync;
+vmCvar_t g_blood;
+vmCvar_t g_podiumDist;
+vmCvar_t g_podiumDrop;
+vmCvar_t g_allowVote;
+vmCvar_t g_teamAutoJoin;
+vmCvar_t g_teamForceBalance;
+vmCvar_t g_banIPs;
+vmCvar_t g_filterBan;
+vmCvar_t g_smoothClients;
+vmCvar_t pmove_fixed;
+vmCvar_t pmove_msec;
+vmCvar_t pmove_float;
+vmCvar_t g_rankings;
+vmCvar_t g_listEntity;
+vmCvar_t g_obeliskHealth;
+vmCvar_t g_obeliskRegenPeriod;
+vmCvar_t g_obeliskRegenAmount;
+vmCvar_t g_obeliskRespawnDelay;
+vmCvar_t g_cubeTimeout;
 #ifdef MISSIONPACK
-vmCvar_t    g_redteam;
-vmCvar_t    g_blueteam;
-vmCvar_t    g_singlePlayer;
+vmCvar_t g_redteam;
+vmCvar_t g_blueteam;
+vmCvar_t g_singlePlayer;
 #endif
-vmCvar_t    g_enableDust;
-vmCvar_t    cg_enableQ;     // leilei
-vmCvar_t    g_enableFS;     // leilei
-vmCvar_t    g_enableBreath;
-vmCvar_t    g_proxMineTimeout;
-vmCvar_t    g_music;
-vmCvar_t        g_spawnprotect;
+vmCvar_t g_enableDust;
+vmCvar_t cg_enableQ; // leilei
+vmCvar_t g_enableFS; // leilei
+vmCvar_t g_enableBreath;
+vmCvar_t g_proxMineTimeout;
+vmCvar_t g_music;
+vmCvar_t g_spawnprotect;
 //Following for elimination:
-vmCvar_t    g_elimination_selfdamage;
-vmCvar_t    g_elimination_startHealth;
-vmCvar_t    g_elimination_startArmor;
-vmCvar_t    g_elimination_bfg;
-vmCvar_t    g_elimination_grapple;
-vmCvar_t    g_elimination_roundtime;
-vmCvar_t    g_elimination_warmup;
-vmCvar_t    g_elimination_activewarmup;
-vmCvar_t        g_elimination_allgametypes;
-vmCvar_t    g_elimination_machinegun;
-vmCvar_t    g_elimination_shotgun;
-vmCvar_t    g_elimination_grenade;
-vmCvar_t    g_elimination_rocket;
-vmCvar_t    g_elimination_railgun;
-vmCvar_t    g_elimination_lightning;
-vmCvar_t    g_elimination_plasmagun;
-vmCvar_t    g_elimination_chain;
-vmCvar_t    g_elimination_mine;
-vmCvar_t    g_elimination_nail;
+vmCvar_t g_elimination_selfdamage;
+vmCvar_t g_elimination_startHealth;
+vmCvar_t g_elimination_startArmor;
+vmCvar_t g_elimination_bfg;
+vmCvar_t g_elimination_grapple;
+vmCvar_t g_elimination_roundtime;
+vmCvar_t g_elimination_warmup;
+vmCvar_t g_elimination_activewarmup;
+vmCvar_t g_elimination_allgametypes;
+vmCvar_t g_elimination_machinegun;
+vmCvar_t g_elimination_shotgun;
+vmCvar_t g_elimination_grenade;
+vmCvar_t g_elimination_rocket;
+vmCvar_t g_elimination_railgun;
+vmCvar_t g_elimination_lightning;
+vmCvar_t g_elimination_plasmagun;
+vmCvar_t g_elimination_chain;
+vmCvar_t g_elimination_mine;
+vmCvar_t g_elimination_nail;
 
-vmCvar_t        g_elimination_lockspectator;
+vmCvar_t g_elimination_lockspectator;
 
-vmCvar_t    g_rockets;
+vmCvar_t g_rockets;
 
 //oatot
-vmCvar_t    g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
-vmCvar_t    g_readyN;
-vmCvar_t    g_rageQuit;
-vmCvar_t    g_makingBetsTime; // time for making bets & warmup before match (in mins)
-vmCvar_t    g_betsMade;
-vmCvar_t    g_readyToBet;
+vmCvar_t g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
+vmCvar_t g_readyN;
+vmCvar_t g_rageQuit;
+vmCvar_t g_makingBetsTime; // time for making bets & warmup before match (in mins)
+vmCvar_t g_betsMade;
+vmCvar_t g_readyToBet;
 
 //dmn_clowns suggestions (with my idea of implementing):
-vmCvar_t    g_instantgib;
-vmCvar_t    g_vampire;
-vmCvar_t    g_vampireMaxHealth;
+vmCvar_t g_instantgib;
+vmCvar_t g_vampire;
+vmCvar_t g_vampireMaxHealth;
 //Regen
-vmCvar_t    g_regen;
+vmCvar_t g_regen;
 int g_ffa_gt; //Are this a FFA gametype even if gametype is high?
-vmCvar_t    g_lms_lives;
-vmCvar_t    g_lms_mode;
-vmCvar_t    g_elimination_ctf_oneway;
-vmCvar_t        g_awardpushing; //The server can decide if players are awarded for pushing people in lave etc.
-vmCvar_t        g_persistantpowerups; //Allow missionpack style persistant powerups?
+vmCvar_t g_lms_lives;
+vmCvar_t g_lms_mode;
+vmCvar_t g_elimination_ctf_oneway;
+vmCvar_t g_awardpushing; //The server can decide if players are awarded for pushing people in lave etc.
+vmCvar_t g_persistantpowerups; //Allow missionpack style persistant powerups?
 
-vmCvar_t        g_catchup; //Favors the week players
+vmCvar_t g_catchup; //Favors the week players
 
-vmCvar_t         g_autonextmap; //Autochange map
-vmCvar_t         g_mappools; //mappools to be used for autochange
+vmCvar_t g_autonextmap; //Autochange map
+vmCvar_t g_mappools; //mappools to be used for autochange
 
-vmCvar_t        g_voteNames;
-vmCvar_t        g_voteBan;
-vmCvar_t        g_voteGametypes;
-vmCvar_t        g_voteMinTimelimit;
-vmCvar_t        g_voteMaxTimelimit;
-vmCvar_t        g_voteMinFraglimit;
-vmCvar_t        g_voteMaxFraglimit;
-vmCvar_t        g_maxvotes;
+vmCvar_t g_voteNames;
+vmCvar_t g_voteBan;
+vmCvar_t g_voteGametypes;
+vmCvar_t g_voteMinTimelimit;
+vmCvar_t g_voteMaxTimelimit;
+vmCvar_t g_voteMinFraglimit;
+vmCvar_t g_voteMaxFraglimit;
+vmCvar_t g_maxvotes;
 
-vmCvar_t        g_humanplayers;
+vmCvar_t g_humanplayers;
 
 //used for voIP
-vmCvar_t         g_redTeamClientNumbers;
-vmCvar_t         g_blueTeamClientNumbers;
+vmCvar_t g_redTeamClientNumbers;
+vmCvar_t g_blueTeamClientNumbers;
 
 //unlagged - server options
-vmCvar_t    g_delagHitscan;
-vmCvar_t    g_truePing;
-vmCvar_t    sv_fps;
-vmCvar_t        g_lagLightning; //Adds a little lag to the lightninggun to make it less powerfull
+vmCvar_t g_delagHitscan;
+vmCvar_t g_truePing;
+vmCvar_t sv_fps;
+vmCvar_t g_lagLightning; //Adds a little lag to the lightninggun to make it less powerfull
 //unlagged - server options
 //KK-OAX
-vmCvar_t        g_sprees;
-vmCvar_t        g_altExcellent;
-vmCvar_t        g_spreeDiv;
+vmCvar_t g_sprees;
+vmCvar_t g_altExcellent;
+vmCvar_t g_spreeDiv;
 
 //Command/Chat spamming/flooding
-vmCvar_t        g_floodMaxDemerits;
-vmCvar_t        g_floodMinTime;
+vmCvar_t g_floodMaxDemerits;
+vmCvar_t g_floodMinTime;
 
 //Admin
-vmCvar_t        g_admin;
-vmCvar_t        g_adminLog;
-vmCvar_t        g_adminParseSay;
-vmCvar_t        g_adminNameProtect;
-vmCvar_t        g_adminTempBan;
-vmCvar_t        g_adminMaxBan;
-vmCvar_t        g_specChat;
-vmCvar_t        g_publicAdminMessages;
+vmCvar_t g_admin;
+vmCvar_t g_adminLog;
+vmCvar_t g_adminParseSay;
+vmCvar_t g_adminNameProtect;
+vmCvar_t g_adminTempBan;
+vmCvar_t g_adminMaxBan;
+vmCvar_t g_specChat;
+vmCvar_t g_publicAdminMessages;
 
-vmCvar_t        g_maxWarnings;
-vmCvar_t        g_warningExpire;
+vmCvar_t g_maxWarnings;
+vmCvar_t g_warningExpire;
 
-vmCvar_t        g_minNameChangePeriod;
-vmCvar_t        g_maxNameChanges;
+vmCvar_t g_minNameChangePeriod;
+vmCvar_t g_maxNameChanges;
 
-vmCvar_t        g_timestamp_startgame;
+vmCvar_t g_timestamp_startgame;
 
-vmCvar_t        g_execute_gametype_script;
-vmCvar_t        g_emptyCommand;
-vmCvar_t        g_emptyTime;
+vmCvar_t g_execute_gametype_script;
+vmCvar_t g_emptyCommand;
+vmCvar_t g_emptyTime;
 
 mapinfo_result_t mapinfo;
 
 // bk001129 - made static to avoid aliasing
-static cvarTable_t      gameCvarTable[] = {
+static cvarTable_t gameCvarTable[] = {
     // don't override the cheat state set by the system
     { &g_cheats, "sv_cheats", "", 0, 0, qfalse },
 
     // noset vars
-    { NULL, "gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
-    { NULL, "gamedate", __DATE__, CVAR_ROM, 0, qfalse  },
-    { &g_restarted, "g_restarted", "0", CVAR_ROM, 0, qfalse  },
+    { NULL, "gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
+    { NULL, "gamedate", __DATE__, CVAR_ROM, 0, qfalse },
+    { &g_restarted, "g_restarted", "0", CVAR_ROM, 0, qfalse },
 
     // latched vars
-    { &g_gametype, "g_gametype", "0", CVAR_SERVERINFO | CVAR_USERINFO | CVAR_LATCH, 0, qfalse  },
+    { &g_gametype, "g_gametype", "0", CVAR_SERVERINFO | CVAR_USERINFO | CVAR_LATCH, 0, qfalse },
 
-    { &g_maxclients, "sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse  },
-    { &g_maxGameClients, "g_maxGameClients", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse  },
+    { &g_maxclients, "sv_maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse },
+    { &g_maxGameClients, "g_maxGameClients", "0", CVAR_SERVERINFO | CVAR_LATCH | CVAR_ARCHIVE, 0, qfalse },
 
     // change anytime vars
-    { &g_dmflags, "dmflags", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue  },
-    { &g_videoflags, "videoflags", "7", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue  },
-    { &g_elimflags, "elimflags", "0", CVAR_SERVERINFO, 0, qfalse  },
-    { &g_voteflags, "voteflags", "0", CVAR_SERVERINFO, 0, qfalse  },
+    { &g_dmflags, "dmflags", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue },
+    { &g_videoflags, "videoflags", "7", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue },
+    { &g_elimflags, "elimflags", "0", CVAR_SERVERINFO, 0, qfalse },
+    { &g_voteflags, "voteflags", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_fraglimit, "fraglimit", "20", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue },
     { &g_timelimit, "timelimit", "0", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue },
     { &g_capturelimit, "capturelimit", "8", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_NORESTART, 0, qtrue },
 
-    { &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse  },
+    { &g_synchronousClients, "g_synchronousClients", "0", CVAR_SYSTEMINFO, 0, qfalse },
 
-    { &g_friendlyFire, "g_friendlyFire", "0", CVAR_ARCHIVE, 0, qtrue  },
+    { &g_friendlyFire, "g_friendlyFire", "0", CVAR_ARCHIVE, 0, qtrue },
 
-    { &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE  },
-    { &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE  },
+    { &g_teamAutoJoin, "g_teamAutoJoin", "0", CVAR_ARCHIVE },
+    { &g_teamForceBalance, "g_teamForceBalance", "0", CVAR_ARCHIVE },
 
-    { &g_warmup, "g_warmup", "20", CVAR_ARCHIVE, 0, qtrue  },
-    { &g_doWarmup, "g_doWarmup", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue  },
-    { &g_logfile, "g_log", "games.log", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_logfileSync, "g_logsync", "0", CVAR_ARCHIVE, 0, qfalse  },
+    { &g_warmup, "g_warmup", "20", CVAR_ARCHIVE, 0, qtrue },
+    { &g_doWarmup, "g_doWarmup", "0", CVAR_SERVERINFO | CVAR_ARCHIVE, 0, qtrue },
+    { &g_logfile, "g_log", "games.log", CVAR_ARCHIVE, 0, qfalse },
+    { &g_logfileSync, "g_logsync", "0", CVAR_ARCHIVE, 0, qfalse },
 
-    { &g_password, "g_password", "", CVAR_USERINFO, 0, qfalse  },
+    { &g_password, "g_password", "", CVAR_USERINFO, 0, qfalse },
 
-    { &g_banIPs, "g_banIPs", "", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_filterBan, "g_filterBan", "1", CVAR_ARCHIVE, 0, qfalse  },
+    { &g_banIPs, "g_banIPs", "", CVAR_ARCHIVE, 0, qfalse },
+    { &g_filterBan, "g_filterBan", "1", CVAR_ARCHIVE, 0, qfalse },
 
     { &g_needpass, "g_needpass", "0", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse },
 
-    { &g_dedicated, "dedicated", "0", 0, 0, qfalse  },
+    { &g_dedicated, "dedicated", "0", 0, 0, qfalse },
 
-    { &g_speed, "g_speed", "320", 0, 0, qtrue  },
-    { &g_gravity, "g_gravity", "800", 0, 0, qtrue  },
-    { &g_gravityModifier, "g_gravityModifier", "1", 0, 0, qtrue  },
+    { &g_speed, "g_speed", "320", 0, 0, qtrue },
+    { &g_gravity, "g_gravity", "800", 0, 0, qtrue },
+    { &g_gravityModifier, "g_gravityModifier", "1", 0, 0, qtrue },
     { &g_damageModifier, "g_damageModifier", "0", 0, 0, qtrue },
-    { &g_knockback, "g_knockback", "1000", 0, 0, qtrue  },
-    { &g_quadfactor, "g_quadfactor", "3", 0, 0, qtrue  },
-    { &g_weaponRespawn, "g_weaponrespawn", "5", 0, 0, qtrue  },
+    { &g_knockback, "g_knockback", "1000", 0, 0, qtrue },
+    { &g_quadfactor, "g_quadfactor", "3", 0, 0, qtrue },
+    { &g_weaponRespawn, "g_weaponrespawn", "5", 0, 0, qtrue },
     { &g_weaponTeamRespawn, "g_weaponTeamRespawn", "30", 0, 0, qtrue },
     { &g_forcerespawn, "g_forcerespawn", "20", 0, 0, qtrue },
     { &g_respawntime, "g_respawntime", "0", CVAR_ARCHIVE, 0, qtrue },
@@ -318,12 +318,12 @@ static cvarTable_t      gameCvarTable[] = {
     { &g_cubeTimeout, "g_cubeTimeout", "30", 0, 0, qfalse },
 #ifdef MISSIONPACK
     { &g_redteam, "g_redteam", "Stroggs", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_USERINFO, 0, qtrue, qtrue },
-    { &g_blueteam, "g_blueteam", "Pagans", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_USERINFO, 0, qtrue, qtrue  },
-    { &g_singlePlayer, "ui_singlePlayerActive", "", 0, 0, qfalse, qfalse  },
+    { &g_blueteam, "g_blueteam", "Pagans", CVAR_ARCHIVE | CVAR_SERVERINFO | CVAR_USERINFO, 0, qtrue, qtrue },
+    { &g_singlePlayer, "ui_singlePlayerActive", "", 0, 0, qfalse, qfalse },
 #endif
 
-    { &g_enableFS, "g_enableFS", "0", CVAR_SERVERINFO, 0, qtrue, qfalse },      // leilei - bikinis
-    { &cg_enableQ, "g_enableQ", "0", CVAR_SERVERINFO, 0, qtrue, qfalse },       // leilei - q scale
+    { &g_enableFS, "g_enableFS", "0", CVAR_SERVERINFO, 0, qtrue, qfalse }, // leilei - bikinis
+    { &cg_enableQ, "g_enableQ", "0", CVAR_SERVERINFO, 0, qtrue, qfalse }, // leilei - q scale
     { &g_enableDust, "g_enableDust", "0", CVAR_SERVERINFO, 0, qtrue, qfalse },
     { &g_enableBreath, "g_enableBreath", "0", CVAR_SERVERINFO, 0, qtrue, qfalse },
     { &g_proxMineTimeout, "g_proxMineTimeout", "20000", 0, 0, qfalse },
@@ -409,19 +409,19 @@ static cvarTable_t      gameCvarTable[] = {
     { &g_spreeDiv, "g_spreeDiv", "5", 0, 0, qfalse},
 
     //Used for command/chat flooding
-    { &g_floodMaxDemerits, "g_floodMaxDemerits", "5000", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_floodMinTime, "g_floodMinTime", "2000", CVAR_ARCHIVE, 0, qfalse  },
+    { &g_floodMaxDemerits, "g_floodMaxDemerits", "5000", CVAR_ARCHIVE, 0, qfalse },
+    { &g_floodMinTime, "g_floodMinTime", "2000", CVAR_ARCHIVE, 0, qfalse },
 
     //Admin
-    { &g_admin, "g_admin", "admin.dat", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_adminLog, "g_adminLog", "admin.log", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_adminParseSay, "g_adminParseSay", "1", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_adminNameProtect, "g_adminNameProtect", "1", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_adminTempBan, "g_adminTempBan", "2m", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_adminMaxBan, "g_adminMaxBan", "2w", CVAR_ARCHIVE, 0, qfalse  },
+    { &g_admin, "g_admin", "admin.dat", CVAR_ARCHIVE, 0, qfalse },
+    { &g_adminLog, "g_adminLog", "admin.log", CVAR_ARCHIVE, 0, qfalse },
+    { &g_adminParseSay, "g_adminParseSay", "1", CVAR_ARCHIVE, 0, qfalse },
+    { &g_adminNameProtect, "g_adminNameProtect", "1", CVAR_ARCHIVE, 0, qfalse },
+    { &g_adminTempBan, "g_adminTempBan", "2m", CVAR_ARCHIVE, 0, qfalse },
+    { &g_adminMaxBan, "g_adminMaxBan", "2w", CVAR_ARCHIVE, 0, qfalse },
 
-    { &g_specChat, "g_specChat", "1", CVAR_ARCHIVE, 0, qfalse  },
-    { &g_publicAdminMessages, "g_publicAdminMessages", "1", CVAR_ARCHIVE, 0, qfalse  },
+    { &g_specChat, "g_specChat", "1", CVAR_ARCHIVE, 0, qfalse },
+    { &g_publicAdminMessages, "g_publicAdminMessages", "1", CVAR_ARCHIVE, 0, qfalse },
 
     { &g_maxWarnings, "g_maxWarnings", "3", CVAR_ARCHIVE, 0, qfalse },
     { &g_warningExpire, "g_warningExpire", "3600", CVAR_ARCHIVE, 0, qfalse },
@@ -491,8 +491,8 @@ Q_EXPORT intptr_t vmMain(int command, int arg0, int arg1, int arg2, int arg3, in
 }
 
 void QDECL G_Printf(const char* fmt, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, fmt);
     Q_vsnprintf(text, sizeof(text), fmt, argptr);
     va_end(argptr);
@@ -500,8 +500,8 @@ void QDECL G_Printf(const char* fmt, ...) {
 }
 
 void QDECL G_Error(const char* fmt, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, fmt);
     Q_vsnprintf(text, sizeof(text), fmt, argptr);
     va_end(argptr);
@@ -520,9 +520,9 @@ All but the last will have the teamchain field set to the next one
 ================
 */
 void G_FindTeams(void) {
-    gentity_t*   e, *e2;
-    int     i, j;
-    int     c, c2;
+    gentity_t* e, *e2;
+    int i, j;
+    int c, c2;
     c = 0;
     c2 = 0;
     for (i = 1, e = g_entities + i; i < level.num_entities; i++, e++) {
@@ -585,7 +585,7 @@ G_RegisterCvars
 =================
 */
 void G_RegisterCvars(void) {
-    int         i;
+    int i;
     cvarTable_t* cv;
     qboolean remapped = qfalse;
     for (i = 0, cv = gameCvarTable; i < gameCvarTableSize; i++, cv++) {
@@ -608,9 +608,9 @@ void G_RegisterCvars(void) {
     }
     //set FFA status for high gametypes:
     if (g_gametype.integer == GT_LMS || g_gametype.integer == GT_POSSESSION) {
-        g_ffa_gt = 1;   //Last Man standig is a FFA gametype
+        g_ffa_gt = 1; //Last Man standig is a FFA gametype
     } else {
-        g_ffa_gt = 0;   //If >GT_CTF use bases
+        g_ffa_gt = 0; //If >GT_CTF use bases
     }
     level.warmupModificationCount = g_warmup.modificationCount;
 }
@@ -621,7 +621,7 @@ G_UpdateCvars
 =================
 */
 void G_UpdateCvars(void) {
-    int         i;
+    int i;
     cvarTable_t* cv;
     qboolean remapped = qfalse;
     for (i = 0, cv = gameCvarTable; i < gameCvarTableSize; i++, cv++) {
@@ -641,7 +641,7 @@ void G_UpdateCvars(void) {
                     VoteParseCustomVotes();
                 }
                 //Here comes the cvars that must trigger a map_restart
-                if (cv->vmCvar == &g_instantgib || cv->vmCvar == &g_rockets  ||  cv->vmCvar == &g_elimination_allgametypes) {
+                if (cv->vmCvar == &g_instantgib || cv->vmCvar == &g_rockets || cv->vmCvar == &g_elimination_allgametypes) {
                     trap_Cvar_Set("sv_dorestart", "1");
                 }
                 if (cv->vmCvar == &g_voteNames) {
@@ -709,7 +709,7 @@ static int G_UpdateTimestamp(void) {
  * @return 0 if the script ran, 1 if it did not exist
  */
 static int G_RunScript(const char* script) {
-    fileHandle_t    file;
+    fileHandle_t file;
     char buffer[100];
     Q_snprintf(buffer, sizeof(buffer), "%s", script);
     Q_StrToLower(buffer);
@@ -753,8 +753,8 @@ G_InitGame
 ============
 */
 void G_InitGame(int levelTime, int randomSeed, int restart) {
-    int                 i, next_game_stage;
-    char    mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
+    int i, next_game_stage;
+    char mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
     G_Printf("------- Game Initialization -------\n");
     G_Printf("gamename: %s\n", GAMEVERSION);
     G_Printf("gamedate: %s\n", __DATE__);
@@ -774,7 +774,7 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
     memset(&level, 0, sizeof(level));
     level.time = levelTime;
     level.startTime = levelTime;
-    level.snd_fry = G_SoundIndex("sound/player/fry.wav");   // FIXME standing in lava / slime
+    level.snd_fry = G_SoundIndex("sound/player/fry.wav"); // FIXME standing in lava / slime
     if (g_gametype.integer != GT_SINGLE_PLAYER && g_logfile.string[0]) {
         if (g_logfileSync.integer) {
             trap_FS_FOpenFile(g_logfile.string, &level.logFile, FS_APPEND_SYNC);
@@ -784,7 +784,7 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
         if (!level.logFile) {
             G_Printf("WARNING: Couldn't open logfile: %s\n", g_logfile.string);
         } else {
-            char    serverinfo[MAX_INFO_STRING];
+            char serverinfo[MAX_INFO_STRING];
             trap_GetServerinfo(serverinfo, sizeof(serverinfo));
             G_LogPrintf("------------------------------------------------------------\n");
             G_LogPrintf("InitGame: %s\n", serverinfo);
@@ -968,8 +968,8 @@ void G_ShutdownGame(int restart) {
 //===================================================================
 
 void QDECL Com_Error(int level, const char* error, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, error);
     Q_vsnprintf(text, sizeof(text), error, argptr);
     va_end(argptr);
@@ -977,8 +977,8 @@ void QDECL Com_Error(int level, const char* error, ...) {
 }
 
 void QDECL Com_Printf(const char* msg, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, msg);
     Q_vsnprintf(text, sizeof(text), msg, argptr);
     va_end(argptr);
@@ -1002,9 +1002,9 @@ spectator in the game and restart
 =============
 */
 void AddTournamentPlayer(void) {
-    int         i;
-    gclient_t*   client;
-    gclient_t*   nextInLine;
+    int i;
+    gclient_t* client;
+    gclient_t* nextInLine;
     if (level.numPlayingClients >= 2) {
         return;
     }
@@ -1068,7 +1068,7 @@ Make the loser a spectator at the back of the line
 =======================
 */
 void RemoveTournamentLoser(void) {
-    int         clientNum;
+    int clientNum;
     if (level.numPlayingClients != 2) {
         return;
     }
@@ -1086,7 +1086,7 @@ RemoveTournamentWinner
 =======================
 */
 void RemoveTournamentWinner(void) {
-    int         clientNum;
+    int clientNum;
     if (level.numPlayingClients != 2) {
         return;
     }
@@ -1104,7 +1104,7 @@ AdjustTournamentScores
 =======================
 */
 void AdjustTournamentScores(void) {
-    int         clientNum;
+    int clientNum;
     clientNum = level.sortedClients[0];
     if (level.clients[ clientNum ].pers.connected == CON_CONNECTED) {
         level.clients[ clientNum ].sess.wins++;
@@ -1124,7 +1124,7 @@ SortRanks
 =============
 */
 int QDECL SortRanks(const void* a, const void* b) {
-    gclient_t*   ca, *cb;
+    gclient_t* ca, *cb;
     ca = &level.clients[*(int*)a];
     cb = &level.clients[*(int*)b];
     // sort special clients last
@@ -1189,12 +1189,12 @@ and team change.
 ============
 */
 void CalculateRanks(void) {
-    int     i;
-    int     rank;
-    int     score;
-    int     newScore;
-    int     humanplayers;
-    gclient_t*   cl;
+    int i;
+    int rank;
+    int score;
+    int newScore;
+    int humanplayers;
+    gclient_t* cl;
     level.follow1 = -1;
     level.follow2 = -1;
     level.numConnectedClients = 0;
@@ -1238,7 +1238,7 @@ void CalculateRanks(void) {
     // set the rank value for all clients that are connected and not spectators
     if (g_gametype.integer >= GT_TEAM && g_ffa_gt != 1) {
         // in team games, rank is just the order of the teams, 0=red, 1=blue, 2=tied
-        for (i = 0;  i < level.numConnectedClients; i++) {
+        for (i = 0; i < level.numConnectedClients; i++) {
             cl = &level.clients[ level.sortedClients[i] ];
             if (level.teamScores[TEAM_RED] == level.teamScores[TEAM_BLUE]) {
                 cl->ps.persistant[PERS_RANK] = 2;
@@ -1251,7 +1251,7 @@ void CalculateRanks(void) {
     } else {
         rank = -1;
         score = 0;
-        for (i = 0;  i < level.numPlayingClients; i++) {
+        for (i = 0; i < level.numPlayingClients; i++) {
             cl = &level.clients[ level.sortedClients[i] ];
             newScore = cl->ps.persistant[PERS_SCORE];
             if (i == 0 || newScore != score) {
@@ -1317,7 +1317,7 @@ due to enters/exits/forced team changes
 ========================
 */
 void SendScoreboardMessageToAllClients(void) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED) {
             DeathmatchScoreboardMessage(g_entities + i);
@@ -1327,7 +1327,7 @@ void SendScoreboardMessageToAllClients(void) {
 }
 
 static void WriteAccForAllClients(void) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED) {
             LogAcc(i);
@@ -1336,9 +1336,9 @@ static void WriteAccForAllClients(void) {
 }
 
 static void SendVictoryChallenge(void) {
-    int     i;
-    int     award = 0;
-    gclient_t*       cl;
+    int i;
+    int award = 0;
+    gclient_t* cl;
     if (level.max_humanplayers < 2 || level.hadBots) {
         return;
     }
@@ -1413,7 +1413,7 @@ Used to send information important to Elimination
 ========================
 */
 void SendEliminationMessageToAllClients(void) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED) {
             EliminationMessage(g_entities + i);
@@ -1429,7 +1429,7 @@ Do this if a team just started dominating.
 ========================
 */
 void SendDDtimetakenMessageToAllClients(void) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED) {
             DoubleDominationScoreTimeMessage(g_entities + i);
@@ -1445,7 +1445,7 @@ Used for Standard domination
 ========================
 */
 void SendDominationPointsStatusMessageToAllClients(void) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED) {
             DominationPointStatusMessage(g_entities + i);
@@ -1461,7 +1461,7 @@ Tell all players on a given team who there allies are. Used for VoIP
 ========================
 */
 void SendYourTeamMessageToTeam(team_t team) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[ i ].pers.connected == CON_CONNECTED && level.clients[ i ].sess.sessionTeam == team) {
             YourTeamMessage(g_entities + i);
@@ -1507,11 +1507,11 @@ This is also used for spectator spawns
 ==================
 */
 void FindIntermissionPoint(void) {
-    gentity_t*   ent, *target;
-    vec3_t      dir;
+    gentity_t* ent, *target;
+    vec3_t dir;
     // find the intermission spot
     ent = G_Find(NULL, FOFS(classname), "info_player_intermission");
-    if (!ent) {      // the map creator forgot to put in an intermission point...
+    if (!ent) { // the map creator forgot to put in an intermission point...
         SelectSpawnPoint(vec3_origin, level.intermission_origin, level.intermission_angle, 0);
     } else {
         VectorCopy(ent->s.origin, level.intermission_origin);
@@ -1533,10 +1533,10 @@ BeginIntermission
 ==================
 */
 void BeginIntermission(void) {
-    int         i;
-    gentity_t*   client;
+    int i;
+    gentity_t* client;
     if (level.intermissiontime) {
-        return;     // already active
+        return; // already active
     }
     // if in tournement mode, change the wins / losses
     if (g_gametype.integer == GT_TOURNAMENT) {
@@ -1581,11 +1581,11 @@ or moved to a new level based on the "nextmap" cvar
 =============
 */
 void ExitLevel(void) {
-    int     i;
+    int i;
     gclient_t* cl;
     char nextmap[MAX_STRING_CHARS];
     char d1[MAX_STRING_CHARS];
-    char    serverinfo[MAX_INFO_STRING];
+    char serverinfo[MAX_INFO_STRING];
     //bot interbreeding
     BotInterbreedEndMatch();
     // if we are running a tournement map, kick the loser to spectator status,
@@ -1690,9 +1690,9 @@ Print to the logfile with a time stamp if it is open
 =================
 */
 void QDECL G_LogPrintf(const char* fmt, ...) {
-    va_list     argptr;
-    char        string[1024];
-    int         min, tens, sec;
+    va_list argptr;
+    char string[1024];
+    int min, tens, sec;
     sec = level.time / 1000;
     min = sec / 60;
     sec -= min * 60;
@@ -1719,8 +1719,8 @@ Append information about this game to the log file
 ================
 */
 void LogExit(const char* string) {
-    int             i, numSorted;
-    gclient_t*       cl;
+    int i, numSorted;
+    gclient_t* cl;
 #ifdef MISSIONPACK
     qboolean won = qtrue;
 #endif
@@ -1741,7 +1741,7 @@ void LogExit(const char* string) {
                     level.teamScores[TEAM_RED], level.teamScores[TEAM_BLUE]);
     }
     for (i = 0; i < numSorted; i++) {
-        int     ping;
+        int ping;
         cl = &level.clients[level.sortedClients[i]];
         if (cl->sess.sessionTeam == TEAM_SPECTATOR) {
             continue;
@@ -1750,7 +1750,7 @@ void LogExit(const char* string) {
             continue;
         }
         ping = cl->ps.ping < 999 ? cl->ps.ping : 999;
-        G_LogPrintf("score: %i ping: %i client: %i %s\n", cl->ps.persistant[PERS_SCORE], ping, level.sortedClients[i],    cl->pers.netname);
+        G_LogPrintf("score: %i ping: %i client: %i %s\n", cl->ps.persistant[PERS_SCORE], ping, level.sortedClients[i], cl->pers.netname);
 #ifdef MISSIONPACK
         if (g_singlePlayer.integer && g_gametype.integer == GT_TOURNAMENT) {
             if (g_entities[cl - level.clients].r.svFlags & SVF_BOT && cl->ps.persistant[PERS_RANK] == 0) {
@@ -1780,10 +1780,10 @@ wait 10 seconds before going on.
 =================
 */
 void CheckIntermissionExit(void) {
-    int         ready, notReady, playerCount;
-    int         i;
-    gclient_t*   cl;
-    int         readyMask;
+    int ready, notReady, playerCount;
+    int i;
+    gclient_t* cl;
+    int readyMask;
     if (g_gametype.integer == GT_SINGLE_PLAYER) {
         return;
     }
@@ -1855,7 +1855,7 @@ ScoreIsTied
 =============
 */
 qboolean ScoreIsTied(void) {
-    int     a, b;
+    int a, b;
     if (level.numPlayingClients < 2) {
         return qfalse;
     }
@@ -1886,8 +1886,8 @@ void getClientsBalances(int* money) {
 }
 
 void transferPrizeMoney(int* balances_before, int* balances_after, char* winner) {
-    gclient_t*   cl;
-    int         i, score, change;
+    gclient_t* cl;
+    int i, score, change;
     // Amount of "prize" is equal to player score.
     for (i = 0; i < g_maxclients.integer; i++) {
         cl = level.clients + i;
@@ -1936,8 +1936,8 @@ can see the last frag.
 =================
 */
 void CheckExitRules(void) {
-    int         i;
-    gclient_t*   cl;
+    int i;
+    gclient_t* cl;
     // if at the intermission, wait for all non-bots to
     // signal ready, then go to next level
     if (level.intermissiontime) {
@@ -2234,8 +2234,8 @@ void CheckTournament(void) {
             return;
         }
     } else if (g_gametype.integer != GT_SINGLE_PLAYER && level.warmupTime != 0) {
-        int     counts[TEAM_NUM_TEAMS];
-        qboolean    notEnough = qfalse;
+        int counts[TEAM_NUM_TEAMS];
+        qboolean notEnough = qfalse;
         if (g_gametype.integer > GT_TEAM && !g_ffa_gt) {
             counts[TEAM_BLUE] = TeamCount(-1, TEAM_BLUE);
             counts[TEAM_RED] = TeamCount(-1, TEAM_RED);
@@ -2531,7 +2531,7 @@ Runs thinking code for this frame if necessary
 =============
 */
 void G_RunThink(gentity_t* ent) {
-    float   thinktime;
+    float thinktime;
     thinktime = ent->nextthink;
     if (thinktime <= 0) {
         return;
@@ -2554,8 +2554,8 @@ Advances the non-player objects in the world
 ================
 */
 void G_RunFrame(int levelTime) {
-    int         i;
-    gentity_t*   ent;
+    int i;
+    gentity_t* ent;
     // if we are waiting for the level to restart, do nothing
     if (level.restarted) {
         return;
@@ -2590,7 +2590,7 @@ void G_RunFrame(int levelTime) {
         // clear events that are too old
         if (level.time - ent->eventTime > EVENT_VALID_MSEC) {
             if (ent->s.event) {
-                ent->s.event = 0;   // &= EV_EVENT_BITS;
+                ent->s.event = 0; // &= EV_EVENT_BITS;
                 if (ent->client) {
                     ent->client->ps.externalEvent = 0;
                     // predicted events should never be set to zero
@@ -2618,10 +2618,10 @@ void G_RunFrame(int levelTime) {
         //unlagged - backward reconciliation #2
         // we'll run missiles separately to save CPU in backward reconciliation
         /*
-                if ( ent->s.eType == ET_MISSILE ) {
-                    G_RunMissile( ent );
-                    continue;
-                }
+        if ( ent->s.eType == ET_MISSILE ) {
+        G_RunMissile( ent );
+        continue;
+        }
         */
         //unlagged - backward reconciliation #2
         if (ent->s.eType == ET_ITEM || ent->physicsObject) {

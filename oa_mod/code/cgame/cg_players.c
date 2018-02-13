@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -370,7 +370,7 @@ static qboolean CG_ParseAnimationFile(const char* filename, clientInfo_t* ci) {
 ======================
 CG_ParseEyesFile
 
-Read eyes definitions.  Maybe this should be done engine-side for mod compatiblity? :S
+Read eyes definitions. Maybe this should be done engine-side for mod compatiblity? :S
 ======================
  */
 static qboolean CG_ParseEyesFile(const char* filename, clientInfo_t* ci) {
@@ -456,10 +456,10 @@ static qboolean CG_FindClientModelFile(char* filename, int length, clientInfo_t*
     while (1) {
         for (i = 0; i < 2; i++) {
             if (i == 0 && teamName && *teamName) {
-                //                              "models/players/characters/sergei/stroggs/lower_lily_red.skin"
+                // "models/players/characters/sergei/stroggs/lower_lily_red.skin"
                 Com_sprintf(filename, length, "models/players/%s%s/%s%s_%s_%s.%s", charactersFolder, modelName, teamName, base, skinName, team, ext);
             } else {
-                //                              "models/players/characters/sergei/lower_lily_red.skin"
+                // "models/players/characters/sergei/lower_lily_red.skin"
                 Com_sprintf(filename, length, "models/players/%s%s/%s_%s_%s.%s", charactersFolder, modelName, base, skinName, team, ext);
             }
             if (CG_FileExists(filename)) {
@@ -467,18 +467,18 @@ static qboolean CG_FindClientModelFile(char* filename, int length, clientInfo_t*
             }
             if (cgs.gametype >= GT_TEAM && cgs.ffa_gt != 1) {
                 if (i == 0 && teamName && *teamName) {
-                    //                              "models/players/characters/sergei/stroggs/lower_red.skin"
+                    // "models/players/characters/sergei/stroggs/lower_red.skin"
                     Com_sprintf(filename, length, "models/players/%s%s/%s%s_%s.%s", charactersFolder, modelName, teamName, base, team, ext);
                 } else {
-                    //                              "models/players/characters/sergei/lower_red.skin"
+                    // "models/players/characters/sergei/lower_red.skin"
                     Com_sprintf(filename, length, "models/players/%s%s/%s_%s.%s", charactersFolder, modelName, base, team, ext);
                 }
             } else {
                 if (i == 0 && teamName && *teamName) {
-                    //                              "models/players/characters/sergei/stroggs/lower_lily.skin"
+                    // "models/players/characters/sergei/stroggs/lower_lily.skin"
                     Com_sprintf(filename, length, "models/players/%s%s/%s%s_%s.%s", charactersFolder, modelName, teamName, base, skinName, ext);
                 } else {
-                    //                              "models/players/characters/sergei/lower_lily.skin"
+                    // "models/players/characters/sergei/lower_lily.skin"
                     Com_sprintf(filename, length, "models/players/%s%s/%s_%s.%s", charactersFolder, modelName, base, skinName, ext);
                 }
             }
@@ -630,7 +630,7 @@ static qboolean CG_RegisterClientModelname(clientInfo_t* ci, const char* modelNa
             ci->onepiece = 1;
         }
         if (!ci->legsModel) {
-            FSloaded = 0;    // just end it
+            FSloaded = 0; // just end it
         }
         if (FSloaded) {
             Com_Printf("%s is fanservice\n", filename);
@@ -743,7 +743,7 @@ static qboolean CG_RegisterClientModelname(clientInfo_t* ci, const char* modelNa
     // leilei - load eyes
     Com_sprintf(filename, sizeof(filename), "models/players/%s/eyes.cfg", modelName);
     if (!CG_ParseEyesFile(filename, ci)) {
-        //  Com_Printf( "No eyes for %s\n", filename );
+        // Com_Printf( "No eyes for %s\n", filename );
     }
     if (CG_FindClientHeadFile(filename, sizeof(filename), ci, teamName, headName, headSkinName, "icon", "skin")) {
         ci->modelIcon = trap_R_RegisterShaderNoMip(filename);
@@ -963,8 +963,8 @@ static void CG_SetDeferredClientInfo(int clientNum, clientInfo_t* ci) {
             return;
         }
         // load the full model, because we don't ever want to show
-        // an improper team skin.  This will cause a hitch for the first
-        // player, when the second enters.  Combat shouldn't be going on
+        // an improper team skin. This will cause a hitch for the first
+        // player, when the second enters. Combat shouldn't be going on
         // yet, so it shouldn't matter
         CG_LoadClientInfo(clientNum, ci);
         return;
@@ -1160,7 +1160,7 @@ void CG_LoadDeferredPlayers(void) {
                 continue;
             }
             CG_LoadClientInfo(i, ci);
-            //          break;
+            // break;
         }
     }
 }
@@ -1413,12 +1413,12 @@ CG_PlayerAngles
 
 Handles seperate torso motion
 
-  legs pivot based on direction of movement
+ legs pivot based on direction of movement
 
-  head always looks exactly at cent->lerpAngles
+ head always looks exactly at cent->lerpAngles
 
-  if motion < 20 degrees, show in head only
-  if < 45 degrees, also show in torso
+ if motion < 20 degrees, show in head only
+ if < 45 degrees, also show in torso
 ===============
  */
 
@@ -1582,7 +1582,7 @@ static void CG_PlayerAngles(centity_t* cent, vec3_t legs[3], vec3_t torso[3], ve
         if (ci) {
             VectorCopy(ci->eyepos, cent->pe.eyepos);
         }
-        //VectorCopy(eyelookfrom, cent->pe.eyepos);         // leilei - copy eye poistion
+        //VectorCopy(eyelookfrom, cent->pe.eyepos); // leilei - copy eye poistion
     }
 }
 
@@ -2008,7 +2008,7 @@ CG_PlayerShadow
 
 Returns the Z component of the surface being shadowed
 
-  should it return a full plane instead of a Z?
+ should it return a full plane instead of a Z?
 ===============
  */
 #define SHADOW_DISTANCE 128
@@ -2268,7 +2268,7 @@ void CG_Player(centity_t* cent) {
     } else {
         chibifactorbody = chibifactortorso = chibifactorhead = 0; // normal scale...
     }
-    // the client number is stored in clientNum.  It can't be derived
+    // the client number is stored in clientNum. It can't be derived
     // from the entity number, because a single client may have
     // multiple corpses on the level using the same clientinfo
     clientNum = cent->currentState.clientNum;
@@ -2288,9 +2288,9 @@ void CG_Player(centity_t* cent) {
         if (!cg.renderingThirdPerson) {
             renderfx = RF_THIRD_PERSON; // only draw in mirrors
         } else {
-            //      if (cg_cameraMode.integer) {
-            //          return;
-            //      }
+            // if (cg_cameraMode.integer) {
+            // return;
+            // }
         }
     }
     memset(&legs, 0, sizeof(legs));
@@ -2399,7 +2399,7 @@ void CG_Player(centity_t* cent) {
             VectorCopy(head.origin, orrg);
             CG_Trace(&trace, orrg, NULL, NULL, v, -1, CONTENTS_SOLID);
             if (trace.fraction < 1) {
-                VectorCopy(trace.endpos, v);    // look closer
+                VectorCopy(trace.endpos, v); // look closer
             }
             VectorCopy(v, head.eyelook); // Copy it to our refdef for the renderer
         }
@@ -2477,7 +2477,7 @@ void CG_Player(centity_t* cent) {
             VectorNormalize(skull.axis[1]);
             VectorSet(skull.axis[2], 0, 0, 1);
             CrossProduct(skull.axis[1], skull.axis[2], skull.axis[0]);
-             */
+            */
             skull.hModel = cgs.media.kamikazeHeadModel;
             trap_R_AddRefEntityToScene(&skull);
             // flip the trail because this skull is spinning in the other direction
@@ -2505,7 +2505,7 @@ void CG_Player(centity_t* cent) {
             VectorNormalize(skull.axis[1]);
             VectorSet(skull.axis[2], 0, 0, 1);
             CrossProduct(skull.axis[1], skull.axis[2], skull.axis[0]);
-             */
+            */
             skull.hModel = cgs.media.kamikazeHeadModel;
             trap_R_AddRefEntityToScene(&skull);
             skull.hModel = cgs.media.kamikazeHeadTrail;
@@ -2653,7 +2653,7 @@ void CG_Player(centity_t* cent) {
         VectorCopy(head.origin, orrg);
         CG_Trace(&trace, orrg, NULL, NULL, v, -1, CONTENTS_SOLID);
         if (trace.fraction < 1) {
-            VectorCopy(trace.endpos, v);    // look closer
+            VectorCopy(trace.endpos, v); // look closer
         }
         VectorCopy(v, head.eyelook); // Copy it to our refdef for the renderer
     }

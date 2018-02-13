@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -30,15 +30,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 // arena and bot info
 //
 
-int             ui_numBots;
-static char*     ui_botInfos[MAX_BOTS];
+int ui_numBots;
+static char* ui_botInfos[MAX_BOTS];
 
-static int      ui_numArenas;
-static char*     ui_arenaInfos[MAX_ARENAS];
+static int ui_numArenas;
+static char* ui_arenaInfos[MAX_ARENAS];
 
 #ifndef MISSIONPACK // bk001206
-static int      ui_numSinglePlayerArenas;
-static int      ui_numSpecialSinglePlayerArenas;
+static int ui_numSinglePlayerArenas;
+static int ui_numSpecialSinglePlayerArenas;
 #endif
 
 /*
@@ -47,10 +47,10 @@ UI_ParseInfos
 ===============
 */
 int UI_ParseInfos(char* buf, int max, char* infos[]) {
-    char*    token;
-    int     count;
-    char    key[MAX_TOKEN_CHARS];
-    char    info[MAX_INFO_STRING];
+    char* token;
+    int count;
+    char key[MAX_TOKEN_CHARS];
+    char info[MAX_INFO_STRING];
     count = 0;
     while (1) {
         token = COM_Parse(&buf);
@@ -98,9 +98,9 @@ UI_LoadArenasFromFile
 ===============
 */
 static void UI_LoadArenasFromFile(char* filename) {
-    int             len;
-    fileHandle_t    f;
-    char            buf[MAX_ARENAS_TEXT];
+    int len;
+    fileHandle_t f;
+    char buf[MAX_ARENAS_TEXT];
     len = trap_FS_FOpenFile(filename, &f, FS_READ);
     if (!f) {
         trap_Print(va(S_COLOR_RED "file not found: %s\n", filename));
@@ -123,15 +123,15 @@ UI_LoadArenas
 ===============
 */
 void UI_LoadArenas(void) {
-    int         numdirs;
-    vmCvar_t    arenasFile;
-    char        filename[128];
-    char        dirlist[1024];
-    char*       dirptr;
-    int         i;
-    int         n;
-    int         dirlen;
-    char*        type;
+    int numdirs;
+    vmCvar_t arenasFile;
+    char filename[128];
+    char dirlist[1024];
+    char* dirptr;
+    int i;
+    int n;
+    int dirlen;
+    char* type;
     // rfactory changes
     // Changed RD
     char specialgame[100];
@@ -146,7 +146,7 @@ void UI_LoadArenas(void) {
     }
     // get all arenas from .arena files
     numdirs = trap_FS_GetFileList("scripts", ".arena", dirlist, 1024);
-    dirptr  = dirlist;
+    dirptr = dirlist;
     for (i = 0; i < numdirs; i++, dirptr += dirlen + 1) {
         dirlen = strlen(dirptr);
         strcpy(filename, "scripts/");
@@ -176,8 +176,8 @@ void UI_LoadArenas(void) {
         if (*type) {
             // Changed RD
             trap_Cvar_VariableStringBuffer("ui_SpecialGame", specialgame, sizeof(specialgame));
-            //          if (!specialgame[0])
-            //          {
+            // if (!specialgame[0])
+            // {
             if (strstr(type, "ffa")) {
                 uiInfo.mapList[uiInfo.mapCount].typeBits |= (1 << GT_FFA);
             }
@@ -224,9 +224,9 @@ UI_LoadBotsFromFile
 ===============
 */
 static void UI_LoadBotsFromFile(char* filename) {
-    int             len;
-    fileHandle_t    f;
-    char            buf[MAX_BOTS_TEXT];
+    int len;
+    fileHandle_t f;
+    char buf[MAX_BOTS_TEXT];
     len = trap_FS_FOpenFile(filename, &f, FS_READ);
     if (!f) {
         trap_Print(va(S_COLOR_RED "file not found: %s\n", filename));
@@ -250,13 +250,13 @@ UI_LoadBots
 ===============
 */
 void UI_LoadBots(void) {
-    vmCvar_t    botsFile;
-    int         numdirs;
-    char        filename[128];
-    char        dirlist[1024];
-    char*       dirptr;
-    int         i;
-    int         dirlen;
+    vmCvar_t botsFile;
+    int numdirs;
+    char filename[128];
+    char dirlist[1024];
+    char* dirptr;
+    int i;
+    int dirlen;
     ui_numBots = 0;
     trap_Cvar_Register(&botsFile, "g_botsFile", "", CVAR_INIT | CVAR_ROM);
     if (*botsFile.string) {
@@ -266,7 +266,7 @@ void UI_LoadBots(void) {
     }
     // get all bots from .bot files
     numdirs = trap_FS_GetFileList("scripts", ".bot", dirlist, 1024);
-    dirptr  = dirlist;
+    dirptr = dirlist;
     for (i = 0; i < numdirs; i++, dirptr += dirlen + 1) {
         dirlen = strlen(dirptr);
         strcpy(filename, "scripts/");
@@ -295,8 +295,8 @@ UI_GetBotInfoByName
 ===============
 */
 char* UI_GetBotInfoByName(const char* name) {
-    int     n;
-    char*    value;
+    int n;
+    char* value;
     for (n = 0; n < ui_numBots; n++) {
         value = Info_ValueForKey(ui_botInfos[n], "name");
         if (Q_strequal(value, name)) {

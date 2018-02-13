@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -65,13 +65,13 @@ void AddScore(gentity_t* ent, vec3_t origin, int score) {
     if (level.numNonSpectatorClients < 3 && score < 0 && (g_gametype.integer < GT_TEAM || g_ffa_gt == 1)) {
         for (i = 0; i < level.maxclients; i++) {
             if (level.clients[ i ].pers.connected != CON_CONNECTED) {
-                continue;    //Client was not connected
+                continue; //Client was not connected
             }
             if (level.clients[i].sess.sessionTeam == TEAM_SPECTATOR) {
-                continue;    //Don't give anything to spectators
+                continue; //Don't give anything to spectators
             }
             if (g_entities + i == ent) {
-                continue;    //Don't award dead one
+                continue; //Don't award dead one
             }
             level.clients[i].ps.persistant[PERS_SCORE] -= score;
             ScorePlum(ent, origin, -score);
@@ -100,11 +100,11 @@ Toss the weapon and powerups for the killed player
 =================
 */
 void TossClientItems(gentity_t* self) {
-    gitem_t*     item;
-    int         weapon;
-    float       angle;
-    int         i;
-    gentity_t*   drop;
+    gitem_t* item;
+    int weapon;
+    float angle;
+    int i;
+    gentity_t* drop;
     // drop the weapon if not a gauntlet or machinegun
     weapon = self->s.weapon;
     //Never drop in elimination or last man standing mode!
@@ -112,7 +112,7 @@ void TossClientItems(gentity_t* self) {
         return;
     }
     // make a special check to see if they are changing to a new
-    // weapon that isn't the mg or gauntlet.  Without this, a client
+    // weapon that isn't the mg or gauntlet. Without this, a client
     // can pick up a weapon, be killed, and not drop the weapon because
     // their weapon change hasn't completed yet and they are still holding the MG.
     if (weapon == WP_MACHINEGUN || weapon == WP_GRAPPLING_HOOK) {
@@ -158,14 +158,14 @@ void TossClientItems(gentity_t* self) {
 TossClientCubes
 =================
 */
-extern gentity_t*    neutralObelisk;
+extern gentity_t* neutralObelisk;
 
 void TossClientCubes(gentity_t* self) {
-    gitem_t*     item;
-    gentity_t*   drop;
-    vec3_t      velocity;
-    vec3_t      angles;
-    vec3_t      origin;
+    gitem_t* item;
+    gentity_t* drop;
+    vec3_t velocity;
+    vec3_t angles;
+    vec3_t origin;
     self->client->ps.generic1 = 0;
     // this should never happen but we should never
     // get the server to crash due to skull being spawned in
@@ -178,7 +178,7 @@ void TossClientCubes(gentity_t* self) {
         item = BG_FindItem("Blue Cube");
     }
     angles[YAW] = (float)(level.time % 360);
-    angles[PITCH] = 0;  // always forward
+    angles[PITCH] = 0; // always forward
     angles[ROLL] = 0;
     AngleVectors(angles, velocity, NULL, NULL);
     VectorScale(velocity, 150, velocity);
@@ -201,7 +201,7 @@ TossClientPersistantPowerups
 =================
 */
 void TossClientPersistantPowerups(gentity_t* ent) {
-    gentity_t*   powerup;
+    gentity_t* powerup;
     if (!ent->client) {
         return;
     }
@@ -223,8 +223,8 @@ LookAtKiller
 ==================
 */
 void LookAtKiller(gentity_t* self, gentity_t* inflictor, gentity_t* attacker) {
-    vec3_t      dir;
-    //vec3_t        angles;
+    vec3_t dir;
+    //vec3_t angles;
     if (attacker && attacker != self) {
         VectorSubtract(attacker->s.pos.trBase, self->s.pos.trBase, dir);
     } else if (inflictor && inflictor != self) {
@@ -352,9 +352,9 @@ CheckAlmostCapture
 ==================
 */
 void CheckAlmostCapture(gentity_t* self, gentity_t* attacker) {
-    gentity_t*   ent;
-    vec3_t      dir;
-    char*        classname;
+    gentity_t* ent;
+    vec3_t dir;
+    char* classname;
     // if this player was carrying a flag
     if (self->client->ps.powerups[PW_REDFLAG] ||
             self->client->ps.powerups[PW_BLUEFLAG] ||
@@ -397,9 +397,9 @@ CheckAlmostScored
 ==================
 */
 void CheckAlmostScored(gentity_t* self, gentity_t* attacker) {
-    gentity_t*   ent;
-    vec3_t      dir;
-    char*        classname;
+    gentity_t* ent;
+    vec3_t dir;
+    char* classname;
     // if the player was carrying cubes
     if (self->client->ps.generic1) {
         if (self->client->sess.sessionTeam == TEAM_BLUE) {
@@ -428,13 +428,13 @@ player_die
 ==================
 */
 void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int meansOfDeath) {
-    gentity_t*   ent;
-    int         anim;
-    int         contents;
-    int         killer;
-    int         i, counter2;
-    const char*  killerName;
-    const char*  obit;
+    gentity_t* ent;
+    int anim;
+    int contents;
+    int killer;
+    int i, counter2;
+    const char* killerName;
+    const char* obit;
     if (!(self->client) || (self->client->ps.pm_type == PM_DEAD)) {
         return;
     }
@@ -686,10 +686,10 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
     Team_FragBonuses(self, inflictor, attacker);
     // if I committed suicide, the flag does not fall, it returns.
     if (meansOfDeath == MOD_SUICIDE) {
-        if (self->client->ps.powerups[PW_NEUTRALFLAG]) {         // only happens in One Flag CTF
+        if (self->client->ps.powerups[PW_NEUTRALFLAG]) { // only happens in One Flag CTF
             Team_ReturnFlag(TEAM_FREE);
             self->client->ps.powerups[PW_NEUTRALFLAG] = 0;
-        } else if (self->client->ps.powerups[PW_REDFLAG]) {      // only happens in standard CTF
+        } else if (self->client->ps.powerups[PW_REDFLAG]) { // only happens in standard CTF
             Team_ReturnFlag(TEAM_RED);
             self->client->ps.powerups[PW_REDFLAG] = 0;
         } else if (self->client->ps.powerups[PW_BLUEFLAG]) { // only happens in standard CTF
@@ -704,11 +704,11 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
     // if client is in a nodrop area, don't drop anything (but return CTF flags!)
     TossClientItems(self);
     //#endif
-    Cmd_Score_f(self);       // show scores
+    Cmd_Score_f(self); // show scores
     // send updated scores to any clients that are following this one,
     // or they would get stale scoreboards
     for (i = 0; i < level.maxclients; i++) {
-        gclient_t*   client;
+        gclient_t* client;
         client = &level.clients[i];
         if (client->pers.connected != CON_CONNECTED) {
             continue;
@@ -720,7 +720,7 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
             Cmd_Score_f(g_entities + i);
         }
     }
-    self->takedamage = qtrue;   // can still be gibbed
+    self->takedamage = qtrue; // can still be gibbed
     self->s.weapon = WP_NONE;
     self->s.powerups = 0;
     self->r.contents = CONTENTS_CORPSE;
@@ -793,9 +793,9 @@ CheckArmor
 ================
 */
 int CheckArmor(gentity_t* ent, int damage, int dflags) {
-    gclient_t*   client;
-    int         save;
-    int         count;
+    gclient_t* client;
+    int save;
+    int count;
     if (!damage) {
         return 0;
     }
@@ -826,10 +826,10 @@ RaySphereIntersections
 */
 int RaySphereIntersections(vec3_t origin, float radius, vec3_t point, vec3_t dir, vec3_t intersections[2]) {
     float b, c, d, t;
-    //  | origin - (point + t * dir) | = radius
-    //  a = dir[0]^2 + dir[1]^2 + dir[2]^2;
-    //  b = 2 * (dir[0] * (point[0] - origin[0]) + dir[1] * (point[1] - origin[1]) + dir[2] * (point[2] - origin[2]));
-    //  c = (point[0] - origin[0])^2 + (point[1] - origin[1])^2 + (point[2] - origin[2])^2 - radius^2;
+    // | origin - (point + t * dir) | = radius
+    // a = dir[0]^2 + dir[1]^2 + dir[2]^2;
+    // b = 2 * (dir[0] * (point[0] - origin[0]) + dir[1] * (point[1] - origin[1]) + dir[2] * (point[2] - origin[2]));
+    // c = (point[0] - origin[0])^2 + (point[1] - origin[1])^2 + (point[2] - origin[2])^2 - radius^2;
     // normalize dir so a = 1
     VectorNormalize(dir);
     b = 2 * (dir[0] * (point[0] - origin[0]) + dir[1] * (point[1] - origin[1]) + dir[2] * (point[2] - origin[2]));
@@ -858,9 +858,9 @@ G_InvulnerabilityEffect
 ================
 */
 int G_InvulnerabilityEffect(gentity_t* targ, vec3_t dir, vec3_t point, vec3_t impactpoint, vec3_t bouncedir) {
-    gentity_t*   impact;
-    vec3_t      intersections[2], vec;
-    int         n;
+    gentity_t* impact;
+    vec3_t intersections[2], vec;
+    int n;
     if (!targ->client) {
         return qfalse;
     }
@@ -899,7 +899,7 @@ static int catchup_damage(int damage, int attacker_points, int target_points) {
     }
     //Reduce damage
     if (attacker_points <= target_points + 5) {
-        return damage;    //Never reduce damage if only 5 points ahead.
+        return damage; //Never reduce damage if only 5 points ahead.
     }
     newdamage = damage - ((attacker_points - target_points - 5) * (g_catchup.integer * damage)) / 100;
     if (newdamage < damage / 2) {
@@ -912,35 +912,35 @@ static int catchup_damage(int damage, int attacker_points, int target_points) {
 ============
 G_Damage
 
-targ        entity that is being damaged
-inflictor   entity that is causing the damage
-attacker    entity that caused the inflictor to damage targ
-    example: targ=monster, inflictor=rocket, attacker=player
+targ entity that is being damaged
+inflictor entity that is causing the damage
+attacker entity that caused the inflictor to damage targ
+ example: targ=monster, inflictor=rocket, attacker=player
 
-dir         direction of the attack for knockback
-point       point at which the damage is being inflicted, used for headshots
-damage      amount of damage being inflicted
-knockback   force to be applied against targ as a result of the damage
+dir direction of the attack for knockback
+point point at which the damage is being inflicted, used for headshots
+damage amount of damage being inflicted
+knockback force to be applied against targ as a result of the damage
 
 inflictor, attacker, dir, and point can be NULL for environmental effects
 
-dflags      these flags are used to control how T_Damage works
-    DAMAGE_RADIUS           damage was indirect (from a nearby explosion)
-    DAMAGE_NO_ARMOR         armor does not protect from this damage
-    DAMAGE_NO_KNOCKBACK     do not affect velocity, just view angles
-    DAMAGE_NO_PROTECTION    kills godmode, armor, everything
+dflags these flags are used to control how T_Damage works
+ DAMAGE_RADIUS damage was indirect (from a nearby explosion)
+ DAMAGE_NO_ARMOR armor does not protect from this damage
+ DAMAGE_NO_KNOCKBACK do not affect velocity, just view angles
+ DAMAGE_NO_PROTECTION kills godmode, armor, everything
 ============
 */
 
 void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
               vec3_t dir, vec3_t point, int damage, int dflags, int mod) {
-    gclient_t*   client;
-    int         take;
-    //int           save;
-    int         asave;
-    int         knockback;
-    int         max;
-    vec3_t      bouncedir, impactpoint;
+    gclient_t* client;
+    int take;
+    //int save;
+    int asave;
+    int knockback;
+    int max;
+    vec3_t bouncedir, impactpoint;
     if (!targ->takedamage) {
         return;
     }
@@ -1015,14 +1015,14 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
     // figure momentum add, even if the damage won't be taken
     if (knockback && targ->client) {
         vec3_t kvel;
-        float   mass;
+        float mass;
         mass = 200;
         VectorScale(dir, g_knockback.value * (float)knockback / mass, kvel);
         VectorAdd(targ->client->ps.velocity, kvel, targ->client->ps.velocity);
         // set the timer so that the other client can't cancel
         // out the movement immediately
         if (!targ->client->ps.pm_time) {
-            int     t;
+            int t;
             t = knockback * 2;
             if (t < 50) {
                 t = 50;
@@ -1111,7 +1111,7 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
         damage = 0;
     }
     if ((g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION || g_gametype.integer == GT_LMS || g_elimination_allgametypes.integer)
-            && g_elimination_selfdamage.integer < 1 && (targ == attacker ||  mod == MOD_FALLING)) {
+            && g_elimination_selfdamage.integer < 1 && (targ == attacker || mod == MOD_FALLING)) {
         damage = 0;
     }
     //So people can be telefragged!
@@ -1201,7 +1201,7 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
 ============
 CanDamage
 
-Returns qtrue if the inflictor can directly damage the target.  Used for
+Returns qtrue if the inflictor can directly damage the target. Used for
 explosions and melee attacks.
 ============
 */
@@ -1258,15 +1258,15 @@ G_RadiusDamage
 */
 qboolean G_RadiusDamage(vec3_t origin, gentity_t* attacker, float damage, float radius,
                         gentity_t* ignore, int mod) {
-    float       points, dist;
-    gentity_t*   ent;
-    int         entityList[MAX_GENTITIES];
-    int         numListedEntities;
-    vec3_t      mins, maxs;
-    vec3_t      v;
-    vec3_t      dir;
-    int         i, e;
-    qboolean    hitClient = qfalse;
+    float points, dist;
+    gentity_t* ent;
+    int entityList[MAX_GENTITIES];
+    int numListedEntities;
+    vec3_t mins, maxs;
+    vec3_t v;
+    vec3_t dir;
+    int i, e;
+    qboolean hitClient = qfalse;
     if (radius < 1) {
         radius = 1;
     }
@@ -1323,8 +1323,8 @@ definitely mangled from player_die with less about the player
 */
 
 void monster_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int meansOfDeath) {
-    int         contents;
-    int         killer = 0;
+    int contents;
+    int killer = 0;
     if (self->client && self->client->hook) {
         Weapon_HookFree(self->client->hook);
     }
@@ -1334,7 +1334,7 @@ void monster_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int
         self->activator->nextthink = level.time;
     }
     self->enemy = attacker;
-    self->takedamage = qtrue;   // can still be gibbed
+    self->takedamage = qtrue; // can still be gibbed
     self->s.weapon = WP_NONE;
     self->s.powerups = 0;
     self->r.contents = CONTENTS_CORPSE;

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -29,16 +29,16 @@ RESET MENU
 
 #include "ui_local.h"
 
-#define ART_FRAME                   "menu/art/cut_frame"
+#define ART_FRAME "menu/art/cut_frame"
 
-#define ID_NO       100
-#define ID_YES      101
+#define ID_NO 100
+#define ID_YES 101
 
 typedef struct {
     menuframework_s menu;
-    menutext_s      no;
-    menutext_s      yes;
-    int             slashX;
+    menutext_s no;
+    menutext_s yes;
+    int slashX;
 } resetMenu_t;
 
 static resetMenu_t s_reset;
@@ -125,13 +125,13 @@ void UI_ResetMenu(void) {
     Reset_Cache();
     n1 = UI_ProportionalStringWidth("YES/NO");
     n2 = UI_ProportionalStringWidth("YES") + PROP_GAP_WIDTH;
-    n3 = UI_ProportionalStringWidth("/")  + PROP_GAP_WIDTH;
+    n3 = UI_ProportionalStringWidth("/") + PROP_GAP_WIDTH;
     l1 = 320 - (n1 / 2);
     l2 = l1 + n2;
     l3 = l2 + n3;
     s_reset.slashX = l2;
-    s_reset.menu.draw       = Reset_MenuDraw;
-    s_reset.menu.key        = Reset_MenuKey;
+    s_reset.menu.draw = Reset_MenuDraw;
+    s_reset.menu.key = Reset_MenuKey;
     s_reset.menu.wrapAround = qtrue;
     trap_GetClientState(&cstate);
     if (cstate.connState >= CA_CONNECTED) {
@@ -141,24 +141,24 @@ void UI_ResetMenu(void) {
         // game not running
         s_reset.menu.fullscreen = qtrue;
     }
-    s_reset.yes.generic.type        = MTYPE_PTEXT;
-    s_reset.yes.generic.flags       = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_reset.yes.generic.callback    = Reset_MenuEvent;
-    s_reset.yes.generic.id          = ID_YES;
-    s_reset.yes.generic.x           = l1;
-    s_reset.yes.generic.y           = 264;
-    s_reset.yes.string              = "YES";
-    s_reset.yes.color               = color_red;
-    s_reset.yes.style               = UI_LEFT;
-    s_reset.no.generic.type         = MTYPE_PTEXT;
-    s_reset.no.generic.flags        = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_reset.no.generic.callback     = Reset_MenuEvent;
-    s_reset.no.generic.id           = ID_NO;
-    s_reset.no.generic.x            = l3;
-    s_reset.no.generic.y            = 264;
-    s_reset.no.string               = "NO";
-    s_reset.no.color                = color_red;
-    s_reset.no.style                = UI_LEFT;
+    s_reset.yes.generic.type = MTYPE_PTEXT;
+    s_reset.yes.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_reset.yes.generic.callback = Reset_MenuEvent;
+    s_reset.yes.generic.id = ID_YES;
+    s_reset.yes.generic.x = l1;
+    s_reset.yes.generic.y = 264;
+    s_reset.yes.string = "YES";
+    s_reset.yes.color = color_red;
+    s_reset.yes.style = UI_LEFT;
+    s_reset.no.generic.type = MTYPE_PTEXT;
+    s_reset.no.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    s_reset.no.generic.callback = Reset_MenuEvent;
+    s_reset.no.generic.id = ID_NO;
+    s_reset.no.generic.x = l3;
+    s_reset.no.generic.y = 264;
+    s_reset.no.string = "NO";
+    s_reset.no.color = color_red;
+    s_reset.no.style = UI_LEFT;
     Menu_AddItem(&s_reset.menu, &s_reset.yes);
     Menu_AddItem(&s_reset.menu, &s_reset.no);
     UI_PushMenu(&s_reset.menu);

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -23,10 +23,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 // cg_scoreboard -- draw the scoreboard on top of the game screen
 #include "cg_local.h"
 
-#define SCOREBOARD_X  (0)
+#define SCOREBOARD_X (0)
 
-#define SB_HEADER   86
-#define SB_TOP    (SB_HEADER+36)
+#define SB_HEADER 86
+#define SB_TOP (SB_HEADER+36)
 
 // Where the status bar starts, so we don't overwrite it
 #define SB_STATUSBAR 420
@@ -34,12 +34,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define SB_NORMAL_HEIGHT 40
 #define SB_INTER_HEIGHT 16 // interleaved height
 
-#define SB_MAXCLIENTS_NORMAL  ((SB_STATUSBAR - SB_TOP) / SB_NORMAL_HEIGHT)
-#define SB_MAXCLIENTS_INTER   ((SB_STATUSBAR - SB_TOP) / SB_INTER_HEIGHT - 1)
+#define SB_MAXCLIENTS_NORMAL ((SB_STATUSBAR - SB_TOP) / SB_NORMAL_HEIGHT)
+#define SB_MAXCLIENTS_INTER ((SB_STATUSBAR - SB_TOP) / SB_INTER_HEIGHT - 1)
 
 // Normal
-#define SB_BOTICON_X  (SCOREBOARD_X)
-#define SB_HEAD_X   (SCOREBOARD_X+16)
+#define SB_BOTICON_X (SCOREBOARD_X)
+#define SB_HEAD_X (SCOREBOARD_X+16)
 
 #define SB_SCORELINE_X 34
 
@@ -319,10 +319,10 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
     if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg           ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score ^1Ping ^1Time ^1Name ^1Acc ^1K/D ^1Dmg ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     } else {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D       ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score ^1Ping ^1Time ^1Name ^1Acc ^1K/D ^1Caps", 1.0F);
         CG_DrawSnow(0, y + 14);
     }
     y = SB_TOP;

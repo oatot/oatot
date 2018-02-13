@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -122,8 +122,8 @@ extern vmCvar_t ui_server14;
 extern vmCvar_t ui_server15;
 extern vmCvar_t ui_server16;
 
-//extern vmCvar_t   ui_cdkey;
-//extern vmCvar_t   ui_cdkeychecked;
+//extern vmCvar_t ui_cdkey;
+//extern vmCvar_t ui_cdkeychecked;
 extern vmCvar_t ui_setupchecked;
 
 //new in beta 23:
@@ -133,61 +133,61 @@ extern vmCvar_t ui_browserOnlyHumans;
 // ui_qmenu.c
 //
 
-#define RCOLUMN_OFFSET          ( BIGCHAR_WIDTH )
-#define LCOLUMN_OFFSET          (-BIGCHAR_WIDTH )
+#define RCOLUMN_OFFSET ( BIGCHAR_WIDTH )
+#define LCOLUMN_OFFSET (-BIGCHAR_WIDTH )
 
-#define SLIDER_RANGE            10
-#define MAX_EDIT_LINE           256
+#define SLIDER_RANGE 10
+#define MAX_EDIT_LINE 256
 
-#define MAX_MENUDEPTH           8
+#define MAX_MENUDEPTH 8
 #ifndef MAX_MENUITEMS
-#define MAX_MENUITEMS           64
+#define MAX_MENUITEMS 64
 #endif
 
-#define MTYPE_NULL              0
-#define MTYPE_SLIDER            1
-#define MTYPE_ACTION            2
-#define MTYPE_SPINCONTROL       3
-#define MTYPE_FIELD             4
-#define MTYPE_RADIOBUTTON       5
-#define MTYPE_BITMAP            6
-#define MTYPE_TEXT              7
-#define MTYPE_SCROLLLIST        8
-#define MTYPE_PTEXT             9
-#define MTYPE_BTEXT             10
+#define MTYPE_NULL 0
+#define MTYPE_SLIDER 1
+#define MTYPE_ACTION 2
+#define MTYPE_SPINCONTROL 3
+#define MTYPE_FIELD 4
+#define MTYPE_RADIOBUTTON 5
+#define MTYPE_BITMAP 6
+#define MTYPE_TEXT 7
+#define MTYPE_SCROLLLIST 8
+#define MTYPE_PTEXT 9
+#define MTYPE_BTEXT 10
 
-#define QMF_BLINK               (unsigned int)0x00000001
-#define QMF_SMALLFONT           (unsigned int)0x00000002
-#define QMF_LEFT_JUSTIFY        (unsigned int)0x00000004
-#define QMF_CENTER_JUSTIFY      (unsigned int)0x00000008
-#define QMF_RIGHT_JUSTIFY       (unsigned int)0x00000010
-#define QMF_NUMBERSONLY         (unsigned int)0x00000020    // edit field is only numbers
-#define QMF_HIGHLIGHT           (unsigned int)0x00000040
-#define QMF_HIGHLIGHT_IF_FOCUS  (unsigned int)0x00000080    // steady focus
-#define QMF_PULSEIFFOCUS        (unsigned int)0x00000100    // pulse if focus
-#define QMF_HASMOUSEFOCUS       (unsigned int)0x00000200
-#define QMF_NOONOFFTEXT         (unsigned int)0x00000400
-#define QMF_MOUSEONLY           (unsigned int)0x00000800    // only mouse input allowed
-#define QMF_HIDDEN              (unsigned int)0x00001000    // skips drawing
-#define QMF_GRAYED              (unsigned int)0x00002000    // grays and disables
-#define QMF_INACTIVE            (unsigned int)0x00004000    // disables any input
-#define QMF_NODEFAULTINIT       (unsigned int)0x00008000    // skip default initialization
-#define QMF_OWNERDRAW           (unsigned int)0x00010000
-#define QMF_PULSE               (unsigned int)0x00020000
-#define QMF_LOWERCASE           (unsigned int)0x00040000    // edit field is all lower case
-#define QMF_UPPERCASE           (unsigned int)0x00080000    // edit field is all upper case
-#define QMF_SILENT              (unsigned int)0x00100000
+#define QMF_BLINK (unsigned int)0x00000001
+#define QMF_SMALLFONT (unsigned int)0x00000002
+#define QMF_LEFT_JUSTIFY (unsigned int)0x00000004
+#define QMF_CENTER_JUSTIFY (unsigned int)0x00000008
+#define QMF_RIGHT_JUSTIFY (unsigned int)0x00000010
+#define QMF_NUMBERSONLY (unsigned int)0x00000020 // edit field is only numbers
+#define QMF_HIGHLIGHT (unsigned int)0x00000040
+#define QMF_HIGHLIGHT_IF_FOCUS (unsigned int)0x00000080 // steady focus
+#define QMF_PULSEIFFOCUS (unsigned int)0x00000100 // pulse if focus
+#define QMF_HASMOUSEFOCUS (unsigned int)0x00000200
+#define QMF_NOONOFFTEXT (unsigned int)0x00000400
+#define QMF_MOUSEONLY (unsigned int)0x00000800 // only mouse input allowed
+#define QMF_HIDDEN (unsigned int)0x00001000 // skips drawing
+#define QMF_GRAYED (unsigned int)0x00002000 // grays and disables
+#define QMF_INACTIVE (unsigned int)0x00004000 // disables any input
+#define QMF_NODEFAULTINIT (unsigned int)0x00008000 // skip default initialization
+#define QMF_OWNERDRAW (unsigned int)0x00010000
+#define QMF_PULSE (unsigned int)0x00020000
+#define QMF_LOWERCASE (unsigned int)0x00040000 // edit field is all lower case
+#define QMF_UPPERCASE (unsigned int)0x00080000 // edit field is all upper case
+#define QMF_SILENT (unsigned int)0x00100000
 
 //for cgs.ffa_gt and g_ffa kinda leary about this...
-//#define FREEFORALL            (s_serveroptions.gametype==GT_LMS)
-//#define TRAP_FREEFORALL           (trap_Cvar_VariableValue( "g_gametype" ) == GT_LMS)
+//#define FREEFORALL (s_serveroptions.gametype==GT_LMS)
+//#define TRAP_FREEFORALL (trap_Cvar_VariableValue( "g_gametype" ) == GT_LMS)
 
 // callback notifications
-#define QM_GOTFOCUS             1
-#define QM_LOSTFOCUS            2
-#define QM_ACTIVATED            3
+#define QM_GOTFOCUS 1
+#define QM_LOSTFOCUS 2
+#define QM_ACTIVATED 3
 
-#define MENU_ART_DIR   "art_blueish"
+#define MENU_ART_DIR "art_blueish"
 #define MENU_OATOT_DIR "art"
 
 typedef struct _tag_menuframework {
@@ -200,9 +200,9 @@ typedef struct _tag_menuframework {
     void (*draw)(void);
     sfxHandle_t (*key)(int key);
 
-    qboolean    wrapAround;
-    qboolean    fullscreen;
-    qboolean    showlogo;
+    qboolean wrapAround;
+    qboolean fullscreen;
+    qboolean showlogo;
 } menuframework_s;
 
 typedef struct {
@@ -224,16 +224,16 @@ typedef struct {
 } menucommon_s;
 
 typedef struct {
-    int     cursor;
-    int     scroll;
-    int     widthInChars;
-    char    buffer[MAX_EDIT_LINE];
-    int     maxchars;
+    int cursor;
+    int scroll;
+    int widthInChars;
+    char buffer[MAX_EDIT_LINE];
+    int maxchars;
 } mfield_t;
 
 typedef struct {
-    menucommon_s    generic;
-    mfield_t        field;
+    menucommon_s generic;
+    mfield_t field;
 } menufield_s;
 
 typedef struct {
@@ -272,21 +272,21 @@ typedef struct {
 } menuradiobutton_s;
 
 typedef struct {
-    menucommon_s    generic;
-    char*           focuspic;
-    char*           errorpic;
-    qhandle_t       shader;
-    qhandle_t       focusshader;
-    int             width;
-    int             height;
-    float*          focuscolor;
+    menucommon_s generic;
+    char* focuspic;
+    char* errorpic;
+    qhandle_t shader;
+    qhandle_t focusshader;
+    int width;
+    int height;
+    float* focuscolor;
 } menubitmap_s;
 
 typedef struct {
-    menucommon_s    generic;
-    char*           string;
-    int             style;
-    float*          color;
+    menucommon_s generic;
+    char* string;
+    int style;
+    float* color;
 } menutext_s;
 
 #define MAX_MAPNAME_LENGTH 32
@@ -299,11 +299,11 @@ typedef struct {
 #define MAX_BETSTRING_LENGTH 40
 
 typedef struct {
-    int         bets_n; // The actual number of active bets.
-    balance_t   oac_balance; // Is needed to limit bet amount menu field.
-    balance_t   btc_balance; // Is needed to limit bet amount menu field.
+    int bets_n; // The actual number of active bets.
+    balance_t oac_balance; // Is needed to limit bet amount menu field.
+    balance_t btc_balance; // Is needed to limit bet amount menu field.
     activeBet_t bets[MAX_ACTIVE_BETS_NUMBER]; // Active bets.
-    char        betStrings[MAX_ACTIVE_BETS_NUMBER][MAX_BETSTRING_LENGTH];
+    char betStrings[MAX_ACTIVE_BETS_NUMBER][MAX_BETSTRING_LENGTH];
 } t_oatotinfo;
 
 #define MAX_NAMELENGTH_INFO 20
@@ -316,19 +316,19 @@ typedef struct {
 extern t_mappage mappage;
 extern t_oatotinfo oatotinfo;
 
-extern void         Menu_Cache(void);
-extern void         Menu_Focus(menucommon_s* m);
-extern void         Menu_AddItem(menuframework_s* menu, void* item);
-extern void         Menu_AdjustCursor(menuframework_s* menu, int dir);
-extern void         Menu_Draw(menuframework_s* menu);
-extern void*         Menu_ItemAtCursor(menuframework_s* m);
+extern void Menu_Cache(void);
+extern void Menu_Focus(menucommon_s* m);
+extern void Menu_AddItem(menuframework_s* menu, void* item);
+extern void Menu_AdjustCursor(menuframework_s* menu, int dir);
+extern void Menu_Draw(menuframework_s* menu);
+extern void* Menu_ItemAtCursor(menuframework_s* m);
 extern sfxHandle_t Menu_ActivateItem(menuframework_s* s, menucommon_s* item);
-extern void         Menu_SetCursor(menuframework_s* s, int cursor);
-extern void         Menu_SetCursorToItem(menuframework_s* m, void* ptr);
+extern void Menu_SetCursor(menuframework_s* s, int cursor);
+extern void Menu_SetCursorToItem(menuframework_s* m, void* ptr);
 extern sfxHandle_t Menu_DefaultKey(menuframework_s* s, int key);
-extern void         Bitmap_Init(menubitmap_s* b);
-extern void         Bitmap_Draw(menubitmap_s* b);
-extern void         ScrollList_Draw(menulist_s* l);
+extern void Bitmap_Init(menubitmap_s* b);
+extern void Bitmap_Draw(menubitmap_s* b);
+extern void ScrollList_Draw(menulist_s* l);
 extern sfxHandle_t ScrollList_Key(menulist_s* l, int key);
 extern sfxHandle_t menu_in_sound;
 extern sfxHandle_t menu_move_sound;
@@ -336,42 +336,42 @@ extern sfxHandle_t menu_out_sound;
 extern sfxHandle_t menu_buzz_sound;
 extern sfxHandle_t menu_null_sound;
 extern sfxHandle_t weaponChangeSound;
-extern vec4_t       menu_text_color;
-extern vec4_t       menu_grayed_color;
-extern vec4_t       menu_dark_color;
-extern vec4_t       menu_highlight_color;
-extern vec4_t       menu_red_color;
-extern vec4_t       menu_black_color;
-extern vec4_t       menu_dim_color;
-extern vec4_t       color_black;
-extern vec4_t       color_white;
-extern vec4_t       color_yellow;
-extern vec4_t       color_blue;
-extern vec4_t       color_orange;
-extern vec4_t       color_red;
-extern vec4_t       color_dim;
-extern vec4_t       name_color;
-extern vec4_t       list_color;
-extern vec4_t       listbar_color;
-extern vec4_t       text_color_disabled;
-extern vec4_t       text_color_normal;
-extern vec4_t       text_color_highlight;
+extern vec4_t menu_text_color;
+extern vec4_t menu_grayed_color;
+extern vec4_t menu_dark_color;
+extern vec4_t menu_highlight_color;
+extern vec4_t menu_red_color;
+extern vec4_t menu_black_color;
+extern vec4_t menu_dim_color;
+extern vec4_t color_black;
+extern vec4_t color_white;
+extern vec4_t color_yellow;
+extern vec4_t color_blue;
+extern vec4_t color_orange;
+extern vec4_t color_red;
+extern vec4_t color_dim;
+extern vec4_t name_color;
+extern vec4_t list_color;
+extern vec4_t listbar_color;
+extern vec4_t text_color_disabled;
+extern vec4_t text_color_normal;
+extern vec4_t text_color_highlight;
 
 extern char* ui_medalNames[];
 extern char* ui_medalPicNames[];
 extern char* ui_medalSounds[];
 
-extern t_mapinfo*   GetMapInfoUI(void);
+extern t_mapinfo* GetMapInfoUI(void);
 
 //
 // ui_mfield.c
 //
-extern void         MField_Clear(mfield_t* edit);
-extern void         MField_KeyDownEvent(mfield_t* edit, int key);
-extern void         MField_CharEvent(mfield_t* edit, int ch);
-extern void         MField_Draw(mfield_t* edit, int x, int y, int style, vec4_t color);
-extern void         MenuField_Init(menufield_s* m);
-extern void         MenuField_Draw(menufield_s* f);
+extern void MField_Clear(mfield_t* edit);
+extern void MField_KeyDownEvent(mfield_t* edit, int key);
+extern void MField_CharEvent(mfield_t* edit, int ch);
+extern void MField_Draw(mfield_t* edit, int x, int y, int style, vec4_t color);
+extern void MenuField_Init(menufield_s* m);
+extern void MenuField_Draw(menufield_s* f);
 extern sfxHandle_t MenuField_Key(menufield_s* m, int* key);
 
 //
@@ -598,71 +598,71 @@ extern void UI_BetMenuInternal(activeBet_t bet, qboolean edit_mode);
 
 //FIXME ripped from cg_local.h
 typedef struct {
-    int         oldFrame;
-    int         oldFrameTime;       // time when ->oldFrame was exactly on
+    int oldFrame;
+    int oldFrameTime; // time when ->oldFrame was exactly on
 
-    int         frame;
-    int         frameTime;          // time when ->frame will be exactly on
+    int frame;
+    int frameTime; // time when ->frame will be exactly on
 
-    float       backlerp;
+    float backlerp;
 
-    float       yawAngle;
-    qboolean    yawing;
-    float       pitchAngle;
-    qboolean    pitching;
+    float yawAngle;
+    qboolean yawing;
+    float pitchAngle;
+    qboolean pitching;
 
-    int         animationNumber;    // may include ANIM_TOGGLEBIT
+    int animationNumber; // may include ANIM_TOGGLEBIT
     animation_t* animation;
-    int         animationTime;      // time when the first frame of the animation will be exact
+    int animationTime; // time when the first frame of the animation will be exact
 } lerpFrame_t;
 
 typedef struct {
     // model info
-    qhandle_t       legsModel;
-    qhandle_t       legsSkin;
-    lerpFrame_t     legs;
+    qhandle_t legsModel;
+    qhandle_t legsSkin;
+    lerpFrame_t legs;
 
-    qhandle_t       torsoModel;
-    qhandle_t       torsoSkin;
-    lerpFrame_t     torso;
+    qhandle_t torsoModel;
+    qhandle_t torsoSkin;
+    lerpFrame_t torso;
 
-    qhandle_t       headModel;
-    qhandle_t       headSkin;
+    qhandle_t headModel;
+    qhandle_t headSkin;
 
-    animation_t     animations[MAX_ANIMATIONS];
+    animation_t animations[MAX_ANIMATIONS];
 
-    qhandle_t       weaponModel;
-    qhandle_t       barrelModel;
-    qhandle_t       flashModel;
-    vec3_t          flashDlightColor;
-    int             muzzleFlashTime;
+    qhandle_t weaponModel;
+    qhandle_t barrelModel;
+    qhandle_t flashModel;
+    vec3_t flashDlightColor;
+    int muzzleFlashTime;
 
     // currently in use drawing parms
-    vec3_t          viewAngles;
-    vec3_t          moveAngles;
-    weapon_t        currentWeapon;
-    int             legsAnim;
-    int             torsoAnim;
+    vec3_t viewAngles;
+    vec3_t moveAngles;
+    weapon_t currentWeapon;
+    int legsAnim;
+    int torsoAnim;
 
     // animation vars
-    weapon_t        weapon;
-    weapon_t        lastWeapon;
-    weapon_t        pendingWeapon;
-    int             weaponTimer;
-    int             pendingLegsAnim;
-    int             torsoAnimationTimer;
+    weapon_t weapon;
+    weapon_t lastWeapon;
+    weapon_t pendingWeapon;
+    int weaponTimer;
+    int pendingLegsAnim;
+    int torsoAnimationTimer;
 
-    int             pendingTorsoAnim;
-    int             legsAnimationTimer;
+    int pendingTorsoAnim;
+    int legsAnimationTimer;
 
-    qboolean        chat;
-    qboolean        newModel;
+    qboolean chat;
+    qboolean newModel;
 
-    qboolean        barrelSpinning;
-    float           barrelAngle;
-    int             barrelTime;
+    qboolean barrelSpinning;
+    float barrelAngle;
+    int barrelTime;
 
-    int             realWeapon;
+    int realWeapon;
 } playerInfo_t;
 
 void UI_DrawPlayer(float x, float y, float w, float h, playerInfo_t* pi, int time);
@@ -674,67 +674,67 @@ qboolean UI_RegisterClientModelname(playerInfo_t* pi, const char* modelSkinName)
 // ui_atoms.c
 //
 typedef struct {
-    int                 frametime;
-    int                 realtime;
-    int                 cursorx;
-    int                 cursory;
-    int                 menusp;
-    menuframework_s*    activemenu;
-    menuframework_s*    stack[MAX_MENUDEPTH];
-    glconfig_t          glconfig;
-    qboolean            debug;
-    qhandle_t           whiteShader;
-    qhandle_t           menuBackShader;
-    qhandle_t           menuBackNoLogoShader;
-    qhandle_t           charset;
-    qhandle_t           charsetProp;
-    qhandle_t           charsetPropGlow;
-    qhandle_t           charsetPropB;
-    qhandle_t           cursor;
-    qhandle_t           rb_on;
-    qhandle_t           rb_off;
-    float               xscale;
-    float               yscale;
-    float               bias;
-    qboolean            demoversion;
-    qboolean            firstdraw;
+    int frametime;
+    int realtime;
+    int cursorx;
+    int cursory;
+    int menusp;
+    menuframework_s* activemenu;
+    menuframework_s* stack[MAX_MENUDEPTH];
+    glconfig_t glconfig;
+    qboolean debug;
+    qhandle_t whiteShader;
+    qhandle_t menuBackShader;
+    qhandle_t menuBackNoLogoShader;
+    qhandle_t charset;
+    qhandle_t charsetProp;
+    qhandle_t charsetPropGlow;
+    qhandle_t charsetPropB;
+    qhandle_t cursor;
+    qhandle_t rb_on;
+    qhandle_t rb_off;
+    float xscale;
+    float yscale;
+    float bias;
+    qboolean demoversion;
+    qboolean firstdraw;
 } uiStatic_t;
 
-extern void         UI_Init(void);
-extern void         UI_Shutdown(void);
-extern void         UI_KeyEvent(int key, int down);
-extern void         UI_MouseEvent(int dx, int dy);
-extern void         UI_Refresh(int realtime);
-extern qboolean     UI_ConsoleCommand(int realTime);
-extern float        UI_ClampCvar(float min, float max, float value);
-extern void         UI_DrawNamedPic(float x, float y, float width, float height, const char* picname);
-extern void         UI_DrawHandlePic(float x, float y, float w, float h, qhandle_t hShader);
-extern void         UI_FillRect(float x, float y, float width, float height, const float* color);
-extern void         UI_DrawRect(float x, float y, float width, float height, const float* color);
-extern void         UI_UpdateScreen(void);
-extern void         UI_SetColor(const float* rgba);
-extern void         UI_LerpColor(vec4_t a, vec4_t b, vec4_t c, float t);
-extern void         UI_DrawBannerString(int x, int y, const char* str, int style, vec4_t color);
-extern float        UI_ProportionalSizeScale(int style);
-extern void         UI_DrawProportionalString(int x, int y, const char* str, int style, vec4_t color);
-extern void         UI_DrawProportionalString_AutoWrapped(int x, int ystart, int xmax, int ystep, const char* str, int style, vec4_t color);
-extern int          UI_ProportionalStringWidth(const char* str);
-extern void         UI_DrawString(int x, int y, const char* str, int style, vec4_t color);
-extern void         UI_DrawChar(int x, int y, int ch, int style, vec4_t color);
-extern qboolean     UI_CursorInRect(int x, int y, int width, int height);
-extern void         UI_AdjustFrom640(float* x, float* y, float* w, float* h);
-extern void         UI_DrawTextBox(int x, int y, int width, int lines);
-extern qboolean     UI_IsFullscreen(void);
-extern void         UI_SetActiveMenu(uiMenuCommand_t menu);
-extern void         UI_PushMenu(menuframework_s* menu);
-extern void         UI_PopMenu(void);
-extern void         UI_ForceMenuOff(void);
-extern char*         UI_Argv(int arg);
-extern char*         UI_Cvar_VariableString(const char* var_name);
-extern void         UI_Refresh(int time);
-extern void         UI_StartDemoLoop(void);
-extern qboolean     m_entersound;
-extern uiStatic_t   uis;
+extern void UI_Init(void);
+extern void UI_Shutdown(void);
+extern void UI_KeyEvent(int key, int down);
+extern void UI_MouseEvent(int dx, int dy);
+extern void UI_Refresh(int realtime);
+extern qboolean UI_ConsoleCommand(int realTime);
+extern float UI_ClampCvar(float min, float max, float value);
+extern void UI_DrawNamedPic(float x, float y, float width, float height, const char* picname);
+extern void UI_DrawHandlePic(float x, float y, float w, float h, qhandle_t hShader);
+extern void UI_FillRect(float x, float y, float width, float height, const float* color);
+extern void UI_DrawRect(float x, float y, float width, float height, const float* color);
+extern void UI_UpdateScreen(void);
+extern void UI_SetColor(const float* rgba);
+extern void UI_LerpColor(vec4_t a, vec4_t b, vec4_t c, float t);
+extern void UI_DrawBannerString(int x, int y, const char* str, int style, vec4_t color);
+extern float UI_ProportionalSizeScale(int style);
+extern void UI_DrawProportionalString(int x, int y, const char* str, int style, vec4_t color);
+extern void UI_DrawProportionalString_AutoWrapped(int x, int ystart, int xmax, int ystep, const char* str, int style, vec4_t color);
+extern int UI_ProportionalStringWidth(const char* str);
+extern void UI_DrawString(int x, int y, const char* str, int style, vec4_t color);
+extern void UI_DrawChar(int x, int y, int ch, int style, vec4_t color);
+extern qboolean UI_CursorInRect(int x, int y, int width, int height);
+extern void UI_AdjustFrom640(float* x, float* y, float* w, float* h);
+extern void UI_DrawTextBox(int x, int y, int width, int lines);
+extern qboolean UI_IsFullscreen(void);
+extern void UI_SetActiveMenu(uiMenuCommand_t menu);
+extern void UI_PushMenu(menuframework_s* menu);
+extern void UI_PopMenu(void);
+extern void UI_ForceMenuOff(void);
+extern char* UI_Argv(int arg);
+extern char* UI_Cvar_VariableString(const char* var_name);
+extern void UI_Refresh(int time);
+extern void UI_StartDemoLoop(void);
+extern qboolean m_entersound;
+extern uiStatic_t uis;
 
 //
 // ui_spLevel.c
@@ -764,69 +764,69 @@ void UI_SPSkillMenu_Cache(void);
 //
 // ui_syscalls.c
 //
-void            trap_Print(const char* string);
-void            trap_Error(const char* string)  __attribute__((noreturn));
-int             trap_Milliseconds(void);
-void            trap_Cvar_Register(vmCvar_t* vmCvar, const char* varName, const char* defaultValue, int flags);
-void            trap_Cvar_Update(vmCvar_t* vmCvar);
-void            trap_Cvar_Set(const char* var_name, const char* value);
-float           trap_Cvar_VariableValue(const char* var_name);
-void            trap_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
-void            trap_Cvar_SetValue(const char* var_name, float value);
-void            trap_Cvar_Reset(const char* name);
-void            trap_Cvar_Create(const char* var_name, const char* var_value, int flags);
-void            trap_Cvar_InfoStringBuffer(int bit, char* buffer, int bufsize);
-int             trap_Argc(void);
-void            trap_Argv(int n, char* buffer, int bufferLength);
-void            trap_Cmd_ExecuteText(int exec_when, const char* text);   // don't use EXEC_NOW!
-int             trap_FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode);
-void            trap_FS_Read(void* buffer, int len, fileHandle_t f);
-void            trap_FS_Write(const void* buffer, int len, fileHandle_t f);
-void            trap_FS_FCloseFile(fileHandle_t f);
-int             trap_FS_GetFileList(const char* path, const char* extension, char* listbuf, int bufsize);
-int             trap_FS_Seek(fileHandle_t f, long offset, int origin);   // fsOrigin_t
-qhandle_t       trap_R_RegisterModel(const char* name);
-qhandle_t       trap_R_RegisterSkin(const char* name);
-qhandle_t       trap_R_RegisterShaderNoMip(const char* name);
-void            trap_R_ClearScene(void);
-void            trap_R_AddRefEntityToScene(const refEntity_t* re);
-void            trap_R_AddPolyToScene(qhandle_t hShader, int numVerts, const polyVert_t* verts);
-void            trap_R_AddLightToScene(const vec3_t org, float intensity, float r, float g, float b);
-void            trap_R_RenderScene(const refdef_t* fd);
-void            trap_R_SetColor(const float* rgba);
-void            trap_R_DrawStretchPic(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader);
-void            trap_UpdateScreen(void);
-int             trap_CM_LerpTag(orientation_t* tag, clipHandle_t mod, int startFrame, int endFrame, float frac, const char* tagName);
-void            trap_S_StartLocalSound(sfxHandle_t sfx, int channelNum);
+void trap_Print(const char* string);
+void trap_Error(const char* string) __attribute__((noreturn));
+int trap_Milliseconds(void);
+void trap_Cvar_Register(vmCvar_t* vmCvar, const char* varName, const char* defaultValue, int flags);
+void trap_Cvar_Update(vmCvar_t* vmCvar);
+void trap_Cvar_Set(const char* var_name, const char* value);
+float trap_Cvar_VariableValue(const char* var_name);
+void trap_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
+void trap_Cvar_SetValue(const char* var_name, float value);
+void trap_Cvar_Reset(const char* name);
+void trap_Cvar_Create(const char* var_name, const char* var_value, int flags);
+void trap_Cvar_InfoStringBuffer(int bit, char* buffer, int bufsize);
+int trap_Argc(void);
+void trap_Argv(int n, char* buffer, int bufferLength);
+void trap_Cmd_ExecuteText(int exec_when, const char* text); // don't use EXEC_NOW!
+int trap_FS_FOpenFile(const char* qpath, fileHandle_t* f, fsMode_t mode);
+void trap_FS_Read(void* buffer, int len, fileHandle_t f);
+void trap_FS_Write(const void* buffer, int len, fileHandle_t f);
+void trap_FS_FCloseFile(fileHandle_t f);
+int trap_FS_GetFileList(const char* path, const char* extension, char* listbuf, int bufsize);
+int trap_FS_Seek(fileHandle_t f, long offset, int origin); // fsOrigin_t
+qhandle_t trap_R_RegisterModel(const char* name);
+qhandle_t trap_R_RegisterSkin(const char* name);
+qhandle_t trap_R_RegisterShaderNoMip(const char* name);
+void trap_R_ClearScene(void);
+void trap_R_AddRefEntityToScene(const refEntity_t* re);
+void trap_R_AddPolyToScene(qhandle_t hShader, int numVerts, const polyVert_t* verts);
+void trap_R_AddLightToScene(const vec3_t org, float intensity, float r, float g, float b);
+void trap_R_RenderScene(const refdef_t* fd);
+void trap_R_SetColor(const float* rgba);
+void trap_R_DrawStretchPic(float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader);
+void trap_UpdateScreen(void);
+int trap_CM_LerpTag(orientation_t* tag, clipHandle_t mod, int startFrame, int endFrame, float frac, const char* tagName);
+void trap_S_StartLocalSound(sfxHandle_t sfx, int channelNum);
 sfxHandle_t trap_S_RegisterSound(const char* sample, qboolean compressed);
-void            trap_Key_KeynumToStringBuf(int keynum, char* buf, int buflen);
-void            trap_Key_GetBindingBuf(int keynum, char* buf, int buflen);
-void            trap_Key_SetBinding(int keynum, const char* binding);
-qboolean        trap_Key_IsDown(int keynum);
-qboolean        trap_Key_GetOverstrikeMode(void);
-void            trap_Key_SetOverstrikeMode(qboolean state);
-void            trap_Key_ClearStates(void);
-int             trap_Key_GetCatcher(void);
-void            trap_Key_SetCatcher(int catcher);
-void            trap_GetClipboardData(char* buf, int bufsize);
-void            trap_GetClientState(uiClientState_t* state);
-void            trap_GetGlconfig(glconfig_t* glconfig);
-int             trap_GetConfigString(int index, char* buff, int buffsize);
-int             trap_LAN_GetServerCount(int source);
-void            trap_LAN_GetServerAddressString(int source, int n, char* buf, int buflen);
-void            trap_LAN_GetServerInfo(int source, int n, char* buf, int buflen);
-int             trap_LAN_GetPingQueueCount(void);
-int             trap_LAN_ServerStatus(const char* serverAddress, char* serverStatus, int maxLen);
-void            trap_LAN_ClearPing(int n);
-void            trap_LAN_GetPing(int n, char* buf, int buflen, int* pingtime);
-void            trap_LAN_GetPingInfo(int n, char* buf, int buflen);
-int             trap_MemoryRemaining(void);
-void            trap_GetCDKey(char* buf, int buflen);
-void            trap_SetCDKey(char* buf);
+void trap_Key_KeynumToStringBuf(int keynum, char* buf, int buflen);
+void trap_Key_GetBindingBuf(int keynum, char* buf, int buflen);
+void trap_Key_SetBinding(int keynum, const char* binding);
+qboolean trap_Key_IsDown(int keynum);
+qboolean trap_Key_GetOverstrikeMode(void);
+void trap_Key_SetOverstrikeMode(qboolean state);
+void trap_Key_ClearStates(void);
+int trap_Key_GetCatcher(void);
+void trap_Key_SetCatcher(int catcher);
+void trap_GetClipboardData(char* buf, int bufsize);
+void trap_GetClientState(uiClientState_t* state);
+void trap_GetGlconfig(glconfig_t* glconfig);
+int trap_GetConfigString(int index, char* buff, int buffsize);
+int trap_LAN_GetServerCount(int source);
+void trap_LAN_GetServerAddressString(int source, int n, char* buf, int buflen);
+void trap_LAN_GetServerInfo(int source, int n, char* buf, int buflen);
+int trap_LAN_GetPingQueueCount(void);
+int trap_LAN_ServerStatus(const char* serverAddress, char* serverStatus, int maxLen);
+void trap_LAN_ClearPing(int n);
+void trap_LAN_GetPing(int n, char* buf, int buflen, int* pingtime);
+void trap_LAN_GetPingInfo(int n, char* buf, int buflen);
+int trap_MemoryRemaining(void);
+void trap_GetCDKey(char* buf, int buflen);
+void trap_SetCDKey(char* buf);
 
-qboolean               trap_VerifyCDKey(const char* key, const char* chksum);  // bk001208 - RC4
+qboolean trap_VerifyCDKey(const char* key, const char* chksum); // bk001208 - RC4
 
-void            trap_SetPbClStatus(int status);
+void trap_SetPbClStatus(int status);
 
 //
 // ui_addbots.c

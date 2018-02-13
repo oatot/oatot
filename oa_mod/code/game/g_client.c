@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 // g_client.c -- client functions that don't happen every frame
 
-static vec3_t   playerMins = {-15, -15, -24};
-static vec3_t   playerMaxs = {15, 15, 32};
+static vec3_t playerMins = {-15, -15, -24};
+static vec3_t playerMaxs = {15, 15, 32};
 
 /*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 32) initial
 potential spawning position for deathmatch games.
@@ -38,7 +38,7 @@ Targets will be fired when someone spawns in on them.
 "nohumans" will prevent non-bots from using this spot.
 */
 void SP_info_player_deathmatch(gentity_t* ent) {
-    int     i;
+    int i;
     G_SpawnInt("nobots", "0", &i);
     if (i) {
         ent->flags |= FL_NO_BOTS;
@@ -62,7 +62,7 @@ void SP_domination_point(gentity_t* ent) {
 }
 
 /*QUAKED info_player_intermission (1 0 1) (-16 -16 -24) (16 16 32)
-The intermission will be viewed from this point.  Target an info_notnull for the view direction.
+The intermission will be viewed from this point. Target an info_notnull for the view direction.
 */
 void SP_info_player_intermission(gentity_t* ent) {
 }
@@ -82,10 +82,10 @@ SpotWouldTelefrag
 ================
 */
 qboolean SpotWouldTelefrag(gentity_t* spot) {
-    int         i, num;
-    int         touch[MAX_GENTITIES];
-    gentity_t*   hit;
-    vec3_t      mins, maxs;
+    int i, num;
+    int touch[MAX_GENTITIES];
+    gentity_t* hit;
+    vec3_t mins, maxs;
     VectorAdd(spot->s.origin, playerMins, mins);
     VectorAdd(spot->s.origin, playerMaxs, maxs);
     num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
@@ -106,12 +106,12 @@ SelectNearestDeathmatchSpawnPoint
 Find the spot that we DON'T want to use
 ================
 */
-#define MAX_SPAWN_POINTS    128
+#define MAX_SPAWN_POINTS 128
 gentity_t* SelectNearestDeathmatchSpawnPoint(vec3_t from) {
-    gentity_t*   spot;
-    vec3_t      delta;
-    float       dist, nearestDist;
-    gentity_t*   nearestSpot;
+    gentity_t* spot;
+    vec3_t delta;
+    float dist, nearestDist;
+    gentity_t* nearestSpot;
     nearestDist = 999999;
     nearestSpot = NULL;
     spot = NULL;
@@ -126,7 +126,7 @@ gentity_t* SelectNearestDeathmatchSpawnPoint(vec3_t from) {
     return nearestSpot;
 }
 
-#define MAX_SPAWN_POINTS    128
+#define MAX_SPAWN_POINTS 128
 /**
  * Pick a random info_player_deathmatch spawnpoint
  * Will prefer a spot that wont telefrag if such a point exist.
@@ -134,11 +134,11 @@ gentity_t* SelectNearestDeathmatchSpawnPoint(vec3_t from) {
  * @return Returns a pointer to a spot or NULL if no spots exists.
  */
 static gentity_t* SelectRandomDeathmatchSpawnPoint(int filter_flags) {
-    gentity_t*   spot;
-    int         count;
-    int         selection;
-    gentity_t*   spots[MAX_SPAWN_POINTS];
-    gentity_t*   last_valid_spot; //Last valid spot although it might telefrag;
+    gentity_t* spot;
+    int count;
+    int selection;
+    gentity_t* spots[MAX_SPAWN_POINTS];
+    gentity_t* last_valid_spot; //Last valid spot although it might telefrag;
     count = 0;
     spot = NULL;
     last_valid_spot = NULL;
@@ -153,7 +153,7 @@ static gentity_t* SelectRandomDeathmatchSpawnPoint(int filter_flags) {
         spots[ count ] = spot;
         count++;
     }
-    if (count == 0) {    // no spots that won't telefrag
+    if (count == 0) { // no spots that won't telefrag
         return last_valid_spot;
     }
     selection = rand() % count;
@@ -168,8 +168,8 @@ Chooses a player start, deathmatch start, etc
 ============
 */
 gentity_t* SelectSpawnPoint(vec3_t avoidPoint, vec3_t origin, vec3_t angles, int filter_flags) {
-    gentity_t*   spot;
-    gentity_t*   nearestSpot;
+    gentity_t* spot;
+    gentity_t* nearestSpot;
     nearestSpot = SelectNearestDeathmatchSpawnPoint(avoidPoint);
     spot = SelectRandomDeathmatchSpawnPoint(filter_flags);
     if (spot == nearestSpot) {
@@ -203,7 +203,7 @@ use normal spawn selection.
 ============
 */
 static gentity_t* SelectInitialSpawnPoint(vec3_t origin, vec3_t angles, int filter_flags) {
-    gentity_t*   spot;
+    gentity_t* spot;
     spot = NULL;
     while ((spot = G_Find(spot, FOFS(classname), "info_player_deathmatch")) != NULL) {
         if (spot->flags & filter_flags) {
@@ -249,8 +249,8 @@ InitBodyQue
 ===============
 */
 void InitBodyQue(void) {
-    int     i;
-    gentity_t*   ent;
+    int i;
+    gentity_t* ent;
     level.bodyQueIndex = 0;
     for (i = 0; i < BODY_QUEUE_SIZE; i++) {
         ent = G_Spawn();
@@ -287,14 +287,14 @@ just like the existing corpse to leave behind.
 =============
 */
 void CopyToBodyQue(gentity_t* ent) {
-    gentity_t*   e;
+    gentity_t* e;
     int i;
-    gentity_t*       body;
-    int         contents;
+    gentity_t* body;
+    int contents;
     trap_UnlinkEntity(ent);
     // if client is in a nodrop area, don't leave the body
     contents = trap_PointContents(ent->s.origin, -1);
-    if ((contents & CONTENTS_NODROP) && !(ent->s.eFlags & EF_KAMIKAZE)) {   //the check for kamikaze is a workaround for ctf4ish
+    if ((contents & CONTENTS_NODROP) && !(ent->s.eFlags & EF_KAMIKAZE)) { //the check for kamikaze is a workaround for ctf4ish
         return;
     }
     // grab a body que and cycle to the next one
@@ -305,7 +305,7 @@ void CopyToBodyQue(gentity_t* ent) {
         level.bodyQueIndex = (level.bodyQueIndex + 1) % BODY_QUEUE_SIZE;
     }
     body->s = ent->s;
-    body->s.eFlags = EF_DEAD;       // clear EF_TALK, etc
+    body->s.eFlags = EF_DEAD; // clear EF_TALK, etc
     if (ent->s.eFlags & EF_KAMIKAZE) {
         ent->s.eFlags &= ~EF_KAMIKAZE;
         body->s.eFlags |= EF_KAMIKAZE;
@@ -325,12 +325,12 @@ void CopyToBodyQue(gentity_t* ent) {
             break;
         }
     }
-    body->s.powerups = 0;   // clear powerups
-    body->s.loopSound = 0;  // clear lava burning
+    body->s.powerups = 0; // clear powerups
+    body->s.loopSound = 0; // clear lava burning
     body->s.number = body - g_entities;
     body->timestamp = level.time;
     body->physicsObject = qtrue;
-    body->physicsBounce = 0;        // don't bounce
+    body->physicsBounce = 0; // don't bounce
     if (body->s.groundEntityNum == ENTITYNUM_NONE) {
         body->s.pos.trType = TR_GRAVITY;
         body->s.pos.trTime = level.time;
@@ -386,10 +386,10 @@ SetClientViewAngle
 ==================
 */
 void SetClientViewAngle(gentity_t* ent, vec3_t angle) {
-    int         i;
+    int i;
     // set the delta angle
     for (i = 0; i < 3; i++) {
-        int     cmdAngle;
+        int cmdAngle;
         cmdAngle = ANGLE2SHORT(angle[i]);
         ent->client->ps.delta_angles[i] = cmdAngle - ent->client->pers.cmd.angles[i];
     }
@@ -403,14 +403,14 @@ respawn
 ================
 */
 void ClientRespawn(gentity_t* ent) {
-    gentity_t*   tent;
+    gentity_t* tent;
     if ((g_gametype.integer != GT_ELIMINATION && g_gametype.integer != GT_CTF_ELIMINATION && g_gametype.integer != GT_LMS) && !ent->client->isEliminated) {
         ent->client->isEliminated = qtrue; //must not be true in warmup
     } else {
         //Must always be false in other gametypes
         ent->client->isEliminated = qfalse;
     }
-    CopyToBodyQue(ent);  //Unlinks ent
+    CopyToBodyQue(ent); //Unlinks ent
     if (g_gametype.integer == GT_LMS) {
         if (ent->client->pers.livesLeft > 0) {
             ent->client->isEliminated = qfalse;
@@ -448,7 +448,7 @@ respawnRound
 ================
 */
 void respawnRound(gentity_t* ent) {
-    gentity_t*   tent;
+    gentity_t* tent;
     if (ent->client->hook) {
         Weapon_HookFree(ent->client->hook);
     }
@@ -528,8 +528,8 @@ Returns number of players on a team
 ================
 */
 int TeamCount(int ignoreClientNum, team_t team) {
-    int     i;
-    int     count = 0;
+    int i;
+    int count = 0;
     for (i = 0; i < level.maxclients; i++) {
         if (i == ignoreClientNum) {
             continue;
@@ -555,9 +555,9 @@ Returns number of living players on a team
 ================
 */
 team_t TeamLivingCount(int ignoreClientNum, int team) {
-    int     i;
-    int     count = 0;
-    qboolean    isLMS = (g_gametype.integer == GT_LMS);
+    int i;
+    int count = 0;
+    qboolean isLMS = (g_gametype.integer == GT_LMS);
     for (i = 0; i < level.maxclients; i++) {
         if (i == ignoreClientNum) {
             continue;
@@ -579,7 +579,7 @@ team_t TeamLivingCount(int ignoreClientNum, int team) {
 int TeamLivingHumanCount(int ignoreClientNum) {
     int i;
     int count = 0;
-    qboolean    isLMS = (g_gametype.integer == GT_LMS);
+    qboolean isLMS = (g_gametype.integer == GT_LMS);
     for (i = 0; i < level.maxclients; i++) {
         if (i == ignoreClientNum) {
             continue;
@@ -637,8 +637,8 @@ Count total number of healthpoints on teh teams used for draws in Elimination
 */
 
 team_t TeamHealthCount(int ignoreClientNum, int team) {
-    int         i;
-    int         count = 0;
+    int i;
+    int count = 0;
     for (i = 0; i < level.maxclients; i++) {
         if (i == ignoreClientNum) {
             continue;
@@ -667,7 +667,7 @@ Forces all clients to respawn.
 
 void RespawnAll(void) {
     int i;
-    gentity_t*   client;
+    gentity_t* client;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_DISCONNECTED) {
             continue;
@@ -696,7 +696,7 @@ Forces all *DEAD* clients to respawn.
 
 void RespawnDead(void) {
     int i;
-    gentity_t*   client;
+    gentity_t* client;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_DISCONNECTED) {
             continue;
@@ -728,7 +728,7 @@ disables all weapons
 
 void DisableWeapons(void) {
     int i;
-    gentity_t*   client;
+    gentity_t* client;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_DISCONNECTED) {
             continue;
@@ -756,7 +756,7 @@ enables all weapons
 
 void EnableWeapons(void) {
     int i;
-    gentity_t*   client;
+    gentity_t* client;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_DISCONNECTED) {
             continue;
@@ -780,7 +780,7 @@ Gives a point to the lucky survivor
 
 void LMSpoint(void) {
     int i;
-    gentity_t*   client;
+    gentity_t* client;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_DISCONNECTED) {
             continue;
@@ -808,7 +808,7 @@ Returns the client number of the team leader
 ================
 */
 int TeamLeader(int team) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_DISCONNECTED) {
             continue;
@@ -829,7 +829,7 @@ PickTeam
 ================
 */
 team_t PickTeam(int ignoreClientNum) {
-    int     counts[TEAM_NUM_TEAMS];
+    int counts[TEAM_NUM_TEAMS];
     counts[TEAM_BLUE] = TeamCount(ignoreClientNum, TEAM_BLUE);
     counts[TEAM_RED] = TeamCount(ignoreClientNum, TEAM_RED);
     //KK-OAX Both Teams locked...forget about it, print an error message, keep as spec
@@ -921,20 +921,20 @@ if desired.
 */
 void ClientUserinfoChanged(int clientNum) {
     gentity_t* ent;
-    int     teamTask, teamLeader, team, health;
-    char*    s;
-    char    model[MAX_QPATH];
-    char    headModel[MAX_QPATH];
-    char    oldname[MAX_STRING_CHARS];
+    int teamTask, teamLeader, team, health;
+    char* s;
+    char model[MAX_QPATH];
+    char headModel[MAX_QPATH];
+    char oldname[MAX_STRING_CHARS];
     //KK-OAX
-    char        err[MAX_STRING_CHARS];
-    qboolean    revertName = qfalse;
-    gclient_t*   client;
-    char    c1[MAX_INFO_STRING];
-    char    c2[MAX_INFO_STRING];
-    char    redTeam[MAX_INFO_STRING];
-    char    blueTeam[MAX_INFO_STRING];
-    char    userinfo[MAX_INFO_STRING];
+    char err[MAX_STRING_CHARS];
+    qboolean revertName = qfalse;
+    gclient_t* client;
+    char c1[MAX_INFO_STRING];
+    char c2[MAX_INFO_STRING];
+    char redTeam[MAX_INFO_STRING];
+    char blueTeam[MAX_INFO_STRING];
+    char userinfo[MAX_INFO_STRING];
     ent = g_entities + clientNum;
     client = ent->client;
     trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
@@ -968,10 +968,10 @@ void ClientUserinfoChanged(int clientNum) {
     // see if the player wants to debug the backward reconciliation
     /*s = Info_ValueForKey( userinfo, "cg_debugDelag" );
     if ( !atoi( s ) ) {
-        client->pers.debugDelag = qfalse;
+    client->pers.debugDelag = qfalse;
     }
     else {
-        client->pers.debugDelag = qtrue;
+    client->pers.debugDelag = qtrue;
     }*/
     // see if the player is simulating incoming latency
     //s = Info_ValueForKey( userinfo, "cg_latentSnaps" );
@@ -1028,7 +1028,7 @@ void ClientUserinfoChanged(int clientNum) {
     }
     if (((client->sess.sessionTeam == TEAM_SPECTATOR) ||
             (((client->isEliminated) /*||
-        ( client->ps.pm_type == PM_SPECTATOR )*/) &&    //Sago: If this is true client.isEliminated or TEAM_SPECTATOR is true to and this is redundant
+ ( client->ps.pm_type == PM_SPECTATOR )*/) && //Sago: If this is true client.isEliminated or TEAM_SPECTATOR is true to and this is redundant
              (g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION || g_gametype.integer == GT_LMS))) &&
             (client->sess.spectatorState == SPECTATOR_SCOREBOARD)) {
         Q_strncpyz(client->pers.netname, "scoreboard", sizeof(client->pers.netname));
@@ -1154,14 +1154,14 @@ restarts.
 ============
 */
 char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
-    bet_t       bets[MAX_ACTIVE_BETS_NUMBER];
-    char*        value;
-    //  char        *areabits;
-    gclient_t*   client;
-    char        userinfo[MAX_INFO_STRING];
-    gentity_t*   ent;
-    char        reason[ MAX_STRING_CHARS ] = {""};
-    int         i;
+    bet_t bets[MAX_ACTIVE_BETS_NUMBER];
+    char* value;
+    // char *areabits;
+    gclient_t* client;
+    char userinfo[MAX_INFO_STRING];
+    gentity_t* ent;
+    char reason[ MAX_STRING_CHARS ] = {""};
+    int i;
     //KK-OAX I moved these up so userinfo could be assigned/used.
     ent = &g_entities[ clientNum ];
     client = &level.clients[ clientNum ];
@@ -1191,7 +1191,7 @@ char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
     //KK-OAX
     // we don't check GUID or password for bots and local client
     // NOTE: local client <-> "ip" "localhost"
-    //   this means this client is not running in our current process
+    // this means this client is not running in our current process
     if (!isBot && !strequals(value, "localhost")) {
         // check for a password
         value = Info_ValueForKey(userinfo, "password");
@@ -1250,9 +1250,9 @@ char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
     // count current clients and rank for scoreboard
     CalculateRanks();
     // for statistics
-    //  client->areabits = areabits;
-    //  if ( !client->areabits )
-    //      client->areabits = G_Alloc( (trap_AAS_PointReachabilityAreaIndex( NULL ) + 7) / 8 );
+    // client->areabits = areabits;
+    // if ( !client->areabits )
+    // client->areabits = G_Alloc( (trap_AAS_PointReachabilityAreaIndex( NULL ) + 7) / 8 );
     //Sago: Changed the message
     //unlagged - backward reconciliation #5
     // announce it
@@ -1306,17 +1306,17 @@ void printWelcomeMessage(int clientNum) {
 ClientBegin
 
 called when a client has finished connecting, and is ready
-to be placed into the level.  This will happen every level load,
+to be placed into the level. This will happen every level load,
 and on transition between teams, but doesn't happen on respawns
 ============
 */
 void ClientBegin(int clientNum) {
-    gentity_t*   ent;
-    gclient_t*   client;
-    gentity_t*       tent;
-    int         flags;
-    int     countRed, countBlue, countFree;
-    char        userinfo[MAX_INFO_STRING];
+    gentity_t* ent;
+    gclient_t* client;
+    gentity_t* tent;
+    int flags;
+    int countRed, countBlue, countFree;
+    char userinfo[MAX_INFO_STRING];
     trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
     ent = g_entities + clientNum;
     client = level.clients + clientNum;
@@ -1386,7 +1386,7 @@ void ClientBegin(int clientNum) {
     }
     if ((client->sess.sessionTeam != TEAM_SPECTATOR) &&
             ((!(client->isEliminated) /*&&
-        ( ( !client->ps.pm_type ) == PM_SPECTATOR ) */) ||  //Sago: Yes, it made no sense
+ ( ( !client->ps.pm_type ) == PM_SPECTATOR ) */) || //Sago: Yes, it made no sense
              ((g_gametype.integer != GT_ELIMINATION || level.intermissiontime) &&
               (g_gametype.integer != GT_CTF_ELIMINATION || level.intermissiontime) &&
               (g_gametype.integer != GT_LMS || level.intermissiontime)))) {
@@ -1430,22 +1430,22 @@ Initializes all non-persistant parts of playerState
 ============
 */
 void ClientSpawn(gentity_t* ent) {
-    int     index;
+    int index;
     vec3_t spawn_origin, spawn_angles;
-    gclient_t*   client;
-    int     i;
+    gclient_t* client;
+    int i;
     clientPersistant_t saved;
-    clientSession_t     savedSess;
-    int     persistant[MAX_PERSISTANT];
-    gentity_t*   spawnPoint;
+    clientSession_t savedSess;
+    int persistant[MAX_PERSISTANT];
+    gentity_t* spawnPoint;
     //gentity_t *tent;
-    int     flags;
-    int     savedPing;
-    //  char    *savedAreaBits;
-    int     accuracy_hits, accuracy_shots, vote;
-    int     accuracy[WP_NUM_WEAPONS][2];
-    int     eventSequence;
-    char    userinfo[MAX_INFO_STRING];
+    int flags;
+    int savedPing;
+    // char *savedAreaBits;
+    int accuracy_hits, accuracy_shots, vote;
+    int accuracy[WP_NUM_WEAPONS][2];
+    int eventSequence;
+    char userinfo[MAX_INFO_STRING];
     index = ent - g_entities;
     client = ent->client;
     //In Elimination the player should not spawn if he have already spawned in the round (but not for spectators)
@@ -1513,7 +1513,7 @@ void ClientSpawn(gentity_t* ent) {
     // do it before setting health back up, so farthest
     // ranging doesn't count this client
     if ((client->sess.sessionTeam == TEAM_SPECTATOR)
-            || ((client->ps.pm_type == PM_SPECTATOR || client->isEliminated)  && (g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION))) {
+            || ((client->ps.pm_type == PM_SPECTATOR || client->isEliminated) && (g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION))) {
         spawnPoint = SelectSpectatorSpawnPoint(spawn_origin, spawn_angles);
     } else if (g_gametype.integer == GT_DOUBLE_D) {
         //Double Domination uses special spawn points:
@@ -1563,7 +1563,7 @@ void ClientSpawn(gentity_t* ent) {
     savedSess = client->sess;
     savedPing = client->ps.ping;
     vote = client->vote;
-    //  savedAreaBits = client->areabits;
+    // savedAreaBits = client->areabits;
     accuracy_hits = client->accuracy_hits;
     accuracy_shots = client->accuracy_shots;
     memcpy(accuracy, client->accuracy, sizeof(accuracy));
@@ -1574,7 +1574,7 @@ void ClientSpawn(gentity_t* ent) {
     client->sess = savedSess;
     client->ps.ping = savedPing;
     client->vote = vote;
-    //  client->areabits = savedAreaBits;
+    // client->areabits = savedAreaBits;
     client->accuracy_hits = accuracy_hits;
     client->accuracy_shots = accuracy_shots;
     memcpy(client->accuracy, accuracy, sizeof(accuracy));
@@ -1767,11 +1767,11 @@ server system housekeeping.
 ============
 */
 void ClientDisconnect(int clientNum) {
-    gentity_t*   ent;
-    int         i, new_val;
-    team_t      cl_team;
-    char    userinfo[MAX_INFO_STRING];
-    char    new_val_str[MAX_CVAR_VALUE_STRING];
+    gentity_t* ent;
+    int i, new_val;
+    team_t cl_team;
+    char userinfo[MAX_INFO_STRING];
+    char new_val_str[MAX_CVAR_VALUE_STRING];
     // cleanup if we are kicking a bot that
     // hasn't spawned yet
     G_RemoveQueuedBotBegin(clientNum);

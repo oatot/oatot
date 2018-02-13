@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -80,8 +80,8 @@ G_FindConfigstringIndex
 ================
 */
 int G_FindConfigstringIndex(char* name, int start, int max, qboolean create) {
-    int     i;
-    char    s[MAX_STRING_CHARS];
+    int i;
+    char s[MAX_STRING_CHARS];
     if (!name || !name[0]) {
         return 0;
     }
@@ -122,7 +122,7 @@ Broadcasts a command to only a specific team
 ================
 */
 void G_TeamCommand(team_t team, char* cmd) {
-    int     i;
+    int i;
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_CONNECTED) {
             if (level.clients[i].sess.sessionTeam == team) {
@@ -145,7 +145,7 @@ NULL will be returned if the end of the list is reached.
 =============
 */
 gentity_t* G_Find(gentity_t* from, int fieldofs, const char* match) {
-    char*    s;
+    char* s;
     if (!from) {
         from = g_entities;
     } else {
@@ -176,9 +176,9 @@ Selects a random entity from among the targets
 #define MAXCHOICES 32
 
 gentity_t* G_PickTarget(char* targetname) {
-    gentity_t*   ent = NULL;
-    int     num_choices = 0;
-    gentity_t*   choice[MAXCHOICES];
+    gentity_t* ent = NULL;
+    int num_choices = 0;
+    gentity_t* choice[MAXCHOICES];
     if (!targetname) {
         G_Printf("G_PickTarget called with NULL targetname\n");
         return NULL;
@@ -212,7 +212,7 @@ match (string)self.target and call their .use function
 ==============================
 */
 void G_UseTargets(gentity_t* ent, gentity_t* activator) {
-    gentity_t*       t;
+    gentity_t* t;
     if (!ent) {
         return;
     }
@@ -248,10 +248,10 @@ This is just a convenience function
 for making temporary vectors for function calls
 =============
 */
-float*   tv(float x, float y, float z) {
-    static int     index;
+float* tv(float x, float y, float z) {
+    static int index;
     static vec3_t vecs[8];
-    float*   v;
+    float* v;
     // use an array so that multiple tempvectors won't collide
     // for a while
     v = vecs[index];
@@ -270,10 +270,10 @@ This is just a convenience function
 for printing vectors
 =============
 */
-char*    vtos(const vec3_t v) {
-    static int     index;
-    static char    str[8][32];
-    char*    s;
+char* vtos(const vec3_t v) {
+    static int index;
+    static char str[8][32];
+    char* s;
     // use an array so that multiple vtos won't collide
     s = str[index];
     index = (index + 1) & 7;
@@ -292,10 +292,10 @@ instead of an orientation.
 ===============
 */
 void G_SetMovedir(vec3_t angles, vec3_t movedir) {
-    static vec3_t VEC_UP        = {0, -1, 0};
-    static vec3_t MOVEDIR_UP    = {0, 0, 1};
-    static vec3_t VEC_DOWN      = {0, -2, 0};
-    static vec3_t MOVEDIR_DOWN  = {0, 0, -1};
+    static vec3_t VEC_UP = {0, -1, 0};
+    static vec3_t MOVEDIR_UP = {0, 0, 1};
+    static vec3_t VEC_DOWN = {0, -2, 0};
+    static vec3_t MOVEDIR_DOWN = {0, 0, -1};
     if (VectorCompare(angles, VEC_UP)) {
         VectorCopy(MOVEDIR_UP, movedir);
     } else if (VectorCompare(angles, VEC_DOWN)) {
@@ -307,7 +307,7 @@ void G_SetMovedir(vec3_t angles, vec3_t movedir) {
 }
 
 float vectoyaw(const vec3_t vec) {
-    float   yaw;
+    float yaw;
     if (vec[YAW] == 0 && vec[PITCH] == 0) {
         yaw = 0;
     } else {
@@ -338,7 +338,7 @@ G_Spawn
 
 Either finds a free entity, or allocates a new one.
 
-  The slots from 0 to MAX_CLIENTS-1 are always reserved for clients, and will
+ The slots from 0 to MAX_CLIENTS-1 are always reserved for clients, and will
 never be used by anything else.
 
 Try to avoid reusing an entity that was recently freed, because it
@@ -348,10 +348,10 @@ angles and bad trails.
 =================
 */
 gentity_t* G_Spawn(void) {
-    int         i, force;
-    gentity_t*   e;
-    e = NULL;   // shut up warning
-    i = 0;      // shut up warning
+    int i, force;
+    gentity_t* e;
+    e = NULL; // shut up warning
+    i = 0; // shut up warning
     for (force = 0; force < 2; force++) {
         // if we go through all entities and can't find one to free,
         // override the normal minimum times before use
@@ -394,8 +394,8 @@ G_EntitiesFree
 =================
 */
 qboolean G_EntitiesFree(void) {
-    int         i;
-    gentity_t*   e;
+    int i;
+    gentity_t* e;
     e = &g_entities[MAX_CLIENTS];
     for (i = MAX_CLIENTS; i < level.num_entities; i++, e++) {
         if (e->inuse) {
@@ -415,7 +415,7 @@ Marks the entity as free
 =================
 */
 void G_FreeEntity(gentity_t* ed) {
-    trap_UnlinkEntity(ed);      // unlink from world
+    trap_UnlinkEntity(ed); // unlink from world
     if (ed->neverFree) {
         return;
     }
@@ -435,15 +435,15 @@ must be taken if the origin is right on a surface (snap towards start vector fir
 =================
 */
 gentity_t* G_TempEntity(const vec3_t origin, int event) {
-    gentity_t*       e;
-    vec3_t      snapped;
+    gentity_t* e;
+    vec3_t snapped;
     e = G_Spawn();
     e->s.eType = ET_EVENTS + event;
     e->classname = "tempEntity";
     e->eventTime = level.time;
     e->freeAfterEvent = qtrue;
     VectorCopy(origin, snapped);
-    SnapVector(snapped);         // save network bandwidth
+    SnapVector(snapped); // save network bandwidth
     G_SetOrigin(e, snapped);
     // find cluster for PVS
     trap_LinkEntity(e);
@@ -463,14 +463,14 @@ Kill box
 G_KillBox
 
 Kills all entities that would touch the proposed new positioning
-of ent.  Ent should be unlinked before calling this!
+of ent. Ent should be unlinked before calling this!
 =================
 */
 void G_KillBox(gentity_t* ent) {
-    int         i, num;
-    int         touch[MAX_GENTITIES];
-    gentity_t*   hit;
-    vec3_t      mins, maxs;
+    int i, num;
+    int touch[MAX_GENTITIES];
+    gentity_t* hit;
+    vec3_t mins, maxs;
     VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
     VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
     num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
@@ -511,7 +511,7 @@ Adds an event+parm and twiddles the event counter
 ===============
 */
 void G_AddEvent(gentity_t* ent, int event, int eventParm) {
-    int     bits;
+    int bits;
     if (!event) {
         G_Printf("G_AddEvent: zero event added for entity %i\n", ent->s.number);
         return;
@@ -538,7 +538,7 @@ G_Sound
 =============
 */
 void G_Sound(gentity_t* ent, int channel, int soundIndex) {
-    gentity_t*   te;
+    gentity_t* te;
     te = G_TempEntity(ent->r.currentOrigin, EV_GENERAL_SOUND);
     te->s.eventParm = soundIndex;
 }
@@ -550,10 +550,10 @@ KK-OAX G_SoundIndex must first be called.
 =============
 */
 void G_GlobalSound(int soundIndex) {
-    gentity_t*  te;
+    gentity_t* te;
     //Let's avoid the S_FindName error if soundIndex is 0.
     //Sago: And let's check that the sound index is within the allowed range.
-    if ((soundIndex <= 0) ||  soundIndex >= MAX_SOUNDS) {
+    if ((soundIndex <= 0) || soundIndex >= MAX_SOUNDS) {
         //Display this message when debugging
 #ifdef DEBUG
         G_Printf("GlobalSound: Error, no soundIndex specified. Check your code!\n");
@@ -590,8 +590,8 @@ void G_SetOrigin(gentity_t* ent, vec3_t origin) {
 ================
 DebugLine
 
-  debug polygons only work when running a local game
-  with r_debugSurface set to 2
+ debug polygons only work when running a local game
+ with r_debugSurface set to 2
 ================
 */
 int DebugLine(vec3_t start, vec3_t end, int color) {

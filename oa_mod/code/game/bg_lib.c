@@ -9,24 +9,24 @@
 
 /*-
  * Copyright (c) 1992, 1993
- *  The Regents of the University of California.  All rights reserved.
+ * The Regents of the University of California. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
  * 3. Neither the name of the University nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
+ * may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
@@ -55,19 +55,19 @@ static void swapfunc(char*, char*, int, int);
 /*
  * Qsort routine from Bentley & McIlroy's "Engineering a Sort Function".
  */
-#define swapcode(TYPE, parmi, parmj, n) {   \
-    long i = (n) / sizeof (TYPE);    \
-    register TYPE *pi = (TYPE *) (parmi);   \
-    register TYPE *pj = (TYPE *) (parmj);   \
-    do {       \
-        register TYPE t = *pi;  \
-        *pi++ = *pj;    \
-        *pj++ = t;    \
-        } while (--i > 0);    \
+#define swapcode(TYPE, parmi, parmj, n) { \
+ long i = (n) / sizeof (TYPE); \
+ register TYPE *pi = (TYPE *) (parmi); \
+ register TYPE *pj = (TYPE *) (parmj); \
+ do { \
+ register TYPE t = *pi; \
+ *pi++ = *pj; \
+ *pj++ = t; \
+ } while (--i > 0); \
 }
 
 #define SWAPINIT(a, es) swaptype = ((char *)a - (char *)0) % sizeof(long) || \
-    es % sizeof(long) ? 2 : es == sizeof(long)? 0 : 1;
+ es % sizeof(long) ? 2 : es == sizeof(long)? 0 : 1;
 
 static void
 swapfunc(a, b, n, swaptype)
@@ -80,15 +80,15 @@ int n, swaptype;
             swapcode(char, a, b, n)
         }
 
-#define swap(a, b)     \
-    if (swaptype == 0) {    \
-        long t = *(long *)(a);   \
-        *(long *)(a) = *(long *)(b);  \
-        *(long *)(b) = t;   \
-    } else      \
-        swapfunc(a, b, es, swaptype)
+#define swap(a, b) \
+ if (swaptype == 0) { \
+ long t = *(long *)(a); \
+ *(long *)(a) = *(long *)(b); \
+ *(long *)(b) = t; \
+ } else \
+ swapfunc(a, b, es, swaptype)
 
-#define vecswap(a, b, n)  if ((n) > 0) swapfunc(a, b, n, swaptype)
+#define vecswap(a, b, n) if ((n) > 0) swapfunc(a, b, n, swaptype)
 
 static char*
 med3(a, b, c, cmp)
@@ -181,7 +181,7 @@ loop:
         n = r / es;
         goto loop;
     }
-    /*      qsort(pn - r, r / es, es, cmp);*/
+    /* qsort(pn - r, r / es, es, cmp);*/
 }
 
 //==================================================================================
@@ -521,20 +521,20 @@ double cos(double x) {
 
 /*
 void create_acostable( void ) {
-    int i;
-    FILE *fp;
-    float a;
+ int i;
+ FILE *fp;
+ float a;
 
-    fp = fopen("c:\\acostable.txt", "w");
-    fprintf(fp, "float acostable[] = {");
-    for (i = 0; i < 1024; i++) {
-        if (!(i & 7))
-            fprintf(fp, "\n");
-        a = acos( (float) -1 + i / 512 );
-        fprintf(fp, "%1.8f,", a);
-    }
-    fprintf(fp, "\n}\n");
-    fclose(fp);
+ fp = fopen("c:\\acostable.txt", "w");
+ fprintf(fp, "float acostable[] = {");
+ for (i = 0; i < 1024; i++) {
+ if (!(i & 7))
+ fprintf(fp, "\n");
+ a = acos( (float) -1 + i / 512 );
+ fprintf(fp, "%1.8f,", a);
+ }
+ fprintf(fp, "\n}\n");
+ fclose(fp);
 }
 
  */
@@ -757,7 +757,7 @@ static double powN(double base, int exp) {
             exp /= 2;
         }
         return result;
-    }       // if exp is INT_MIN, the next clause will be upset,
+    } // if exp is INT_MIN, the next clause will be upset,
     // because -exp isn't representable
     else if (exp == INT_MIN) {
         return powN(base, exp + 1) / base;
@@ -1034,7 +1034,7 @@ double strtod(const char* nptr, const char** endptr) {
             *endptr = end;
         }
         return res;
-    }       // decimal
+    } // decimal
     else {
         // track if we find any digits
         const char* end = nptr, *p = nptr;
@@ -1233,7 +1233,7 @@ long strtol(const char* nptr, const char** endptr, int base) {
         // we go negative because LONG_MIN is further from 0 than
         // LONG_MAX
         if (res < (LONG_MIN + val) / base) {
-            res = LONG_MIN;    // overflow
+            res = LONG_MIN; // overflow
         } else {
             res = res * base - val;
         }
@@ -1279,62 +1279,62 @@ double fabs(double x) {
  * Original:
  * Patrick Powell Tue Apr 11 09:48:21 PDT 1995
  * A bombproof version of doprnt (dopr) included.
- * Sigh.  This sort of thing is always nasty do deal with.  Note that
+ * Sigh. This sort of thing is always nasty do deal with. Note that
  * the version here does not include floating point...
  *
  * snprintf() is used instead of sprintf() as it does limit checks
- * for string length.  This covers a nasty loophole.
+ * for string length. This covers a nasty loophole.
  *
  * The other functions are there to prevent NULL pointers from
  * causing nast effects.
  *
  * More Recently:
- *  Brandon Long <blong@fiction.net> 9/15/96 for mutt 0.43
- *  This was ugly.  It is still ugly.  I opted out of floating point
- *  numbers, but the formatter understands just about everything
- *  from the normal C string format, at least as far as I can tell from
- *  the Solaris 2.5 printf(3S) man page.
+ * Brandon Long <blong@fiction.net> 9/15/96 for mutt 0.43
+ * This was ugly. It is still ugly. I opted out of floating point
+ * numbers, but the formatter understands just about everything
+ * from the normal C string format, at least as far as I can tell from
+ * the Solaris 2.5 printf(3S) man page.
  *
- *  Brandon Long <blong@fiction.net> 10/22/97 for mutt 0.87.1
- *    Ok, added some minimal floating point support, which means this
- *    probably requires libm on most operating systems.  Don't yet
- *    support the exponent (e,E) and sigfig (g,G).  Also, fmtint()
- *    was pretty badly broken, it just wasn't being exercised in ways
- *    which showed it, so that's been fixed.  Also, formated the code
- *    to mutt conventions, and removed dead code left over from the
- *    original.  Also, there is now a builtin-test, just compile with:
- *           gcc -DTEST_SNPRINTF -o snprintf snprintf.c -lm
- *    and run snprintf for results.
+ * Brandon Long <blong@fiction.net> 10/22/97 for mutt 0.87.1
+ * Ok, added some minimal floating point support, which means this
+ * probably requires libm on most operating systems. Don't yet
+ * support the exponent (e,E) and sigfig (g,G). Also, fmtint()
+ * was pretty badly broken, it just wasn't being exercised in ways
+ * which showed it, so that's been fixed. Also, formated the code
+ * to mutt conventions, and removed dead code left over from the
+ * original. Also, there is now a builtin-test, just compile with:
+ * gcc -DTEST_SNPRINTF -o snprintf snprintf.c -lm
+ * and run snprintf for results.
  *
- *  Thomas Roessler <roessler@guug.de> 01/27/98 for mutt 0.89i
- *    The PGP code was using unsigned hexadecimal formats.
- *    Unfortunately, unsigned formats simply didn't work.
+ * Thomas Roessler <roessler@guug.de> 01/27/98 for mutt 0.89i
+ * The PGP code was using unsigned hexadecimal formats.
+ * Unfortunately, unsigned formats simply didn't work.
  *
- *  Michael Elkins <me@cs.hmc.edu> 03/05/98 for mutt 0.90.8
- *    The original code assumed that both snprintf() and vsnprintf() were
- *    missing.  Some systems only have snprintf() but not vsnprintf(), so
- *    the code is now broken down under HAVE_SNPRINTF and HAVE_VSNPRINTF.
+ * Michael Elkins <me@cs.hmc.edu> 03/05/98 for mutt 0.90.8
+ * The original code assumed that both snprintf() and vsnprintf() were
+ * missing. Some systems only have snprintf() but not vsnprintf(), so
+ * the code is now broken down under HAVE_SNPRINTF and HAVE_VSNPRINTF.
  *
- *  Andrew Tridgell (tridge@samba.org) Oct 1998
- *    fixed handling of %.0f
- *    added test for HAVE_LONG_DOUBLE
+ * Andrew Tridgell (tridge@samba.org) Oct 1998
+ * fixed handling of %.0f
+ * added test for HAVE_LONG_DOUBLE
  *
- *  Russ Allbery <rra@stanford.edu> 2000-08-26
- *    fixed return value to comply with C99
- *    fixed handling of snprintf(NULL, ...)
+ * Russ Allbery <rra@stanford.edu> 2000-08-26
+ * fixed return value to comply with C99
+ * fixed handling of snprintf(NULL, ...)
  *
- *  Hrvoje Niksic <hniksic@arsdigita.com> 2000-11-04
- *    include <config.h> instead of "config.h".
- *    moved TEST_SNPRINTF stuff out of HAVE_SNPRINTF ifdef.
- *    include <stdio.h> for NULL.
- *    added support and test cases for long long.
- *    don't declare argument types to (v)snprintf if stdarg is not used.
- *    use int instead of short int as 2nd arg to va_arg.
+ * Hrvoje Niksic <hniksic@arsdigita.com> 2000-11-04
+ * include <config.h> instead of "config.h".
+ * moved TEST_SNPRINTF stuff out of HAVE_SNPRINTF ifdef.
+ * include <stdio.h> for NULL.
+ * added support and test cases for long long.
+ * don't declare argument types to (v)snprintf if stdarg is not used.
+ * use int instead of short int as 2nd arg to va_arg.
  *
  **************************************************************/
 
-/* BDR 2002-01-13  %e and %g were being ignored.  Now do something,
-   if not necessarily correctly */
+/* BDR 2002-01-13 %e and %g were being ignored. Now do something,
+ if not necessarily correctly */
 
 #if (SIZEOF_LONG_DOUBLE > 0)
 /* #ifdef HAVE_LONG_DOUBLE */
@@ -1366,28 +1366,28 @@ static int dopr_outch(char* buffer, size_t* currlen, size_t maxlen, char c);
 
 /* format read states */
 #define DP_S_DEFAULT 0
-#define DP_S_FLAGS   1
-#define DP_S_MIN     2
-#define DP_S_DOT     3
-#define DP_S_MAX     4
-#define DP_S_MOD     5
-#define DP_S_MOD_L   6
-#define DP_S_CONV    7
-#define DP_S_DONE    8
+#define DP_S_FLAGS 1
+#define DP_S_MIN 2
+#define DP_S_DOT 3
+#define DP_S_MAX 4
+#define DP_S_MOD 5
+#define DP_S_MOD_L 6
+#define DP_S_CONV 7
+#define DP_S_DONE 8
 
 /* format flags - Bits */
-#define DP_F_MINUS  (1 << 0)
-#define DP_F_PLUS   (1 << 1)
-#define DP_F_SPACE  (1 << 2)
-#define DP_F_NUM    (1 << 3)
-#define DP_F_ZERO   (1 << 4)
-#define DP_F_UP     (1 << 5)
-#define DP_F_UNSIGNED  (1 << 6)
+#define DP_F_MINUS (1 << 0)
+#define DP_F_PLUS (1 << 1)
+#define DP_F_SPACE (1 << 2)
+#define DP_F_NUM (1 << 3)
+#define DP_F_ZERO (1 << 4)
+#define DP_F_UP (1 << 5)
+#define DP_F_UNSIGNED (1 << 6)
 
 /* Conversion Flags */
-#define DP_C_SHORT   1
-#define DP_C_LONG    2
-#define DP_C_LLONG   3
+#define DP_C_SHORT 1
+#define DP_C_LONG 2
+#define DP_C_LLONG 3
 #define DP_C_LDOUBLE 4
 
 #define char_to_int(p) (p - '0')
@@ -1538,9 +1538,9 @@ static int dopr(char* buffer, size_t maxlen, const char* format, va_list args) {
             case 'o':
                 flags |= DP_F_UNSIGNED;
                 if (cflags == DP_C_SHORT)
-                    //    value = (unsigned short int) va_arg (args, unsigned short int); // Thilo: This does not work because the rcc compiler cannot do that cast correctly.
+                    // value = (unsigned short int) va_arg (args, unsigned short int); // Thilo: This does not work because the rcc compiler cannot do that cast correctly.
                 {
-                    value = va_arg(args, unsigned int) & ((1 << sizeof(unsigned short int) * 8) - 1);    // Using this workaround instead.
+                    value = va_arg(args, unsigned int) & ((1 << sizeof(unsigned short int) * 8) - 1); // Using this workaround instead.
                 } else if (cflags == DP_C_LONG) {
                     value = va_arg(args, unsigned long int);
                 } else if (cflags == DP_C_LLONG) {
@@ -1690,7 +1690,7 @@ static int fmtstr(char* buffer, size_t* currlen, size_t maxlen,
         padlen = 0;
     }
     if (flags & DP_F_MINUS) {
-        padlen = -padlen;    /* Left Justify */
+        padlen = -padlen; /* Left Justify */
     }
     while (padlen > 0) {
         total += dopr_outch(buffer, currlen, maxlen, ' ');
@@ -1761,7 +1761,7 @@ static int fmtint(char* buffer, size_t* currlen, size_t maxlen,
         spadlen = 0;
     }
     if (flags & DP_F_MINUS) {
-        spadlen = -spadlen;    /* Left Justifty */
+        spadlen = -spadlen; /* Left Justifty */
     }
 #ifdef DEBUG_SNPRINTF
     dprint(1, (debugfile, "zpad: %d, spad: %d, min: %d, max: %d, place: %d\n",
@@ -1828,9 +1828,9 @@ static int fmtfp(char* buffer, size_t* currlen, size_t maxlen,
     long intpart;
     long fracpart;
     /*
-     * AIX manpage says the default is 0, but Solaris says the default
-     * is 6, and sprintf on AIX defaults to 6
-     */
+    * AIX manpage says the default is 0, but Solaris says the default
+    * is 6, and sprintf on AIX defaults to 6
+    */
     if (max < 0) {
         max = 6;
     }
@@ -1844,20 +1844,20 @@ static int fmtfp(char* buffer, size_t* currlen, size_t maxlen,
     }
 #if 0
     if (flags & DP_F_UP) {
-        caps = 1;    /* Should characters be upper case? */
+        caps = 1; /* Should characters be upper case? */
     }
 #endif
     intpart = ufvalue;
     /*
-     * Sorry, we only support 9 digits past the decimal because of our
-     * conversion method
-     */
+    * Sorry, we only support 9 digits past the decimal because of our
+    * conversion method
+    */
     if (max > 9) {
         max = 9;
     }
     /* We "cheat" by converting the fractional part to integer by
-     * multiplying by a factor of 10
-     */
+    * multiplying by a factor of 10
+    */
     fracpart = round((powN(10, max)) * (ufvalue - intpart));
     if (fracpart >= powN(10, max)) {
         intpart++;
@@ -1896,7 +1896,7 @@ static int fmtfp(char* buffer, size_t* currlen, size_t maxlen,
         padlen = 0;
     }
     if (flags & DP_F_MINUS) {
-        padlen = -padlen;    /* Left Justifty */
+        padlen = -padlen; /* Left Justifty */
     }
     if ((flags & DP_F_ZERO) && (padlen > 0)) {
         if (signvalue) {
@@ -1920,9 +1920,9 @@ static int fmtfp(char* buffer, size_t* currlen, size_t maxlen,
         total += dopr_outch(buffer, currlen, maxlen, iconvert[--iplace]);
     }
     /*
-     * Decimal point.  This should probably use locale to find the correct
-     * char to print out.
-     */
+    * Decimal point. This should probably use locale to find the correct
+    * char to print out.
+    */
     if (max > 0) {
         total += dopr_outch(buffer, currlen, maxlen, '.');
         while (zpadlen-- > 0) {

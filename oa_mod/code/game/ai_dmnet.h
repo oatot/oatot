@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,15 +22,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 
 /*****************************************************************************
- * name:        ai_dmnet.h
+ * name: ai_dmnet.h
  *
- * desc:        Quake3 bot AI
+ * desc: Quake3 bot AI
  *
  * $Archive: /source/code/botai/ai_chat.c $
  *
  *****************************************************************************/
 
-#define MAX_NODESWITCHES    50
+#define MAX_NODESWITCHES 50
 
 void AIEnter_Intermission(bot_state_t* bs, char* s);
 void AIEnter_Observer(bot_state_t* bs, char* s);

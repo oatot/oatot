@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -21,17 +21,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 //
 /**********************************************************************
-    UI_ATOMS.C
+ UI_ATOMS.C
 
-    User interface building blocks and support functions.
+ User interface building blocks and support functions.
 **********************************************************************/
 #include "ui_local.h"
 
-qboolean        m_entersound;       // after a frame, so caching won't disrupt the sound
+qboolean m_entersound; // after a frame, so caching won't disrupt the sound
 
 void QDECL Com_Error(int level, const char* error, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, error);
     Q_vsnprintf(text, sizeof(text), error, argptr);
     va_end(argptr);
@@ -39,8 +39,8 @@ void QDECL Com_Error(int level, const char* error, ...) {
 }
 
 void QDECL Com_Printf(const char* msg, ...) {
-    va_list     argptr;
-    char        text[1024];
+    va_list argptr;
+    char text[1024];
     va_start(argptr, msg);
     Q_vsnprintf(text, sizeof(text), msg, argptr);
     va_end(argptr);
@@ -102,42 +102,42 @@ char* UI_Cvar_VariableString(const char* var_name) {
 }
 
 void UI_SetBestScores(postGameInfo_t* newInfo, qboolean postGame) {
-    trap_Cvar_Set("ui_scoreAccuracy",     va("%i%%", newInfo->accuracy));
-    trap_Cvar_Set("ui_scoreImpressives",    va("%i", newInfo->impressives));
-    trap_Cvar_Set("ui_scoreExcellents",     va("%i", newInfo->excellents));
-    trap_Cvar_Set("ui_scoreDefends",            va("%i", newInfo->defends));
-    trap_Cvar_Set("ui_scoreAssists",            va("%i", newInfo->assists));
-    trap_Cvar_Set("ui_scoreGauntlets",      va("%i", newInfo->gauntlets));
-    trap_Cvar_Set("ui_scoreScore",              va("%i", newInfo->score));
-    trap_Cvar_Set("ui_scorePerfect",            va("%i", newInfo->perfects));
-    trap_Cvar_Set("ui_scoreTeam",                   va("%i to %i", newInfo->redScore, newInfo->blueScore));
-    trap_Cvar_Set("ui_scoreBase",                   va("%i", newInfo->baseScore));
-    trap_Cvar_Set("ui_scoreTimeBonus",      va("%i", newInfo->timeBonus));
-    trap_Cvar_Set("ui_scoreSkillBonus",     va("%i", newInfo->skillBonus));
-    trap_Cvar_Set("ui_scoreShutoutBonus",   va("%i", newInfo->shutoutBonus));
-    trap_Cvar_Set("ui_scoreTime",                   va("%02i:%02i", newInfo->time / 60, newInfo->time % 60));
-    trap_Cvar_Set("ui_scoreCaptures",       va("%i", newInfo->captures));
+    trap_Cvar_Set("ui_scoreAccuracy", va("%i%%", newInfo->accuracy));
+    trap_Cvar_Set("ui_scoreImpressives", va("%i", newInfo->impressives));
+    trap_Cvar_Set("ui_scoreExcellents", va("%i", newInfo->excellents));
+    trap_Cvar_Set("ui_scoreDefends", va("%i", newInfo->defends));
+    trap_Cvar_Set("ui_scoreAssists", va("%i", newInfo->assists));
+    trap_Cvar_Set("ui_scoreGauntlets", va("%i", newInfo->gauntlets));
+    trap_Cvar_Set("ui_scoreScore", va("%i", newInfo->score));
+    trap_Cvar_Set("ui_scorePerfect", va("%i", newInfo->perfects));
+    trap_Cvar_Set("ui_scoreTeam", va("%i to %i", newInfo->redScore, newInfo->blueScore));
+    trap_Cvar_Set("ui_scoreBase", va("%i", newInfo->baseScore));
+    trap_Cvar_Set("ui_scoreTimeBonus", va("%i", newInfo->timeBonus));
+    trap_Cvar_Set("ui_scoreSkillBonus", va("%i", newInfo->skillBonus));
+    trap_Cvar_Set("ui_scoreShutoutBonus", va("%i", newInfo->shutoutBonus));
+    trap_Cvar_Set("ui_scoreTime", va("%02i:%02i", newInfo->time / 60, newInfo->time % 60));
+    trap_Cvar_Set("ui_scoreCaptures", va("%i", newInfo->captures));
     if (postGame) {
-        trap_Cvar_Set("ui_scoreAccuracy2",     va("%i%%", newInfo->accuracy));
-        trap_Cvar_Set("ui_scoreImpressives2",   va("%i", newInfo->impressives));
-        trap_Cvar_Set("ui_scoreExcellents2",    va("%i", newInfo->excellents));
-        trap_Cvar_Set("ui_scoreDefends2",           va("%i", newInfo->defends));
-        trap_Cvar_Set("ui_scoreAssists2",           va("%i", newInfo->assists));
-        trap_Cvar_Set("ui_scoreGauntlets2",         va("%i", newInfo->gauntlets));
-        trap_Cvar_Set("ui_scoreScore2",                 va("%i", newInfo->score));
-        trap_Cvar_Set("ui_scorePerfect2",           va("%i", newInfo->perfects));
-        trap_Cvar_Set("ui_scoreTeam2",                  va("%i to %i", newInfo->redScore, newInfo->blueScore));
-        trap_Cvar_Set("ui_scoreBase2",                  va("%i", newInfo->baseScore));
-        trap_Cvar_Set("ui_scoreTimeBonus2",     va("%i", newInfo->timeBonus));
-        trap_Cvar_Set("ui_scoreSkillBonus2",        va("%i", newInfo->skillBonus));
-        trap_Cvar_Set("ui_scoreShutoutBonus2",  va("%i", newInfo->shutoutBonus));
-        trap_Cvar_Set("ui_scoreTime2",                  va("%02i:%02i", newInfo->time / 60, newInfo->time % 60));
-        trap_Cvar_Set("ui_scoreCaptures2",      va("%i", newInfo->captures));
+        trap_Cvar_Set("ui_scoreAccuracy2", va("%i%%", newInfo->accuracy));
+        trap_Cvar_Set("ui_scoreImpressives2", va("%i", newInfo->impressives));
+        trap_Cvar_Set("ui_scoreExcellents2", va("%i", newInfo->excellents));
+        trap_Cvar_Set("ui_scoreDefends2", va("%i", newInfo->defends));
+        trap_Cvar_Set("ui_scoreAssists2", va("%i", newInfo->assists));
+        trap_Cvar_Set("ui_scoreGauntlets2", va("%i", newInfo->gauntlets));
+        trap_Cvar_Set("ui_scoreScore2", va("%i", newInfo->score));
+        trap_Cvar_Set("ui_scorePerfect2", va("%i", newInfo->perfects));
+        trap_Cvar_Set("ui_scoreTeam2", va("%i to %i", newInfo->redScore, newInfo->blueScore));
+        trap_Cvar_Set("ui_scoreBase2", va("%i", newInfo->baseScore));
+        trap_Cvar_Set("ui_scoreTimeBonus2", va("%i", newInfo->timeBonus));
+        trap_Cvar_Set("ui_scoreSkillBonus2", va("%i", newInfo->skillBonus));
+        trap_Cvar_Set("ui_scoreShutoutBonus2", va("%i", newInfo->shutoutBonus));
+        trap_Cvar_Set("ui_scoreTime2", va("%02i:%02i", newInfo->time / 60, newInfo->time % 60));
+        trap_Cvar_Set("ui_scoreCaptures2", va("%i", newInfo->captures));
     }
 }
 
 void UI_LoadBestScores(const char* map, int game) {
-    char        fileName[MAX_QPATH];
+    char fileName[MAX_QPATH];
     fileHandle_t f;
     postGameInfo_t newInfo;
     memset(&newInfo, 0, sizeof(postGameInfo_t));
@@ -165,9 +165,9 @@ UI_ClearScores
 ===============
 */
 void UI_ClearScores(void) {
-    char    gameList[4096];
+    char gameList[4096];
     char* gameFile;
-    int     i, len, count, size;
+    int i, len, count, size;
     fileHandle_t f;
     postGameInfo_t newInfo;
     count = trap_FS_GetFileList("games", "game", gameList, sizeof(gameList));
@@ -198,9 +198,9 @@ UI_CalcPostGameStats
 =======================
 */
 static void UI_CalcPostGameStats(void) {
-    char        map[MAX_QPATH];
-    char        fileName[MAX_QPATH];
-    char        info[MAX_INFO_STRING];
+    char map[MAX_QPATH];
+    char fileName[MAX_QPATH];
+    char info[MAX_INFO_STRING];
     fileHandle_t f;
     int size, game, time, adjustedTime;
     postGameInfo_t oldInfo;
@@ -285,7 +285,7 @@ UI_ConsoleCommand
 =================
 */
 qboolean UI_ConsoleCommand(int realTime) {
-    char*    cmd;
+    char* cmd;
     uiInfo.uiDC.frameTime = realTime - uiInfo.uiDC.realTime;
     uiInfo.uiDC.realTime = realTime;
     cmd = UI_Argv(0);
@@ -363,27 +363,27 @@ void UI_AdjustFrom640(float* x, float* y, float* w, float* h) {
 }
 
 void UI_DrawNamedPic(float x, float y, float width, float height, const char* picname) {
-    qhandle_t   hShader;
+    qhandle_t hShader;
     hShader = trap_R_RegisterShaderNoMip(picname);
     UI_AdjustFrom640(&x, &y, &width, &height);
     trap_R_DrawStretchPic(x, y, width, height, 0, 0, 1, 1, hShader);
 }
 
 void UI_DrawHandlePic(float x, float y, float w, float h, qhandle_t hShader) {
-    float   s0;
-    float   s1;
-    float   t0;
-    float   t1;
-    if (w < 0) {     // flip about vertical
-        w  = -w;
+    float s0;
+    float s1;
+    float t0;
+    float t1;
+    if (w < 0) { // flip about vertical
+        w = -w;
         s0 = 1;
         s1 = 0;
     } else {
         s0 = 0;
         s1 = 1;
     }
-    if (h < 0) {     // flip about horizontal
-        h  = -h;
+    if (h < 0) { // flip about horizontal
+        h = -h;
         t0 = 1;
         t1 = 0;
     } else {

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,9 +27,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "cg_local.h"
 
 #define MAX_LOCAL_ENTITIES 512
-localEntity_t   cg_localEntities[MAX_LOCAL_ENTITIES];
-localEntity_t   cg_activeLocalEntities;     // double linked list
-localEntity_t*   cg_freeLocalEntities;      // single linked list
+localEntity_t cg_localEntities[MAX_LOCAL_ENTITIES];
+localEntity_t cg_activeLocalEntities; // double linked list
+localEntity_t* cg_freeLocalEntities; // single linked list
 
 /*
 ===================
@@ -38,8 +38,8 @@ CG_InitLocalEntities
 This is called at startup and for tournement restarts
 ===================
 */
-void    CG_InitLocalEntities(void) {
-    int     i;
+void CG_InitLocalEntities(void) {
+    int i;
     memset(cg_localEntities, 0, sizeof(cg_localEntities));
     cg_activeLocalEntities.next = &cg_activeLocalEntities;
     cg_activeLocalEntities.prev = &cg_activeLocalEntities;
@@ -73,8 +73,8 @@ CG_AllocLocalEntity
 Will always succeed, even if it requires freeing an old active entity
 ===================
 */
-localEntity_t*   CG_AllocLocalEntity(void) {
-    localEntity_t*   le;
+localEntity_t* CG_AllocLocalEntity(void) {
+    localEntity_t* le;
     if (!cg_freeLocalEntities) {
         // no free entities, so free the one at the end of the chain
         // remove the oldest active entity
@@ -110,23 +110,23 @@ Leave expanding blood puffs behind gibs
 ================
 */
 void CG_BloodTrail(localEntity_t* le) {
-    int     t;
-    int     t2;
-    int     step;
+    int t;
+    int t2;
+    int step;
     vec3_t newOrigin;
-    localEntity_t*   blood;
+    localEntity_t* blood;
     step = 150;
     t = step * ((cg.time - cg.frametime + step) / step);
     t2 = step * (cg.time / step);
     for (; t <= t2; t += step) {
         BG_EvaluateTrajectory(&le->pos, t, newOrigin);
         blood = CG_SmokePuff(newOrigin, vec3_origin,
-                             20,       // radius
-                             1, 1, 1, 1,   // color
-                             2000,     // trailTime
-                             t,        // startTime
-                             0,        // fadeInTime
-                             0,        // flags
+                             20, // radius
+                             1, 1, 1, 1, // color
+                             2000, // trailTime
+                             t, // startTime
+                             0, // fadeInTime
+                             0, // flags
                              cgs.media.bloodTrailShader);
         // use the optimized version
         blood->leType = LE_FALL_SCALE_FADE;
@@ -137,23 +137,23 @@ void CG_BloodTrail(localEntity_t* le) {
 
 // LEILEI
 void CG_SmallBloodTrail(localEntity_t* le) {
-    int     t;
-    int     t2;
-    int     step;
+    int t;
+    int t2;
+    int step;
     vec3_t newOrigin;
-    localEntity_t*   blood;
+    localEntity_t* blood;
     step = 61;
     t = step * ((cg.time - cg.frametime + step) / step);
     t2 = step * (cg.time / step);
     for (; t <= t2; t += step) {
         BG_EvaluateTrajectory(&le->pos, t, newOrigin);
         blood = CG_SmokePuff(newOrigin, vec3_origin,
-                             3,        // radius
-                             1, 1, 1, 1,   // color
-                             770,      // trailTime
-                             t,        // startTime
-                             0,        // fadeInTime
-                             0,        // flags
+                             3, // radius
+                             1, 1, 1, 1, // color
+                             770, // trailTime
+                             t, // startTime
+                             0, // fadeInTime
+                             0, // flags
                              cgs.media.lbldShader1);
         // use the optimized version
         blood->leType = LE_FALL_SCALE_FADE;
@@ -168,7 +168,7 @@ CG_FragmentBounceMark
 ================
 */
 void CG_FragmentBounceMark(localEntity_t* le, trace_t* trace) {
-    int         radius;
+    int radius;
     if (le->leMarkType == LEMT_BLOOD) {
         radius = 16 + (rand() & 31);
         CG_ImpactMark(cgs.media.bloodMarkShader, trace->endpos, trace->plane.normal, random() * 360,
@@ -243,7 +243,7 @@ void CG_FragmentBounceSound(localEntity_t* le, trace_t* trace) {
 
 // LEILEI
 void CG_GoreMark(localEntity_t* le, trace_t* trace) {
-    int         radius;
+    int radius;
     if (le->leMarkType == LEMT_BURN) {
         radius = 6 + (rand() & 16);
         CG_ImpactMark(cgs.media.lbldShader2, trace->endpos, trace->plane.normal, random() * 360,
@@ -289,8 +289,8 @@ CG_ReflectVelocity
 */
 void CG_ReflectVelocity(localEntity_t* le, trace_t* trace) {
     vec3_t velocity;
-    float   dot;
-    int     hitTime;
+    float dot;
+    int hitTime;
     // reflect the velocity on the trace plane
     hitTime = cg.time - cg.frametime + cg.frametime * trace->fraction;
     BG_EvaluateTrajectoryDelta(&le->pos, hitTime, velocity);
@@ -318,8 +318,8 @@ void CG_AddFragment(localEntity_t* le) {
     trace_t trace;
     if (le->pos.trType == TR_STATIONARY) {
         // sink into the ground if near the removal time
-        int     t;
-        float   oldZ;
+        int t;
+        float oldZ;
         t = le->endTime - cg.time;
         if (t < SINK_TIME) {
             // we must use an explicit lighting origin, otherwise the
@@ -375,8 +375,8 @@ void CG_AddFragment(localEntity_t* le) {
 
 void CG_JustSplat(localEntity_t* le, trace_t* trace) {
     vec3_t velocity;
-    float   dot;
-    int     hitTime;
+    float dot;
+    int hitTime;
     // reflect the velocity on the trace plane
     hitTime = cg.time - cg.frametime + cg.frametime * trace->fraction;
     BG_EvaluateTrajectoryDelta(&le->pos, hitTime, velocity);
@@ -399,9 +399,9 @@ void CG_AddGore(localEntity_t* le) {
     trace_t trace;
     if (le->pos.trType == TR_STATIONARY) {
         // sink into the ground if near the removal time
-        //int       t;
+        //int t;
         //float oldZ;
-        CG_FreeLocalEntity(le);   // kill it
+        CG_FreeLocalEntity(le); // kill it
         return;
     }
     // calculate new position
@@ -469,9 +469,9 @@ CG_AddMoveScaleFade
 */
 static void CG_AddMoveScaleFade(localEntity_t* le) {
     refEntity_t* re;
-    float       c;
-    vec3_t      delta;
-    float       len;
+    float c;
+    vec3_t delta;
+    float len;
     re = &le->refEntity;
     if (le->fadeInTime > le->startTime && cg.time < le->fadeInTime) {
         // fade / grow time
@@ -507,9 +507,9 @@ There are often many of these, so it needs to be simple.
 */
 static void CG_AddScaleFade(localEntity_t* le) {
     refEntity_t* re;
-    float       c;
-    vec3_t      delta;
-    float       len;
+    float c;
+    vec3_t delta;
+    float len;
     re = &le->refEntity;
     // fade / grow time
     c = (le->endTime - cg.time) * le->lifeRate;
@@ -541,9 +541,9 @@ There are often 100+ of these, so it needs to be simple.
 */
 static void CG_AddFallScaleFade(localEntity_t* le) {
     refEntity_t* re;
-    float       c;
-    vec3_t      delta;
-    float       len;
+    float c;
+    vec3_t delta;
+    float len;
     re = &le->refEntity;
     // fade time
     c = (le->endTime - cg.time) * le->lifeRate;
@@ -576,7 +576,7 @@ static void CG_AddExplosion(localEntity_t* ex) {
     trap_R_AddRefEntityToScene(ent);
     // add the dlight
     if (ex->light) {
-        float       light;
+        float light;
         light = (float)(cg.time - ex->startTime) / (ex->endTime - ex->startTime);
         if (light < 0.5) {
             light = 1.0;
@@ -599,7 +599,7 @@ static void CG_AddSpriteExplosion(localEntity_t* le) {
     re = le->refEntity;
     c = (le->endTime - cg.time) / (float)(le->endTime - le->startTime);
     if (c > 1) {
-        c = 1.0;    // can happen during connection problems
+        c = 1.0; // can happen during connection problems
     }
     re.shaderRGBA[0] = 0xff;
     re.shaderRGBA[1] = 0xff;
@@ -610,7 +610,7 @@ static void CG_AddSpriteExplosion(localEntity_t* le) {
     trap_R_AddRefEntityToScene(&re);
     // add the dlight
     if (le->light) {
-        float       light;
+        float light;
         light = (float)(cg.time - le->startTime) / (le->endTime - le->startTime);
         if (light < 0.5) {
             light = 1.0;
@@ -631,16 +631,16 @@ CG_AddKamikaze
 void CG_AddKamikaze(localEntity_t* le) {
     refEntity_t* re;
     refEntity_t shockwave;
-    float       c;
-    vec3_t      test, axis[3];
-    int         t;
+    float c;
+    vec3_t test, axis[3];
+    int t;
     re = &le->refEntity;
     t = cg.time - le->startTime;
     VectorClear(test);
     AnglesToAxis(test, axis);
     if (t > KAMI_SHOCKWAVE_STARTTIME && t < KAMI_SHOCKWAVE_ENDTIME) {
         if (!(le->leFlags & LEF_SOUND1)) {
-            //          trap_S_StartSound (re->origin, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.kamikazeExplodeSound );
+            // trap_S_StartSound (re->origin, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.kamikazeExplodeSound );
             trap_S_StartLocalSound(cgs.media.kamikazeExplodeSound, CHAN_AUTO);
             le->leFlags |= LEF_SOUND1;
         }
@@ -679,7 +679,7 @@ void CG_AddKamikaze(localEntity_t* le) {
             c = (float)(t - KAMI_EXPLODE_STARTTIME) / (float)(KAMI_IMPLODE_STARTTIME - KAMI_EXPLODE_STARTTIME);
         } else {
             if (!(le->leFlags & LEF_SOUND2)) {
-                //              trap_S_StartSound (re->origin, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.kamikazeImplodeSound );
+                // trap_S_StartSound (re->origin, ENTITYNUM_WORLD, CHAN_AUTO, cgs.media.kamikazeImplodeSound );
                 trap_S_StartLocalSound(cgs.media.kamikazeImplodeSound, CHAN_AUTO);
                 le->leFlags |= LEF_SOUND2;
             }
@@ -781,13 +781,13 @@ void CG_AddRefEntity(localEntity_t* le) {
 CG_AddScorePlum
 ===================
 */
-#define NUMBER_SIZE     8
+#define NUMBER_SIZE 8
 
 void CG_AddScorePlum(localEntity_t* le) {
     refEntity_t* re;
-    vec3_t      origin, delta, dir, vec, up = {0, 0, 1};
-    float       c, len;
-    int         i, score, digits[10], numdigits, negative;
+    vec3_t origin, delta, dir, vec, up = {0, 0, 1};
+    float c, len;
+    int i, score, digits[10], numdigits, negative;
     re = &le->refEntity;
     c = (le->endTime - cg.time) * le->lifeRate;
     score = le->radius;
@@ -858,7 +858,7 @@ CG_AddLocalEntities
 ===================
 */
 void CG_AddLocalEntities(void) {
-    localEntity_t*   le, *next;
+    localEntity_t* le, *next;
     // walk the list backwards, so any new local entities generated
     // (trails, marks, etc) will be present this frame
     le = cg_activeLocalEntities.prev;
@@ -882,19 +882,19 @@ void CG_AddLocalEntities(void) {
         case LE_EXPLOSION:
             CG_AddExplosion(le);
             break;
-        case LE_FRAGMENT:           // gibs and brass
+        case LE_FRAGMENT: // gibs and brass
             CG_AddFragment(le);
             break;
-        case LE_MOVE_SCALE_FADE:        // water bubbles
+        case LE_MOVE_SCALE_FADE: // water bubbles
             CG_AddMoveScaleFade(le);
             break;
-        case LE_FADE_RGB:               // teleporters, railtrails
+        case LE_FADE_RGB: // teleporters, railtrails
             CG_AddFadeRGB(le);
             break;
         case LE_FALL_SCALE_FADE: // gib blood trails
             CG_AddFallScaleFade(le);
             break;
-        case LE_SCALE_FADE:     // rocket trails
+        case LE_SCALE_FADE: // rocket trails
             CG_AddScaleFade(le);
             break;
         case LE_SCOREPLUM:
@@ -914,7 +914,7 @@ void CG_AddLocalEntities(void) {
             CG_AddRefEntity(le);
             break;
         //#endif
-        case LE_GORE:           // blood
+        case LE_GORE: // blood
             CG_AddGore(le);
             break;
         }

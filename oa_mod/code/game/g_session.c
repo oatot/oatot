@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 /*
 =======================================================================
 
-  SESSION DATA
+ SESSION DATA
 
 Session data is the only data that stays persistant across level loads
 and tournament restarts.
@@ -40,8 +40,8 @@ Called on game shutdown
 ================
 */
 static void G_WriteClientSessionData(const gclient_t* client) {
-    const char*  s;
-    const char*  var;
+    const char* s;
+    const char* var;
     s = va("%i %i %i %i %i %i %i",
            client->sess.sessionTeam,
            client->sess.spectatorNum,
@@ -63,8 +63,8 @@ Called on a reconnect
 ================
 */
 void G_ReadSessionData(gclient_t* client) {
-    char    s[MAX_STRING_CHARS];
-    const char*  var;
+    char s[MAX_STRING_CHARS];
+    const char* var;
     // bk001205 - format
     int teamLeader;
     int spectatorState;
@@ -72,13 +72,13 @@ void G_ReadSessionData(gclient_t* client) {
     var = va("session%i", (int)(client - level.clients));
     trap_Cvar_VariableStringBuffer(var, s, sizeof(s));
     sscanf(s, "%i %i %i %i %i %i %i",
-           &sessionTeam,                 // bk010221 - format
+           &sessionTeam, // bk010221 - format
            &client->sess.spectatorNum,
-           &spectatorState,              // bk010221 - format
+           &spectatorState, // bk010221 - format
            &client->sess.spectatorClient,
            &client->sess.wins,
            &client->sess.losses,
-           &teamLeader                   // bk010221 - format
+           &teamLeader // bk010221 - format
           );
     // bk001205 - format issues
     client->sess.sessionTeam = (team_t)sessionTeam;
@@ -95,7 +95,7 @@ Called on a first-time connect
 */
 void G_InitSessionData(gclient_t* client, char* userinfo) {
     clientSession_t* sess;
-    const char*      value;
+    const char* value;
     sess = &client->sess;
     // initial team determination
     if (g_gametype.integer >= GT_TEAM && g_ffa_gt != 1) {
@@ -147,8 +147,8 @@ G_InitWorldSession
 ==================
 */
 void G_InitWorldSession(void) {
-    char    s[MAX_STRING_CHARS];
-    int         gt;
+    char s[MAX_STRING_CHARS];
+    int gt;
     trap_Cvar_VariableStringBuffer("session", s, sizeof(s));
     gt = atoi(s);
     // if the gametype changed since the last session, don't use any
@@ -166,7 +166,7 @@ G_WriteSessionData
 ==================
 */
 void G_WriteSessionData(void) {
-    int     i;
+    int i;
     trap_Cvar_Set("session", va("%i", g_gametype.integer));
     for (i = 0; i < level.maxclients; i++) {
         if (level.clients[i].pers.connected == CON_CONNECTED) {

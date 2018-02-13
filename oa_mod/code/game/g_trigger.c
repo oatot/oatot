@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -27,7 +27,7 @@ void InitTrigger(gentity_t* self) {
         G_SetMovedir(self->s.angles, self->movedir);
     }
     trap_SetBrushModel(self, self->model);
-    self->r.contents = CONTENTS_TRIGGER;        // replaces the -1 from trap_SetBrushModel
+    self->r.contents = CONTENTS_TRIGGER; // replaces the -1 from trap_SetBrushModel
     self->r.svFlags = SVF_NOCLIENT;
 }
 
@@ -42,7 +42,7 @@ void multi_wait(gentity_t* ent) {
 void multi_trigger(gentity_t* ent, gentity_t* activator) {
     ent->activator = activator;
     if (ent->nextthink) {
-        return;     // can't retrigger until the wait is over
+        return; // can't retrigger until the wait is over
     }
     if (activator->client) {
         if ((ent->spawnflags & 1) &&
@@ -80,8 +80,8 @@ void Touch_Multi(gentity_t* self, gentity_t* other, trace_t* trace) {
 
 /*QUAKED trigger_multiple (.5 .5 .5) ?
 "wait" : Seconds between triggerings, 0.5 default, -1 = one time only.
-"random"    wait variance, default is 0
-Variable sized repeatable trigger.  Must be targeted at one or more entities.
+"random" wait variance, default is 0
+Variable sized repeatable trigger. Must be targeted at one or more entities.
 so, the basic time between firing is a random time between
 (wait - random) and (wait + random)
 */
@@ -112,7 +112,7 @@ void trigger_always_think(gentity_t* ent) {
 }
 
 /*QUAKED trigger_always (.5 .5 .5) (-8 -8 -8) (8 8 8)
-This trigger will always fire.  It is activated by the world.
+This trigger will always fire. It is activated by the world.
 */
 void SP_trigger_always(gentity_t* ent) {
     // we must have some delay to make sure our use targets are present
@@ -143,10 +143,10 @@ Calculate origin2 so the target apogee will be hit
 =================
 */
 void AimAtTarget(gentity_t* self) {
-    gentity_t*   ent;
-    vec3_t      origin;
-    float       height, gravity, time, forward;
-    float       dist;
+    gentity_t* ent;
+    vec3_t origin;
+    float height, gravity, time, forward;
+    float dist;
     VectorAdd(self->r.absmin, self->r.absmax, origin);
     VectorScale(origin, 0.5, origin);
     ent = G_PickTarget(self->target);
@@ -207,7 +207,7 @@ void Use_target_push(gentity_t* self, gentity_t* other, gentity_t* activator) {
 
 /*QUAKED target_push (.5 .5 .5) (-8 -8 -8) (8 8 8) bouncepad
 Pushes the activator in the direction.of angle, or towards a target apex.
-"speed"     defaults to 1000
+"speed" defaults to 1000
 if "bouncepad", play bounce noise instead of windfly
 */
 void SP_target_push(gentity_t* self) {
@@ -239,7 +239,7 @@ trigger_teleport
 */
 
 void trigger_teleporter_touch(gentity_t* self, gentity_t* other, trace_t* trace) {
-    gentity_t*   dest;
+    gentity_t* dest;
     if (!other->client) {
         return;
     }
@@ -251,7 +251,7 @@ void trigger_teleporter_touch(gentity_t* self, gentity_t* other, trace_t* trace)
             (other->client->sess.sessionTeam != TEAM_SPECTATOR && other->client->ps.pm_type != PM_SPECTATOR)) {
         return;
     }
-    dest =  G_PickTarget(self->target);
+    dest = G_PickTarget(self->target);
     if (!dest) {
         G_Printf("Couldn't find teleporter destination\n");
         return;
@@ -296,11 +296,11 @@ Any entity that touches this will be hurt.
 It does dmg points of damage each server frame
 Targeting the trigger will toggle its on / off state.
 
-SILENT          supresses playing the sound
-SLOW            changes the damage rate to once per second
-NO_PROTECTION   *nothing* stops the damage
+SILENT supresses playing the sound
+SLOW changes the damage rate to once per second
+NO_PROTECTION *nothing* stops the damage
 
-"dmg"           default 5 (whole numbers only)
+"dmg" default 5 (whole numbers only)
 
 */
 void hurt_use(gentity_t* self, gentity_t* other, gentity_t* activator) {
@@ -312,7 +312,7 @@ void hurt_use(gentity_t* self, gentity_t* other, gentity_t* activator) {
 }
 
 void hurt_touch(gentity_t* self, gentity_t* other, trace_t* trace) {
-    int     dflags;
+    int dflags;
     if (!other->takedamage) {
         return;
     }
@@ -366,8 +366,8 @@ This should be renamed trigger_timer...
 Repeatedly fires its targets.
 Can be turned on or off by using.
 
-"wait"          base time between triggering all targets, default is 1
-"random"        wait variance, default is 0
+"wait" base time between triggering all targets, default is 1
+"random" wait variance, default is 0
 so, the basic time between firing is a random time between
 (wait - random) and (wait + random)
 

@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -30,11 +30,11 @@ CONNECTION SCREEN
 ===============================================================================
 */
 
-qboolean    passwordNeeded = qtrue;
+qboolean passwordNeeded = qtrue;
 menufield_s passwordField;
 
 static connstate_t lastConnState;
-static char         lastLoadingText[MAX_INFO_VALUE];
+static char lastLoadingText[MAX_INFO_VALUE];
 
 static void UI_ReadableSize(char* buf, int bufsize, int value) {
     if (value > 1024 * 1024 * 1024) { // gigs
@@ -45,7 +45,7 @@ static void UI_ReadableSize(char* buf, int bufsize, int value) {
         Com_sprintf(buf, bufsize, "%d", value / (1024 * 1024));
         Com_sprintf(buf + strlen(buf), bufsize - strlen(buf), ".%02d MB",
                     (value % (1024 * 1024)) * 100 / (1024 * 1024));
-    } else if (value > 1024) {  // kilos
+    } else if (value > 1024) { // kilos
         Com_sprintf(buf, bufsize, "%d KB", value / 1024);
     } else { // bytes
         Com_sprintf(buf, bufsize, "%d bytes", value);
@@ -54,20 +54,20 @@ static void UI_ReadableSize(char* buf, int bufsize, int value) {
 
 // Assumes time is in msec
 static void UI_PrintTime(char* buf, int bufsize, int time) {
-    time /= 1000;  // change to seconds
+    time /= 1000; // change to seconds
     if (time > 3600) { // in the hours range
         Com_sprintf(buf, bufsize, "%d hr %d min", time / 3600, (time % 3600) / 60);
     } else if (time > 60) { // mins
         Com_sprintf(buf, bufsize, "%d min %d sec", time / 60, time % 60);
-    } else  { // secs
+    } else { // secs
         Com_sprintf(buf, bufsize, "%d sec", time);
     }
 }
 
 static void UI_DisplayDownloadInfo(const char* downloadName) {
-    static char dlText[]    = "Downloading:";
-    static char etaText[]   = "Estimated time left:";
-    static char xferText[]  = "Transfer rate:";
+    static char dlText[] = "Downloading:";
+    static char etaText[] = "Estimated time left:";
+    static char xferText[] = "Transfer rate:";
     int downloadSize, downloadCount, downloadTime;
     char dlSizeBuf[64], totalSizeBuf[64], xferRateBuf[64], dlTimeBuf[64];
     int xferRate;
@@ -79,11 +79,11 @@ static void UI_DisplayDownloadInfo(const char* downloadName) {
     downloadTime = trap_Cvar_VariableValue("cl_downloadTime");
 #if 0 // bk010104
     fprintf(stderr, "\n\n-----------------------------------------------\n");
-    fprintf(stderr, "DB: downloadSize:  %16d\n", downloadSize);
+    fprintf(stderr, "DB: downloadSize: %16d\n", downloadSize);
     fprintf(stderr, "DB: downloadCount: %16d\n", downloadCount);
-    fprintf(stderr, "DB: downloadTime:  %16d\n", downloadTime);
-    fprintf(stderr, "DB: UI realtime:   %16d\n", uis.realtime);      // bk
-    fprintf(stderr, "DB: UI frametime:  %16d\n", uis.frametime);     // bk
+    fprintf(stderr, "DB: downloadTime: %16d\n", downloadTime);
+    fprintf(stderr, "DB: UI realtime: %16d\n", uis.realtime); // bk
+    fprintf(stderr, "DB: UI frametime: %16d\n", uis.frametime); // bk
 #endif
     leftWidth = width = UI_ProportionalStringWidth(dlText) * UI_ProportionalSizeScale(style);
     width = UI_ProportionalStringWidth(etaText) * UI_ProportionalSizeScale(style);
@@ -104,8 +104,8 @@ static void UI_DisplayDownloadInfo(const char* downloadName) {
         s = downloadName;
     }
     UI_DrawProportionalString(leftWidth, 128, s, style, color_white);
-    UI_ReadableSize(dlSizeBuf,      sizeof dlSizeBuf,       downloadCount);
-    UI_ReadableSize(totalSizeBuf,   sizeof totalSizeBuf,    downloadSize);
+    UI_ReadableSize(dlSizeBuf, sizeof dlSizeBuf, downloadCount);
+    UI_ReadableSize(totalSizeBuf, sizeof totalSizeBuf, downloadSize);
     if (downloadCount < 4096 || !downloadTime) {
         UI_DrawProportionalString(leftWidth, 160, "estimating", style, color_white);
         UI_DrawProportionalString(leftWidth, 192,
@@ -121,15 +121,15 @@ static void UI_DisplayDownloadInfo(const char* downloadName) {
         } else {
             xferRate = 0;
         }
-        //fprintf( stderr, "DB: elapsedTime:  %16.8f\n", elapsedTime ); // bk
-        //fprintf( stderr, "DB: xferRate:   %16d\n", xferRate );    // bk
+        //fprintf( stderr, "DB: elapsedTime: %16.8f\n", elapsedTime ); // bk
+        //fprintf( stderr, "DB: xferRate: %16d\n", xferRate ); // bk
         UI_ReadableSize(xferRateBuf, sizeof xferRateBuf, xferRate);
         // Extrapolate estimated completion time
         if (downloadSize && xferRate) {
             int n = downloadSize / xferRate; // estimated time for entire d/l in secs
             // We do it in K (/1024) because we'd overflow around 4MB
             n = (n - (((downloadCount / 1024) * n) / (downloadSize / 1024))) * 1000;
-            UI_PrintTime(dlTimeBuf, sizeof dlTimeBuf, n);    // bk010104
+            UI_PrintTime(dlTimeBuf, sizeof dlTimeBuf, n); // bk010104
             //(n - (((downloadCount/1024) * n) / (downloadSize/1024))) * 1000);
             UI_DrawProportionalString(leftWidth, 160,
                                       dlTimeBuf, style, color_white);
@@ -162,9 +162,9 @@ to prevent it from blinking away too rapidly on local or lan games.
 ========================
 */
 void UI_DrawConnectScreen(qboolean overlay) {
-    char*            s;
+    char* s;
     uiClientState_t cstate;
-    char            info[MAX_INFO_VALUE];
+    char info[MAX_INFO_VALUE];
     Menu_Cache();
     if (!overlay) {
         // draw the dialog background
@@ -195,8 +195,8 @@ void UI_DrawConnectScreen(qboolean overlay) {
         passwordField.generic.type = MTYPE_FIELD;
         passwordField.generic.name = "Password:";
         passwordField.generic.callback = 0;
-        passwordField.generic.x     = 10;
-        passwordField.generic.y     = 180;
+        passwordField.generic.x = 10;
+        passwordField.generic.y = 180;
         Field_Clear(&passwordField.field);
         passwordField.width = 256;
         passwordField.field.widthInChars = 16;

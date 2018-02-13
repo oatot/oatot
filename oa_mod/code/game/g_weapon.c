@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "g_local.h"
 
-static float   s_quadFactor;
+static float s_quadFactor;
 static vec3_t forward, right, up;
 static vec3_t muzzle;
 
@@ -63,11 +63,11 @@ CheckGauntletAttack
 ===============
 */
 qboolean CheckGauntletAttack(gentity_t* ent) {
-    trace_t     tr;
-    vec3_t      end;
-    gentity_t*   tent;
-    gentity_t*   traceEnt;
-    int         damage;
+    trace_t tr;
+    vec3_t end;
+    gentity_t* tent;
+    gentity_t* traceEnt;
+    int damage;
     // set aiming directions
     AngleVectors(ent->client->ps.viewangles, forward, right, up);
     CalcMuzzlePoint(ent, forward, right, up, muzzle);
@@ -100,7 +100,7 @@ qboolean CheckGauntletAttack(gentity_t* ent) {
         s_quadFactor *= 2;
     }
     if (g_instantgib.integer) {
-        damage = 500;    //High damage in instant gib (normally enough to gib)
+        damage = 500; //High damage in instant gib (normally enough to gib)
     } else {
         damage = 50 * s_quadFactor;
     }
@@ -123,7 +123,7 @@ SnapVectorTowards
 
 Round a vector to integers for more efficient network
 transmission, but make sure that it rounds towards a given point
-rather than blindly truncating.  This prevents it from truncating
+rather than blindly truncating. This prevents it from truncating
 into a wall.
 ======================
 */
@@ -131,15 +131,15 @@ into a wall.
 // moved to q_shared.c
 /*
 void SnapVectorTowards( vec3_t v, vec3_t to ) {
-    int     i;
+ int i;
 
-    for ( i = 0; i < 3; i++ ) {
-        if ( to[i] <= v[i] ) {
-            v[i] = floor(v[i]);
-        } else {
-            v[i] = ceil(v[i]);
-        }
-    }
+ for ( i = 0; i < 3; i++ ) {
+ if ( to[i] <= v[i] ) {
+ v[i] = floor(v[i]);
+ } else {
+ v[i] = ceil(v[i]);
+ }
+ }
 }
 
 */
@@ -153,12 +153,12 @@ SnapVectorTowards
 
 Round a vector to integers for more efficient network
 transmission, but make sure that it rounds towards a given point
-rather than blindly truncating.  This prevents it from truncating
+rather than blindly truncating. This prevents it from truncating
 into a wall.
 ======================
 */
 void SnapVectorTowards(vec3_t v, vec3_t to) {
-    int     i;
+    int i;
     for (i = 0; i < 3; i++) {
         if (to[i] <= v[i]) {
             v[i] = (int)v[i];
@@ -170,31 +170,31 @@ void SnapVectorTowards(vec3_t v, vec3_t to) {
 
 //unlagged - attack prediction #3
 
-#define CHAINGUN_SPREAD     600.0
-#define MACHINEGUN_SPREAD   200
-#define MACHINEGUN_DAMAGE   7
-#define MACHINEGUN_TEAM_DAMAGE 5       // wimpier MG in teamplay
+#define CHAINGUN_SPREAD 600.0
+#define MACHINEGUN_SPREAD 200
+#define MACHINEGUN_DAMAGE 7
+#define MACHINEGUN_TEAM_DAMAGE 5 // wimpier MG in teamplay
 
 void Bullet_Fire(gentity_t* ent, float spread, int damage) {
-    trace_t     tr;
-    vec3_t      end;
-    vec3_t      impactpoint, bouncedir;
-    float       r;
-    float       u;
-    gentity_t*   tent;
-    gentity_t*   traceEnt;
-    int         i, passent;
+    trace_t tr;
+    vec3_t end;
+    vec3_t impactpoint, bouncedir;
+    float r;
+    float u;
+    gentity_t* tent;
+    gentity_t* traceEnt;
+    int i, passent;
     //unlagged - attack prediction #2
     // we have to use something now that the client knows in advance
-    int         seed = ent->client->attackTime % 256;
+    int seed = ent->client->attackTime % 256;
     //unlagged - attack prediction #2
     damage *= s_quadFactor;
     //unlagged - attack prediction #2
     // this has to match what's on the client
     /*
-        r = random() * M_PI * 2.0f;
-        u = sin(r) * crandom() * spread * 16;
-        r = cos(r) * crandom() * spread * 16;
+    r = random() * M_PI * 2.0f;
+    u = sin(r) * crandom() * spread * 16;
+    r = cos(r) * crandom() * spread * 16;
     */
     r = Q_random(&seed) * M_PI * 2.0f;
     u = sin(r) * Q_crandom(&seed) * spread * 16;
@@ -279,11 +279,11 @@ BFG
 */
 
 void BFG_Fire(gentity_t* ent) {
-    gentity_t*   m;
+    gentity_t* m;
     m = fire_bfg(ent, muzzle, forward);
     m->damage *= s_quadFactor;
     m->splashDamage *= s_quadFactor;
-    //  VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );  // "real" physics
+    // VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta ); // "real" physics
 }
 
 /*
@@ -299,11 +299,11 @@ SHOTGUN
 #define DEFAULT_SHOTGUN_DAMAGE 10
 
 qboolean ShotgunPellet(vec3_t start, vec3_t end, gentity_t* ent) {
-    trace_t     tr;
-    int         damage, i, passent;
-    gentity_t*   traceEnt;
-    vec3_t      impactpoint, bouncedir;
-    vec3_t      tr_start, tr_end;
+    trace_t tr;
+    int damage, i, passent;
+    gentity_t* traceEnt;
+    vec3_t impactpoint, bouncedir;
+    vec3_t tr_start, tr_end;
     passent = ent->s.number;
     VectorCopy(start, tr_start);
     VectorCopy(end, tr_end);
@@ -342,11 +342,11 @@ qboolean ShotgunPellet(vec3_t start, vec3_t end, gentity_t* ent) {
 
 // this should match CG_ShotgunPattern
 void ShotgunPattern(vec3_t origin, vec3_t origin2, int seed, gentity_t* ent) {
-    int         i;
-    float       r, u;
-    vec3_t      end;
-    vec3_t      forward, right, up;
-    qboolean    hitClient = qfalse;
+    int i;
+    float r, u;
+    vec3_t end;
+    vec3_t forward, right, up;
+    qboolean hitClient = qfalse;
     //unlagged - attack prediction #2
     // use this for testing
     //Com_Printf( "Server seed: %d\n", seed );
@@ -382,7 +382,7 @@ void ShotgunPattern(vec3_t origin, vec3_t origin2, int seed, gentity_t* ent) {
 }
 
 void weapon_supershotgun_fire(gentity_t* ent) {
-    gentity_t*       tent;
+    gentity_t* tent;
     // send shotgun blast
     tent = G_TempEntity(muzzle, EV_SHOTGUN);
     VectorScale(forward, 4096, tent->s.origin2);
@@ -390,7 +390,7 @@ void weapon_supershotgun_fire(gentity_t* ent) {
     //Sago: This sound like a bad idea...
     //unlagged - attack prediction #2
     // this has to be something the client can predict now
-    //tent->s.eventParm = rand() & 255;     // seed for spread pattern
+    //tent->s.eventParm = rand() & 255; // seed for spread pattern
     tent->s.eventParm = ent->client->attackTime % 256; // seed for spread pattern
     //unlagged - attack prediction #2
     tent->s.otherEntityNum = ent->s.number;
@@ -406,14 +406,14 @@ GRENADE LAUNCHER
 */
 
 void weapon_grenadelauncher_fire(gentity_t* ent) {
-    gentity_t*   m;
+    gentity_t* m;
     // extra vertical velocity
     forward[2] += 0.2f;
     VectorNormalize(forward);
     m = fire_grenade(ent, muzzle, forward);
     m->damage *= s_quadFactor;
     m->splashDamage *= s_quadFactor;
-    //  VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );  // "real" physics
+    // VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta ); // "real" physics
 }
 
 /*
@@ -425,11 +425,11 @@ ROCKET
 */
 
 void Weapon_RocketLauncher_Fire(gentity_t* ent) {
-    gentity_t*   m;
+    gentity_t* m;
     m = fire_rocket(ent, muzzle, forward);
     m->damage *= s_quadFactor;
     m->splashDamage *= s_quadFactor;
-    //  VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );  // "real" physics
+    // VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta ); // "real" physics
 }
 
 /*
@@ -441,11 +441,11 @@ PLASMA GUN
 */
 
 void Weapon_Plasmagun_Fire(gentity_t* ent) {
-    gentity_t*   m;
+    gentity_t* m;
     m = fire_plasma(ent, muzzle, forward);
     m->damage *= s_quadFactor;
     m->splashDamage *= s_quadFactor;
-    //  VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );  // "real" physics
+    // VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta ); // "real" physics
 }
 
 /*
@@ -461,19 +461,19 @@ RAILGUN
 weapon_railgun_fire
 =================
 */
-#define MAX_RAIL_HITS   4
+#define MAX_RAIL_HITS 4
 void weapon_railgun_fire(gentity_t* ent) {
-    vec3_t      end;
+    vec3_t end;
     vec3_t impactpoint, bouncedir;
-    trace_t     trace;
-    gentity_t*   tent;
-    gentity_t*   traceEnt;
-    int         damage;
-    int         i;
-    int         hits;
-    int         unlinked;
-    int         passent;
-    gentity_t*   unlinkedEntities[MAX_RAIL_HITS];
+    trace_t trace;
+    gentity_t* tent;
+    gentity_t* traceEnt;
+    int damage;
+    int i;
+    int hits;
+    int unlinked;
+    int passent;
+    gentity_t* unlinkedEntities[MAX_RAIL_HITS];
     damage = 80 * s_quadFactor;
     if (g_instantgib.integer) {
         damage = 800;
@@ -507,7 +507,7 @@ void weapon_railgun_fire(gentity_t* ent) {
                     // move origin a bit to come closer to the drawn gun muzzle
                     VectorMA(tent->s.origin2, 4, right, tent->s.origin2);
                     VectorMA(tent->s.origin2, -1, up, tent->s.origin2);
-                    tent->s.eventParm = 255;    // don't make the explosion at the end
+                    tent->s.eventParm = 255; // don't make the explosion at the end
                     //
                     VectorCopy(impactpoint, muzzle);
                     // the player can hit him/herself with the bounced rail
@@ -521,7 +521,7 @@ void weapon_railgun_fire(gentity_t* ent) {
             }
         }
         if (trace.contents & CONTENTS_SOLID) {
-            break;      // we hit something solid enough to stop the beam
+            break; // we hit something solid enough to stop the beam
         }
         // unlink this entity, so the next trace will go past it
         trap_UnlinkEntity(traceEnt);
@@ -549,7 +549,7 @@ void weapon_railgun_fire(gentity_t* ent) {
     VectorMA(tent->s.origin2, -1, up, tent->s.origin2);
     // no explosion at end if SURF_NOIMPACT, but still make the trail
     if (trace.surfaceFlags & SURF_NOIMPACT) {
-        tent->s.eventParm = 255;    // don't make the explosion at the end
+        tent->s.eventParm = 255; // don't make the explosion at the end
     } else {
         tent->s.eventParm = DirToByte(trace.plane.normal);
     }
@@ -606,7 +606,7 @@ void Weapon_HookThink(gentity_t* ent) {
         v[0] = ent->enemy->r.currentOrigin[0] + (ent->enemy->r.mins[0] + ent->enemy->r.maxs[0]) * 0.5;
         v[1] = ent->enemy->r.currentOrigin[1] + (ent->enemy->r.mins[1] + ent->enemy->r.maxs[1]) * 0.5;
         v[2] = ent->enemy->r.currentOrigin[2] + (ent->enemy->r.mins[2] + ent->enemy->r.maxs[2]) * 0.5;
-        SnapVectorTowards(v, oldorigin);     // save net bandwidth
+        SnapVectorTowards(v, oldorigin); // save net bandwidth
         G_SetOrigin(ent, v);
     }
     VectorCopy(ent->r.currentOrigin, ent->parent->client->ps.grapplePoint);
@@ -621,11 +621,11 @@ LIGHTNING GUN
 */
 
 void Weapon_LightningFire(gentity_t* ent) {
-    trace_t     tr;
-    vec3_t      end;
+    trace_t tr;
+    vec3_t end;
     vec3_t impactpoint, bouncedir;
-    gentity_t*   traceEnt, *tent;
-    int         damage, i, passent;
+    gentity_t* traceEnt, *tent;
+    int damage, i, passent;
     damage = 7 * s_quadFactor;
     passent = ent->s.number;
     for (i = 0; i < 10; i++) {
@@ -699,14 +699,14 @@ NAILGUN
 */
 
 void Weapon_Nailgun_Fire(gentity_t* ent) {
-    gentity_t*   m;
-    int         count;
+    gentity_t* m;
+    int count;
     for (count = 0; count < NUM_NAILSHOTS; count++) {
         m = fire_nail(ent, muzzle, forward, right, up);
         m->damage *= s_quadFactor;
         m->splashDamage *= s_quadFactor;
     }
-    //  VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );  // "real" physics
+    // VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta ); // "real" physics
 }
 
 /*
@@ -718,14 +718,14 @@ PROXIMITY MINE LAUNCHER
 */
 
 void weapon_proxlauncher_fire(gentity_t* ent) {
-    gentity_t*   m;
+    gentity_t* m;
     // extra vertical velocity
     forward[2] += 0.2f;
     VectorNormalize(forward);
     m = fire_prox(ent, muzzle, forward);
     m->damage *= s_quadFactor;
     m->splashDamage *= s_quadFactor;
-    //  VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );  // "real" physics
+    // VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta ); // "real" physics
 }
 
 //======================================================================
@@ -809,7 +809,7 @@ void FireWeapon(gentity_t* ent) {
     if (ent->client->spawnprotected) {
         ent->client->spawnprotected = qfalse;
     }
-    // track shots taken for accuracy tracking.  Grapple is not a weapon and gauntet is just not tracked
+    // track shots taken for accuracy tracking. Grapple is not a weapon and gauntet is just not tracked
     if (ent->s.weapon != WP_GRAPPLING_HOOK && ent->s.weapon != WP_GAUNTLET) {
         if (ent->s.weapon == WP_NAILGUN) {
             ent->client->accuracy_shots += NUM_NAILSHOTS;
@@ -868,7 +868,7 @@ void FireWeapon(gentity_t* ent) {
         Bullet_Fire(ent, CHAINGUN_SPREAD, MACHINEGUN_DAMAGE);
         break;
     default:
-        // FIXME        G_Error( "Bad ent->s.weapon" );
+        // FIXME G_Error( "Bad ent->s.weapon" );
         break;
     }
 }
@@ -879,14 +879,14 @@ KamikazeRadiusDamage
 ===============
 */
 static void KamikazeRadiusDamage(vec3_t origin, gentity_t* attacker, float damage, float radius) {
-    float       dist;
-    gentity_t*   ent;
-    int         entityList[MAX_GENTITIES];
-    int         numListedEntities;
-    vec3_t      mins, maxs;
-    vec3_t      v;
-    vec3_t      dir;
-    int         i, e;
+    float dist;
+    gentity_t* ent;
+    int entityList[MAX_GENTITIES];
+    int numListedEntities;
+    vec3_t mins, maxs;
+    vec3_t v;
+    vec3_t dir;
+    int i, e;
     if (radius < 1) {
         radius = 1;
     }
@@ -918,14 +918,14 @@ static void KamikazeRadiusDamage(vec3_t origin, gentity_t* attacker, float damag
         if (dist >= radius) {
             continue;
         }
-        //      if( CanDamage (ent, origin) ) {
+        // if( CanDamage (ent, origin) ) {
         VectorSubtract(ent->r.currentOrigin, origin, dir);
         // push the center of mass higher than the origin so players
         // get knocked into the air more
         dir[2] += 24;
         G_Damage(ent, NULL, attacker, dir, origin, damage, DAMAGE_RADIUS | DAMAGE_NO_TEAM_PROTECTION, MOD_KAMIKAZE);
         ent->kamikazeTime = level.time + 3000;
-        //      }
+        // }
     }
 }
 
@@ -935,14 +935,14 @@ KamikazeShockWave
 ===============
 */
 static void KamikazeShockWave(vec3_t origin, gentity_t* attacker, float damage, float push, float radius) {
-    float       dist;
-    gentity_t*   ent;
-    int         entityList[MAX_GENTITIES];
-    int         numListedEntities;
-    vec3_t      mins, maxs;
-    vec3_t      v;
-    vec3_t      dir;
-    int         i, e;
+    float dist;
+    gentity_t* ent;
+    int entityList[MAX_GENTITIES];
+    int numListedEntities;
+    vec3_t mins, maxs;
+    vec3_t v;
+    vec3_t dir;
+    int i, e;
     if (radius < 1) {
         radius = 1;
     }
@@ -971,7 +971,7 @@ static void KamikazeShockWave(vec3_t origin, gentity_t* attacker, float damage, 
         if (dist >= radius) {
             continue;
         }
-        //      if( CanDamage (ent, origin) ) {
+        // if( CanDamage (ent, origin) ) {
         VectorSubtract(ent->r.currentOrigin, origin, dir);
         dir[2] += 24;
         G_Damage(ent, NULL, attacker, dir, origin, damage, DAMAGE_RADIUS | DAMAGE_NO_TEAM_PROTECTION, MOD_KAMIKAZE);
@@ -984,7 +984,7 @@ static void KamikazeShockWave(vec3_t origin, gentity_t* attacker, float damage, 
             ent->client->ps.velocity[2] = 100;
         }
         ent->kamikazeShockTime = level.time + 3000;
-        //      }
+        // }
     }
 }
 
@@ -1046,9 +1046,9 @@ G_StartKamikaze
 ===============
 */
 void G_StartKamikaze(gentity_t* ent) {
-    gentity_t*   explosion;
-    gentity_t*   te;
-    vec3_t      snapped;
+    gentity_t* explosion;
+    gentity_t* te;
+    vec3_t snapped;
     // start up the explosion logic
     explosion = G_Spawn();
     explosion->s.eType = ET_EVENTS + EV_KAMIKAZE;
@@ -1058,7 +1058,7 @@ void G_StartKamikaze(gentity_t* ent) {
     } else {
         VectorCopy(ent->activator->s.pos.trBase, snapped);
     }
-    SnapVector(snapped);         // save network bandwidth
+    SnapVector(snapped); // save network bandwidth
     G_SetOrigin(explosion, snapped);
     explosion->classname = "kamikaze";
     explosion->s.pos.trType = TR_STATIONARY;

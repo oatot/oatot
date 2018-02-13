@@ -14,7 +14,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -38,22 +38,22 @@ Since this is cvar dependent, it has to be placed in G_InitGame after cvars are 
 */
 qboolean G_ReadAltKillSettings(gentity_t* ent, int skiparg) {
     //Let's Initialize some Spree structs/objects
-    killspree_t*     k = NULL;
-    deathspree_t*    d = NULL;
-    multikill_t*     m = NULL;
+    killspree_t* k = NULL;
+    deathspree_t* d = NULL;
+    multikill_t* m = NULL;
     //spree counters
-    int             ksc = 0, dsc = 0, mc = 0;
-    int             spreeDivisor;
+    int ksc = 0, dsc = 0, mc = 0;
+    int spreeDivisor;
     //Give us an int to use in "for" loops
-    int             i = 0;
+    int i = 0;
     //File Stuff
-    fileHandle_t    file;
-    int             length;
-    qboolean        kspree_read;
-    qboolean        dspree_read;
-    qboolean        mkill_read;
-    char*            cnf, *cnf2;
-    char*            t;
+    fileHandle_t file;
+    int length;
+    qboolean kspree_read;
+    qboolean dspree_read;
+    qboolean mkill_read;
+    char* cnf, *cnf2;
+    char* t;
     //Let's clear out any existing killing sprees/death sprees. YAYY BG_FREE!!!!!
     for (i = 0; i < MAX_KSPREE && killSprees[ i ]; i++) {
         BG_Free(killSprees[ i ]);
@@ -210,14 +210,14 @@ static char* fillPlaceHolder(char* stringToSearch, char* placeHolder, char* repl
     }
     strncpy(output, stringToSearch, p - stringToSearch);
     output[ p - stringToSearch ] = '\0';
-    Q_snprintf(output + (p - stringToSearch), output - stringToSearch,  "%s%s", replaceWith, p + strlen(placeHolder));
+    Q_snprintf(output + (p - stringToSearch), output - stringToSearch, "%s%s", replaceWith, p + strlen(placeHolder));
     return output;
 }
 
 //This concatenate's the message to broadcast to the clients.
 static char* CreateMessage(gentity_t* ent, char* message, char* spreeNumber) {
     static char output[ MAX_SAY_TEXT ] = { "" };
-    char    name[ MAX_NAME_LENGTH ];
+    char name[ MAX_NAME_LENGTH ];
     //Do some sanity checks
     if (!ent) {
         return output;
@@ -276,11 +276,11 @@ void G_RunStreakLogic(gentity_t* attacker, gentity_t* victim) {
 
 //If the streak / spree divisor is a whole number, we have a spree
 static qboolean TestSpreeWhole(int streak2Test) {
-    float   float2Test;
-    float   spreeFDiv;
-    float   resultf;
-    int     spreeDiv;
-    int     result;
+    float float2Test;
+    float spreeFDiv;
+    float resultf;
+    int spreeDiv;
+    int result;
     float2Test = streak2Test;
     spreeFDiv = level.spreeDivisor;
     spreeDiv = level.spreeDivisor;
@@ -299,15 +299,15 @@ G_CheckForSpree
 ==================
 */
 void G_CheckForSpree(gentity_t* ent, int streak2Test, qboolean checkKillSpree) {
-    int     i;
-    char*    returnedString;
+    int i;
+    char* returnedString;
     //If somebody want's to award killing sprees above 99 kills he/she can mod this his/herself!!! :)
-    char    streakcount[ 3 ];
-    char*    sound;
-    int     position;
-    int     soundIndex;
-    qboolean    isSpree = qfalse;
-    int         divisionHolder;
+    char streakcount[ 3 ];
+    char* sound;
+    int position;
+    int soundIndex;
+    qboolean isSpree = qfalse;
+    int divisionHolder;
     //Probably Not Needed, but to protect Server Ops from Crashing their Stuff MidMatch
     if (level.spreeDivisor < 1) {
         return;
@@ -388,9 +388,9 @@ void G_CheckForSpree(gentity_t* ent, int streak2Test, qboolean checkKillSpree) {
             //G_GlobalSound( soundIndex );
             G_Sound(ent, 0, soundIndex);
             /* Doesn't do anything at the moment. cp does not work while kill message is displayed
-             * if( position == CENTER_PRINT ) {
-                //Only Center print for player doing the killing spree
-                CP( va("cp \"%s\"", returnedString ) );
+            * if( position == CENTER_PRINT ) {
+            //Only Center print for player doing the killing spree
+            CP( va("cp \"%s\"", returnedString ) );
             }*/
             AP(va("chat \"%s\"", returnedString));
         } else {
@@ -405,8 +405,8 @@ void G_CheckForSpree(gentity_t* ent, int streak2Test, qboolean checkKillSpree) {
                     //G_GlobalSound( soundIndex );
                     G_Sound(ent, 0, soundIndex);
                     /*if( position == CENTER_PRINT ) {
-                        //Only Center print for player doing the killing spree
-                        CP( va("cp \"%s\"", returnedString ) );
+                    //Only Center print for player doing the killing spree
+                    CP( va("cp \"%s\"", returnedString ) );
                     }*/
                     AP(va("chat \"%s\"", returnedString));
                     break;
@@ -414,9 +414,9 @@ void G_CheckForSpree(gentity_t* ent, int streak2Test, qboolean checkKillSpree) {
             }
         }
     } /*else {
-        G_Printf("Killing Spree Error in G_CheckForSpree\n");
-        return;
-    }*/
+ G_Printf("Killing Spree Error in G_CheckForSpree\n");
+ return;
+ }*/
 }
 
 /*
@@ -425,18 +425,18 @@ G_checkForMultiKill
 ===============
 */
 void G_checkForMultiKill(gentity_t* ent) {
-    int     i;
-    char*    returnedString;
-    char*    sound;
-    int     soundIndex;
-    int     multiKillCount;
-    char    multiKillString[ 2 ];
+    int i;
+    char* returnedString;
+    char* sound;
+    int soundIndex;
+    int multiKillCount;
+    char multiKillString[ 2 ];
     //Let's grab the multikill count for the player first
     multiKillCount = ent->client->pers.multiKillCount;
     if (multiKillCount > multiKills[ level.mKillUBound ]->kills) {
         Q_snprintf(multiKillString, sizeof(multiKillString), "%i", multiKillCount);
         if (!multiKills[ level.mKillUBound ]) {
-            return;    //If null
+            return; //If null
         }
         returnedString = CreateMessage(ent, multiKills[ level.mKillUBound ]->killMsg, multiKillString);
         sound = multiKills[ level.mKillUBound ]->sound2Play;

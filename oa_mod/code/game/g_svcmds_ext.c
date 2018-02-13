@@ -13,7 +13,7 @@ or (at your option) any later version.
 
 Open Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -31,11 +31,11 @@ Does Server Status from Console
 ============
 */
 void Svcmd_Status_f(void) {
-    int       i;
+    int i;
     gclient_t* cl;
-    char      userinfo[ MAX_INFO_STRING ];
-    G_Printf("slot score ping address               rate     name\n");
-    G_Printf("---- ----- ---- -------               ----     ----\n");
+    char userinfo[ MAX_INFO_STRING ];
+    G_Printf("slot score ping address rate name\n");
+    G_Printf("---- ----- ---- ------- ---- ----\n");
     for (i = 0, cl = level.clients; i < level.maxclients; i++, cl++) {
         if (cl->pers.connected == CON_DISCONNECTED) {
             continue;
@@ -50,7 +50,7 @@ void Svcmd_Status_f(void) {
         trap_GetUserinfo(i, userinfo, sizeof(userinfo));
         G_Printf("%-21s ", Info_ValueForKey(userinfo, "ip"));
         G_Printf("%-8s ", Info_ValueForKey(userinfo, "rate"));
-        G_Printf("%s\n", cl->pers.netname);   // Info_ValueForKey( userinfo, "name" )
+        G_Printf("%s\n", cl->pers.netname); // Info_ValueForKey( userinfo, "name" )
     }
 }
 
@@ -61,8 +61,8 @@ Sends a Chat Message to a Team from the Console
 ============
 */
 void Svcmd_TeamMessage_f(void) {
-    char   teamNum[ 2 ];
-    const char*   prefix;
+    char teamNum[ 2 ];
+    const char* prefix;
     team_t team;
     if (trap_Argc() < 3) {
         G_Printf("usage: say_team <team> <message>\n");
@@ -207,9 +207,9 @@ void Svcmd_MessageWrapper(void) {
     char cmd[ 5 ];
     trap_Argv(0, cmd, sizeof(cmd));
     /*if( Q_strequal( cmd, "a" ) )
-      Cmd_AdminMessage_f( NULL );
+    Cmd_AdminMessage_f( NULL );
     else if( Q_strequal( cmd, "m" ) )
-      Cmd_PrivateMessage_f( NULL );
+    Cmd_PrivateMessage_f( NULL );
     else*/
     if (Q_strequal(cmd, "say")) {
         G_Say(NULL, NULL, SAY_ALL, ConcatArgs(1));

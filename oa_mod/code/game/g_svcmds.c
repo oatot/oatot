@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -38,16 +38,16 @@ removeip <ip>
 The ip address is specified in dot format, and you can use '*' to match any value
 so you can specify an entire class C network with "addip 192.246.40.*"
 
-Removeip will only remove an address specified exactly the same way.  You cannot addip a subnet, then removeip a single host.
+Removeip will only remove an address specified exactly the same way. You cannot addip a subnet, then removeip a single host.
 
 listip
 Prints the current list of filters.
 
 g_filterban <0 or 1>
 
-If 1 (the default), then ip addresses matching the current list will be prohibited from entering the game.  This is the default setting.
+If 1 (the default), then ip addresses matching the current list will be prohibited from entering the game. This is the default setting.
 
-If 0, then only addresses matching the list will be allowed.  This lets you easily set up a private game, or a game that only allows players from your local network.
+If 0, then only addresses matching the list will be allowed. This lets you easily set up a private game, or a game that only allows players from your local network.
 
 TTimo NOTE: for persistence, bans are stored in g_banIPs cvar MAX_CVAR_VALUE_STRING
 The size of the cvar string buffer is limiting the banning to around 20 masks
@@ -58,14 +58,14 @@ still, you should rely on PB for banning instead
 */
 
 typedef struct ipFilter_s {
-    unsigned    mask;
-    unsigned    compare;
+    unsigned mask;
+    unsigned compare;
 } ipFilter_t;
 
-#define MAX_IPFILTERS   1024
+#define MAX_IPFILTERS 1024
 
-static ipFilter_t   ipFilters[MAX_IPFILTERS];
-static int          numIPFilters;
+static ipFilter_t ipFilters[MAX_IPFILTERS];
+static int numIPFilters;
 
 /*
 =================
@@ -73,10 +73,10 @@ StringToFilter
 =================
 */
 static qboolean StringToFilter(char* s, ipFilter_t* f) {
-    char    num[128];
-    int     i, j;
-    byte    b[4];
-    byte    m[4];
+    char num[128];
+    int i, j;
+    byte b[4];
+    byte m[4];
     for (i = 0; i < 4; i++) {
         b[i] = 0;
         m[i] = 0;
@@ -118,11 +118,11 @@ UpdateIPBans
 =================
 */
 static void UpdateIPBans(void) {
-    byte    b[4];
-    byte    m[4];
-    int     i, j;
-    char    iplist_final[MAX_CVAR_VALUE_STRING];
-    char    ip[64];
+    byte b[4];
+    byte m[4];
+    int i, j;
+    char iplist_final[MAX_CVAR_VALUE_STRING];
+    char ip[64];
     *iplist_final = 0;
     for (i = 0; i < numIPFilters; i++) {
         if (ipFilters[i].compare == 0xffffffff) {
@@ -155,8 +155,8 @@ G_FilterPacket
 =================
 */
 qboolean G_FilterPacket(char* from) {
-    int     i;
-    unsigned    in;
+    int i;
+    unsigned in;
     byte m[4];
     char* p;
     i = 0;
@@ -186,10 +186,10 @@ AddIP
 =================
 */
 static void AddIP(char* str) {
-    int     i;
+    int i;
     for (i = 0; i < numIPFilters; i++)
         if (ipFilters[i].compare == 0xffffffff) {
-            break;    // free spot
+            break; // free spot
         }
     if (i == numIPFilters) {
         if (numIPFilters == MAX_IPFILTERS) {
@@ -211,7 +211,7 @@ G_ProcessIPBans
 */
 void G_ProcessIPBans(void) {
     char* s, *t;
-    char        str[MAX_CVAR_VALUE_STRING];
+    char str[MAX_CVAR_VALUE_STRING];
     Q_strncpyz(str, g_banIPs.string, sizeof(str));
     for (t = s = g_banIPs.string; *t; /* */) {
         s = strchr(s, ' ');
@@ -234,9 +234,9 @@ Svcmd_AddIP_f
 =================
 */
 void Svcmd_AddIP_f(void) {
-    char        str[MAX_TOKEN_CHARS];
+    char str[MAX_TOKEN_CHARS];
     if (trap_Argc() < 2) {
-        G_Printf("Usage:  addip <ip-mask>\n");
+        G_Printf("Usage: addip <ip-mask>\n");
         return;
     }
     trap_Argv(1, str, sizeof(str));
@@ -250,10 +250,10 @@ Svcmd_RemoveIP_f
 */
 void Svcmd_RemoveIP_f(void) {
     ipFilter_t f;
-    int         i;
-    char        str[MAX_TOKEN_CHARS];
+    int i;
+    char str[MAX_TOKEN_CHARS];
     if (trap_Argc() < 2) {
-        G_Printf("Usage:  sv removeip <ip-mask>\n");
+        G_Printf("Usage: sv removeip <ip-mask>\n");
         return;
     }
     trap_Argv(1, str, sizeof(str));
@@ -277,9 +277,9 @@ void Svcmd_RemoveIP_f(void) {
 Svcmd_EntityList_f
 ===================
 */
-void    Svcmd_EntityList_f(void) {
-    int         e;
-    gentity_t*       check;
+void Svcmd_EntityList_f(void) {
+    int e;
+    gentity_t* check;
     check = g_entities + 1;
     for (e = 1; e < level.num_entities; e++, check++) {
         if (!check->inuse) {
@@ -288,43 +288,43 @@ void    Svcmd_EntityList_f(void) {
         G_Printf("%3i:", e);
         switch (check->s.eType) {
         case ET_GENERAL:
-            G_Printf("ET_GENERAL          ");
+            G_Printf("ET_GENERAL ");
             break;
         case ET_PLAYER:
-            G_Printf("ET_PLAYER           ");
+            G_Printf("ET_PLAYER ");
             break;
         case ET_ITEM:
-            G_Printf("ET_ITEM             ");
+            G_Printf("ET_ITEM ");
             break;
         case ET_MISSILE:
-            G_Printf("ET_MISSILE          ");
+            G_Printf("ET_MISSILE ");
             break;
         case ET_MOVER:
-            G_Printf("ET_MOVER            ");
+            G_Printf("ET_MOVER ");
             break;
         case ET_BEAM:
-            G_Printf("ET_BEAM             ");
+            G_Printf("ET_BEAM ");
             break;
         case ET_PORTAL:
-            G_Printf("ET_PORTAL           ");
+            G_Printf("ET_PORTAL ");
             break;
         case ET_SPEAKER:
-            G_Printf("ET_SPEAKER          ");
+            G_Printf("ET_SPEAKER ");
             break;
         case ET_PUSH_TRIGGER:
-            G_Printf("ET_PUSH_TRIGGER     ");
+            G_Printf("ET_PUSH_TRIGGER ");
             break;
         case ET_TELEPORT_TRIGGER:
             G_Printf("ET_TELEPORT_TRIGGER ");
             break;
         case ET_INVISIBLE:
-            G_Printf("ET_INVISIBLE        ");
+            G_Printf("ET_INVISIBLE ");
             break;
         case ET_GRAPPLE:
-            G_Printf("ET_GRAPPLE          ");
+            G_Printf("ET_GRAPPLE ");
             break;
         default:
-            G_Printf("%3i                 ", check->s.eType);
+            G_Printf("%3i ", check->s.eType);
             break;
         }
         if (check->classname) {
@@ -334,10 +334,10 @@ void    Svcmd_EntityList_f(void) {
     }
 }
 
-gclient_t*   ClientForString(const char* s) {
-    gclient_t*   cl;
-    int         i;
-    int         idnum;
+gclient_t* ClientForString(const char* s) {
+    gclient_t* cl;
+    int i;
+    int idnum;
     // numeric values are just slot numbers
     if (s[0] >= '0' && s[0] <= '9') {
         idnum = atoi(s);
@@ -373,9 +373,9 @@ Svcmd_ForceTeam_f
 forceteam <player> <team>
 ===================
 */
-void    Svcmd_ForceTeam_f(void) {
-    gclient_t*   cl;
-    char        str[MAX_TOKEN_CHARS];
+void Svcmd_ForceTeam_f(void) {
+    gclient_t* cl;
+    char str[MAX_TOKEN_CHARS];
     // find the player
     trap_Argv(1, str, sizeof(str));
     cl = ClientForString(str);
@@ -387,9 +387,9 @@ void    Svcmd_ForceTeam_f(void) {
     SetTeam(&g_entities[cl - level.clients], str);
 }
 
-void    ClientKick_f(void) {
+void ClientKick_f(void) {
     int idnum, i;
-    char    str[MAX_TOKEN_CHARS];
+    char str[MAX_TOKEN_CHARS];
     trap_Argv(1, str, sizeof(str));
     for (i = 0; str[i]; i++) {
         if (str[i] < '0' || str[i] > '9') {
@@ -415,7 +415,7 @@ void EndGame_f(void) {
 }
 
 //KK-OAX Moved this Declaration to g_local.h
-//char  *ConcatArgs( int start );
+//char *ConcatArgs( int start );
 
 /*KK-OAX
 ===============
@@ -424,7 +424,7 @@ Not Worth Listing Elsewhere
 ================
 */
 struct {
-    char*      cmd;
+    char* cmd;
     qboolean dedicated; //if it has to be entered from a dedicated server or RCON
     void (*function)(void);
 } svcmds[ ] = {

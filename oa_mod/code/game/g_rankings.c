@@ -11,7 +11,7 @@ or (at your option) any later version.
 
 Quake III Arena source code is distributed in the hope that it will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -30,13 +30,13 @@ G_RankRunFrame
 ================
 */
 void G_RankRunFrame() {
-    gentity_t*      ent;
-    gentity_t*      ent2;
+    gentity_t* ent;
+    gentity_t* ent2;
     grank_status_t old_status;
     grank_status_t status;
-    int             time;
-    int             i;
-    int             j;
+    int time;
+    int i;
+    int j;
     if (!trap_RankCheckInit()) {
         trap_RankBegin(GR_GAMEKEY);
     }
@@ -198,11 +198,11 @@ void G_RankDamage(int self, int attacker, int damage, int means_of_death) {
     static int last_self = -1;
     static int last_attacker = -1;
     static int last_means_of_death = MOD_UNKNOWN;
-    qboolean    new_hit;
-    int         splash;
-    int         key_hit;
-    int         key_damage;
-    int         key_splash;
+    qboolean new_hit;
+    int splash;
+    int key_hit;
+    int key_damage;
+    int key_splash;
     if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
         // no reports during warmup period
         return;
@@ -218,7 +218,7 @@ void G_RankDamage(int self, int attacker, int damage, int means_of_death) {
     last_means_of_death = means_of_death;
     // the gauntlet only "fires" when it actually hits something
     if ((attacker != ENTITYNUM_WORLD) && (attacker != self) &&
-            (means_of_death == MOD_GAUNTLET)  &&
+            (means_of_death == MOD_GAUNTLET) &&
             (g_entities[attacker].client)) {
         trap_RankReportInt(attacker, -1, QGR_KEY_SHOT_FIRED_GAUNTLET, 1, 1);
     }
@@ -557,8 +557,8 @@ G_RankWeaponTime
 ================
 */
 void G_RankWeaponTime(int self, int weapon) {
-    gclient_t*  client;
-    int         time;
+    gclient_t* client;
+    int time;
     if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
         // no reports during warmup period
         return;
@@ -898,9 +898,9 @@ G_RankClientDisconnect
 ================
 */
 void G_RankClientDisconnect(int self) {
-    gclient_t*  client;
-    int         time;
-    int         match_rating;
+    gclient_t* client;
+    int time;
+    int match_rating;
     if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
         // no reports during warmup period
         return;
@@ -922,9 +922,9 @@ G_RankGameOver
 ================
 */
 void G_RankGameOver(void) {
-    int     i;
-    char    str[MAX_INFO_VALUE];
-    int     num;
+    int i;
+    char str[MAX_INFO_VALUE];
+    int num;
     if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
         // no reports during warmup period
         return;
