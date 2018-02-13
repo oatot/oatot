@@ -155,12 +155,6 @@ void UI_BetMenuInternal(activeBet_t bet) {
     s_betmenu.betAmount.generic.name        = "Amount: ";
     s_betmenu.betAmount.generic.callback    = BetMenu_Event;
     s_betmenu.betAmount.field.widthInChars  = GetBalanceLen();
-    MField_Clear(&s_betmenu.betAmount.field);
-    Q_strncpyz(
-        s_betmenu.betAmount.field.buffer,
-        va("%d", bet.amount),
-        sizeof(s_betmenu.betAmount.field.buffer)
-    );
     // Currency.
     s_betmenu.betCurrency.generic.type        = MTYPE_SPINCONTROL;
     s_betmenu.betCurrency.generic.flags       = QMF_PULSEIFFOCUS | QMF_SMALLFONT;
@@ -216,5 +210,11 @@ void UI_BetMenu(activeBet_t bet) {
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.betHorse);
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.betAmount);
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.betCurrency);
+    // Set amount.
+    Q_strncpyz(
+        s_betmenu.betAmount.field.buffer,
+        va("%d", bet.amount),
+        sizeof(s_betmenu.betAmount.field.buffer)
+    );
     UI_PushMenu(&s_betmenu.menu);
 }
