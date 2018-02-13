@@ -247,13 +247,15 @@ static void OatotMenu_Cache(void) {
 
 static void setBet(menutext_s* menu, int y, int id, char* text) {
     menu->generic.type        = MTYPE_PTEXT;
+    menu->color               = color_red;
+    menu->generic.flags       = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
     menu->generic.x           = 320;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
     if (id < oatotinfo.bets_n) {
         // Bet actually exists.
-        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
+        menu->color           = color_orange;
     } else {
         // Bet doesn't exist, let's hide it.
         menu->generic.flags |= QMF_INACTIVE | QMF_GRAYED;
