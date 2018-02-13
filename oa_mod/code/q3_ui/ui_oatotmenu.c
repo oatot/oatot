@@ -23,7 +23,7 @@
 #define SIZE_OF_LIST 5
 
 #define OATOT_MENU_VERTICAL_SPACING 30
-#define FIRST_BET_Y 120
+#define FIRST_BET_Y 150
 
 t_oatotinfo oatotinfo;
 
@@ -225,15 +225,15 @@ UI_OatotMenu_Draw
 */
 static void UI_OatotMenu_Draw(void) {
     int x, y;
-    UI_DrawBannerString(320, 16, "YOUR ACTIVE BETS", UI_CENTER | UI_SMALLFONT, color_white);
+    UI_DrawBannerString(320, 80, "ACTIVE BETS", UI_CENTER | UI_SMALLFONT, color_white);
     UI_DrawNamedPic(320 - 330, 240 - 166, 660, 332, ART_BACKGROUND);
     if (s_oatotmenu.selected >= 0 && s_oatotmenu.selected < oatotinfo.bets_n) {
         // Draw current bet selection.
         if (s_oatotmenu.activeBets[s_oatotmenu.selected].generic.id < oatotinfo.bets_n) {
             // Bet actually exists.
-            y = FIRST_BET_Y - 10 + s_oatotmenu.selected * OATOT_MENU_VERTICAL_SPACING;
-            x = 320 - 300 / 2;
-            UI_DrawRect(x, y, 300, OATOT_MENU_VERTICAL_SPACING, colorGreen);
+            y = FIRST_BET_Y - 5 + s_oatotmenu.selected * OATOT_MENU_VERTICAL_SPACING;
+            x = 320 - 250 / 2;
+            UI_DrawRect(x, y, 250, OATOT_MENU_VERTICAL_SPACING, colorGreen);
         }
     }
     // Standard menu drawing.
@@ -296,15 +296,15 @@ void UI_OatotMenuInternal(void) {
     // Banner.
     s_oatotmenu.banner.generic.type   = MTYPE_BTEXT;
     s_oatotmenu.banner.generic.x      = 320;
-    s_oatotmenu.banner.generic.y      = 16;
-    s_oatotmenu.banner.string         = "YOUR ACTIVE BETS";
+    s_oatotmenu.banner.generic.y      = 80;
+    s_oatotmenu.banner.string         = "ACTIVE BETS";
     s_oatotmenu.banner.color          = color_white;
     s_oatotmenu.banner.style          = UI_CENTER | UI_SMALLFONT;
     // Info.
     s_oatotmenu.info.generic.type     = MTYPE_TEXT;
     if (game_stage != FORMING_TEAMS) {
         if (oatotinfo.bets_n == 0 && game_stage == MAKING_BETS) {
-            s_oatotmenu.info.string        = "You don't have any active bets yet, press MAKE BET to make one.";
+            s_oatotmenu.info.string        = "No active bets yet, press MAKE BET to make one.";
         } else {
             s_oatotmenu.info.generic.flags = QMF_HIDDEN;
         }
