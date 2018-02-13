@@ -149,6 +149,9 @@ Bet_Event
 =================
 */
 static void Bet_Event(void* ptr, int event) {
+    if (event != QM_ACTIVATED) {
+        return;
+    }
     if (s_oatotmenu.selected != ((menucommon_s*)ptr)->id) {
         s_oatotmenu.selected = ((menucommon_s*)ptr)->id;
     }
@@ -244,19 +247,19 @@ static void OatotMenu_Cache(void) {
 
 static void setBet(menutext_s* menu, int y, int id, activeBet_t bet) {
     menu->generic.type        = MTYPE_PTEXT;
-    menu->generic.x           = 185;
+    menu->generic.x           = 320;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
-    menu->style               = UI_LEFT | UI_SMALLFONT;
+    menu->style               = UI_CENTER | UI_SMALLFONT;
     if (id < oatotinfo.bets_n) {
         // Bet actually exists.
-        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_LEFT_JUSTIFY;
+        menu->generic.flags = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
         strcpy(menu->string, va("%s %d %s\0", bet.horse, bet.amount, bet.currency));
     } else {
         // Bet doesn't exist (yet), let's hide it.
-        menu->generic.flags = QMF_HIDDEN;
-        strcpy(menu->string, "-----");
+        menu->generic.flags = QMF_INACTIVE;
+        strcpy(menu->string, "\0");
     }
 }
 
