@@ -155,6 +155,7 @@ void UI_BetMenuInternal(activeBet_t bet) {
     s_betmenu.betAmount.generic.name        = "Amount: ";
     s_betmenu.betAmount.generic.callback    = BetMenu_Event;
     s_betmenu.betAmount.field.widthInChars  = GetBalanceLen();
+    MField_Clear(&s_betmenu.betAmount.field);
     Q_strncpyz(
         s_betmenu.betAmount.field.buffer,
         va("%d", bet.amount),

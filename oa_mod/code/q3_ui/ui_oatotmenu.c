@@ -23,6 +23,7 @@
 #define SIZE_OF_LIST 5
 
 #define OATOT_MENU_VERTICAL_SPACING 30
+#define FIRST_BET_Y 120
 
 t_oatotinfo oatotinfo;
 
@@ -108,11 +109,11 @@ CheckBetUpper
 =================
 */
 qboolean CheckBetUpper(activeBet_t bet) {
-    if (!strcmp(bet.currency, "OAC")) {
+    if (!Q_stricmp(bet.currency, "OAC")) {
         if (bet.amount > oatotinfo.oac_balance.free_money) {
             return qfalse;
         }
-    } else if (!strcmp(bet.currency, "BTC")) {
+    } else if (!Q_stricmp(bet.currency, "BTC")) {
         if (bet.amount > oatotinfo.btc_balance.free_money) {
             return qfalse;
         }
@@ -207,6 +208,7 @@ static void OatotMenu_Event(void* ptr, int event) {
     case ID_DISCARDBET:
         DiscardBet(s_oatotmenu.selected);
         UI_OatotMenuInternal();
+        UI_ForceMenuOff();
         break;
     case ID_EDITBET:
         DiscardBet(s_oatotmenu.selected);
@@ -222,9 +224,19 @@ UI_OatotMenu_Draw
 =================
 */
 static void UI_OatotMenu_Draw(void) {
+    int x, y;
     UI_DrawBannerString(320, 16, "YOUR ACTIVE BETS", UI_CENTER | UI_SMALLFONT, color_white);
     UI_DrawNamedPic(320 - 330, 240 - 166, 660, 332, ART_BACKGROUND);
-    // standard menu drawing
+    if (s_oatotmenu.selected >= 0 && s_oatotmenu.selected < oatotinfo.bets_n) {
+        // Draw current bet selection.
+        if (s_oatotmenu.activeBets[s_oatotmenu.selected].generic.id < oatotinfo.bets_n) {
+            // Bet actually exists.
+            y = FIRST_BET_Y + s_oatotmenu.selected * OATOT_MENU_VERTICAL_SPACING;
+            x = 220;
+            UI_DrawRect(x, y, 250, OATOT_MENU_VERTICAL_SPACING, colorGreen);
+        }
+    }
+    // Standard menu drawing.
     Menu_Draw(&s_oatotmenu.menu);
 }
 
@@ -299,7 +311,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.info.color            = color_orange;
     s_oatotmenu.info.style            = UI_CENTER | UI_SMALLFONT;
     // Initialize horse, amount and currency menu components.
-    y = 120;
+    y = FIRST_BET_Y;
     for (i = 0; i < SIZE_OF_LIST; i++) {
         setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.betStrings[i]);
         y += OATOT_MENU_VERTICAL_SPACING;
@@ -310,7 +322,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.back.generic.flags      = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     s_oatotmenu.back.generic.id         = ID_BACK;
     s_oatotmenu.back.generic.callback   = OatotMenu_Event;
-    s_oatotmenu.back.generic.x          = 220 - 90;
+    s_oatotmenu.back.generic.x          = 120 - 90;
     s_oatotmenu.back.generic.y          = 410 - 45;
     s_oatotmenu.back.width              = 90;
     s_oatotmenu.back.height             = 45;
@@ -326,7 +338,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.makeBet.generic.id          = ID_MAKEBET;
     s_oatotmenu.makeBet.generic.callback    = OatotMenu_Event;
     s_oatotmenu.makeBet.generic.statusbar   = MakeBet_StatusBar;
-    s_oatotmenu.makeBet.generic.x           = 220 + BUTTON_HORIZONTAL_SPACING - 125;
+    s_oatotmenu.makeBet.generic.x           = 120 + BUTTON_HORIZONTAL_SPACING - 125;
     s_oatotmenu.makeBet.generic.y           = 410 - 45;
     s_oatotmenu.makeBet.width               = 125;
     s_oatotmenu.makeBet.height              = 45;
@@ -342,7 +354,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.discardBet.generic.id           = ID_DISCARDBET;
     s_oatotmenu.discardBet.generic.callback     = OatotMenu_Event;
     s_oatotmenu.discardBet.generic.statusbar    = DiscardBet_StatusBar;
-    s_oatotmenu.discardBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 2 - 125;
+    s_oatotmenu.discardBet.generic.x            = 120 + BUTTON_HORIZONTAL_SPACING * 2 - 125;
     s_oatotmenu.discardBet.generic.y            = 410 - 45;
     s_oatotmenu.discardBet.width                = 125;
     s_oatotmenu.discardBet.height               = 45;
@@ -358,7 +370,7 @@ void UI_OatotMenuInternal(void) {
     s_oatotmenu.editBet.generic.id           = ID_EDITBET;
     s_oatotmenu.editBet.generic.callback     = OatotMenu_Event;
     s_oatotmenu.editBet.generic.statusbar    = EditBet_StatusBar;
-    s_oatotmenu.editBet.generic.x            = 220 + BUTTON_HORIZONTAL_SPACING * 3 - 125;
+    s_oatotmenu.editBet.generic.x            = 120 + BUTTON_HORIZONTAL_SPACING * 3 - 125;
     s_oatotmenu.editBet.generic.y            = 410 - 45;
     s_oatotmenu.editBet.width                = 125;
     s_oatotmenu.editBet.height               = 45;
