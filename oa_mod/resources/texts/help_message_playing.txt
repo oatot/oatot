@@ -4,18 +4,3 @@
 
 ^3=========================================================
 ^1Detailed cmds description:
-^6Type ^1/pastBets^6 to get last 15 closed bets, type ^1/pastBets elder^6
-to get previous 15 bets.
-^6Type ^1/betsSummary^6 to get info on your total lose/win stats for all the bets.
-^6Type ^1/shareBalance^6 to share your balance with everyone.
-^6Type ^1/shareBalance^6 <currency>[^3OAC^1, ^2BTC]^6 to share balance in certain currency.
-^3========================================================
-
-^3=========================================================
-^1New Cvars list:
-^2 - ...
-^2 - ...
-^2 - ...
-^3=========================================================
-
-^1Mail ^5dio@guild-oa.com ^1for any suggestions, bug reports and other stuff.
