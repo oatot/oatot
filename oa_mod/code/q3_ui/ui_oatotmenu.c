@@ -245,21 +245,20 @@ static void OatotMenu_Cache(void) {
     trap_R_RegisterShaderNoMip(ART_BACKGROUND);
 }
 
-static void setBet(menutext_s* menu, int y, int id, activeBet_t bet) {
+static void setBet(menutext_s* menu, int y, int id, char* text) {
     menu->generic.type        = MTYPE_PTEXT;
     menu->generic.x           = 320;
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
     menu->style               = UI_CENTER | UI_SMALLFONT;
+    menu->string              = text;
     if (id < oatotinfo.bets_n) {
         // Bet actually exists.
         menu->generic.flags = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
-        strcpy(menu->string, va("%s %d %s\0", bet.horse, bet.amount, bet.currency));
     } else {
         // Bet doesn't exist (yet), let's hide it.
         menu->generic.flags = QMF_INACTIVE;
-        strcpy(menu->string, "\0");
     }
 }
 
@@ -300,7 +299,7 @@ void UI_OatotMenuInternal(void) {
     // Initialize horse, amount and currency menu components.
     y = 120;
     for (i = 0; i < SIZE_OF_LIST; i++) {
-        setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.bets[i]);
+        setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.betStrings[i]);
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.

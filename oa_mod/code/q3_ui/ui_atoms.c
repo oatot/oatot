@@ -954,6 +954,8 @@ qboolean UI_ConsoleCommand(int realTime) {
             strcpy(oatotinfo.bets[i].currency, UI_Argv(i * 4 + 3));
             oatotinfo.bets[i].amount = atoi(UI_Argv(i * 4 + 4));
             oatotinfo.bets[i].id = atoi(UI_Argv(i * 4 + 5));
+            // Set bet string.
+            Q_strncpyz(oatotinfo.betStrings[i], va("%s %d %s\n\0", oatotinfo.bets[i].horse, oatotinfo.bets[i].amount, oatotinfo.bets[i].currency), MAX_BETSTRING_LENGTH);
         }
         UI_OatotMenuInternal();
         return qtrue;

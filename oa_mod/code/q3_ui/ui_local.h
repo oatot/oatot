@@ -296,11 +296,14 @@ typedef struct {
     char mapname[10][MAX_MAPNAME_LENGTH];
 } t_mappage;
 
+#define MAX_BETSTRING_LENGTH 40
+
 typedef struct {
     int         bets_n; // The actual number of active bets.
     balance_t   oac_balance; // Is needed to limit bet amount menu field.
     balance_t   btc_balance; // Is needed to limit bet amount menu field.
     activeBet_t bets[MAX_ACTIVE_BETS_NUMBER]; // Active bets.
+    char        betStrings[MAX_ACTIVE_BETS_NUMBER][MAX_BETSTRING_LENGTH];
 } t_oatotinfo;
 
 #define MAX_NAMELENGTH_INFO 20
