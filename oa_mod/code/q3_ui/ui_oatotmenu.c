@@ -231,9 +231,9 @@ static void UI_OatotMenu_Draw(void) {
         // Draw current bet selection.
         if (s_oatotmenu.activeBets[s_oatotmenu.selected].generic.id < oatotinfo.bets_n) {
             // Bet actually exists.
-            y = FIRST_BET_Y + s_oatotmenu.selected * OATOT_MENU_VERTICAL_SPACING;
-            x = 220;
-            UI_DrawRect(x, y, 250, OATOT_MENU_VERTICAL_SPACING, colorGreen);
+            y = FIRST_BET_Y - 10 + s_oatotmenu.selected * OATOT_MENU_VERTICAL_SPACING;
+            x = 320 - 300 / 2;
+            UI_DrawRect(x, y, 300, OATOT_MENU_VERTICAL_SPACING, colorGreen);
         }
     }
     // Standard menu drawing.
