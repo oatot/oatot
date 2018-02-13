@@ -251,15 +251,15 @@ static void setBet(menutext_s* menu, int y, int id, char* text) {
     menu->generic.y           = y;
     menu->generic.id          = id;
     menu->generic.callback    = Bet_Event;
-    menu->style               = UI_CENTER | UI_SMALLFONT;
-    menu->string              = text;
     if (id < oatotinfo.bets_n) {
         // Bet actually exists.
         menu->generic.flags = QMF_PULSEIFFOCUS | QMF_CENTER_JUSTIFY;
     } else {
-        // Bet doesn't exist (yet), let's hide it.
-        menu->generic.flags = QMF_INACTIVE;
+        // Bet doesn't exist, let's hide it.
+        menu->generic.flags |= QMF_INACTIVE | QMF_GRAYED;
     }
+    menu->style               = UI_CENTER | UI_SMALLFONT;
+    menu->string              = text;
 }
 
 /*
