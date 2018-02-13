@@ -117,7 +117,7 @@ UI_BetMenuInternal
  *Used then forcing a redraw
 =================
 */
-void UI_BetMenuInternal(activeBet_t bet) {
+void UI_BetMenuInternal(activeBet_t bet, qboolean edit_mode) {
     trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
     trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
     // Menu.
@@ -172,7 +172,16 @@ void UI_BetMenuInternal(activeBet_t bet) {
     // Button back.
     s_betmenu.back.generic.type       = MTYPE_BITMAP;
     s_betmenu.back.generic.name       = ART_BACK0;
-    s_betmenu.back.generic.flags      = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    if (edit_mode) {
+        // When editing the bet, we discard it first.
+        // So pressing back would have the effect of discarding bet completely.
+        // Since we have discardBet button for that, it doesn't make much sense.
+        // Therefore, let's just discard back option when in editing mode.
+        // If they don't want to change anything, pressing OK will create same bet again.
+        s_betmenu.back.generic.flags  = QMF_GRAYED;
+    } else {
+        s_betmenu.back.generic.flags  = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
+    }
     s_betmenu.back.generic.id         = ID_BACK;
     s_betmenu.back.generic.callback   = BetMenu_Event;
     s_betmenu.back.generic.x          = 220 - 90;
@@ -199,10 +208,10 @@ UI_BetMenu
  *Called from outside
 =================
 */
-void UI_BetMenu(activeBet_t bet) {
+void UI_BetMenu(activeBet_t bet, qboolean edit_mode) {
     BetMenu_Cache();
     memset(&s_betmenu, 0, sizeof(betmenu_t));
-    UI_BetMenuInternal(bet);
+    UI_BetMenuInternal(bet, edit_mode);
     trap_Cvar_Set("cl_paused", "0");   // We cannot send server commands while paused!
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.banner);
     Menu_AddItem(&s_betmenu.menu, (void*) &s_betmenu.back);

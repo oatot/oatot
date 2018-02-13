@@ -589,8 +589,8 @@ extern void UI_OatotMenu(void);
 extern void UI_OatotMenuInternal(void);
 
 // ui_betmenu.c
-extern void UI_BetMenu(activeBet_t bet);
-extern void UI_BetMenuInternal(activeBet_t bet);
+extern void UI_BetMenu(activeBet_t bet, qboolean edit_mode);
+extern void UI_BetMenuInternal(activeBet_t bet, qboolean edit_mode);
 
 //
 // ui_players.c

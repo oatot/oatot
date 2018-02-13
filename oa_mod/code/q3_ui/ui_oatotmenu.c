@@ -203,7 +203,7 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
-        UI_BetMenu(getDefaultBet(oatotinfo.oac_balance.free_money));
+        UI_BetMenu(getDefaultBet(oatotinfo.oac_balance.free_money), qfalse);
         break;
     case ID_DISCARDBET:
         DiscardBet(s_oatotmenu.selected);
@@ -213,7 +213,7 @@ static void OatotMenu_Event(void* ptr, int event) {
     case ID_EDITBET:
         DiscardBet(s_oatotmenu.selected);
         UI_OatotMenuInternal();
-        UI_BetMenu(selected_bet);
+        UI_BetMenu(selected_bet, qtrue);
         break;
     }
 }
