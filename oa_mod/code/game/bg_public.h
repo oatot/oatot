@@ -43,7 +43,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define DEFAULT_SHOTGUN_COUNT 11
 
 #define ITEM_RADIUS 15 // item sizes are needed for client side pickup detection
-#define ITEM_HEIGHT 45 // easy pickup
+#define ITEM_TOUCH_HORIZONTAL_DIST_NORMAL 36
+#define ITEM_TOUCH_HORIZONTAL_DIST_EASY 70
 
 #define LIGHTNING_RANGE 768
 
