@@ -4,13 +4,6 @@ MODNAME=oatot
 # ARCH should be either i386 (32 bit) or x86_64 (64 bit).
 ARCH=x86_64
 
-if [ -r $BINNAME ] ; then
-    echo $BINNAME found
-else
-    echo $BINNAME not found! Check the variables in the script
-    exit 1
-fi
-
 # Usage.
 usage() {
     echo "usage: $0 <port_number> <server_config>" >&2
