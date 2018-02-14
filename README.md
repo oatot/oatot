@@ -91,10 +91,8 @@ in some way.
 **Server-side:**<br>
  - `g_makingBetsTime`<br>
     The duration of MAKING_BETS in mins, 2 by default.
-    Type: `CVAR_SERVERINFO`.
  - `g_easyItemPickup`<br>
     1 for easy item pickup (high items), 1 by default.
-    Type: `CVAR_SERVERINFO`.
 
 **Client-side:**<br>
  - ...
