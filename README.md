@@ -23,11 +23,11 @@ You will need a C-compiler (better gcc or clang), GNU make, Go, grpc-go.
 
 ```
 cd /path/to/oa_mod/linux_scripts/
-cp /path/to/openarena-server .
-cp /path/to/server.cfg .
 ./build_oa_server
-./run_oa_server 27963 server.cfg
+./run_oa_server <port> server.cfg
 ```
+Make sure that `server.cfg` is in `~/.openarena/baseoa` folder
+and you have `BINNAME` set to your openarena server binary.
 
 ## How to build and run backend
 
@@ -60,7 +60,7 @@ Basic stuff you can call by typing `/<command>` in OA game console.
 ```
 
 *Update note:*<br>
-/bet and /unbet commands are outdated, there is super cool UI menu for this purpose instead.
+`/bet` and `/unbet` commands are outdated, there is super cool UI menu for this purpose instead.
 *Don't worry, /bet and /unbet are still there for quality people! :p*
 
 *Game stages*
@@ -91,7 +91,8 @@ in some way.
 **Server-side:**<br>
  - `g_makingBetsTime`<br>
     The duration of MAKING_BETS in mins, 2 by default.
-    Type: `CVAR_SERVERINFO`.
+ - `g_easyItemPickup`<br>
+    1 for easy item pickup (high items), 1 by default.
 
 **Client-side:**<br>
  - ...

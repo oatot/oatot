@@ -1263,6 +1263,8 @@ gitem_t* BG_FindItem(const char* pickupName) {
     return NULL;
 }
 
+void trap_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
+
 /*
 ============
 BG_PlayerTouchesItem
@@ -1272,14 +1274,23 @@ grabbing them easier
 ============
  */
 qboolean BG_PlayerTouchesItem(playerState_t* ps, entityState_t* item, int atTime) {
+    int horizontal_touch_dist;
+    char buf[256];
     vec3_t origin;
     BG_EvaluateTrajectory(&item->pos, atTime, origin);
+    trap_Cvar_VariableStringBuffer("g_easyItemPickup", buf, sizeof(buf));
+    if (atoi(buf)) {
+        // Easy item pickup.
+        horizontal_touch_dist = ITEM_TOUCH_HORIZONTAL_DIST_EASY;
+    } else {
+        horizontal_touch_dist = ITEM_TOUCH_HORIZONTAL_DIST_NORMAL;
+    }
     // we are ignoring ducked differences here
     if (ps->origin[0] - origin[0] > 44
             || ps->origin[0] - origin[0] < -50
             || ps->origin[1] - origin[1] > 36
             || ps->origin[1] - origin[1] < -36
-            || ps->origin[2] - origin[2] > 36
+            || ps->origin[2] - origin[2] > horizontal_touch_dist
             || ps->origin[2] - origin[2] < -36) {
         return qfalse;
     }
@@ -1633,8 +1644,6 @@ BG_AddPredictableEventToPlayerstate
 Handles the sequence numbers
 ===============
  */
-
-void trap_Cvar_VariableStringBuffer(const char* var_name, char* buffer, int bufsize);
 
 void BG_AddPredictableEventToPlayerstate(int newEvent, int eventParm, playerState_t* ps) {
 #ifdef _DEBUG

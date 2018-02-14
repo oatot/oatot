@@ -140,11 +140,16 @@ vmCvar_t g_elimination_lockspectator;
 
 vmCvar_t g_rockets;
 
-//oatot
+//oatot Cvars
+
+// Meaningful for the external users.
+vmCvar_t g_makingBetsTime; // time for making bets & warmup before match (in mins)
+vmCvar_t g_easyItemPickup; // 1 for high items
+
+// Utility.
 vmCvar_t g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
 vmCvar_t g_readyN;
 vmCvar_t g_rageQuit;
-vmCvar_t g_makingBetsTime; // time for making bets & warmup before match (in mins)
 vmCvar_t g_betsMade;
 vmCvar_t g_readyToBet;
 
@@ -287,11 +292,15 @@ static cvarTable_t gameCvarTable[] = {
     { &g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse },
     { &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
-    //oatot
+    //oatot Cvars
+
+    // Meaningful for the external users.
+    { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
+    { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
+    // Utility.
     { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
     { &g_rageQuit, "g_rageQuit", "0", 0, 0, qfalse },
-    { &g_makingBetsTime, "g_makingBetsTime", "2", CVAR_SERVERINFO, 0, qfalse },
     { &g_betsMade, "g_betsMade", "0", 0, 0, qfalse },
     { &g_readyToBet, "g_readyToBet", "0", 0, 0, qfalse },
 
