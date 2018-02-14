@@ -519,7 +519,7 @@ gentity_t* LaunchItem(gitem_t* item, vec3_t origin, vec3_t velocity) {
     dropped->classname = item->classname;
     dropped->item = item;
     if (g_easyItemPickup.integer) {
-        VectorSet(dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_HEIGHT);
+        VectorSet(dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
         VectorSet(dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_HEIGHT);
     } else {
         VectorSet(dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
@@ -591,7 +591,7 @@ void FinishSpawningItem(gentity_t* ent) {
     trace_t tr;
     vec3_t dest;
     if (g_easyItemPickup.integer) {
-        VectorSet(ent->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_HEIGHT);
+        VectorSet(ent->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
         VectorSet(ent->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_HEIGHT);
     } else {
         VectorSet(ent->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
