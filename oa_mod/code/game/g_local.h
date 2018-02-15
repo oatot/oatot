@@ -622,7 +622,7 @@ typedef struct {
     int lastActiveTime; ///< Updated as long as there are at least one human player on the server
 
     qboolean timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match
-    qboolean betsGreetingPrinted; // oatot: print info about 2 mins to make bets
+    qboolean betsGreetingPrinted; // oatot: print info about `g_makingBetsTime` mins to make bets
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
