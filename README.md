@@ -93,7 +93,7 @@ in some way.
     The duration of MAKING_BETS in mins, 2 by default.
  - `g_easyItemPickup`<br>
     1 for easy item pickup (high items), 1 by default.
- - `g_defaultScoreboardSeason`<br>
+ - `g_scoreboardDefaultSeason`<br>
     Season which will be set as default scoreboard season on clients, 1 by default.
     0 - no season, 1 - winter, 2 - spring, 3 - summer, 4 - autumn.
 
@@ -101,7 +101,7 @@ in some way.
  - `cg_scoreboardEffects`<br>
     0 to disable all additional scoreboard effects, 1 by default.
  - `cg_scoreboardSeason`<br>
-    Scoreboard season, `g_defaultScoreboardSeason` (server-side Cvar) by default.
+    Scoreboard season, `g_scoreboardDefaultSeason` (server-side Cvar) by default.
     0 - no season, 1 - winter, 2 - spring, 3 - summer, 4 - autumn.
     Set to -1 in order to set server defaults again.
  - `cg_scoreboardAggressive`<br>
