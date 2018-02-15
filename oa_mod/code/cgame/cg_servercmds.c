@@ -394,6 +394,7 @@ and whenever the server updates any serverinfo flagged cvars
 ================
 */
 void CG_ParseServerinfo(void) {
+    const char* scoreboard_default_season;
     const char* info;
     char* mapname;
     info = CG_ConfigString(CS_SERVERINFO);
@@ -431,9 +432,15 @@ void CG_ParseServerinfo(void) {
     //unlagged - server options
     //Copy allowed votes directly to the client:
     trap_Cvar_Set("cg_voteflags", Info_ValueForKey(info, "voteflags"));
+    scoreboard_default_season = Info_ValueForKey(info, "g_scoreboardDefaultSeason");
+    if (cg_scoreboardDefaultSeasonBackup.integer != atoi(scoreboard_default_season)) {
+        // g_scoreboardDefaultSeason has been changed on server, force update of cg_scoreboardSeason.
+        trap_Cvar_Set("cg_scoreboardDefaultSeasonBackup", scoreboard_default_season);
+        trap_Cvar_Set("cg_scoreboardSeason", scoreboard_default_season);
+    }
     if (cg_scoreboardSeason.integer == -1) {
-        // The client hasn't set any season yet, set the default one.
-        trap_Cvar_Set("cg_scoreboardSeason", Info_ValueForKey(info, "g_scoreboardDefaultSeason"));
+        // The client hasn't set any season yet, let's set the default one.
+        trap_Cvar_Set("cg_scoreboardSeason", scoreboard_default_season);
     }
 }
 

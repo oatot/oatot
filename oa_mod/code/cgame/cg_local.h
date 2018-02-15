@@ -1499,6 +1499,8 @@ extern vmCvar_t cg_teamChatBeep;
 extern vmCvar_t cg_scoreboardEffects;
 extern vmCvar_t cg_scoreboardSeason;
 extern vmCvar_t cg_scoreboardAggressive;
+// Utility.
+extern vmCvar_t cg_scoreboardDefaultSeasonBackup;
 
 //unlagged - cg_unlagged.c
 void CG_PredictWeaponEffects(centity_t* cent);

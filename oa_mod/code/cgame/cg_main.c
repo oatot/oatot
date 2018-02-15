@@ -295,6 +295,8 @@ vmCvar_t cg_teamChatBeep;
 vmCvar_t cg_scoreboardEffects;
 vmCvar_t cg_scoreboardSeason;
 vmCvar_t cg_scoreboardAggressive;
+// Utility.
+vmCvar_t cg_scoreboardDefaultSeasonBackup;
 
 typedef struct {
     vmCvar_t* vmCvar;
@@ -510,7 +512,9 @@ static cvarTable_t cvarTable[] = {// bk001129
 
     {&cg_scoreboardEffects, "cg_scoreboardEffects", "1", CVAR_ARCHIVE},
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
-    {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE}
+    {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
+    // Utility.
+    {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE}
 };
 
 static int cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
