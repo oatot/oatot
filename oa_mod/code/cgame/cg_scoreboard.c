@@ -201,6 +201,20 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     }
 }
 
+void CG_DrawScoreboardEffect(int x, int y, qhandle_t scoreboard_effect0, qhandle_t scoreboard_effect1) {
+    int shift = 24;
+    int type = 0;
+    for (; x < 640; x += shift) {
+        if (type == 0) {
+            CG_DrawPic(x, y, 24, 24, scoreboard_effect0);
+            type += 1;
+        } else {
+            CG_DrawPic(x, y, 24, 24, scoreboard_effect1);
+            type -= 1;
+        }
+    }
+}
+
 void CG_DrawScoreboardEffects(int x, int y) {
     if (cg_scoreboardEffects.integer) {
         if (cg_scoreboardAggressive.integer) {
@@ -221,20 +235,6 @@ void CG_DrawScoreboardEffects(int x, int y) {
                     CG_DrawScoreboardEffect(x, y, cgs.media.autumnShader0, cgs.media.autumnShader1);
                     break;
             }
-        }
-    }
-}
-
-void CG_DrawScoreboardEffect(int x, int y, qhandle_t scoreboard_effect0, qhandle_t scoreboard_effect1) {
-    int shift = 24;
-    int type = 0;
-    for (; x < 640; x += shift) {
-        if (type == 0) {
-            CG_DrawPic(x, y, 24, 24, scoreboard_effect0);
-            type += 1;
-        } else {
-            CG_DrawPic(x, y, 24, 24, scoreboard_effect1);
-            type -= 1;
         }
     }
 }
