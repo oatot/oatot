@@ -1007,16 +1007,16 @@ static void CG_RegisterGraphics(void) {
     cgs.media.oacShader = trap_R_RegisterShader("images/oac.png");
     cgs.media.readyShader = trap_R_RegisterShader("images/ready.png");
     cgs.media.notReadyShader = trap_R_RegisterShader("images/not_ready.png");
-    cgs.media.lockShader = trap_R_RegisterShader("images/lock.png");
-    cgs.media.winterShader0 = trap_R_RegisterShader("images/winter0.png");
-    cgs.media.winterShader1 = trap_R_RegisterShader("images/winter1.png");
-    cgs.media.springShader0 = trap_R_RegisterShader("images/spring0.png");
-    cgs.media.springShader1 = trap_R_RegisterShader("images/spring1.png");
-    cgs.media.summerShader0 = trap_R_RegisterShader("images/summer0.png");
-    cgs.media.summerShader1 = trap_R_RegisterShader("images/summer1.png");
-    cgs.media.autumnShader0 = trap_R_RegisterShader("images/autumn0.png");
-    cgs.media.autumnShader1 = trap_R_RegisterShader("images/autumn1.png");
-    cgs.media.fireShader = trap_R_RegisterShader("images/aggressive.png");
+    cgs.media.lockShader = trap_R_RegisterShaderNoMip("images/lock.png");
+    cgs.media.winterShader0 = trap_R_RegisterShaderNoMip("images/winter0.png");
+    cgs.media.winterShader1 = trap_R_RegisterShaderNoMip("images/winter1.png");
+    cgs.media.springShader0 = trap_R_RegisterShaderNoMip("images/spring0.png");
+    cgs.media.springShader1 = trap_R_RegisterShaderNoMip("images/spring1.png");
+    cgs.media.summerShader0 = trap_R_RegisterShaderNoMip("images/summer0.png");
+    cgs.media.summerShader1 = trap_R_RegisterShaderNoMip("images/summer1.png");
+    cgs.media.autumnShader0 = trap_R_RegisterShaderNoMip("images/autumn0.png");
+    cgs.media.autumnShader1 = trap_R_RegisterShaderNoMip("images/autumn1.png");
+    cgs.media.fireShader = trap_R_RegisterShaderNoMip("images/aggressive.png");
 
     cgs.media.botSkillShaders[0] = trap_R_RegisterShader("menu/art/skill1.tga");
     cgs.media.botSkillShaders[1] = trap_R_RegisterShader("menu/art/skill2.tga");
