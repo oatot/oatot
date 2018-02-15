@@ -431,6 +431,10 @@ void CG_ParseServerinfo(void) {
     //unlagged - server options
     //Copy allowed votes directly to the client:
     trap_Cvar_Set("cg_voteflags", Info_ValueForKey(info, "voteflags"));
+    if (cg_scoreboardSeason.integer == -1) {
+        // The client hasn't set any season yet, set the default one.
+        trap_Cvar_Set("cg_scoreboardSeason", Info_ValueForKey(info, "g_scoreboardDefaultSeason"));
+    }
 }
 
 /*

@@ -1484,6 +1484,11 @@ extern vmCvar_t cg_weaponOrder;
 extern vmCvar_t cg_chatBeep;
 extern vmCvar_t cg_teamChatBeep;
 
+// OATOT Cvars.
+extern vmCvar_t cg_scoreboardEffects;
+extern vmCvar_t cg_scoreboardSeason;
+extern vmCvar_t cg_scoreboardAggressive;
+
 //unlagged - cg_unlagged.c
 void CG_PredictWeaponEffects(centity_t* cent);
 //void CG_AddBoundingBox( centity_t *cent );

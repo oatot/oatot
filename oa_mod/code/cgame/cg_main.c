@@ -291,6 +291,11 @@ vmCvar_t cg_weaponBarStyle;
 vmCvar_t cg_chatBeep;
 vmCvar_t cg_teamChatBeep;
 
+// OATOT Cvars.
+vmCvar_t cg_scoreboardEffects;
+vmCvar_t cg_scoreboardSeason;
+vmCvar_t cg_scoreboardAggressive;
+
 typedef struct {
     vmCvar_t* vmCvar;
     char* cvarName;
@@ -501,7 +506,11 @@ static cvarTable_t cvarTable[] = {// bk001129
     { &cg_weaponBarStyle, "cg_weaponBarStyle", "0", CVAR_ARCHIVE},
     { &cg_weaponOrder, "cg_weaponOrder", "/1/2/4/3/6/7/8/9/5/", CVAR_ARCHIVE},
     {&cg_chatBeep, "cg_chatBeep", "1", CVAR_ARCHIVE},
-    {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE}
+    {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE},
+
+    {&cg_scoreboardEffects, "cg_scoreboardEffects", "1", CVAR_ARCHIVE},
+    {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
+    {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE}
 };
 
 static int cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
