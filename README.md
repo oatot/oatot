@@ -104,6 +104,7 @@ in some way.
     Scoreboard season, `g_scoreboardDefaultSeason` (server-side Cvar) by default.
     0 - no season, 1 - winter, 2 - spring, 3 - summer, 4 - autumn.
     Set to -1 in order to set server defaults again.
+    Will be forced updated when default changes on the server.
  - `cg_scoreboardAggressive`<br>
     1 to enable aggressive scoreboard effects. Incompatible with `cg_scoreboardSeason != 0`.
     0 by default.
