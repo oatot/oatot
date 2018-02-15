@@ -789,6 +789,9 @@ void ClientThink_real(gentity_t* ent) {
         // if g_truePing is off, use the normal ping
         client->pers.realPing = client->ps.ping;
     }
+    // Average speed.
+    client->pers.nFrames++;
+    client->pers.speedSum += ent->speed;
     //unlagged - true ping
     //unlagged - lag simulation #2
     // keep a queue of past commands

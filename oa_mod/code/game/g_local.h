@@ -357,11 +357,14 @@ typedef struct {
 
     qboolean cannotWin; // Set to true if the players joins a leading team or the team with the most players
 
-    // more detailed global stats
+    // More detailed global stats.
     int kills;
     int deaths;
     int damageGiven;
     int damageTaken;
+    // For average speed.
+    unsigned long int nFrames;
+    unsigned long int speedSum;
 
     // oatot
     qboolean ready;

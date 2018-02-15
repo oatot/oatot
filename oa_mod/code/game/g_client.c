@@ -1327,12 +1327,15 @@ void ClientBegin(int clientNum) {
     ent->touch = 0;
     ent->pain = 0;
     ent->client = client;
-    // more detailed global stats
+    // More detailed global stats.
     client->pers.kills = 0;
     client->pers.deaths = 0;
     client->pers.damageGiven = 0;
     client->pers.damageTaken = 0;
-    // oatot
+    // Average speed.
+    client->pers.nFrames = 0;
+    client->pers.speedSum = 0;
+    // OATOT.
     client->pers.ready = qfalse;
     client->pers.nextPageUsed = qfalse;
     client->pers.connected = CON_CONNECTED;

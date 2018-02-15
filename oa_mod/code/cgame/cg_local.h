@@ -312,6 +312,7 @@ typedef struct {
     int deaths;
     int damageTaken;
     int damageGiven;
+    int averageSpeed;
     qboolean ready;
     int scoreFlags;
     int powerUps;

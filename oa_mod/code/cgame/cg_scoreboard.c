@@ -179,16 +179,18 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
         Com_sprintf(kdr_str, sizeof(kdr_str), "^2%i^4/^1%i", score->kills, score->deaths);
         Com_sprintf(dmg_str, sizeof(dmg_str), "^2%.1fK^4/^1%.1fK", score->damageGiven / 1000.0, score->damageTaken / 1000.0);
         CG_DrawSmallString(SB_SCORELINE_X, y, va(" ^5%i", score->score), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
-        CG_DrawSmallString(SB_SCORELINE_X + 39 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 45 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade, MAX_KDR_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 8 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 13 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 20 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 36 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 41 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade, MAX_KDR_LEN);
         if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-            CG_DrawSmallStringLen(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade, MAX_DMG_LEN);
-            CG_DrawSmallString(SB_SCORELINE_X + 68 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallStringLen(SB_SCORELINE_X + 50 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade, MAX_DMG_LEN);
+            CG_DrawSmallString(SB_SCORELINE_X + 64 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 69 * SMALLCHAR_WIDTH, y, va("^6%i", score->averageSpeed), fade);
         } else {
-            CG_DrawSmallString(SB_SCORELINE_X + 55 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 51 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 56 * SMALLCHAR_WIDTH, y, va("^6%i", score->averageSpeed), fade);
         }
     }
     // add the "ready" marker for intermission exiting
@@ -345,10 +347,10 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
     if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg           ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score  ^1Ping ^1Time   ^1Name            ^1Acc  ^1K/D      ^1Dmg           ^1Caps Speed", 1.0F);
         CG_DrawScoreboardEffects(0, y + 14);
     } else {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Caps", 1.0F);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score  ^1Ping ^1Time   ^1Name            ^1Acc  ^1K/D      ^1Caps Speed", 1.0F);
         CG_DrawScoreboardEffects(0, y + 14);
     }
     y = SB_TOP;
