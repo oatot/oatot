@@ -202,23 +202,25 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
 }
 
 void CG_DrawScoreboardEffects(int x, int y) {
-    if (cg_scoreboardAggressive.integer) {
-        CG_DrawScoreboardEffect(x, y, cgs.media.fireShader, cgs.media.fireShader);
-    } else {
-        // Draw season.
-        switch (cg_scoreboardSeason.integer) {
-            case 1:
-                CG_DrawScoreboardEffect(x, y, cgs.media.winterShader0, cgs.media.winterShader1);
-                break;
-            case 2:
-                CG_DrawScoreboardEffect(x, y, cgs.media.springShader0, cgs.media.springShader1);
-                break;
-            case 3:
-                CG_DrawScoreboardEffect(x, y, cgs.media.summerShader0, cgs.media.summerShader1);
-                break;
-            case 4:
-                CG_DrawScoreboardEffect(x, y, cgs.media.autumnShader0, cgs.media.autumnShader1);
-                break;
+    if (cg_scoreboardEffects.integer) {
+        if (cg_scoreboardAggressive.integer) {
+            CG_DrawScoreboardEffect(x, y, cgs.media.fireShader, cgs.media.fireShader);
+        } else {
+            // Draw season.
+            switch (cg_scoreboardSeason.integer) {
+                case 1:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.winterShader0, cgs.media.winterShader1);
+                    break;
+                case 2:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.springShader0, cgs.media.springShader1);
+                    break;
+                case 3:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.summerShader0, cgs.media.summerShader1);
+                    break;
+                case 4:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.autumnShader0, cgs.media.autumnShader1);
+                    break;
+            }
         }
     }
 }
