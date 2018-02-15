@@ -733,14 +733,25 @@ typedef struct {
 // Other media that can be tied to clients, weapons, or items are
 // stored in the clientInfo_t, itemInfo_t, weaponInfo_t, and powerupInfo_t
 typedef struct {
-    // oatot
+    // OATOT shaders.
+
+    // Money icons.
     qhandle_t btcShader;
     qhandle_t oacShader;
-    qhandle_t snowShader1;
-    qhandle_t snowShader2;
+    // Read/NotReady, team lock icon.
     qhandle_t readyShader;
     qhandle_t notReadyShader;
     qhandle_t lockShader;
+    // Scoreboard effects.
+    qhandle_t winterShader0;
+    qhandle_t winterShader1;
+    qhandle_t springShader0;
+    qhandle_t springShader1;
+    qhandle_t summerShader0;
+    qhandle_t summerShader1;
+    qhandle_t autumnShader0;
+    qhandle_t autumnShader1;
+    qhandle_t fireShader;
 
     qhandle_t charsetShader;
     qhandle_t charsetProp;

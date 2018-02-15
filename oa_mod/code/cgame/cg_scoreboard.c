@@ -201,15 +201,37 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     }
 }
 
-void CG_DrawSnow(int x, int y) {
+void CG_DrawScoreboardEffects(int x, int y) {
+    if (cg_scoreboardAggressive.integer) {
+        CG_DrawScoreboardEffect(x, y, cgs.media.fireShader, cgs.media.fireShader);
+    } else {
+        // Draw season.
+        switch (cg_scoreboardSeason.integer) {
+            case 1:
+                CG_DrawScoreboardEffect(x, y, cgs.media.winterShader0, cgs.media.winterShader1);
+                break;
+            case 2:
+                CG_DrawScoreboardEffect(x, y, cgs.media.springShader0, cgs.media.springShader1);
+                break;
+            case 3:
+                CG_DrawScoreboardEffect(x, y, cgs.media.summerShader0, cgs.media.summerShader1);
+                break;
+            case 4:
+                CG_DrawScoreboardEffect(x, y, cgs.media.autumnShader0, cgs.media.autumnShader1);
+                break;
+        }
+    }
+}
+
+void CG_DrawScoreboardEffect(int x, int y, qhandle_t scoreboard_effect0, qhandle_t scoreboard_effect1) {
     int shift = 24;
     int type = 0;
     for (; x < 640; x += shift) {
         if (type == 0) {
-            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader1);
+            CG_DrawPic(x, y, 24, 24, scoreboard_effect0);
             type += 1;
         } else {
-            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader2);
+            CG_DrawPic(x, y, 24, 24, scoreboard_effect1);
             type -= 1;
         }
     }
@@ -322,10 +344,10 @@ qboolean CG_DrawOldScoreboard(void) {
     y = SB_HEADER;
     if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg           ^1Caps", 1.0F);
-        CG_DrawSnow(0, y + 14);
+        CG_DrawScoreboardEffects(0, y + 14);
     } else {
         CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Caps", 1.0F);
-        CG_DrawSnow(0, y + 14);
+        CG_DrawScoreboardEffects(0, y + 14);
     }
     y = SB_TOP;
     // If there are more than SB_MAXCLIENTS_NORMAL, use the interleaved scores
@@ -367,7 +389,7 @@ qboolean CG_DrawOldScoreboard(void) {
         }
         n1 = CG_TeamScoreboard(y, TEAM_SPECTATOR, fade, maxClients, lineHeight);
         y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
-        CG_DrawSnow(0, y - BIGCHAR_WIDTH + 6);
+        CG_DrawScoreboardEffects(0, y - BIGCHAR_WIDTH + 6);
     } else {
         //
         // free for all scoreboard
