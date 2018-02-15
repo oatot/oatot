@@ -169,12 +169,12 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     }
     if (score->ping == -1) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " connecting", fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 20 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
     } else if (ci->team == TEAM_SPECTATOR) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " SPECT", fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 8 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 13 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 20 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
     } else {
         Com_sprintf(kdr_str, sizeof(kdr_str), "^2%i^4/^1%i", score->kills, score->deaths);
         Com_sprintf(dmg_str, sizeof(dmg_str), "^2%.1fK^4/^1%.1fK", score->damageGiven / 1000.0, score->damageTaken / 1000.0);
