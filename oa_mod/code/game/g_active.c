@@ -733,6 +733,8 @@ void ClientThink_real(gentity_t* ent) {
     pmove_t pm;
     int oldEventSequence;
     int msec;
+    int speed;
+    vec_t* vel;
     usercmd_t* ucmd;
     client = ent->client;
     // don't think if the client is not yet connected (and thus not yet spawned in)
@@ -789,9 +791,13 @@ void ClientThink_real(gentity_t* ent) {
         // if g_truePing is off, use the normal ping
         client->pers.realPing = client->ps.ping;
     }
+    vel = client->ps.velocity;
+    // Current speed.
+    // Ignore vertical component of velocity.
+    speed = sqrt(vel[0] * vel[0] + vel[1] * vel[1]);
     // Average speed.
     client->pers.nFrames++;
-    client->pers.speedSum += ent->speed;
+    client->pers.speedSum += speed;
     //unlagged - true ping
     //unlagged - lag simulation #2
     // keep a queue of past commands
