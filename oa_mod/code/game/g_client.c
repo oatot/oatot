@@ -1328,6 +1328,7 @@ void ClientBegin(int clientNum) {
     ent->pain = 0;
     ent->client = client;
     // More detailed global stats.
+    client->pers.grabs = 0;
     client->pers.kills = 0;
     client->pers.deaths = 0;
     client->pers.damageGiven = 0;

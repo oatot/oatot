@@ -63,10 +63,10 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
         perfect = (cl->ps.persistant[PERS_RANK] == 0 && cl->ps.persistant[PERS_KILLED] == 0) ? 1 : 0;
         if (g_gametype.integer == GT_LMS) {
             Com_sprintf(entry, sizeof(entry),
-                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                         cl->ps.persistant[PERS_SCORE], ping,
                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
-                        (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
+                        cl->pers.grabs, (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
                         (level.time - cl->pers.enterTime) / 60000,
                         scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                         cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
@@ -79,10 +79,10 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
                         cl->pers.livesLeft + (cl->isEliminated ? 0 : 1));
         } else {
             Com_sprintf(entry, sizeof(entry),
-                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                         cl->ps.persistant[PERS_SCORE], ping,
                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
-                        (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
+                        cl->pers.grabs, (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
                         (level.time - cl->pers.enterTime) / 60000,
                         scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                         cl->ps.persistant[PERS_IMPRESSIVE_COUNT],

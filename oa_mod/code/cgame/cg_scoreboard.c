@@ -186,10 +186,10 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
         CG_DrawSmallStringLen(SB_SCORELINE_X + 41 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade, MAX_KDR_LEN);
         if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
             CG_DrawSmallStringLen(SB_SCORELINE_X + 50 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade, MAX_DMG_LEN);
-            CG_DrawSmallString(SB_SCORELINE_X + 64 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 64 * SMALLCHAR_WIDTH, y, va("^3%i^1/^7%i", score->captures, score->grabs), fade);
             CG_DrawSmallString(SB_SCORELINE_X + 69 * SMALLCHAR_WIDTH, y, va("^6%i", score->averageSpeed), fade);
         } else {
-            CG_DrawSmallString(SB_SCORELINE_X + 51 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 51 * SMALLCHAR_WIDTH, y, va("^3%i^1/^7%i", score->captures, score->grabs), fade);
             CG_DrawSmallString(SB_SCORELINE_X + 56 * SMALLCHAR_WIDTH, y, va("^6%i", score->averageSpeed), fade);
         }
     }

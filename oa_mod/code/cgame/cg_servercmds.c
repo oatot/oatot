@@ -148,7 +148,7 @@ static void CG_ParseScores(void) {
         cgs.scores2 = cg.teamScores[1];
     }
     memset(cg.scores, 0, sizeof(cg.scores));
-#define NUM_DATA 21
+#define NUM_DATA 22
 #define FIRST_DATA 4
     for (i = 0; i < cg.numScores; i++) {
         //
@@ -159,20 +159,21 @@ static void CG_ParseScores(void) {
         cg.scores[i].deaths = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 5));
         cg.scores[i].damageTaken = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 6));
         cg.scores[i].damageGiven = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 7));
-        cg.scores[i].averageSpeed = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 8));
-        cg.scores[i].ready = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 9));
-        cg.scores[i].time = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 10));
-        cg.scores[i].scoreFlags = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 11));
-        powerups = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 12));
-        cg.scores[i].accuracy = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 13));
-        cg.scores[i].impressiveCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 14));
-        cg.scores[i].excellentCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 15));
-        cg.scores[i].guantletCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 16));
-        cg.scores[i].defendCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 17));
-        cg.scores[i].assistCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 18));
-        cg.scores[i].perfect = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 19));
-        cg.scores[i].captures = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 20));
-        cg.scores[i].isDead = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 21));
+        cg.scores[i].grabs = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 8));
+        cg.scores[i].averageSpeed = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 9));
+        cg.scores[i].ready = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 10));
+        cg.scores[i].time = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 11));
+        cg.scores[i].scoreFlags = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 12));
+        powerups = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 13));
+        cg.scores[i].accuracy = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 14));
+        cg.scores[i].impressiveCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 15));
+        cg.scores[i].excellentCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 16));
+        cg.scores[i].guantletCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 17));
+        cg.scores[i].defendCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 18));
+        cg.scores[i].assistCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 19));
+        cg.scores[i].perfect = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 20));
+        cg.scores[i].captures = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 21));
+        cg.scores[i].isDead = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 22));
         //cgs.roundStartTime =
         if (cg.scores[i].client < 0 || cg.scores[i].client >= MAX_CLIENTS) {
             cg.scores[i].client = 0;
