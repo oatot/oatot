@@ -89,6 +89,7 @@ typedef struct bet_s bet_t;
 typedef struct fullbet_s fullbet_t;
 typedef struct currencySummary_s currencySummary_t;
 typedef struct betsSummary_s betsSummary_t;
+typedef struct weaponStats_s weaponStats_t;
 
 // structure for describing a bet (oatot)
 struct bet_s {
@@ -118,6 +119,15 @@ struct currencySummary_s {
 struct betsSummary_s {
     currencySummary_t oac_summary;
     currencySummary_t btc_summary;
+};
+
+struct weaponStats_s {
+    // By damage.
+    int favWeapon;
+    // Current favWeapon's damage.
+    int maxDamage;
+    // Per-weapon damage.
+    int weapDamage[MAX_WEAPONS];
 };
 
 struct gentity_s {
@@ -366,11 +376,13 @@ typedef struct {
     // For average speed.
     unsigned long int nFrames;
     unsigned long int speedSum;
+    // Fav weapon.
+    weaponStats_t weaponStats;
 
     // oatot
     qboolean ready;
-    qboolean nextPageUsed; // shows if next_page is initialized
-    char next_page[MAX_STRING_CHARS]; // next page ID for pastBets()
+    qboolean nextPageUsed; // Shows if nextPage is initialized.
+    char nextPage[MAX_STRING_CHARS]; // Next page ID for pastBets().
     int activeBetsIds[MAX_ACTIVE_BETS_NUMBER];
     qboolean welcomed;
 } clientPersistant_t;

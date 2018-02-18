@@ -1333,6 +1333,10 @@ void ClientBegin(int clientNum) {
     client->pers.deaths = 0;
     client->pers.damageGiven = 0;
     client->pers.damageTaken = 0;
+    // Fav weapon by dmg.
+    client->pers.weaponStats.maxDamage = 0;
+    client->pers.weaponStats.favWeapon = -1;
+    memset(client->pers.weaponStats.weapDamage, 0, sizeof(client->pers.weaponStats.weapDamage));
     // Average speed.
     client->pers.nFrames = 0;
     client->pers.speedSum = 0;

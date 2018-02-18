@@ -313,6 +313,7 @@ typedef struct {
     int damageTaken;
     int damageGiven;
     int grabs;
+    int favWeapon;
     int averageSpeed;
     qboolean ready;
     int scoreFlags;

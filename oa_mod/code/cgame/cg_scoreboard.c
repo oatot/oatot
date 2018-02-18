@@ -98,12 +98,10 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
                 if (cg_drawIcons.integer) {
                     CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
                 }
-            } else if (ci->handicap < 100) {
-                Com_sprintf(string, sizeof(string), "%i", ci->handicap);
-                if (cgs.gametype == GT_TOURNAMENT) {
-                    CG_DrawSmallStringColor(iconx, y - SMALLCHAR_HEIGHT / 2, string, color);
-                } else {
-                    CG_DrawSmallStringColor(iconx, y, string, color);
+            } else {
+                // Fav weapon.
+                if (score->favWeapon > 0 && score->favWeapon < WP_NUM_WEAPONS) {
+                    CG_DrawPic(iconx, y, 16, 16, cg_weapons[score->favWeapon].weaponIcon);
                 }
             }
         }

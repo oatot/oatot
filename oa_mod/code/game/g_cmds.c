@@ -63,10 +63,11 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
         perfect = (cl->ps.persistant[PERS_RANK] == 0 && cl->ps.persistant[PERS_KILLED] == 0) ? 1 : 0;
         if (g_gametype.integer == GT_LMS) {
             Com_sprintf(entry, sizeof(entry),
-                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                         cl->ps.persistant[PERS_SCORE], ping,
                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
-                        cl->pers.grabs, (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
+                        cl->pers.grabs, cl->pers.weaponStats.favWeapon,
+                        (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
                         (level.time - cl->pers.enterTime) / 60000,
                         scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                         cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
@@ -79,10 +80,11 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
                         cl->pers.livesLeft + (cl->isEliminated ? 0 : 1));
         } else {
             Com_sprintf(entry, sizeof(entry),
-                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+                        " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                         cl->ps.persistant[PERS_SCORE], ping,
                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
-                        cl->pers.grabs, (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
+                        cl->pers.grabs, cl->pers.weaponStats.favWeapon,
+                        (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
                         (level.time - cl->pers.enterTime) / 60000,
                         scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                         cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
@@ -1934,10 +1936,10 @@ void Cmd_PastBets_f(gentity_t* ent) {
     gclient_t* client = ent->client;
     if (client) {
         if (trap_Argc() == 1 || !client->pers.nextPageUsed) {
-            bets_n = GOaMyPastBets(client->pers.guid, "", client->pers.next_page, past_bets);
+            bets_n = GOaMyPastBets(client->pers.guid, "", client->pers.nextPage, past_bets);
             client->pers.nextPageUsed = qtrue;
         } else {
-            bets_n = GOaMyPastBets(client->pers.guid, client->pers.next_page, client->pers.next_page, past_bets);
+            bets_n = GOaMyPastBets(client->pers.guid, client->pers.nextPage, client->pers.nextPage, past_bets);
         }
         trap_SendServerCommand(ent - g_entities, "print \"^6Bets list:\n\"");
         for (i = 0; i < bets_n; i++) {

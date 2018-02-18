@@ -441,7 +441,7 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
     if (level.intermissiontime) {
         return;
     }
-    // global stats
+    // Global stats.
     self->client->pers.deaths += 1;
     if (attacker->client) {
         attacker->client->pers.kills += 1;
@@ -908,6 +908,15 @@ static int catchup_damage(int damage, int attacker_points, int target_points) {
     return newdamage;
 }
 
+void G_UpdateWeaponStats(gentity_t* ent, int damage, int weapon) {
+    weaponStats_t* weap_stats = &ent->client->pers.weaponStats;
+    weap_stats->weapDamage[weapon] += damage;
+    if (weap_stats->weapDamage[weapon] > weap_stats->maxDamage) {
+        weap_stats->maxDamage = weap_stats->weapDamage[weapon];
+        weap_stats->favWeapon = weapon;
+    }
+}
+
 /*
 ============
 G_Damage
@@ -1141,10 +1150,14 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
         client->damage_armor += asave;
         client->damage_blood += take;
         client->damage_knockback += knockback;
-        // global stats
+        // Global stats.
         client->pers.damageTaken += take;
         if (attacker->client) {
             attacker->client->pers.damageGiven += take;
+            if (mod > 0 && mod < WP_NUM_WEAPONS) {
+                // Update weapon stats of attacker.
+                G_UpdateWeaponStats(attacker, take, mod);
+            }
         }
         if (dir) {
             VectorCopy(dir, client->damage_from);
