@@ -25,6 +25,38 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "g_local.h"
 #include "challenges.h"
 
+int modToWeapon[] = {
+    -1,
+    WP_SHOTGUN,
+    WP_GAUNTLET,
+    WP_MACHINEGUN,
+    WP_GRENADE_LAUNCHER,
+    WP_GRENADE_LAUNCHER,
+    WP_ROCKET_LAUNCHER,
+    WP_ROCKET_LAUNCHER,
+    WP_PLASMAGUN,
+    WP_PLASMAGUN,
+    WP_RAILGUN,
+    WP_LIGHTNING,
+    WP_BFG,
+    WP_BFG,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    WP_NAILGUN,
+    WP_CHAINGUN,
+    WP_PROX_LAUNCHER,
+    -1,
+    -1,
+    WP_GRAPPLING_HOOK
+};
+
 /*
 ============
 ScorePlum
@@ -1154,9 +1186,9 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
         client->pers.damageTaken += take;
         if (attacker->client) {
             attacker->client->pers.damageGiven += take;
-            if (mod > 0 && mod < WP_NUM_WEAPONS) {
+            if (modToWeapon[mod] != -1) {
                 // Update weapon stats of attacker.
-                G_UpdateWeaponStats(attacker, take, mod);
+                G_UpdateWeaponStats(attacker, take, modToWeapon[mod]);
             }
         }
         if (dir) {
