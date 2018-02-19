@@ -25,6 +25,38 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "g_local.h"
 #include "challenges.h"
 
+int modToWeapon[] = {
+    -1,
+    WP_SHOTGUN,
+    WP_GAUNTLET,
+    WP_MACHINEGUN,
+    WP_GRENADE_LAUNCHER,
+    WP_GRENADE_LAUNCHER,
+    WP_ROCKET_LAUNCHER,
+    WP_ROCKET_LAUNCHER,
+    WP_PLASMAGUN,
+    WP_PLASMAGUN,
+    WP_RAILGUN,
+    WP_LIGHTNING,
+    WP_BFG,
+    WP_BFG,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    WP_NAILGUN,
+    WP_CHAINGUN,
+    WP_PROX_LAUNCHER,
+    -1,
+    -1,
+    WP_GRAPPLING_HOOK
+};
+
 /*
 ============
 ScorePlum
@@ -441,7 +473,7 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
     if (level.intermissiontime) {
         return;
     }
-    // global stats
+    // Global stats.
     self->client->pers.deaths += 1;
     if (attacker->client) {
         attacker->client->pers.kills += 1;
@@ -908,6 +940,15 @@ static int catchup_damage(int damage, int attacker_points, int target_points) {
     return newdamage;
 }
 
+void G_UpdateWeaponStats(gentity_t* ent, int damage, int weapon) {
+    weaponStats_t* weap_stats = &ent->client->pers.weaponStats;
+    weap_stats->weapDamage[weapon] += damage;
+    if (weap_stats->weapDamage[weapon] > weap_stats->maxDamage) {
+        weap_stats->maxDamage = weap_stats->weapDamage[weapon];
+        weap_stats->favWeapon = weapon;
+    }
+}
+
 /*
 ============
 G_Damage
@@ -1141,10 +1182,14 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
         client->damage_armor += asave;
         client->damage_blood += take;
         client->damage_knockback += knockback;
-        // global stats
+        // Global stats.
         client->pers.damageTaken += take;
         if (attacker->client) {
             attacker->client->pers.damageGiven += take;
+            if (modToWeapon[mod] != -1) {
+                // Update weapon stats of attacker.
+                G_UpdateWeaponStats(attacker, take, modToWeapon[mod]);
+            }
         }
         if (dir) {
             VectorCopy(dir, client->damage_from);

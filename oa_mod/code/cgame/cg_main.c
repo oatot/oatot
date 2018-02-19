@@ -291,6 +291,13 @@ vmCvar_t cg_weaponBarStyle;
 vmCvar_t cg_chatBeep;
 vmCvar_t cg_teamChatBeep;
 
+// OATOT Cvars.
+vmCvar_t cg_scoreboardEffects;
+vmCvar_t cg_scoreboardSeason;
+vmCvar_t cg_scoreboardAggressive;
+// Utility.
+vmCvar_t cg_scoreboardDefaultSeasonBackup;
+
 typedef struct {
     vmCvar_t* vmCvar;
     char* cvarName;
@@ -501,7 +508,13 @@ static cvarTable_t cvarTable[] = {// bk001129
     { &cg_weaponBarStyle, "cg_weaponBarStyle", "0", CVAR_ARCHIVE},
     { &cg_weaponOrder, "cg_weaponOrder", "/1/2/4/3/6/7/8/9/5/", CVAR_ARCHIVE},
     {&cg_chatBeep, "cg_chatBeep", "1", CVAR_ARCHIVE},
-    {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE}
+    {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE},
+
+    {&cg_scoreboardEffects, "cg_scoreboardEffects", "1", CVAR_ARCHIVE},
+    {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
+    {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
+    // Utility.
+    {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE}
 };
 
 static int cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
@@ -993,14 +1006,22 @@ static void CG_RegisterGraphics(void) {
     for (i = 0; i < 11; i++) {
         cgs.media.numberShaders[i] = trap_R_RegisterShader(sb_nums[i]);
     }
-    // oatot
+    // OATOT
     cgs.media.btcShader = trap_R_RegisterShader("images/btc.png");
     cgs.media.oacShader = trap_R_RegisterShader("images/oac.png");
-    cgs.media.snowShader1 = trap_R_RegisterShader("images/snowflake1.png");
-    cgs.media.snowShader2 = trap_R_RegisterShader("images/snowflake2.png");
     cgs.media.readyShader = trap_R_RegisterShader("images/ready.png");
     cgs.media.notReadyShader = trap_R_RegisterShader("images/not_ready.png");
-    cgs.media.lockShader = trap_R_RegisterShader("images/lock.png");
+    cgs.media.lockShader = trap_R_RegisterShaderNoMip("images/lock.png");
+    cgs.media.winterShader0 = trap_R_RegisterShaderNoMip("images/winter0.png");
+    cgs.media.winterShader1 = trap_R_RegisterShaderNoMip("images/winter1.png");
+    cgs.media.springShader0 = trap_R_RegisterShaderNoMip("images/spring0.png");
+    cgs.media.springShader1 = trap_R_RegisterShaderNoMip("images/spring1.png");
+    cgs.media.summerShader0 = trap_R_RegisterShaderNoMip("images/summer0.png");
+    cgs.media.summerShader1 = trap_R_RegisterShaderNoMip("images/summer1.png");
+    cgs.media.autumnShader0 = trap_R_RegisterShaderNoMip("images/autumn0.png");
+    cgs.media.autumnShader1 = trap_R_RegisterShaderNoMip("images/autumn1.png");
+    cgs.media.fireShader = trap_R_RegisterShaderNoMip("images/aggressive.png");
+
     cgs.media.botSkillShaders[0] = trap_R_RegisterShader("menu/art/skill1.tga");
     cgs.media.botSkillShaders[1] = trap_R_RegisterShader("menu/art/skill2.tga");
     cgs.media.botSkillShaders[2] = trap_R_RegisterShader("menu/art/skill3.tga");

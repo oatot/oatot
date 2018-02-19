@@ -89,6 +89,7 @@ typedef struct bet_s bet_t;
 typedef struct fullbet_s fullbet_t;
 typedef struct currencySummary_s currencySummary_t;
 typedef struct betsSummary_s betsSummary_t;
+typedef struct weaponStats_s weaponStats_t;
 
 // structure for describing a bet (oatot)
 struct bet_s {
@@ -118,6 +119,15 @@ struct currencySummary_s {
 struct betsSummary_s {
     currencySummary_t oac_summary;
     currencySummary_t btc_summary;
+};
+
+struct weaponStats_s {
+    // By damage.
+    int favWeapon;
+    // Current favWeapon's damage.
+    int maxDamage;
+    // Per-weapon damage.
+    int weapDamage[MAX_WEAPONS];
 };
 
 struct gentity_s {
@@ -357,16 +367,22 @@ typedef struct {
 
     qboolean cannotWin; // Set to true if the players joins a leading team or the team with the most players
 
-    // more detailed global stats
+    // More detailed global stats.
+    int grabs;
     int kills;
     int deaths;
     int damageGiven;
     int damageTaken;
+    // For average speed.
+    unsigned long int nFrames;
+    unsigned long int speedSum;
+    // Fav weapon.
+    weaponStats_t weaponStats;
 
     // oatot
     qboolean ready;
-    qboolean nextPageUsed; // shows if next_page is initialized
-    char next_page[MAX_STRING_CHARS]; // next page ID for pastBets()
+    qboolean nextPageUsed; // Shows if nextPage is initialized.
+    char nextPage[MAX_STRING_CHARS]; // Next page ID for pastBets().
     int activeBetsIds[MAX_ACTIVE_BETS_NUMBER];
     qboolean welcomed;
 } clientPersistant_t;
@@ -622,7 +638,7 @@ typedef struct {
     int lastActiveTime; ///< Updated as long as there are at least one human player on the server
 
     qboolean timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match
-    qboolean betsGreetingPrinted; // oatot: print info about 2 mins to make bets
+    qboolean betsGreetingPrinted; // oatot: print info about `g_makingBetsTime` mins to make bets
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1154,18 +1170,18 @@ extern vmCvar_t g_proxMineTimeout;
 extern vmCvar_t g_music;
 extern vmCvar_t g_spawnprotect;
 
-//oatot Cvars
+// OATOT Cvars.
 
 // Meaningful for the external users.
 extern vmCvar_t g_makingBetsTime;
 extern vmCvar_t g_easyItemPickup;
-
+extern vmCvar_t g_scoreboardDefaultSeason;
 // Utility.
-extern vmCvar_t g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing
+extern vmCvar_t g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing.
 extern vmCvar_t g_readyN;
 extern vmCvar_t g_rageQuit;
-extern vmCvar_t g_betsMade; // set to 1 after restart at MAKING_BETS
-extern vmCvar_t g_readyToBet; // set to 1 after restart at FORMING_TEAMS
+extern vmCvar_t g_betsMade; // set to 1 after restart at MAKING_BETS.
+extern vmCvar_t g_readyToBet; // set to 1 after restart at FORMING_TEAMS.
 
 //elimination:
 extern vmCvar_t g_elimination_selfdamage;

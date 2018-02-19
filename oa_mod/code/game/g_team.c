@@ -1263,6 +1263,7 @@ int Team_TouchEnemyFlag(gentity_t* ent, gentity_t* other, int team) {
         }
         Team_SetFlagStatus(team, FLAG_TAKEN);
     }
+    other->client->pers.grabs++;
     AddScore(other, ent->r.currentOrigin, CTF_FLAG_BONUS);
     cl->pers.teamState.flagsince = level.time;
     Team_TakeFlagSound(ent, team);

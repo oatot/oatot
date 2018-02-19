@@ -98,12 +98,10 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
                 if (cg_drawIcons.integer) {
                     CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);
                 }
-            } else if (ci->handicap < 100) {
-                Com_sprintf(string, sizeof(string), "%i", ci->handicap);
-                if (cgs.gametype == GT_TOURNAMENT) {
-                    CG_DrawSmallStringColor(iconx, y - SMALLCHAR_HEIGHT / 2, string, color);
-                } else {
-                    CG_DrawSmallStringColor(iconx, y, string, color);
+            } else {
+                // Fav weapon.
+                if (score->favWeapon > 0 && score->favWeapon < WP_NUM_WEAPONS) {
+                    CG_DrawPic(iconx, y, 16, 16, cg_weapons[score->favWeapon].weaponIcon);
                 }
             }
         }
@@ -169,26 +167,28 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     }
     if (score->ping == -1) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " connecting", fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 20 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
     } else if (ci->team == TEAM_SPECTATOR) {
         CG_DrawSmallString(SB_SCORELINE_X, y, " SPECT", fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 8 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 13 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 20 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
     } else {
         Com_sprintf(kdr_str, sizeof(kdr_str), "^2%i^4/^1%i", score->kills, score->deaths);
         Com_sprintf(dmg_str, sizeof(dmg_str), "^2%.1fK^4/^1%.1fK", score->damageGiven / 1000.0, score->damageTaken / 1000.0);
         CG_DrawSmallString(SB_SCORELINE_X, y, va(" ^5%i", score->score), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 9 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
-        CG_DrawSmallString(SB_SCORELINE_X + 16 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 23 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
-        CG_DrawSmallString(SB_SCORELINE_X + 39 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
-        CG_DrawSmallStringLen(SB_SCORELINE_X + 45 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade, MAX_KDR_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 8 * SMALLCHAR_WIDTH, y, va("%i", score->ping), fade);
+        CG_DrawSmallString(SB_SCORELINE_X + 13 * SMALLCHAR_WIDTH, y, va("%i", score->time), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 20 * SMALLCHAR_WIDTH, y, va("%s", ci->name), fade, MAX_NAME_LEN);
+        CG_DrawSmallString(SB_SCORELINE_X + 36 * SMALLCHAR_WIDTH, y, va("^6%i%%", score->accuracy), fade);
+        CG_DrawSmallStringLen(SB_SCORELINE_X + 41 * SMALLCHAR_WIDTH, y, va("%s", kdr_str), fade, MAX_KDR_LEN);
         if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-            CG_DrawSmallStringLen(SB_SCORELINE_X + 54 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade, MAX_DMG_LEN);
-            CG_DrawSmallString(SB_SCORELINE_X + 68 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallStringLen(SB_SCORELINE_X + 50 * SMALLCHAR_WIDTH, y, va("%s", dmg_str), fade, MAX_DMG_LEN);
+            CG_DrawSmallString(SB_SCORELINE_X + 64 * SMALLCHAR_WIDTH, y, va("^3%i^1/^7%i", score->captures, score->grabs), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 69 * SMALLCHAR_WIDTH, y, va("^6%i", score->averageSpeed), fade);
         } else {
-            CG_DrawSmallString(SB_SCORELINE_X + 55 * SMALLCHAR_WIDTH, y, va("^3%i", score->captures), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 51 * SMALLCHAR_WIDTH, y, va("^3%i^1/^7%i", score->captures, score->grabs), fade);
+            CG_DrawSmallString(SB_SCORELINE_X + 56 * SMALLCHAR_WIDTH, y, va("^6%i", score->averageSpeed), fade);
         }
     }
     // add the "ready" marker for intermission exiting
@@ -201,16 +201,40 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     }
 }
 
-void CG_DrawSnow(int x, int y) {
+void CG_DrawScoreboardEffect(int x, int y, qhandle_t scoreboard_effect0, qhandle_t scoreboard_effect1) {
     int shift = 24;
     int type = 0;
     for (; x < 640; x += shift) {
         if (type == 0) {
-            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader1);
+            CG_DrawPic(x, y, 24, 24, scoreboard_effect0);
             type += 1;
         } else {
-            CG_DrawPic(x, y, 24, 24, cgs.media.snowShader2);
+            CG_DrawPic(x, y, 24, 24, scoreboard_effect1);
             type -= 1;
+        }
+    }
+}
+
+void CG_DrawScoreboardEffects(int x, int y) {
+    if (cg_scoreboardEffects.integer) {
+        if (cg_scoreboardAggressive.integer) {
+            CG_DrawScoreboardEffect(x, y, cgs.media.fireShader, cgs.media.fireShader);
+        } else {
+            // Draw season.
+            switch (cg_scoreboardSeason.integer) {
+                case 1:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.winterShader0, cgs.media.winterShader1);
+                    break;
+                case 2:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.springShader0, cgs.media.springShader1);
+                    break;
+                case 3:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.summerShader0, cgs.media.summerShader1);
+                    break;
+                case 4:
+                    CG_DrawScoreboardEffect(x, y, cgs.media.autumnShader0, cgs.media.autumnShader1);
+                    break;
+            }
         }
     }
 }
@@ -321,11 +345,11 @@ qboolean CG_DrawOldScoreboard(void) {
     // scoreboard
     y = SB_HEADER;
     if (!atoi(Info_ValueForKey(info, "g_instantgib"))) {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Dmg           ^1Caps", 1.0F);
-        CG_DrawSnow(0, y + 14);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score  ^1Ping ^1Time   ^1Name            ^1Acc  ^1K/D      ^1Dmg           ^1Caps Speed", 1.0F);
+        CG_DrawScoreboardEffects(0, y + 14);
     } else {
-        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score   ^1Ping   ^1Time   ^1Name            ^1Acc   ^1K/D      ^1Caps", 1.0F);
-        CG_DrawSnow(0, y + 14);
+        CG_DrawSmallString(SB_SCORELINE_X, y, " ^1Score  ^1Ping ^1Time   ^1Name            ^1Acc  ^1K/D      ^1Caps Speed", 1.0F);
+        CG_DrawScoreboardEffects(0, y + 14);
     }
     y = SB_TOP;
     // If there are more than SB_MAXCLIENTS_NORMAL, use the interleaved scores
@@ -367,7 +391,7 @@ qboolean CG_DrawOldScoreboard(void) {
         }
         n1 = CG_TeamScoreboard(y, TEAM_SPECTATOR, fade, maxClients, lineHeight);
         y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
-        CG_DrawSnow(0, y - BIGCHAR_WIDTH + 6);
+        CG_DrawScoreboardEffects(0, y - BIGCHAR_WIDTH + 6);
     } else {
         //
         // free for all scoreboard

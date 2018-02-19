@@ -148,7 +148,7 @@ static void CG_ParseScores(void) {
         cgs.scores2 = cg.teamScores[1];
     }
     memset(cg.scores, 0, sizeof(cg.scores));
-#define NUM_DATA 20
+#define NUM_DATA 23
 #define FIRST_DATA 4
     for (i = 0; i < cg.numScores; i++) {
         //
@@ -159,19 +159,22 @@ static void CG_ParseScores(void) {
         cg.scores[i].deaths = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 5));
         cg.scores[i].damageTaken = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 6));
         cg.scores[i].damageGiven = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 7));
-        cg.scores[i].ready = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 8));
-        cg.scores[i].time = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 9));
-        cg.scores[i].scoreFlags = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 10));
-        powerups = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 11));
-        cg.scores[i].accuracy = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 12));
-        cg.scores[i].impressiveCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 13));
-        cg.scores[i].excellentCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 14));
-        cg.scores[i].guantletCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 15));
-        cg.scores[i].defendCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 16));
-        cg.scores[i].assistCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 17));
-        cg.scores[i].perfect = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 18));
-        cg.scores[i].captures = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 19));
-        cg.scores[i].isDead = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 20));
+        cg.scores[i].grabs = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 8));
+        cg.scores[i].favWeapon = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 9));
+        cg.scores[i].averageSpeed = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 10));
+        cg.scores[i].ready = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 11));
+        cg.scores[i].time = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 12));
+        cg.scores[i].scoreFlags = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 13));
+        powerups = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 14));
+        cg.scores[i].accuracy = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 15));
+        cg.scores[i].impressiveCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 16));
+        cg.scores[i].excellentCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 17));
+        cg.scores[i].guantletCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 18));
+        cg.scores[i].defendCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 19));
+        cg.scores[i].assistCount = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 20));
+        cg.scores[i].perfect = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 21));
+        cg.scores[i].captures = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 22));
+        cg.scores[i].isDead = atoi(CG_Argv(i * NUM_DATA + FIRST_DATA + 23));
         //cgs.roundStartTime =
         if (cg.scores[i].client < 0 || cg.scores[i].client >= MAX_CLIENTS) {
             cg.scores[i].client = 0;
@@ -394,6 +397,7 @@ and whenever the server updates any serverinfo flagged cvars
 ================
 */
 void CG_ParseServerinfo(void) {
+    const char* scoreboard_default_season;
     const char* info;
     char* mapname;
     info = CG_ConfigString(CS_SERVERINFO);
@@ -431,6 +435,16 @@ void CG_ParseServerinfo(void) {
     //unlagged - server options
     //Copy allowed votes directly to the client:
     trap_Cvar_Set("cg_voteflags", Info_ValueForKey(info, "voteflags"));
+    scoreboard_default_season = Info_ValueForKey(info, "g_scoreboardDefaultSeason");
+    if (cg_scoreboardDefaultSeasonBackup.integer != atoi(scoreboard_default_season)) {
+        // g_scoreboardDefaultSeason has been changed on server, force update of cg_scoreboardSeason.
+        trap_Cvar_Set("cg_scoreboardDefaultSeasonBackup", scoreboard_default_season);
+        trap_Cvar_Set("cg_scoreboardSeason", scoreboard_default_season);
+    }
+    if (cg_scoreboardSeason.integer == -1) {
+        // The client hasn't set any season yet, let's set the default one.
+        trap_Cvar_Set("cg_scoreboardSeason", scoreboard_default_season);
+    }
 }
 
 /*

@@ -140,14 +140,14 @@ vmCvar_t g_elimination_lockspectator;
 
 vmCvar_t g_rockets;
 
-//oatot Cvars
+// OATOT Cvars.
 
 // Meaningful for the external users.
-vmCvar_t g_makingBetsTime; // time for making bets & warmup before match (in mins)
-vmCvar_t g_easyItemPickup; // 1 for high items
-
+vmCvar_t g_makingBetsTime; // Time for making bets & warmup before match (in mins).
+vmCvar_t g_easyItemPickup; // 1 for high items.
+vmCvar_t g_scoreboardDefaultSeason; // Season which will be set as default scoreboard season on clients.
 // Utility.
-vmCvar_t g_gameStage; //0 for forming teams, 1 for making bets, 2 for playing
+vmCvar_t g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing.
 vmCvar_t g_readyN;
 vmCvar_t g_rageQuit;
 vmCvar_t g_betsMade;
@@ -297,6 +297,7 @@ static cvarTable_t gameCvarTable[] = {
     // Meaningful for the external users.
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
+    { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },
     // Utility.
     { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
@@ -2180,7 +2181,12 @@ void CheckOatotStageUpdate(void) {
             if (!level.betsGreetingPrinted) {
                 // info which is printed once at the beginning
                 level.betsGreetingPrinted = qtrue;
-                trap_SendServerCommand(-1, va("cp \"^2%d mins to make bets & warm up :) \"", g_makingBetsTime.integer));
+                // min / min(s) logic
+                if (g_makingBetsTime.integer == 1) {
+                    trap_SendServerCommand(-1, va("cp \"^2%d min to make bets & warm up :) \"", g_makingBetsTime.integer));
+                } else {
+                    trap_SendServerCommand(-1, va("cp \"^2%d mins to make bets & warm up :) \"", g_makingBetsTime.integer));
+                }
             }
         }
     }

@@ -733,6 +733,8 @@ void ClientThink_real(gentity_t* ent) {
     pmove_t pm;
     int oldEventSequence;
     int msec;
+    int speed;
+    vec_t* vel;
     usercmd_t* ucmd;
     client = ent->client;
     // don't think if the client is not yet connected (and thus not yet spawned in)
@@ -788,6 +790,16 @@ void ClientThink_real(gentity_t* ent) {
     } else {
         // if g_truePing is off, use the normal ping
         client->pers.realPing = client->ps.ping;
+    }
+    if (client->ps.stats[STAT_HEALTH] > 0) {
+        // Alive and playing (not waiting for re-spawn).
+        vel = client->ps.velocity;
+        // Current speed.
+        // Ignore vertical component of velocity.
+        speed = sqrt(vel[0] * vel[0] + vel[1] * vel[1]);
+        // Average speed.
+        client->pers.nFrames++;
+        client->pers.speedSum += speed;
     }
     //unlagged - true ping
     //unlagged - lag simulation #2

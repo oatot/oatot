@@ -1327,12 +1327,20 @@ void ClientBegin(int clientNum) {
     ent->touch = 0;
     ent->pain = 0;
     ent->client = client;
-    // more detailed global stats
+    // More detailed global stats.
+    client->pers.grabs = 0;
     client->pers.kills = 0;
     client->pers.deaths = 0;
     client->pers.damageGiven = 0;
     client->pers.damageTaken = 0;
-    // oatot
+    // Fav weapon by dmg.
+    client->pers.weaponStats.maxDamage = 0;
+    client->pers.weaponStats.favWeapon = -1;
+    memset(client->pers.weaponStats.weapDamage, 0, sizeof(client->pers.weaponStats.weapDamage));
+    // Average speed.
+    client->pers.nFrames = 0;
+    client->pers.speedSum = 0;
+    // OATOT.
     client->pers.ready = qfalse;
     client->pers.nextPageUsed = qfalse;
     client->pers.connected = CON_CONNECTED;
