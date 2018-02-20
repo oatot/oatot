@@ -317,7 +317,11 @@ void UI_OatotMenuInternal(void) {
     // Initialize horse, amount and currency menu components.
     y = FIRST_BET_Y;
     for (i = 0; i < SIZE_OF_LIST; i++) {
-        setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.betStrings[i]);
+        if (i < oatotinfo.bets_n) {
+            setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.betStrings[i]);
+        } else {
+            setBet(&s_oatotmenu.activeBets[i], y, i, "");
+        }
         y += OATOT_MENU_VERTICAL_SPACING;
     }
     // Button back.
