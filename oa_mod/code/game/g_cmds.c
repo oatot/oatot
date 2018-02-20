@@ -2102,7 +2102,7 @@ static void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
     if (file) {
         trap_FS_Read(&text, len, file);
         text[len] = '\0';
-        trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", text));
+        trap_SendServerCommand(ent - g_entities, va("print \"%s\"", text));
         trap_FS_FCloseFile(file);
     }
 }
