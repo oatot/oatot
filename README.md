@@ -23,7 +23,7 @@ You will need a C-compiler (better gcc or clang), GNU make, Go, grpc-go.
 
 ```
 cd /path/to/oa_mod/linux_scripts/
-./build_oa_server
+./build_oa_server [ path/to/dir/for/downloading/pk3s - optional ]
 ./run_oa_server <port> server.cfg
 ```
 Make sure that `server.cfg` is in `~/.openarena/baseoa` folder
