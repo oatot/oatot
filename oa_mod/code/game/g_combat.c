@@ -716,19 +716,6 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
     }
     // Add team bonuses
     Team_FragBonuses(self, inflictor, attacker);
-    // if I committed suicide, the flag does not fall, it returns.
-    if (meansOfDeath == MOD_SUICIDE) {
-        if (self->client->ps.powerups[PW_NEUTRALFLAG]) { // only happens in One Flag CTF
-            Team_ReturnFlag(TEAM_FREE);
-            self->client->ps.powerups[PW_NEUTRALFLAG] = 0;
-        } else if (self->client->ps.powerups[PW_REDFLAG]) { // only happens in standard CTF
-            Team_ReturnFlag(TEAM_RED);
-            self->client->ps.powerups[PW_REDFLAG] = 0;
-        } else if (self->client->ps.powerups[PW_BLUEFLAG]) { // only happens in standard CTF
-            Team_ReturnFlag(TEAM_BLUE);
-            self->client->ps.powerups[PW_BLUEFLAG] = 0;
-        }
-    }
     TossClientPersistantPowerups(self);
     if (g_gametype.integer == GT_HARVESTER) {
         TossClientCubes(self);
