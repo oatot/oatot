@@ -22,17 +22,52 @@ var (
 	client   g.OatotClient
 )
 
-func StringToC(str string, cStr *C.char) {
-	size := len(str)
-	var slice []C.char
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&slice)))
-	sliceHeader.Cap = maxCStrLen
-	sliceHeader.Len = maxCStrLen
-	sliceHeader.Data = uintptr(unsafe.Pointer(cStr))
-	for i := 0; i < size; i++ {
-		slice[i] = C.char(str[i])
+// Dirty type paramertic function.
+// Just in order to prevent code repetition.
+func CopyGoSliceToCArray(
+	cArray interface{},
+	goSlice interface{},
+	funcCopyElement interface{},
+	cArraySize int,
+) C.int {
+	// Get values of interfaces first.
+	vCArray := reflect.ValueOf(cArray)
+	vGoSlice := reflect.ValueOf(goSlice)
+	// Create slice which has the same type like elements of `cArray`.
+	dataSlice := reflect.MakeSlice(
+		reflect.SliceOf(reflect.Indirect(vCArray).Type()),
+		cArraySize,
+		cArraySize,
+	)
+	// Create and set pointer to this slice.
+	dataSlicePtr := reflect.New(dataSlice.Type())
+	dataSlicePtr.Elem().Set(dataSlice)
+	// Len of Go slice.
+	goSliceLen := vGoSlice.Len()
+	if goSliceLen > cArraySize {
+		log.Fatalf("Go-client: attempt to copy slice to C array of smaller size.")
 	}
-	slice[size] = C.char(byte('\x00'))
+	// sliceHeader trick to convert the C array into a Go slice.
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(dataSlicePtr.Pointer()))
+	sliceHeader.Cap = cArraySize
+	sliceHeader.Len = cArraySize
+	sliceHeader.Data = vCArray.Pointer()
+	for i := 0; i < goSliceLen; i++ {
+		// Hacky reflect usage: call function to copy individual element.
+		reflect.ValueOf(funcCopyElement).Call(
+			[]reflect.Value{vGoSlice.Index(i), dataSlice.Index(i).Addr()},
+		)
+	}
+	return C.int(goSliceLen)
+}
+
+func CharToC(goChar byte, cChar *C.char) {
+	*cChar = C.char(goChar)
+}
+
+func StringToC(str string, cStr *C.char) {
+	str += "\x00"
+	CopyGoSliceToCArray(cStr, str, CharToC, maxCStrLen)
 }
 
 func CBetFromGo(in *g.Bet, out *C.bet_t) {
@@ -249,16 +284,7 @@ func GOaMyActiveBets(clGuid *C.char, activeBets *C.bet_t) C.int {
 	if err != nil {
 		log.Fatalf("OaMyActiveBets: %v", err)
 	}
-	size := len(res.Bets)
-	var bets []C.bet_t
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bets)))
-	sliceHeader.Cap = maxActiveBetsN
-	sliceHeader.Len = maxActiveBetsN
-	sliceHeader.Data = uintptr(unsafe.Pointer(activeBets))
-	for i := 0; i < size; i++ {
-		CBetFromGo(res.Bets[i], &bets[i])
-	}
-	return C.int(size)
+	return CopyGoSliceToCArray(activeBets, res.Bets, CBetFromGo, maxActiveBetsN)
 }
 
 //export GOaMyPastBets
@@ -275,18 +301,8 @@ func GOaMyPastBets(clGuid *C.char, page *C.char, nextPage *C.char, pastBets *C.f
 	if err != nil {
 		log.Fatalf("OaMyPastBets: %v", err)
 	}
-	size := len(res.Bets)
-	var bets []C.fullbet_t
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bets)))
-	sliceHeader.Cap = betsPerPageN
-	sliceHeader.Len = betsPerPageN
-	sliceHeader.Data = uintptr(unsafe.Pointer(pastBets))
-	for i := 0; i < size; i++ {
-		CFullbetFromGo(res.Bets[i], &bets[i])
-	}
 	StringToC(*res.NextPage, nextPage)
-	return C.int(size)
-	return 0
+	return CopyGoSliceToCArray(pastBets, res.Bets, CFullbetFromGo, betsPerPageN)
 }
 
 //export GOaMyBetsSummary
