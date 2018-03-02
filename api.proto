@@ -125,10 +125,14 @@ message OaActiveBetsSumsResponse {
   required fixed64 btc_amount = 2;
 }
 
+enum GameStage {
+  FORMING_TEAMS = 0;
+  MAKING_BETS = 1;
+  PLAYING = 2;
+}
+
 message OaChangeGameStageRequest {
-  // 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
-  // TODO: replace with enum.
-  required fixed64 new_stage = 1;
+  required GameStage new_stage = 1;
 }
 
 message OaChangeGameStageResponse {
@@ -297,7 +301,6 @@ service Oatot {
   // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
   // Completely remove it and disregard in OaActiveBetsSums, OaMyActiveBets,
   // OaMyPastBets, ...
-  // TODO: s/bet/bet/
   rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
 
   // Active bets for this match. Output array MUST BE sorted by open time increase.

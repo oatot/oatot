@@ -108,7 +108,7 @@ func GInitializeClient() {
 
 //export GOaChangeGameStage
 func GOaChangeGameStage(newStage C.int) {
-	newStageVal := uint64(newStage)
+	newStageVal := g.GameStage(newStage)
 	_, err := client.OaChangeGameStage(
 		context.Background(),
 		&g.OaChangeGameStageRequest{

@@ -12,13 +12,6 @@ import (
 )
 
 const (
-	// Game stages. TODO: put this enum to api.proto.
-	FORMING_TEAMS = iota
-	MAKING_BETS   = iota
-	PLAYING       = iota
-)
-
-const (
 	// Bet states.
 	ACTIVE    = iota
 	PAST      = iota
@@ -43,7 +36,7 @@ type Bet struct {
 }
 
 type Data struct {
-	Stage      int                `json:"stage"`
+	Stage      g.GameStage        `json:"stage"`
 	Players    map[string]*Player `json:"players"`
 	Bets       []*Bet             `json:"bets"`
 	ActiveBets map[int]struct{}   `json:"active_bets"`
@@ -132,7 +125,7 @@ func (s *Server) SiteWithdrawBtc(ctx context.Context, req *g.SiteWithdrawBtcRequ
 func (s *Server) OaDiscardBet(ctx context.Context, req *g.OaDiscardBetRequest) (*g.OaDiscardBetResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != MAKING_BETS {
+	if s.data.Stage != g.GameStage_MAKING_BETS {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	id := int(*req.BetId)
@@ -159,7 +152,7 @@ func (s *Server) OaDiscardBet(ctx context.Context, req *g.OaDiscardBetRequest) (
 func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequest) (*g.OaTransferMoneyResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != PLAYING {
+	if s.data.Stage != g.GameStage_PLAYING {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
@@ -197,8 +190,8 @@ func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRe
 func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStageRequest) (*g.OaChangeGameStageResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	stage := int(*req.NewStage)
-	if stage < FORMING_TEAMS || stage > PLAYING {
+	stage := *req.NewStage
+	if stage < g.GameStage_FORMING_TEAMS || stage > g.GameStage_PLAYING {
 		return nil, status.Errorf(codes.Aborted, "Bad stage")
 	}
 	s.data.Stage = stage
@@ -252,7 +245,7 @@ func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g
 func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBetResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != MAKING_BETS {
+	if s.data.Stage != g.GameStage_MAKING_BETS {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
@@ -290,7 +283,7 @@ func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBet
 func (s *Server) OaCloseBets(ctx context.Context, req *g.OaCloseBetsRequest) (*g.OaCloseBetsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != PLAYING {
+	if s.data.Stage != g.GameStage_PLAYING {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	amountsSums := make(map[string]int64)
