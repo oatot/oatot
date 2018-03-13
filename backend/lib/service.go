@@ -50,6 +50,25 @@ type Server struct {
 	startMoney int64
 }
 
+var Currencies = []string{
+	"OAC",
+	"BTC",
+}
+
+var Horses = []string{
+	"red",
+	"blue",
+}
+
+func valueInSlice(value string, slice []string) bool {
+	for _, val := range slice {
+		if value == val {
+			return true
+		}
+	}
+	return false
+}
+
 func New() (*Server, error) {
 	return &Server{
 		data: Data{
@@ -169,22 +188,22 @@ func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequ
 func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRequest) (*g.OaActiveBetsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	var oacAmount, btcAmount uint64
+	amountsMap := make(map[string]map[string]uint64)
+	var betSums []*g.BetSum
 	for betID := range s.data.ActiveBets {
 		bet := s.data.Bets[betID]
-		if bet.Horse != *req.Horse {
-			continue
-		}
-		if bet.Currency == "OAC" {
-			oacAmount += uint64(bet.Amount)
-		} else if bet.Currency == "BTC" {
-			btcAmount += uint64(bet.Amount)
+		amountsMap[bet.Currency][bet.Horse] += uint64(bet.Amount)
+	}
+	for currency, value := range amountsMap {
+		for horse, value2 := range value {
+			betSums = append(betSums, &g.BetSum{Amount: &value2, Currency: &currency, Horse: &horse})
 		}
 	}
-	return &g.OaActiveBetsSumsResponse{
-		OacAmount: &oacAmount,
-		BtcAmount: &btcAmount,
-	}, nil
+	res := &g.OaActiveBetsSumsResponse{}
+	for _, value := range betSums {
+		res.BetSums = append(res.BetSums, value)
+	}
+	return res, nil
 }
 
 func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStageRequest) (*g.OaChangeGameStageResponse, error) {
@@ -228,18 +247,24 @@ func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	freeMoney := uint64(player.FreeMoney[*req.Currency])
-	moneyOnBets := uint64(0)
-	for betID := range player.ActiveBets {
-		bet := s.data.Bets[betID]
-		if bet.Currency == *req.Currency {
-			moneyOnBets += uint64(bet.Amount)
+	res := &g.OaMyBalanceResponse{}
+	for currency, value := range player.FreeMoney {
+		moneyOnBets := uint64(0)
+		freeMoney := uint64(value)
+		for betID := range player.ActiveBets {
+			bet := s.data.Bets[betID]
+			if bet.Currency == currency {
+				moneyOnBets += uint64(bet.Amount)
+			}
 		}
+		balance := &g.Balance{
+			FreeMoney:   &freeMoney,
+			MoneyOnBets: &moneyOnBets,
+			Currency:    &currency,
+		}
+		res.Balances = append(res.Balances, balance)
 	}
-	return &g.OaMyBalanceResponse{
-		FreeMoney:   &freeMoney,
-		MoneyOnBets: &moneyOnBets,
-	}, nil
+	return res, nil
 }
 
 func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBetResponse, error) {
@@ -252,10 +277,10 @@ func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBet
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	if *req.Bet.Currency != "OAC" && *req.Bet.Currency != "BTC" {
+	if !valueInSlice(*req.Bet.Currency, Currencies) {
 		return nil, status.Errorf(codes.Aborted, "Bad currency")
 	}
-	if *req.Bet.Horse != "red" && *req.Bet.Horse != "blue" {
+	if !valueInSlice(*req.Bet.Horse, Horses) {
 		return nil, status.Errorf(codes.Aborted, "Bad horse")
 	}
 	freeMoney := uint64(player.FreeMoney[*req.Bet.Currency])
@@ -401,7 +426,7 @@ func (s *Server) OaMyPastBets(ctx context.Context, req *g.OaMyPastBetsRequest) (
 	return res, nil
 }
 
-func defaultCurrencySummary() *g.CurrencySummary {
+func defaultCurrencySummary(currency string) *g.CurrencySummary {
 	var totalBet, totalPrize, totalLost, betsWon, betsLost uint64
 	return &g.CurrencySummary{
 		TotalBet:   &totalBet,
@@ -409,6 +434,7 @@ func defaultCurrencySummary() *g.CurrencySummary {
 		TotalLost:  &totalLost,
 		BetsWon:    &betsWon,
 		BetsLost:   &betsLost,
+		Currency:   &currency,
 	}
 }
 
@@ -419,20 +445,13 @@ func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequ
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyBetsSummaryResponse{
-		OacSummary: defaultCurrencySummary(),
-		BtcSummary: defaultCurrencySummary(),
+	currencySummaries := make(map[string]*g.CurrencySummary)
+	for _, currency := range Currencies {
+		currencySummaries[currency] = defaultCurrencySummary(currency)
 	}
 	for betID := range player.PastBets {
 		bet := s.data.Bets[betID]
-		var summary *g.CurrencySummary
-		if bet.Currency == "OAC" {
-			summary = res.OacSummary
-		} else if bet.Currency == "BTC" {
-			summary = res.BtcSummary
-		} else {
-			continue
-		}
+		summary := currencySummaries[bet.Currency]
 		*summary.TotalBet += uint64(bet.Amount)
 		*summary.TotalPrize += uint64(bet.Prize)
 		if bet.Prize == 0 {
@@ -441,6 +460,10 @@ func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequ
 		} else {
 			*summary.BetsWon += 1
 		}
+	}
+	res := &g.OaMyBetsSummaryResponse{}
+	for _, value := range currencySummaries {
+		res.CurrencySummaries = append(res.CurrencySummaries, value)
 	}
 	return res, nil
 }

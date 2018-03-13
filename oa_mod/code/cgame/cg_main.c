@@ -1007,8 +1007,9 @@ static void CG_RegisterGraphics(void) {
         cgs.media.numberShaders[i] = trap_R_RegisterShader(sb_nums[i]);
     }
     // OATOT
-    cgs.media.btcShader = trap_R_RegisterShader("images/btc.png");
-    cgs.media.oacShader = trap_R_RegisterShader("images/oac.png");
+    for (i = 0; i < CURRENCIES_N; i++) {
+        cgs.media.currencyShader[i] = trap_R_RegisterShader(va("images/currency%d.png", i));
+    }
     cgs.media.readyShader = trap_R_RegisterShader("images/ready.png");
     cgs.media.notReadyShader = trap_R_RegisterShader("images/not_ready.png");
     cgs.media.lockShader = trap_R_RegisterShaderNoMip("images/lock.png");
@@ -1060,6 +1061,12 @@ static void CG_RegisterGraphics(void) {
     cgs.media.rocketShader = trap_R_RegisterShader("icons/iconw_rocket");
     cgs.media.shotgunShader = trap_R_RegisterShader("icons/iconw_shotgun");
     cgs.media.skullShader = trap_R_RegisterShader("icons/skull_red");
+    // Flags (index from team_t).
+    cgs.media.neutralFlagModel = trap_R_RegisterModel("models/flags/n_flag.md3");
+    cgs.media.flagShader[0] = trap_R_RegisterShaderNoMip("icons/iconf_neutral1");
+    cgs.media.flagShader[1] = trap_R_RegisterShaderNoMip("icons/iconf_red2");
+    cgs.media.flagShader[2] = trap_R_RegisterShaderNoMip("icons/iconf_blu2");
+    cgs.media.flagShader[3] = trap_R_RegisterShaderNoMip("icons/iconf_neutral3");
     for (i = 0; i < NUM_CROSSHAIRS; i++) {
         if (i < 10) {
             cgs.media.crosshairShader[i] = trap_R_RegisterShader(va("gfx/2d/crosshair%c", 'a' + i));
@@ -1119,13 +1126,6 @@ static void CG_RegisterGraphics(void) {
         cgs.media.redFlagBaseModel = trap_R_RegisterModel("models/mapobjects/flagbase/red_base.md3");
         cgs.media.blueFlagBaseModel = trap_R_RegisterModel("models/mapobjects/flagbase/blue_base.md3");
         cgs.media.neutralFlagBaseModel = trap_R_RegisterModel("models/mapobjects/flagbase/ntrl_base.md3");
-    }
-    if (cgs.gametype == GT_1FCTF || cgs.gametype == GT_POSSESSION || cg_buildScript.integer) {
-        cgs.media.neutralFlagModel = trap_R_RegisterModel("models/flags/n_flag.md3");
-        cgs.media.flagShader[0] = trap_R_RegisterShaderNoMip("icons/iconf_neutral1");
-        cgs.media.flagShader[1] = trap_R_RegisterShaderNoMip("icons/iconf_red2");
-        cgs.media.flagShader[2] = trap_R_RegisterShaderNoMip("icons/iconf_blu2");
-        cgs.media.flagShader[3] = trap_R_RegisterShaderNoMip("icons/iconf_neutral3");
     }
     if (cgs.gametype == GT_OBELISK || cg_buildScript.integer) {
         cgs.media.rocketExplosionShader = trap_R_RegisterShader("rocketExplosion");
@@ -2214,11 +2214,9 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     cgs.levelStartTime = atoi(s);
     CG_ParseServerinfo();
     // oatot
-    trap_SendClientCommand(va("getActiveBetsSums %s\n", "red"));
-    trap_SendClientCommand(va("getActiveBetsSums %s\n", "blue"));
+    trap_SendClientCommand("getActiveBetsSums\n");
     trap_SendClientCommand("getActiveBets\n");
-    trap_SendClientCommand("getBalance OAC\n");
-    trap_SendClientCommand("getBalance BTC\n");
+    trap_SendClientCommand("getBalance\n");
     // load the new map
     // load the new map
 #ifndef SCRIPTHUD

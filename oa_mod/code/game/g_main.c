@@ -1886,11 +1886,14 @@ qboolean ScoreIsTied(void) {
 
 void getClientsBalances(int* money) {
     gclient_t* cl;
+    balance_t balance;
     int i;
     for (i = 0; i < g_maxclients.integer; i++) {
         cl = level.clients + i;
         if (!GOaIsNew(cl->pers.guid) && (cl->pers.connected == CON_CONNECTED)) {
-            money[i] = G_GetBalance(g_entities + i, "OAC").free_money;
+            if (G_GetCurrencyBalance(g_entities + i, "OAC", &balance)) {
+                money[i] = balance.freeMoney;
+            }
         }
     }
 }
@@ -1928,6 +1931,7 @@ void transferPrizeMoney(int* balances_before, int* balances_after, char* winner)
 }
 
 void endOfMatchLogic(char* winner) {
+    // TODO: only OAC is supported here.
     int balances_before[MAX_GENTITIES];
     int balances_after[MAX_GENTITIES];
     getClientsBalances(balances_before);
@@ -1990,8 +1994,7 @@ void CheckExitRules(void) {
             } else {
                 endOfMatchLogic("blue");
             }
-            G_UpdateActiveBetsSums("red", 0);
-            G_UpdateActiveBetsSums("blue", 0);
+            G_UpdateActiveBetsSums(0);
             trap_SendServerCommand(-1, "print \"Timelimit hit.\n\"");
             LogExit("Timelimit hit.");
             return;
@@ -2030,16 +2033,14 @@ void CheckExitRules(void) {
     if ((g_gametype.integer >= GT_CTF && g_ffa_gt < 1) && g_capturelimit.integer) {
         if (level.teamScores[TEAM_RED] >= g_capturelimit.integer) {
             endOfMatchLogic("red");
-            G_UpdateActiveBetsSums("red", 0);
-            G_UpdateActiveBetsSums("blue", 0);
+            G_UpdateActiveBetsSums(0);
             trap_SendServerCommand(-1, "print \"Red hit the capturelimit.\n\"");
             LogExit("Capturelimit hit.");
             return;
         }
         if (level.teamScores[TEAM_BLUE] >= g_capturelimit.integer) {
             endOfMatchLogic("blue");
-            G_UpdateActiveBetsSums("red", 0);
-            G_UpdateActiveBetsSums("blue", 0);
+            G_UpdateActiveBetsSums(0);
             trap_SendServerCommand(-1, "print \"Blue hit the capturelimit.\n\"");
             LogExit("Capturelimit hit.");
             return;
@@ -2424,15 +2425,13 @@ void CheckTeamVote(int team) {
 G_GetBalance
 ==================
 */
-balance_t G_GetBalance(gentity_t* ent, char* currency) {
-    balance_t empty;
-    empty.free_money = 0;
-    empty.money_on_bets = 0;
-    if (GOaIsNew(ent->client->pers.guid)) {
-        return empty;
-    }
+int G_GetBalance(gentity_t* ent, balance_t* balances) {
     gclient_t* client = ent->client;
-    return GOaMyBalance(client->pers.guid, currency);
+    if (GOaIsNew(client->pers.guid)) {
+        return -1;
+    } else {
+        return GOaMyBalance(client->pers.guid, balances);
+    }
 }
 
 /*
@@ -2454,9 +2453,27 @@ int G_GetActiveBets(gentity_t* ent, bet_t* bets) {
         return -1;
     }
     for (i = 0; i < bets_n; i++) {
-        client->pers.activeBetsIds[i] = bets[i].bet_ID;
+        client->pers.activeBetsIds[i] = bets[i].betID;
     }
     return bets_n;
+}
+
+/*
+==================
+G_GetCurrencyBalance
+==================
+*/
+qboolean G_GetCurrencyBalance(gentity_t* ent, const char* currency, balance_t* res) {
+    int i, balances_n;
+    balance_t balances[CURRENCIES_N];
+    balances_n = G_GetBalance(ent, balances);
+    for (i = 0; i < balances_n; i++) {
+        if (!strcmp(currency, balances[i].currency)) {
+            *res = balances[i];
+            return qtrue;
+        }
+    }
+    return qfalse;
 }
 
 /*
@@ -2464,14 +2481,17 @@ int G_GetActiveBets(gentity_t* ent, bet_t* bets) {
 G_UpdateBalance
 ==================
 */
-void G_UpdateBalance(gentity_t* ent, char* currency) {
-    if (!strcmp(currency, "OAC")) {
-        balance_t oac_balance = G_GetBalance(ent, "OAC");
-        trap_SendServerCommand(ent - g_entities, va("updateBalance \%s %d %d\"", currency, oac_balance.free_money, oac_balance.money_on_bets));
-    } else if (!strcmp(currency, "BTC")) {
-        balance_t btc_balance = G_GetBalance(ent, "BTC");
-        trap_SendServerCommand(ent - g_entities, va("updateBalance \%s %d %d\"", currency, btc_balance.free_money, btc_balance.money_on_bets));
+void G_UpdateBalance(gentity_t* ent) {
+    int i;
+    balance_t balances[CURRENCIES_N];
+    int balances_n = G_GetBalance(ent, balances);
+    char cmd_str[MAX_STRING_TOKENS];
+    cmd_str[0] = 0;
+    strcat(cmd_str, va("updateBalance %d ", balances_n));
+    for (i = 0; i < balances_n; i++) {
+        strcat(cmd_str, va("%d %d %s ", balances[i].freeMoney, balances[i].moneyOnBets, balances[i].currency));
     }
+    trap_SendServerCommand(ent - g_entities, cmd_str);
 }
 
 /*
@@ -2487,7 +2507,7 @@ void G_UpdateActiveBets(gentity_t* ent) {
     cmd_str[0] = 0;
     strcat(cmd_str, va("updateActiveBets \%d ", n_bets));
     for (i = 0; i < n_bets; i++) {
-        strcat(cmd_str, va("%s %s %d %d ", bets[i].horse, bets[i].currency, bets[i].amount, bets[i].bet_ID));
+        strcat(cmd_str, va("%s %s %d %d ", bets[i].horse, bets[i].currency, bets[i].amount, bets[i].betID));
     }
     strcat(cmd_str, "\"");
     trap_SendServerCommand(ent - g_entities, cmd_str);
@@ -2498,12 +2518,20 @@ void G_UpdateActiveBets(gentity_t* ent) {
 G_UpdateActiveBetsSums
 ==================
 */
-void G_UpdateActiveBetsSums(char* horse, gentity_t* ent) {
-    betSum_t bet_sum = GOaActiveBetsSums(horse);
+void G_UpdateActiveBetsSums(gentity_t* ent) {
+    int i;
+    char cmd_str[MAX_STRING_TOKENS];
+    cmd_str[0] = 0;
+    betSum_t betSums[HORSES_N * CURRENCIES_N];
+    int sums_n = GOaActiveBetsSums(betSums);
+    strcat(cmd_str, va("updateActiveBetsSums %d ", sums_n));
+    for (i = 0; i < sums_n; i++) {
+        strcat(cmd_str, va("%d %s %s", betSums[i].amount, betSums[i].currency, betSums[i].horse));
+    }
     if (!ent) {
-        trap_SendServerCommand(-1, va("updateActiveBetsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount));
+        trap_SendServerCommand(-1, cmd_str);
     } else {
-        trap_SendServerCommand(ent - g_entities, va("updateActiveBetsSums \%s %d %d\"", horse, bet_sum.oac_amount, bet_sum.btc_amount));
+        trap_SendServerCommand(ent - g_entities, cmd_str);
     }
 }
 

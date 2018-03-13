@@ -61,13 +61,13 @@ GetBalanceLen
 =================
 */
 int GetBalanceLen(void) {
-    int oac_balance = oatotinfo.oac_balance.free_money;
-    int btc_balance = oatotinfo.btc_balance.free_money;
-    if (oac_balance > btc_balance) {
-        return oac_balance / 10 + 2;
-    } else {
-        return btc_balance / 10 + 2;
+    int i, max = 0;
+    for (i = 0; i < oatotinfo.balancesN; i++) {
+        if (oatotinfo.balances[i].freeMoney > max) {
+            max = oatotinfo.balances[i].freeMoney;
+        }
     }
+    return max / 10 + 2;
 }
 
 /*
@@ -108,12 +108,9 @@ CheckBetUpper
 =================
 */
 qboolean CheckBetUpper(activeBet_t bet) {
-    if (!Q_stricmp(bet.currency, "OAC")) {
-        if (bet.amount > oatotinfo.oac_balance.free_money) {
-            return qfalse;
-        }
-    } else if (!Q_stricmp(bet.currency, "BTC")) {
-        if (bet.amount > oatotinfo.btc_balance.free_money) {
+    balance_t balance;
+    if (GetBalanceByCurrency(bet.currency, oatotinfo.balances, &balance)) {
+        if (bet.amount > balance.freeMoney) {
             return qfalse;
         }
     }
@@ -134,9 +131,16 @@ qboolean CheckBetLower(activeBet_t bet) {
 getDefaultBet
 =================
 */
-static activeBet_t getDefaultBet(int free_money) {
+static activeBet_t getDefaultBet() {
+    // Use OAC as default currency here.
     activeBet_t bet;
-    int optimal = free_money / OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT;
+    balance_t balance;
+    int optimal, free_money = 0;
+    if (GetBalanceByCurrency("OAC", oatotinfo.balances, &balance)) {
+        free_money = balance.freeMoney;
+    }
+    optimal = free_money / OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT;
+    // Use "red" as default horse here.
     strcpy(bet.horse, "red");
     bet.amount = (optimal ? optimal : 1);
     strcpy(bet.currency, "OAC");
@@ -202,7 +206,7 @@ static void OatotMenu_Event(void* ptr, int event) {
         UI_PopMenu();
         break;
     case ID_MAKEBET:
-        UI_BetMenu(getDefaultBet(oatotinfo.oac_balance.free_money), qfalse);
+        UI_BetMenu(getDefaultBet(), qfalse);
         break;
     case ID_DISCARDBET:
         DiscardBet(s_oatotmenu.selected);
@@ -226,9 +230,9 @@ static void UI_OatotMenu_Draw(void) {
     int x, y;
     UI_DrawBannerString(320, 80, "ACTIVE BETS", UI_CENTER | UI_SMALLFONT, color_white);
     UI_DrawNamedPic(320 - 330, 240 - 166, 660, 332, ART_BACKGROUND);
-    if (s_oatotmenu.selected >= 0 && s_oatotmenu.selected < oatotinfo.bets_n) {
+    if (s_oatotmenu.selected >= 0 && s_oatotmenu.selected < oatotinfo.betsN) {
         // Draw current bet selection.
-        if (s_oatotmenu.activeBets[s_oatotmenu.selected].generic.id < oatotinfo.bets_n) {
+        if (s_oatotmenu.activeBets[s_oatotmenu.selected].generic.id < oatotinfo.betsN) {
             // Bet actually exists.
             y = FIRST_BET_Y - 5 + s_oatotmenu.selected * OATOT_MENU_VERTICAL_SPACING;
             x = 320 - 250 / 2;
@@ -264,7 +268,7 @@ static void setBet(menutext_s* menu, int y, int id, char* text) {
     menu->generic.y = y;
     menu->generic.id = id;
     menu->generic.callback = Bet_Event;
-    if (id < oatotinfo.bets_n) {
+    if (id < oatotinfo.betsN) {
         // Bet actually exists.
         menu->color = color_orange;
     } else {
@@ -286,8 +290,7 @@ void UI_OatotMenuInternal(void) {
     int y, i, game_stage;
     trap_GetConfigString(CS_SERVERINFO, info, MAX_INFO_STRING);
     game_stage = atoi(Info_ValueForKey(info, "g_gameStage"));
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance\n");
     // Menu.
     s_oatotmenu.menu.wrapAround = qtrue;
     s_oatotmenu.menu.fullscreen = qfalse;
@@ -302,7 +305,7 @@ void UI_OatotMenuInternal(void) {
     // Info.
     s_oatotmenu.info.generic.type = MTYPE_TEXT;
     if (game_stage != FORMING_TEAMS) {
-        if (oatotinfo.bets_n == 0 && game_stage == MAKING_BETS) {
+        if (oatotinfo.betsN == 0 && game_stage == MAKING_BETS) {
             s_oatotmenu.info.string = "No active bets yet, press MAKE BET to make one.";
         } else {
             s_oatotmenu.info.generic.flags = QMF_HIDDEN;
@@ -317,7 +320,7 @@ void UI_OatotMenuInternal(void) {
     // Initialize horse, amount and currency menu components.
     y = FIRST_BET_Y;
     for (i = 0; i < SIZE_OF_LIST; i++) {
-        if (i < oatotinfo.bets_n) {
+        if (i < oatotinfo.betsN) {
             setBet(&s_oatotmenu.activeBets[i], y, i, oatotinfo.betStrings[i]);
         } else {
             setBet(&s_oatotmenu.activeBets[i], y, i, "");
@@ -354,7 +357,7 @@ void UI_OatotMenuInternal(void) {
     // Button discardBet.
     s_oatotmenu.discardBet.generic.type = MTYPE_BITMAP;
     s_oatotmenu.discardBet.generic.name = ART_DISCARDBET0;
-    if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
+    if (game_stage == MAKING_BETS && oatotinfo.betsN != 0) {
         s_oatotmenu.discardBet.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
         s_oatotmenu.discardBet.generic.flags = QMF_GRAYED;
@@ -370,7 +373,7 @@ void UI_OatotMenuInternal(void) {
     // Button editBet.
     s_oatotmenu.editBet.generic.type = MTYPE_BITMAP;
     s_oatotmenu.editBet.generic.name = ART_EDITBET0;
-    if (game_stage == MAKING_BETS && oatotinfo.bets_n != 0) {
+    if (game_stage == MAKING_BETS && oatotinfo.betsN != 0) {
         s_oatotmenu.editBet.generic.flags = QMF_LEFT_JUSTIFY | QMF_PULSEIFFOCUS;
     } else {
         s_oatotmenu.editBet.generic.flags = QMF_GRAYED;

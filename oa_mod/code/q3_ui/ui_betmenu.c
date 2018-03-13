@@ -40,18 +40,19 @@ CheckAndNormalize
 =================
 */
 static qboolean CheckAndNormalize(activeBet_t bet) {
-    int balance;
+    balance_t balance;
     if (!CheckBetLower(bet)) {
         Q_strncpyz(s_betmenu.betAmount.field.buffer, va("%d", 0), sizeof(s_betmenu.betAmount.field.buffer));
         return qfalse;
     } else if (!CheckBetUpper(bet)) {
-        if (!strcmp(bet.currency, "OAC")) {
-            balance = oatotinfo.oac_balance.free_money;
-        } else if (!strcmp(bet.currency, "BTC")) {
-            balance = oatotinfo.btc_balance.free_money;
+        if (GetBalanceByCurrency(bet.currency, oatotinfo.balances, &balance)) {
+            Q_strncpyz(
+                s_betmenu.betAmount.field.buffer,
+                va("%d", balance.freeMoney),
+                sizeof(s_betmenu.betAmount.field.buffer)
+            );
+            return qfalse;
         }
-        Q_strncpyz(s_betmenu.betAmount.field.buffer, va("%d", balance), sizeof(s_betmenu.betAmount.field.buffer));
-        return qfalse;
     }
     return qtrue;
 }
@@ -118,8 +119,7 @@ UI_BetMenuInternal
 =================
 */
 void UI_BetMenuInternal(activeBet_t bet, qboolean edit_mode) {
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance OAC\n");
-    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance BTC\n");
+    trap_Cmd_ExecuteText(EXEC_APPEND, "getBalance\n");
     // Menu.
     s_betmenu.menu.wrapAround = qtrue;
     s_betmenu.menu.fullscreen = qfalse;

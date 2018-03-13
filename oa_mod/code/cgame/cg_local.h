@@ -339,10 +339,9 @@ typedef struct {
 
 typedef struct {
     // oatot
-    balance_t oac_balance;
-    balance_t btc_balance;
+    balance_t balances[CURRENCIES_N];
     activeBet_t activeBets[MAX_ACTIVE_BETS_NUMBER];
-    int bets_n;
+    int betsN;
 
     qboolean infoValid;
 
@@ -739,8 +738,7 @@ typedef struct {
     // OATOT shaders.
 
     // Money icons.
-    qhandle_t btcShader;
-    qhandle_t oacShader;
+    qhandle_t currencyShader[CURRENCIES_N];
     // Read/NotReady, team lock icon.
     qhandle_t readyShader;
     qhandle_t notReadyShader;
@@ -1164,7 +1162,6 @@ typedef struct {
 // be cleared when a tournement restart is done, allowing
 // all clients to begin playing instantly
 typedef struct {
-    int gameStage; // oatot
     gameState_t gameState; // gamestate from server
     glconfig_t glconfig; // rendering configuration
     float screenXScale; // derived from glconfig
@@ -1247,8 +1244,8 @@ typedef struct {
     clientInfo_t clientinfo[MAX_CLIENTS];
 
     // oatot
-    betSum_t red_bets_sum;
-    betSum_t blue_bets_sum;
+    int gameStage;
+    betSum_t betSums[HORSES_N * CURRENCIES_N];
 
     // teamchat width is *3 because of embedded color codes
     char teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH * 3 + 1];

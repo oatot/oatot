@@ -2620,7 +2620,7 @@ static void CG_DrawCrosshairNames(void) {
     trap_R_SetColor(NULL);
 }
 
-float* GetGameStageColor(void) {
+static float* GetGameStageColor(void) {
     if (cgs.gameStage == FORMING_TEAMS) {
         return colorGreen;
     } else if (cgs.gameStage == MAKING_BETS) {
@@ -2631,24 +2631,57 @@ float* GetGameStageColor(void) {
     return NULL;
 }
 
-// space between value and currency coin image
+dictEntry_t currencyToShaderIndex[] = {
+    {"OAC", 0},
+    {"BTC", 1}
+};
+
+dictEntry_t horseToFlagShaderIndex[] = {
+    {"red", 1},
+    {"blue", 2}
+};
+
+static dictEntry_t currencyToBalanceY[] = {
+    {"OAC", 210},
+    {"BTC", 255}
+};
+
+static dictEntry_t currencyToBetSumY[] = {
+    {"OAC", 80}
+    // {"BTC", 125} Do not draw BTC here for now.
+};
+
+// Space between value and currency coin image.
 #define VALUE_SPACE_LEN 15
 
-int GetValueLength(int amount) {
+static int GetValueLength(int amount) {
     int val_len = strlen(va("%d", amount)) * SMALLCHAR_WIDTH;
     int coin_len = CHAR_WIDTH;
     return val_len + VALUE_SPACE_LEN + coin_len;
 }
 
-int GetMaxAmountLength(void) {
+static int GetMaxAmountLength(void) {
     int max_len = 0, len = 0, i = 0;
-    for (i = 0; i < cgs.clientinfo[cg.clientNum].bets_n; i++) {
+    for (i = 0; i < cgs.clientinfo[cg.clientNum].betsN; i++) {
         len = strlen(va("%d", cgs.clientinfo[cg.clientNum].activeBets[i].amount));
         if (len > max_len) {
             max_len = len;
         }
     }
     return max_len * SMALLCHAR_WIDTH;
+}
+
+static int BetSumXByHorse(const char* horse, int value) {
+    // Dirty solution for now.
+    // With more horses, diff positions will be needed.
+    if (!strcmp(horse, "red")) {
+        return 0;
+    } else if (!strcmp(horse, "blue")) {
+        return 640 - GetValueLength(value);
+    } else {
+        // No horse.
+        return -1;
+    }
 }
 
 //==============================================================================
@@ -2659,15 +2692,15 @@ CG_DrawValue
 =================
  */
 static void CG_DrawValue(int x, int y, int amount, int shift, const char* currency) {
+    int shader_index;
     char* val_str = va("%d", amount);
     CG_DrawSmallString(x, y, val_str, 1.0F);
     if (shift == -1) {
         shift = strlen(val_str) * SMALLCHAR_WIDTH;
     }
-    if (!strcmp(currency, "OAC")) {
-        CG_DrawPic(x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.oacShader);
-    } else if (!strcmp(currency, "BTC")) {
-        CG_DrawPic(x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.btcShader);
+    if (DictFind(currencyToShaderIndex, CURRENCIES_N, currency, &shader_index)) {
+        qhandle_t currencyShader = cgs.media.currencyShader[shader_index];
+        CG_DrawPic(x + shift + VALUE_SPACE_LEN, y - 10, CHAR_WIDTH, CHAR_WIDTH, currencyShader);
     }
 }
 
@@ -2677,12 +2710,11 @@ CG_DrawBet
 =================
  */
 static void CG_DrawBet(int x, int y, int shift, activeBet_t bet) {
-    if (!strcmp(bet.horse, "red")) {
-        CG_DrawPic(x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.redFlagShader[cgs.redflag]);
-    } else if (!strcmp(bet.horse, "blue")) {
-        CG_DrawPic(x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.blueFlagShader[cgs.blueflag]);
+    int flag_shader_index;
+    if (DictFind(horseToFlagShaderIndex, HORSES_N, bet.horse, &flag_shader_index)) {
+        CG_DrawPic(x, y - 10, CHAR_WIDTH, CHAR_WIDTH, cgs.media.flagShader[flag_shader_index]);
+        CG_DrawValue(x + CHAR_WIDTH + VALUE_SPACE_LEN, y, bet.amount, shift, bet.currency);
     }
-    CG_DrawValue(x + CHAR_WIDTH + VALUE_SPACE_LEN, y, bet.amount, shift, bet.currency);
 }
 
 /*
@@ -2720,43 +2752,56 @@ CG_DrawBalance
 =================
  */
 void CG_DrawBalance(void) {
-    int oac_val = cgs.clientinfo[cg.clientNum].oac_balance.free_money;
-    int btc_val = cgs.clientinfo[cg.clientNum].btc_balance.free_money;
-    int max_val = oac_val;
-    int string_pos = 0;
-    int oac_pos = 640 - GetValueLength(oac_val);
-    int btc_pos = 640 - GetValueLength(btc_val);
-    int left_side = 0;
-    if (btc_val > max_val) {
-        max_val = btc_val;
+    char* currency;
+    int i, value, value_x, value_y, left_side, string_pos;
+    int max_value = 0;
+    int min_x = 640;
+    for (i = 0; i < CURRENCIES_N; i++) {
+        // Some data needed for drawing.
+        value = cgs.clientinfo[cg.clientNum].balances[i].freeMoney;
+        value_x = 640 - GetValueLength(value);
+        currency = cgs.clientinfo[cg.clientNum].balances[i].currency;
+        // Draw actual value for this currency.
+        if (DictFind(currencyToBalanceY, CURRENCIES_N, currency, &value_y)) {
+            CG_DrawValue(value_x, value_y, value, -1, currency);
+        }
+        // For Balance Bar and Balace string positions.
+        if (value > max_value) {
+            max_value = value;
+        }
+        if (value_x < min_x) {
+            min_x = value_x;
+        }
     }
-    string_pos = 640 - (GetValueLength(max_val) / 2) - 3 * SMALLCHAR_WIDTH;
+    // Balance heading string position.
+    string_pos = 640 - (GetValueLength(max_value) / 2) - 3 * SMALLCHAR_WIDTH;
     if ((string_pos + 7 * SMALLCHAR_WIDTH) > 640) {
+        // Adjust if needed.
         string_pos = 640 - 8 * SMALLCHAR_WIDTH;
     }
+    // The left side of the whole balance bar.
     left_side = string_pos - 5;
-    if (oac_pos < left_side) {
-        left_side = oac_pos - 5;
+    if (min_x < left_side) {
+        // Adjust if needed.
+        left_side = min_x - 5;
     }
-    if (btc_pos < left_side) {
-        left_side = btc_pos - 5;
-    }
+    // Draw balance bar and balance heading.
     CG_DrawBalanceBar(left_side);
     CG_DrawSmallStringColor(string_pos, 170, "^2Balance ", GetGameStageColor());
-    CG_DrawValue(oac_pos, 210, oac_val, -1, "OAC");
-    CG_DrawValue(btc_pos, 255, btc_val, -1, "BTC");
 }
 
 /*
 =================
-CG_DrawActiveBetsSums
+CG_DrawActiveBetsSumsHorses
 =================
  */
-void CG_DrawActiveBetsSums(void) {
-    int red_amount = cgs.red_bets_sum.oac_amount;
-    int blue_amount = cgs.blue_bets_sum.oac_amount;
-    int red_str_pos = (GetValueLength(red_amount) / 2) - 3 * SMALLCHAR_WIDTH;
-    int blue_str_pos = 640 - (GetValueLength(blue_amount) / 2) - 3 * SMALLCHAR_WIDTH;
+static void CG_DrawActiveBetsSumsHorses(dictEntry_t* max_amounts) {
+    // TODO: think what can be done with more than 2 horses.
+    int red_amount, blue_amount, red_str_pos, blue_str_pos;
+    DictFind(max_amounts, HORSES_N, "red", &red_amount);
+    DictFind(max_amounts, HORSES_N, "blue", &blue_amount);
+    red_str_pos = (GetValueLength(red_amount) / 2) - 3 * SMALLCHAR_WIDTH;
+    blue_str_pos = 640 - (GetValueLength(blue_amount) / 2) - 3 * SMALLCHAR_WIDTH;
     if (red_str_pos < 0) {
         red_str_pos = 0;
     }
@@ -2765,8 +2810,49 @@ void CG_DrawActiveBetsSums(void) {
     }
     CG_DrawSmallString(blue_str_pos, 50, "^4On Blue", 1.0F);
     CG_DrawSmallString(red_str_pos, 50, "^1On Red", 1.0F);
-    CG_DrawValue(640 - GetValueLength(blue_amount), 80, blue_amount, -1, "OAC");
-    CG_DrawValue(0, 80, red_amount, -1, "OAC");
+}
+
+/*
+=================
+CG_DrawActiveBetsSums
+=================
+ */
+void CG_DrawActiveBetsSums(void) {
+    int i, value, value_y, max_value_index;
+    char* currency;
+    char* horse;
+    // Max amount for given horse.
+    dictEntry_t max_amounts[HORSES_N];
+    // Initialize max_amounts.
+    for (i = 0; i < HORSES_N; i++) {
+        max_amounts[i].value = 0;
+        max_amounts[i].key = horseToFlagShaderIndex[i].key;
+    }
+    for (i = 0; i < CURRENCIES_N * HORSES_N; i++) {
+        value = cgs.betSums[i].amount;
+        currency = cgs.betSums[i].currency;
+        horse = cgs.betSums[i].horse;
+        // Max value for the given horse.
+        max_value_index = DictFindIndex(max_amounts, HORSES_N, horse);
+        if (max_value_index != -1) {
+            if (value > max_amounts[max_value_index].value) {
+                // Need to update max value for the given horse.
+                max_amounts[max_value_index].value = value;
+            }
+        }
+        // CURRENCIES_N - 1 because no BTC yet.
+        if (DictFind(currencyToBetSumY, CURRENCIES_N - 1, currency, &value_y)) {
+            // Draw value for current bet sum.
+            CG_DrawValue(
+                BetSumXByHorse(horse, value),
+                value_y,
+                value,
+                -1,
+                currency
+            );
+        }
+    }
+    CG_DrawActiveBetsSumsHorses(max_amounts);
 }
 
 /*
@@ -2779,7 +2865,7 @@ void CG_DrawActiveBets(void) {
     int init_y = 190;
     int shift = GetMaxAmountLength();
     int max_len = 20 + shift + CHAR_WIDTH * 2 + VALUE_SPACE_LEN * 2;
-    int bets_n = cgs.clientinfo[cg.clientNum].bets_n;
+    int bets_n = cgs.clientinfo[cg.clientNum].betsN;
     for (i = 0; i < bets_n; i++) {
         if (bets_n > 1) {
             CG_DrawRect(0, init_y + 40 * i - 15, max_len, 40, 2, GetGameStageColor());
@@ -2795,6 +2881,7 @@ CG_DrawResults
 =================
  */
 void CG_DrawResults(int prize, int balance_change) {
+    // TODO: is only implemented for OAC.
     if (balance_change > 0) {
         if (prize > 0) {
             CG_CenterPrint(va("^6Congrats! You won ^3%d OAC^6!\n^2Score prize is ^3%d OAC^6.", balance_change, prize), SCREEN_HEIGHT * 0.50, BIGCHAR_WIDTH);
