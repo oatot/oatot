@@ -17,6 +17,7 @@ const maxActiveBetsN = 5
 const betsPerPageN = 15
 const maxCStrLen = 1024
 const currenciesN = 2
+const horsesN = 2
 
 var (
 	grpcAddr = "127.0.0.1:13283"
@@ -235,7 +236,7 @@ func GOaActiveBetsSums(betSums *C.betSum_t) C.int {
 		res.BetSums,
 		&sums,
 		CBetSumFromGo,
-		currenciesN,
+		currenciesN * horsesN,
 	)
 
 }
