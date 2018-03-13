@@ -2631,12 +2631,12 @@ static float* GetGameStageColor(void) {
     return NULL;
 }
 
-dictEntry_t currencyToShaderIndex[] = {
+static dictEntry_t currencyToShaderIndex[] = {
     {"OAC", 0},
     {"BTC", 1}
 };
 
-dictEntry_t horseToFlagShaderIndex[] = {
+static dictEntry_t horseToFlagShaderIndex[] = {
     {"red", 1},
     {"blue", 2}
 };

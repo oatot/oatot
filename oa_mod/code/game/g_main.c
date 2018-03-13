@@ -28,6 +28,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #include "g_local.h"
 #include "bg_public.h"
 
+const char* currencies[] = {
+    "OAC",
+    "BTC"
+};
+
+const char* horses[] = {
+    "red",
+    "blue"
+};
+
 level_locals_t level;
 
 typedef struct {
@@ -853,23 +863,23 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
         BotAILoadMap(restart);
         G_InitBots(restart);
     }
-    // oatot: load shared object for Go client
+    // oatot: load shared object for Go client.
     G_LoadGoClientSo();
-    // oatot: tell the backend that we exist and initialize Go client
+    // oatot: tell the backend that we exist and initialize Go client.
     GInitializeClient();
-    // oatot game stages changing logic
+    // oatot game stages changing logic.
     if (g_rageQuit.integer == 1) {
-        // rage quit
+        // Rage quit.
         trap_Cvar_Set("g_gameStage", "0");
         GOaChangeGameStage(FORMING_TEAMS);
     } else if (needToUpdateGameStage() || (g_gameStage.integer == PLAYING)) {
-        // normal stage change or map change
+        // Normal stage change or map change.
         next_game_stage = (g_gameStage.integer + 1) % 3;
         Q_snprintf(next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage);
         trap_Cvar_Set("g_gameStage", next_game_stage_str);
         GOaChangeGameStage(next_game_stage);
     } else if (g_gameStage.integer == MAKING_BETS) {
-        // was callvoted
+        // Was callvoted.
         trap_Cvar_Set("g_gameStage", "0");
         GOaChangeGameStage(FORMING_TEAMS);
     }
@@ -879,7 +889,7 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
     trap_Cvar_Set("g_readyToBet", "0");
     G_UpdateCvars();
     if (g_gameStage.integer == FORMING_TEAMS) {
-        // at this stage, no bets should be active
+        // At this stage, no bets should be active,
         // but if the map was callvot'ed, it is still possible,
         // hence let's clear them.
         GOaCloseBetsByIncident();

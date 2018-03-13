@@ -110,6 +110,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #endif
 
 void StrToUpper(char* str);
+qboolean SearchStr(const char** arr, int len, const char* str);
 
 // Simple [str]->int dictionary.
 
@@ -130,12 +131,9 @@ qboolean DictFind(dictEntry_t* dict, int len, const char *key, int* res);
 // Number of possible horses (red or blue for now).
 #define HORSES_N 2
 
-// Some dictionaries originally needed for drawing,
-// but moved here to be used as currency/horses list
-// in `game` as well.
-
-extern dictEntry_t currencyToShaderIndex[CURRENCIES_N];
-extern dictEntry_t horseToFlagShaderIndex[HORSES_N];
+// Lists of horses and currencies.
+extern const char* currencies[CURRENCIES_N];
+extern const char* horses[HORSES_N];
 
 // oatot game stages.
 typedef enum {

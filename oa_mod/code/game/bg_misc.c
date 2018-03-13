@@ -2068,6 +2068,16 @@ qboolean DictFind(dictEntry_t* dict, int len, const char *key, int* res) {
 }
 
 // oatot
+qboolean SearchStr(const char** arr, int len, const char* str) {
+    int i;
+    for (i = 0; i < len; i++) {
+        if (!strcmp(arr[i], str)) {
+            return qtrue;
+        }
+    }
+    return qfalse;
+}
+
 qboolean GetBalanceByCurrency(const char* currency, balance_t* balances, balance_t* result) {
     int i;
     for (i = 0; i < CURRENCIES_N; i++) {

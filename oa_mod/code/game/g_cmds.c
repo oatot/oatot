@@ -1852,11 +1852,11 @@ void Cmd_Bet_f(gentity_t* ent) {
             // --> "OAC", "BTC", ...
             StrToUpper(arg3);
             // Check arguments.
-            if (!DictFind(horseToFlagShaderIndex, HORSES_N, arg1, 0)) {
+            if (!SearchStr(horses, HORSES_N, arg1)) {
                 trap_SendServerCommand(ent - g_entities, "print \"^1Invalid horse.\n\"");
                 return;
             }
-            if (!DictFind(currencyToShaderIndex, CURRENCIES_N, arg3, 0)) {
+            if (!SearchStr(currencies, CURRENCIES_N, arg3)) {
                 trap_SendServerCommand(ent - g_entities, "print \"^1Invalid currency.\n\"");
                 return;
             }
@@ -2154,7 +2154,7 @@ void Cmd_ShareBalance_f(gentity_t* ent) {
             // --> "OAC", "BTC", ...
             StrToUpper(arg1);
             // Check argument.
-            if (!DictFind(currencyToShaderIndex, CURRENCIES_N, arg1, 0)) {
+            if (!SearchStr(currencies, CURRENCIES_N, arg1)) {
                 trap_SendServerCommand(ent - g_entities, "print \"^1Invalid currency.\n\"");
                 return;
             }
