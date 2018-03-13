@@ -18,8 +18,11 @@ const (
 	CANCELLED = iota
 )
 
+type MapOfMaps map[string]map[string]uint64
+type MapStrToInt map[string]int64
+
 type Player struct {
-	FreeMoney     map[string]int64 `json:"free_money"`
+	FreeMoney     MapStrToInt      `json:"free_money"`
 	ActiveBets    map[int]struct{} `json:"active_bets"`
 	PastBets      map[int]struct{} `json:"past_bets"`
 	CancelledBets map[int]struct{} `json:"cancelled_bets"`
@@ -47,7 +50,7 @@ type Server struct {
 
 	data Data
 
-	startMoney int64
+	StartMoney int64
 }
 
 var Currencies = []string{
@@ -75,7 +78,7 @@ func New() (*Server, error) {
 			Players:    make(map[string]*Player),
 			ActiveBets: make(map[int]struct{}),
 		},
-		startMoney: 1000,
+		StartMoney: 1000,
 	}, nil
 }
 
@@ -102,7 +105,7 @@ func (s *Server) Save() ([]byte, error) {
 func (s *Server) SetStartMoney(startMoney int64) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	s.startMoney = startMoney
+	s.StartMoney = startMoney
 }
 
 func (s *Server) SiteLoginStep1(ctx context.Context, req *g.SiteLoginStep1Request) (*g.SiteLoginStep1Response, error) {
@@ -185,10 +188,21 @@ func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequ
 	return &g.OaTransferMoneyResponse{}, nil
 }
 
+func initBetSumsAmountsMap() MapOfMaps {
+	amountsMap := make(MapOfMaps)
+	for _, currency := range Currencies {
+		amountsMap[currency] = make(map[string]uint64)
+		for _, horse := range Horses {
+			amountsMap[currency][horse] = uint64(0)
+		}
+	}
+	return amountsMap
+}
+
 func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRequest) (*g.OaActiveBetsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	amountsMap := make(map[string]map[string]uint64)
+	amountsMap := initBetSumsAmountsMap()
 	var betSums []*g.BetSum
 	for betID := range s.data.ActiveBets {
 		bet := s.data.Bets[betID]
@@ -225,6 +239,18 @@ func (s *Server) OaIsNew(ctx context.Context, req *g.OaIsNewRequest) (*g.OaIsNew
 	return &g.OaIsNewResponse{Result: &result}, nil
 }
 
+func basicFreeMoney(startMoney int64) MapStrToInt {
+	freeMoney := make(MapStrToInt)
+	for _, currency := range Currencies {
+		if currency == "OAC" {
+			freeMoney[currency] = startMoney
+		} else {
+			freeMoney[currency] = 0
+		}
+	}
+	return freeMoney
+}
+
 func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.OaRegisterResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
@@ -232,7 +258,7 @@ func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.O
 		return nil, status.Errorf(codes.AlreadyExists, "AlreadyExists")
 	}
 	s.data.Players[*req.OaAuth.ClGuid] = &Player{
-		FreeMoney:     map[string]int64{"OAC": s.startMoney},
+		FreeMoney:     basicFreeMoney(s.StartMoney),
 		ActiveBets:    make(map[int]struct{}),
 		PastBets:      make(map[int]struct{}),
 		CancelledBets: make(map[int]struct{}),
