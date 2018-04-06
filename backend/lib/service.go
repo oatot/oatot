@@ -2,13 +2,12 @@ package lib
 
 import (
 	"encoding/json"
-	"math/big"
-	"sync"
-
 	g "github.com/oatot/oatot/generated"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"math/big"
+	"sync"
 )
 
 const (
@@ -199,6 +198,10 @@ func initBetSumsAmountsMap() MapOfMaps {
 	return amountsMap
 }
 
+func newBetSum(amount uint64, currency, horse string) *g.BetSum {
+	return &g.BetSum{Amount: &amount, Currency: &currency, Horse: &horse}
+}
+
 func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRequest) (*g.OaActiveBetsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
@@ -210,13 +213,10 @@ func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRe
 	}
 	for currency, value := range amountsMap {
 		for horse, value2 := range value {
-			betSums = append(betSums, &g.BetSum{Amount: &value2, Currency: &currency, Horse: &horse})
+			betSums = append(betSums, newBetSum(value2, currency, horse))
 		}
 	}
-	res := &g.OaActiveBetsSumsResponse{}
-	for _, value := range betSums {
-		res.BetSums = append(res.BetSums, value)
-	}
+	res := &g.OaActiveBetsSumsResponse{BetSums: betSums}
 	return res, nil
 }
 
@@ -266,6 +266,10 @@ func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.O
 	return &g.OaRegisterResponse{}, nil
 }
 
+func newBalance(freeMoney, moneyOnBets uint64, currency string) *g.Balance {
+	return &g.Balance{FreeMoney: &freeMoney, MoneyOnBets: &moneyOnBets, Currency: &currency}
+}
+
 func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g.OaMyBalanceResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
@@ -283,12 +287,7 @@ func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g
 				moneyOnBets += uint64(bet.Amount)
 			}
 		}
-		balance := &g.Balance{
-			FreeMoney:   &freeMoney,
-			MoneyOnBets: &moneyOnBets,
-			Currency:    &currency,
-		}
-		res.Balances = append(res.Balances, balance)
+		res.Balances = append(res.Balances, newBalance(freeMoney, moneyOnBets, currency))
 	}
 	return res, nil
 }
