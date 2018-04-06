@@ -2536,7 +2536,7 @@ void G_UpdateActiveBetsSums(gentity_t* ent) {
     int sums_n = GOaActiveBetsSums(betSums);
     strcat(cmd_str, va("updateActiveBetsSums %d ", sums_n));
     for (i = 0; i < sums_n; i++) {
-        strcat(cmd_str, va("%d %s %s", betSums[i].amount, betSums[i].currency, betSums[i].horse));
+        strcat(cmd_str, va("%d %s %s ", betSums[i].amount, betSums[i].currency, betSums[i].horse));
     }
     if (!ent) {
         trap_SendServerCommand(-1, cmd_str);
