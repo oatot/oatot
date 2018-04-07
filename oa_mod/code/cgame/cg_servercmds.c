@@ -117,6 +117,18 @@ static void CG_ParseActiveBets(void) {
 
 /*
 =================
+CG_ParseFlagsStatus
+
+=================
+*/
+static void CG_ParseFlagStatus(void) {
+    int team = atoi(CG_Argv(1));
+    cgs.flagsStatus[team].stolen = atoi(CG_Argv(2));
+    cgs.flagsStatus[team].dropped = atoi(CG_Argv(3));
+}
+
+/*
+=================
 CG_ParseActiveBetsSums
 
 =================
@@ -1209,6 +1221,10 @@ static void CG_ServerCommand(void) {
     }
     if (strequals(cmd, "updateActiveBets")) {
         CG_ParseActiveBets();
+        return;
+    }
+    if (strequals(cmd, "updateFlagStatus")) {
+        CG_ParseFlagStatus();
         return;
     }
     if (strequals(cmd, "updateActiveBetsSums")) {

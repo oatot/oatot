@@ -1171,6 +1171,9 @@ void CG_EntityEvent(centity_t* cent, vec3_t position) {
     case EV_GLOBAL_TEAM_SOUND: { // play from the player's head so it never diminishes
         DEBUGNAME("EV_GLOBAL_TEAM_SOUND");
         switch (es->eventParm) {
+        case GTS_DROP: // CTF: flag drop
+            CG_AddBufferedSound(cgs.media.dropFlagSound);
+            break;
         case GTS_RED_CAPTURE: // CTF: red team captured the blue flag, 1FCTF: red team captured the neutral flag
             if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED) {
                 CG_AddBufferedSound(cgs.media.captureYourTeamSound);

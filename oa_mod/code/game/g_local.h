@@ -972,6 +972,7 @@ team_t G_TeamFromString(char* str);
 gentity_t* SelectRandomEntityFilter(const char* classname, qboolean(*filter)(const gentity_t*));
 gentity_t* SelectRandomEntity(const char* classname);
 void Team_SetFlagStatus(int team, flagStatus_t status);
+void Team_DropFlagSound(gentity_t* ent);
 
 //KK-OAX Removed these in Code in favor of bg_alloc.c from Tremulous
 // g_mem.c

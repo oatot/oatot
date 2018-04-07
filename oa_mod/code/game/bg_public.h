@@ -568,7 +568,8 @@ typedef enum {
     GTS_REDTEAM_TOOK_LEAD,
     GTS_BLUETEAM_TOOK_LEAD,
     GTS_TEAMS_ARE_TIED,
-    GTS_KAMIKAZE
+    GTS_KAMIKAZE,
+    GTS_DROP
 } global_team_sound_t;
 
 // animations

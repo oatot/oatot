@@ -776,6 +776,7 @@ static void CG_RegisterSounds(void) {
         cgs.media.returnOpponentSound = trap_S_RegisterSound("sound/teamplay/flagreturn_opponent.wav", qtrue);
         cgs.media.takenYourTeamSound = trap_S_RegisterSound("sound/teamplay/flagtaken_yourteam.wav", qtrue);
         cgs.media.takenOpponentSound = trap_S_RegisterSound("sound/teamplay/flagtaken_opponent.wav", qtrue);
+        cgs.media.dropFlagSound = trap_S_RegisterSound("sound/teamplay/flag_drop.wav", qtrue);
         if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTF_ELIMINATION || cg_buildScript.integer) {
             cgs.media.redFlagReturnedSound = trap_S_RegisterSound("sound/teamplay/voc_red_returned.wav", qtrue);
             cgs.media.blueFlagReturnedSound = trap_S_RegisterSound("sound/teamplay/voc_blue_returned.wav", qtrue);
@@ -1067,6 +1068,10 @@ static void CG_RegisterGraphics(void) {
     cgs.media.flagShader[1] = trap_R_RegisterShaderNoMip("icons/iconf_red2");
     cgs.media.flagShader[2] = trap_R_RegisterShaderNoMip("icons/iconf_blu2");
     cgs.media.flagShader[3] = trap_R_RegisterShaderNoMip("icons/iconf_neutral3");
+    cgs.media.droppedFlagShader[0] = trap_R_RegisterShaderNoMip("images/dropped_iconf_neutral1.tga");
+    cgs.media.droppedFlagShader[1] = trap_R_RegisterShaderNoMip("images/dropped_iconf_red2.tga");
+    cgs.media.droppedFlagShader[2] = trap_R_RegisterShaderNoMip("images/dropped_iconf_blu2.tga");
+    cgs.media.droppedFlagShader[3] = trap_R_RegisterShaderNoMip("images/dropped_iconf_neutral3.tga");
     for (i = 0; i < NUM_CROSSHAIRS; i++) {
         if (i < 10) {
             cgs.media.crosshairShader[i] = trap_R_RegisterShader(va("gfx/2d/crosshair%c", 'a' + i));
