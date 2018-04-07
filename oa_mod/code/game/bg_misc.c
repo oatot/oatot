@@ -2042,3 +2042,50 @@ void MapInfoGet(const char* mapname, int gametype, mapinfo_result_t* result) {
     }
     trap_FS_FCloseFile(file);
 }
+
+// Simple [str]->int dictionary.
+
+int DictFindIndex(dictEntry_t* dict, int len, const char *key) {
+    int i;
+    for (i = 0; i < len; i++) {
+        if (!strcmp(dict[i].key, key)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+qboolean DictFind(dictEntry_t* dict, int len, const char *key, int* res) {
+    int idx = DictFindIndex(dict, len, key);
+    if (idx == -1) {
+        return qfalse;
+    } else {
+        if (res) {
+            *res = dict[idx].value;
+        }
+        return qtrue;
+    }
+}
+
+// oatot
+qboolean SearchStr(const char** arr, int len, const char* str) {
+    int i;
+    for (i = 0; i < len; i++) {
+        if (!strcmp(arr[i], str)) {
+            return qtrue;
+        }
+    }
+    return qfalse;
+}
+
+qboolean GetBalanceByCurrency(const char* currency, balance_t* balances, balance_t* result) {
+    int i;
+    for (i = 0; i < CURRENCIES_N; i++) {
+        if (!strcmp(currency, balances[i].currency)) {
+            *result = balances[i];
+            return qtrue;
+        }
+    }
+    // Not found.
+    return qfalse;
+}

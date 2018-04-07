@@ -88,37 +88,32 @@ qboolean checkForRestart(void);
 typedef struct bet_s bet_t;
 typedef struct fullbet_s fullbet_t;
 typedef struct currencySummary_s currencySummary_t;
-typedef struct betsSummary_s betsSummary_t;
 typedef struct weaponStats_s weaponStats_t;
 
-// structure for describing a bet (oatot)
+// Structure for describing a bet (oatot).
 struct bet_s {
     char horse[MAX_STRING_CHARS];
     char currency[MAX_STRING_CHARS];
     int amount;
-    char open_time[MAX_STRING_CHARS];
-    int bet_ID; // Unique bet ID.
+    char openTime[MAX_STRING_CHARS];
+    int betID; // Unique bet ID.
 };
 
-// structure for describing a bet and its result (oatot)
+// Structure for describing a bet and its result (oatot).
 struct fullbet_s {
-    bet_t open_bet;
-    char close_time[MAX_STRING_CHARS];
+    bet_t openBet;
+    char closeTime[MAX_STRING_CHARS];
     char winner[MAX_STRING_CHARS];
     int prize;
 };
 
 struct currencySummary_s {
-    int total_bet;
-    int total_prize;
-    int total_lost;
-    int bets_won;
-    int bets_lost;
-};
-
-struct betsSummary_s {
-    currencySummary_t oac_summary;
-    currencySummary_t btc_summary;
+    char currency[MAX_STRING_CHARS];
+    int totalBet;
+    int totalPrize;
+    int totalLost;
+    int betsWon;
+    int betsLost;
 };
 
 struct weaponStats_s {
@@ -637,8 +632,8 @@ typedef struct {
     int max_humanplayers;
     int lastActiveTime; ///< Updated as long as there are at least one human player on the server
 
-    qboolean timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match
-    qboolean betsGreetingPrinted; // oatot: print info about `g_makingBetsTime` mins to make bets
+    qboolean timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match.
+    qboolean betsGreetingPrinted; // oatot: print info about `g_makingBetsTime` mins to make bets.
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1070,14 +1065,16 @@ extern int allowedFraglimit(int limit);
 extern int VoteParseCustomVotes(void);
 extern t_customvote getCustomVote(char* votecommand);
 
-// oatot: call some certain RPCs needed
-balance_t G_GetBalance(gentity_t* ent, char* currency);
+// oatot: call some certain RPCs needed.
+int G_GetBalance(gentity_t* ent, balance_t* balances);
 int G_GetActiveBets(gentity_t* ent, bet_t* bets);
 
-// oatot: draw updates
-void G_UpdateBalance(gentity_t* ent, char* currency);
+qboolean G_GetCurrencyBalance(gentity_t* ent, const char* currency, balance_t* res);
+
+// oatot: draw updates.
+void G_UpdateBalance(gentity_t* ent);
 void G_UpdateActiveBets(gentity_t* ent);
-void G_UpdateActiveBetsSums(char* horse, gentity_t* ent);
+void G_UpdateActiveBetsSums(gentity_t* ent);
 
 // ai_main.c
 #define MAX_FILEPATH 144

@@ -936,20 +936,18 @@ qboolean UI_ConsoleCommand(int realTime) {
         return qtrue;
     }
     if (Q_strequal(cmd, "ui_updatebalance")) {
-        if (!strcmp(UI_Argv(1), "OAC")) {
-            oatotinfo.oac_balance.free_money = atoi(UI_Argv(2));
-            oatotinfo.oac_balance.money_on_bets = atoi(UI_Argv(3));
-        }
-        if (!strcmp(UI_Argv(1), "BTC")) {
-            oatotinfo.btc_balance.free_money = atoi(UI_Argv(2));
-            oatotinfo.btc_balance.money_on_bets = atoi(UI_Argv(3));
+        oatotinfo.balancesN = atoi(UI_Argv(1));
+        for (i = 0; i < oatotinfo.balancesN; i++) {
+            oatotinfo.balances[i].freeMoney = atoi(UI_Argv(i * 3 + 2));
+            oatotinfo.balances[i].moneyOnBets = atoi(UI_Argv(i * 3 + 3));
+            strcpy(oatotinfo.balances[i].currency, UI_Argv(i * 3 + 4));
         }
         UI_OatotMenuInternal();
         return qtrue;
     }
     if (Q_strequal(cmd, "ui_updateactivebets")) {
-        oatotinfo.bets_n = atoi(UI_Argv(1));
-        for (i = 0; i < oatotinfo.bets_n; i++) {
+        oatotinfo.betsN = atoi(UI_Argv(1));
+        for (i = 0; i < oatotinfo.betsN; i++) {
             strcpy(oatotinfo.bets[i].horse, UI_Argv(i * 4 + 2));
             strcpy(oatotinfo.bets[i].currency, UI_Argv(i * 4 + 3));
             oatotinfo.bets[i].amount = atoi(UI_Argv(i * 4 + 4));

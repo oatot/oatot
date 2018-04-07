@@ -110,11 +110,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #endif
 
 void StrToUpper(char* str);
+qboolean SearchStr(const char** arr, int len, const char* str);
 
-// max active bets number per client
+// Simple [str]->int dictionary.
+
+typedef struct dictEntry_s {
+    const char *key;
+    int value;
+} dictEntry_t;
+
+int DictFindIndex(dictEntry_t* dict, int len, const char *key);
+qboolean DictFind(dictEntry_t* dict, int len, const char *key, int* res);
+
+// Max active bets number per client.
 #define MAX_ACTIVE_BETS_NUMBER 5
 
-// oatot game stages
+// Currencies number.
+#define CURRENCIES_N 2
+
+// Number of possible horses (red or blue for now).
+#define HORSES_N 2
+
+// Lists of horses and currencies.
+extern const char* currencies[CURRENCIES_N];
+extern const char* horses[HORSES_N];
+
+// oatot game stages.
 typedef enum {
     FORMING_TEAMS,
     MAKING_BETS,
@@ -124,15 +145,18 @@ typedef enum {
 typedef struct betSum_s betSum_t;
 typedef struct balance_s balance_t;
 
-// Total amount bet on some horse.
+// Total amount bet on some horse in given currency.
 struct betSum_s {
-    int oac_amount;
-    int btc_amount;
+    int amount;
+    char currency[MAX_STRING_CHARS];
+    char horse[MAX_STRING_CHARS];
 };
 
+// Balance for given currency.
 struct balance_s {
-    int free_money;
-    int money_on_bets;
+    int freeMoney;
+    int moneyOnBets;
+    char currency[MAX_STRING_CHARS];
 };
 
 typedef struct {
@@ -141,6 +165,9 @@ typedef struct {
     int amount;
     int id;
 } activeBet_t;
+
+// oatot
+qboolean GetBalanceByCurrency(const char* currency, balance_t* balances, balance_t* result);
 
 typedef enum {
     GT_FFA, // free for all

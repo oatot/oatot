@@ -16,52 +16,107 @@ import "C"
 const maxActiveBetsN = 5
 const betsPerPageN = 15
 const maxCStrLen = 1024
+const currenciesN = 2
+const horsesN = 2
 
 var (
 	grpcAddr = "127.0.0.1:13283"
 	client   g.OatotClient
 )
 
-func StringToC(str string, cStr *C.char) {
-	size := len(str)
-	var slice []C.char
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&slice)))
-	sliceHeader.Cap = maxCStrLen
-	sliceHeader.Len = maxCStrLen
-	sliceHeader.Data = uintptr(unsafe.Pointer(cStr))
-	for i := 0; i < size; i++ {
-		slice[i] = C.char(str[i])
+// ==================================================================
+// TODO: replace complex and ugly solution of C*FromGo (or *ToC) with
+// smart recursive function (using reflect), common for all types.
+// Consider using `go generate` to generate the rest of this file.
+// ==================================================================
+
+// Dirty type paramertic function.
+// Just in order to prevent code repetition.
+func CopyGoSliceToCArray(
+	cArray interface{},
+	goSlice interface{},
+	dataSlicePtr interface{},
+	funcCopyElement interface{},
+	cArraySize int,
+) C.int {
+	// Get values of interfaces first.
+	vCArray := reflect.ValueOf(cArray)
+	vGoSlice := reflect.ValueOf(goSlice)
+	vDataSlicePtr := reflect.ValueOf(dataSlicePtr)
+	vDataSlice := reflect.Indirect(vDataSlicePtr)
+	// Len of Go slice.
+	goSliceLen := vGoSlice.Len()
+	if goSliceLen > cArraySize {
+		log.Fatalf("Go-client: attempt to copy slice to C array of smaller size.")
 	}
-	slice[size] = C.char(byte('\x00'))
+	// sliceHeader trick to convert the C array into a Go slice.
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(vDataSlicePtr.Pointer()))
+	sliceHeader.Cap = cArraySize
+	sliceHeader.Len = cArraySize
+	sliceHeader.Data = vCArray.Pointer()
+	for i := 0; i < goSliceLen; i++ {
+		// Hacky reflect usage: call function to copy individual element.
+		reflect.ValueOf(funcCopyElement).Call(
+			[]reflect.Value{vGoSlice.Index(i), vDataSlice.Index(i).Addr()},
+		)
+	}
+	return C.int(goSliceLen)
+}
+
+func CharToC(goChar byte, cChar *C.char) {
+	*cChar = C.char(goChar)
+}
+
+func StringToC(str string, cStr *C.char) {
+	str += "\x00"
+	var slice []C.char
+	CopyGoSliceToCArray(
+		cStr,
+		str,
+		&slice,
+		CharToC,
+		maxCStrLen,
+	)
 }
 
 func CBetFromGo(in *g.Bet, out *C.bet_t) {
 	//TODO: implement time storage in backend.
 	//timeStr := (*in.OpenTime).String()
 	out.amount = C.int(*in.Amount)
-	out.bet_ID = C.int(*in.BetId)
+	out.betID = C.int(*in.BetId)
 	StringToC(*in.Horse, &(out.horse[0]))
 	StringToC(*in.Currency, &(out.currency[0]))
-	//StringToC(timeStr, &(out.open_time[0]))
+	//StringToC(timeStr, &(out.openTime[0]))
 }
 
 func CFullbetFromGo(in *g.Bet, out *C.fullbet_t) {
 	//TODO: implement time storage in backend.
 	//timeStr := (*in.CloseTime).String()
-	CBetFromGo(in, &out.open_bet)
+	CBetFromGo(in, &out.openBet)
 	out.prize = C.int(*in.Prize)
 	StringToC(*in.Winner, &(out.winner[0]))
-	//StringToC(timeStr, &(out.close_time[0]))
+	//StringToC(timeStr, &(out.closeTime[0]))
 }
 
-func CCurrencySummaryFromGo(in *g.CurrencySummary) C.currencySummary_t {
-	return C.currencySummary_t{
-		total_bet:   C.int(*in.TotalBet),
-		total_prize: C.int(*in.TotalPrize),
-		total_lost:  C.int(*in.TotalLost),
-		bets_won:    C.int(*in.BetsWon),
-		bets_lost:   C.int(*in.BetsLost),
-	}
+func CBetSumFromGo(in *g.BetSum, out *C.betSum_t) {
+	out.amount = C.int(*in.Amount)
+	StringToC(*in.Currency, &(out.currency[0]))
+	StringToC(*in.Horse, &(out.horse[0]))
+}
+
+func CCurrencySummaryFromGo(in *g.CurrencySummary, out *C.currencySummary_t) {
+	out.totalBet = C.int(*in.TotalBet)
+	out.totalPrize = C.int(*in.TotalPrize)
+	out.totalLost = C.int(*in.TotalLost)
+	out.betsWon = C.int(*in.BetsWon)
+	out.betsLost = C.int(*in.BetsLost)
+	StringToC(*in.Currency, &(out.currency[0]))
+}
+
+func CBalanceFromGo(in *g.Balance, out *C.balance_t) {
+	out.freeMoney = C.int(*in.FreeMoney)
+	out.moneyOnBets = C.int(*in.MoneyOnBets)
+	StringToC(*in.Currency, &(out.currency[0]))
 }
 
 //export GInitializeClient
@@ -78,7 +133,7 @@ func GInitializeClient() {
 
 //export GOaChangeGameStage
 func GOaChangeGameStage(newStage C.int) {
-	newStageVal := uint64(newStage)
+	newStageVal := g.GameStage(newStage)
 	_, err := client.OaChangeGameStage(
 		context.Background(),
 		&g.OaChangeGameStageRequest{
@@ -167,35 +222,45 @@ func GOaTransferMoney(clGuid *C.char, amount C.int, currency *C.char) {
 }
 
 //export GOaActiveBetsSums
-func GOaActiveBetsSums(horse *C.char) C.betSum_t {
-	horseStr := C.GoString(horse)
+func GOaActiveBetsSums(betSums *C.betSum_t) C.int {
 	res, err := client.OaActiveBetsSums(
 		context.Background(),
-		&g.OaActiveBetsSumsRequest{
-			Horse: &horseStr,
-		},
+		&g.OaActiveBetsSumsRequest{},
 	)
 	if err != nil {
 		log.Fatalf("OaActiveBetsSums: %v", err)
 	}
-	return C.betSum_t{C.int(*res.OacAmount), C.int(*res.BtcAmount)}
+	var sums []C.betSum_t
+	return CopyGoSliceToCArray(
+		betSums,
+		res.BetSums,
+		&sums,
+		CBetSumFromGo,
+		currenciesN * horsesN,
+	)
+
 }
 
 //export GOaMyBalance
-func GOaMyBalance(clGuid *C.char, currency *C.char) C.balance_t {
+func GOaMyBalance(clGuid *C.char, balances *C.balance_t) C.int {
 	clGuidStr := C.GoString(clGuid)
-	currencyStr := C.GoString(currency)
 	res, err := client.OaMyBalance(
 		context.Background(),
 		&g.OaMyBalanceRequest{
-			OaAuth:   &g.OaAuth{ClGuid: &clGuidStr},
-			Currency: &currencyStr,
+			OaAuth: &g.OaAuth{ClGuid: &clGuidStr},
 		},
 	)
 	if err != nil {
 		log.Fatalf("OaMyBalance: %v", err)
 	}
-	return C.balance_t{C.int(*res.FreeMoney), C.int(*res.MoneyOnBets)}
+	var cBalances []C.balance_t
+	return CopyGoSliceToCArray(
+		balances,
+		res.Balances,
+		&cBalances,
+		CBalanceFromGo,
+		currenciesN,
+	)
 }
 
 //export GOaMyBet
@@ -249,16 +314,14 @@ func GOaMyActiveBets(clGuid *C.char, activeBets *C.bet_t) C.int {
 	if err != nil {
 		log.Fatalf("OaMyActiveBets: %v", err)
 	}
-	size := len(res.Bets)
 	var bets []C.bet_t
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bets)))
-	sliceHeader.Cap = maxActiveBetsN
-	sliceHeader.Len = maxActiveBetsN
-	sliceHeader.Data = uintptr(unsafe.Pointer(activeBets))
-	for i := 0; i < size; i++ {
-		CBetFromGo(res.Bets[i], &bets[i])
-	}
-	return C.int(size)
+	return CopyGoSliceToCArray(
+		activeBets,
+		res.Bets,
+		&bets,
+		CBetFromGo,
+		maxActiveBetsN,
+	)
 }
 
 //export GOaMyPastBets
@@ -275,22 +338,19 @@ func GOaMyPastBets(clGuid *C.char, page *C.char, nextPage *C.char, pastBets *C.f
 	if err != nil {
 		log.Fatalf("OaMyPastBets: %v", err)
 	}
-	size := len(res.Bets)
-	var bets []C.fullbet_t
-	sliceHeader := (*reflect.SliceHeader)((unsafe.Pointer(&bets)))
-	sliceHeader.Cap = betsPerPageN
-	sliceHeader.Len = betsPerPageN
-	sliceHeader.Data = uintptr(unsafe.Pointer(pastBets))
-	for i := 0; i < size; i++ {
-		CFullbetFromGo(res.Bets[i], &bets[i])
-	}
 	StringToC(*res.NextPage, nextPage)
-	return C.int(size)
-	return 0
+	var bets []C.fullbet_t
+	return CopyGoSliceToCArray(
+		pastBets,
+		res.Bets,
+		&bets,
+		CFullbetFromGo,
+		betsPerPageN,
+	)
 }
 
 //export GOaMyBetsSummary
-func GOaMyBetsSummary(clGuid *C.char) C.betsSummary_t {
+func GOaMyBetsSummary(clGuid *C.char, currencySummaries *C.currencySummary_t) C.int {
 	clGuidStr := C.GoString(clGuid)
 	res, err := client.OaMyBetsSummary(
 		context.Background(),
@@ -301,9 +361,14 @@ func GOaMyBetsSummary(clGuid *C.char) C.betsSummary_t {
 	if err != nil {
 		log.Fatalf("OaMyBetsSummary: %v", err)
 	}
-	oacSummary := CCurrencySummaryFromGo(res.OacSummary)
-	btcSummary := CCurrencySummaryFromGo(res.BtcSummary)
-	return C.betsSummary_t{oacSummary, btcSummary}
+	var summaries []C.currencySummary_t
+	return CopyGoSliceToCArray(
+		currencySummaries,
+		res.CurrencySummaries,
+		&summaries,
+		CCurrencySummaryFromGo,
+		currenciesN,
+	)
 }
 
 func main() {}

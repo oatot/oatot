@@ -66,20 +66,24 @@ CG_ParseBalance
 =================
 */
 static void CG_ParseBalance(void) {
-    // set cgame data
-    const char* currency;
-    int free_money = atoi(CG_Argv(2));
-    int money_on_bets = atoi(CG_Argv(3));
-    currency = CG_Argv(1);
-    if (!strcmp(currency, "OAC")) {
-        cgs.clientinfo[cg.clientNum].oac_balance.free_money = free_money;
-        cgs.clientinfo[cg.clientNum].oac_balance.money_on_bets = money_on_bets;
-    } else if (!strcmp(currency, "BTC")) {
-        cgs.clientinfo[cg.clientNum].btc_balance.free_money = free_money;
-        cgs.clientinfo[cg.clientNum].btc_balance.money_on_bets = money_on_bets;
+    char command[MAX_STRING_TOKENS];
+    balance_t* balances;
+    int i;
+    int balances_n = atoi(CG_Argv(1));
+    // Set cgame data.
+    for (i = 0; i < balances_n; i++) {
+        cgs.clientinfo[cg.clientNum].balances[i].freeMoney = atoi(CG_Argv(i * 3 + 2));
+        cgs.clientinfo[cg.clientNum].balances[i].moneyOnBets = atoi(CG_Argv(i * 3 + 3));
+        strcpy(cgs.clientinfo[cg.clientNum].balances[i].currency, CG_Argv(i * 3 + 4));
     }
-    // send the data to UI
-    trap_SendConsoleCommand(va("ui_updatebalance %s %d %d", currency, free_money, money_on_bets));
+    // Send the data to UI.
+    command[0] = 0;
+    balances = cgs.clientinfo[cg.clientNum].balances;
+    strcat(command, va("ui_updatebalance %d ", balances_n));
+    for (i = 0; i < balances_n; i++) {
+        strcat(command, va("%d %d %s ", balances[i].freeMoney, balances[i].moneyOnBets, balances[i].currency));
+    }
+    trap_SendConsoleCommand(command);
 }
 
 /*
@@ -93,15 +97,15 @@ static void CG_ParseActiveBets(void) {
     activeBet_t* bets;
     int i;
     int bets_n = atoi(CG_Argv(1));
-    // set cgame data
+    // Set cgame data.
     for (i = 0; i < bets_n; i++) {
         strcpy(cgs.clientinfo[cg.clientNum].activeBets[i].horse, CG_Argv(i * 4 + 2));
         strcpy(cgs.clientinfo[cg.clientNum].activeBets[i].currency, CG_Argv(i * 4 + 3));
         cgs.clientinfo[cg.clientNum].activeBets[i].amount = atoi(CG_Argv(i * 4 + 4));
         cgs.clientinfo[cg.clientNum].activeBets[i].id = atoi(CG_Argv(i * 4 + 5));
     }
-    cgs.clientinfo[cg.clientNum].bets_n = bets_n;
-    // send the data to UI
+    cgs.clientinfo[cg.clientNum].betsN = bets_n;
+    // Send the data to UI.
     command[0] = 0;
     bets = cgs.clientinfo[cg.clientNum].activeBets;
     strcat(command, va("ui_updateactivebets %d ", bets_n));
@@ -118,12 +122,12 @@ CG_ParseActiveBetsSums
 =================
 */
 static void CG_ParseActiveBetsSums(void) {
-    if (!strcmp(CG_Argv(1), "red")) {
-        cgs.red_bets_sum.oac_amount = atoi(CG_Argv(2));
-        cgs.red_bets_sum.btc_amount = atoi(CG_Argv(3));
-    } else if (!strcmp(CG_Argv(1), "blue")) {
-        cgs.blue_bets_sum.oac_amount = atoi(CG_Argv(2));
-        cgs.blue_bets_sum.btc_amount = atoi(CG_Argv(3));
+    int i;
+    int sums_n = atoi(CG_Argv(1));
+    for (i = 0; i < sums_n; i++) {
+        cgs.betSums[i].amount = atoi(CG_Argv(i * 3 + 2));
+        strcpy(cgs.betSums[i].currency, CG_Argv(i * 3 + 3));
+        strcpy(cgs.betSums[i].horse, CG_Argv(i * 3 + 4));
     }
 }
 

@@ -2,20 +2,12 @@ package lib
 
 import (
 	"encoding/json"
-	"math/big"
-	"sync"
-
 	g "github.com/oatot/oatot/generated"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-)
-
-const (
-	// Game stages. TODO: put this enum to api.proto.
-	FORMING_TEAMS = iota
-	MAKING_BETS   = iota
-	PLAYING       = iota
+	"math/big"
+	"sync"
 )
 
 const (
@@ -25,8 +17,11 @@ const (
 	CANCELLED = iota
 )
 
+type MapOfMaps map[string]map[string]uint64
+type MapStrToInt map[string]int64
+
 type Player struct {
-	FreeMoney     map[string]int64 `json:"free_money"`
+	FreeMoney     MapStrToInt      `json:"free_money"`
 	ActiveBets    map[int]struct{} `json:"active_bets"`
 	PastBets      map[int]struct{} `json:"past_bets"`
 	CancelledBets map[int]struct{} `json:"cancelled_bets"`
@@ -43,7 +38,7 @@ type Bet struct {
 }
 
 type Data struct {
-	Stage      int                `json:"stage"`
+	Stage      g.GameStage        `json:"stage"`
 	Players    map[string]*Player `json:"players"`
 	Bets       []*Bet             `json:"bets"`
 	ActiveBets map[int]struct{}   `json:"active_bets"`
@@ -54,7 +49,26 @@ type Server struct {
 
 	data Data
 
-	startMoney int64
+	StartMoney int64
+}
+
+var Currencies = []string{
+	"OAC",
+	"BTC",
+}
+
+var Horses = []string{
+	"red",
+	"blue",
+}
+
+func valueInSlice(value string, slice []string) bool {
+	for _, val := range slice {
+		if value == val {
+			return true
+		}
+	}
+	return false
 }
 
 func New() (*Server, error) {
@@ -63,7 +77,7 @@ func New() (*Server, error) {
 			Players:    make(map[string]*Player),
 			ActiveBets: make(map[int]struct{}),
 		},
-		startMoney: 1000,
+		StartMoney: 1000,
 	}, nil
 }
 
@@ -90,7 +104,7 @@ func (s *Server) Save() ([]byte, error) {
 func (s *Server) SetStartMoney(startMoney int64) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	s.startMoney = startMoney
+	s.StartMoney = startMoney
 }
 
 func (s *Server) SiteLoginStep1(ctx context.Context, req *g.SiteLoginStep1Request) (*g.SiteLoginStep1Response, error) {
@@ -132,7 +146,7 @@ func (s *Server) SiteWithdrawBtc(ctx context.Context, req *g.SiteWithdrawBtcRequ
 func (s *Server) OaDiscardBet(ctx context.Context, req *g.OaDiscardBetRequest) (*g.OaDiscardBetResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != MAKING_BETS {
+	if s.data.Stage != g.GameStage_MAKING_BETS {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	id := int(*req.BetId)
@@ -159,7 +173,7 @@ func (s *Server) OaDiscardBet(ctx context.Context, req *g.OaDiscardBetRequest) (
 func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequest) (*g.OaTransferMoneyResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != PLAYING {
+	if s.data.Stage != g.GameStage_PLAYING {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
@@ -173,32 +187,44 @@ func (s *Server) OaTransferMoney(ctx context.Context, req *g.OaTransferMoneyRequ
 	return &g.OaTransferMoneyResponse{}, nil
 }
 
+func initBetSumsAmountsMap() MapOfMaps {
+	amountsMap := make(MapOfMaps)
+	for _, currency := range Currencies {
+		amountsMap[currency] = make(map[string]uint64)
+		for _, horse := range Horses {
+			amountsMap[currency][horse] = uint64(0)
+		}
+	}
+	return amountsMap
+}
+
+func newBetSum(amount uint64, currency, horse string) *g.BetSum {
+	return &g.BetSum{Amount: &amount, Currency: &currency, Horse: &horse}
+}
+
 func (s *Server) OaActiveBetsSums(ctx context.Context, req *g.OaActiveBetsSumsRequest) (*g.OaActiveBetsSumsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	var oacAmount, btcAmount uint64
+	amountsMap := initBetSumsAmountsMap()
+	var betSums []*g.BetSum
 	for betID := range s.data.ActiveBets {
 		bet := s.data.Bets[betID]
-		if bet.Horse != *req.Horse {
-			continue
-		}
-		if bet.Currency == "OAC" {
-			oacAmount += uint64(bet.Amount)
-		} else if bet.Currency == "BTC" {
-			btcAmount += uint64(bet.Amount)
+		amountsMap[bet.Currency][bet.Horse] += uint64(bet.Amount)
+	}
+	for currency, value := range amountsMap {
+		for horse, value2 := range value {
+			betSums = append(betSums, newBetSum(value2, currency, horse))
 		}
 	}
-	return &g.OaActiveBetsSumsResponse{
-		OacAmount: &oacAmount,
-		BtcAmount: &btcAmount,
-	}, nil
+	res := &g.OaActiveBetsSumsResponse{BetSums: betSums}
+	return res, nil
 }
 
 func (s *Server) OaChangeGameStage(ctx context.Context, req *g.OaChangeGameStageRequest) (*g.OaChangeGameStageResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	stage := int(*req.NewStage)
-	if stage < FORMING_TEAMS || stage > PLAYING {
+	stage := *req.NewStage
+	if stage < g.GameStage_FORMING_TEAMS || stage > g.GameStage_PLAYING {
 		return nil, status.Errorf(codes.Aborted, "Bad stage")
 	}
 	s.data.Stage = stage
@@ -213,6 +239,18 @@ func (s *Server) OaIsNew(ctx context.Context, req *g.OaIsNewRequest) (*g.OaIsNew
 	return &g.OaIsNewResponse{Result: &result}, nil
 }
 
+func basicFreeMoney(startMoney int64) MapStrToInt {
+	freeMoney := make(MapStrToInt)
+	for _, currency := range Currencies {
+		if currency == "OAC" {
+			freeMoney[currency] = startMoney
+		} else {
+			freeMoney[currency] = 0
+		}
+	}
+	return freeMoney
+}
+
 func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.OaRegisterResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
@@ -220,12 +258,16 @@ func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.O
 		return nil, status.Errorf(codes.AlreadyExists, "AlreadyExists")
 	}
 	s.data.Players[*req.OaAuth.ClGuid] = &Player{
-		FreeMoney:     map[string]int64{"OAC": s.startMoney},
+		FreeMoney:     basicFreeMoney(s.StartMoney),
 		ActiveBets:    make(map[int]struct{}),
 		PastBets:      make(map[int]struct{}),
 		CancelledBets: make(map[int]struct{}),
 	}
 	return &g.OaRegisterResponse{}, nil
+}
+
+func newBalance(freeMoney, moneyOnBets uint64, currency string) *g.Balance {
+	return &g.Balance{FreeMoney: &freeMoney, MoneyOnBets: &moneyOnBets, Currency: &currency}
 }
 
 func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g.OaMyBalanceResponse, error) {
@@ -235,34 +277,35 @@ func (s *Server) OaMyBalance(ctx context.Context, req *g.OaMyBalanceRequest) (*g
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	freeMoney := uint64(player.FreeMoney[*req.Currency])
-	moneyOnBets := uint64(0)
-	for betID := range player.ActiveBets {
-		bet := s.data.Bets[betID]
-		if bet.Currency == *req.Currency {
-			moneyOnBets += uint64(bet.Amount)
+	res := &g.OaMyBalanceResponse{}
+	for currency, value := range player.FreeMoney {
+		moneyOnBets := uint64(0)
+		freeMoney := uint64(value)
+		for betID := range player.ActiveBets {
+			bet := s.data.Bets[betID]
+			if bet.Currency == currency {
+				moneyOnBets += uint64(bet.Amount)
+			}
 		}
+		res.Balances = append(res.Balances, newBalance(freeMoney, moneyOnBets, currency))
 	}
-	return &g.OaMyBalanceResponse{
-		FreeMoney:   &freeMoney,
-		MoneyOnBets: &moneyOnBets,
-	}, nil
+	return res, nil
 }
 
 func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBetResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != MAKING_BETS {
+	if s.data.Stage != g.GameStage_MAKING_BETS {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	player, has := s.data.Players[*req.OaAuth.ClGuid]
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	if *req.Bet.Currency != "OAC" && *req.Bet.Currency != "BTC" {
+	if !valueInSlice(*req.Bet.Currency, Currencies) {
 		return nil, status.Errorf(codes.Aborted, "Bad currency")
 	}
-	if *req.Bet.Horse != "red" && *req.Bet.Horse != "blue" {
+	if !valueInSlice(*req.Bet.Horse, Horses) {
 		return nil, status.Errorf(codes.Aborted, "Bad horse")
 	}
 	freeMoney := uint64(player.FreeMoney[*req.Bet.Currency])
@@ -290,7 +333,7 @@ func (s *Server) OaMyBet(ctx context.Context, req *g.OaMyBetRequest) (*g.OaMyBet
 func (s *Server) OaCloseBets(ctx context.Context, req *g.OaCloseBetsRequest) (*g.OaCloseBetsResponse, error) {
 	s.m.Lock()
 	defer s.m.Unlock()
-	if s.data.Stage != PLAYING {
+	if s.data.Stage != g.GameStage_PLAYING {
 		return nil, status.Errorf(codes.FailedPrecondition, "Bad stage")
 	}
 	amountsSums := make(map[string]int64)
@@ -408,7 +451,7 @@ func (s *Server) OaMyPastBets(ctx context.Context, req *g.OaMyPastBetsRequest) (
 	return res, nil
 }
 
-func defaultCurrencySummary() *g.CurrencySummary {
+func defaultCurrencySummary(currency string) *g.CurrencySummary {
 	var totalBet, totalPrize, totalLost, betsWon, betsLost uint64
 	return &g.CurrencySummary{
 		TotalBet:   &totalBet,
@@ -416,6 +459,7 @@ func defaultCurrencySummary() *g.CurrencySummary {
 		TotalLost:  &totalLost,
 		BetsWon:    &betsWon,
 		BetsLost:   &betsLost,
+		Currency:   &currency,
 	}
 }
 
@@ -426,20 +470,13 @@ func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequ
 	if !has {
 		return nil, status.Errorf(codes.NotFound, "No such player")
 	}
-	res := &g.OaMyBetsSummaryResponse{
-		OacSummary: defaultCurrencySummary(),
-		BtcSummary: defaultCurrencySummary(),
+	currencySummaries := make(map[string]*g.CurrencySummary)
+	for _, currency := range Currencies {
+		currencySummaries[currency] = defaultCurrencySummary(currency)
 	}
 	for betID := range player.PastBets {
 		bet := s.data.Bets[betID]
-		var summary *g.CurrencySummary
-		if bet.Currency == "OAC" {
-			summary = res.OacSummary
-		} else if bet.Currency == "BTC" {
-			summary = res.BtcSummary
-		} else {
-			continue
-		}
+		summary := currencySummaries[bet.Currency]
 		*summary.TotalBet += uint64(bet.Amount)
 		*summary.TotalPrize += uint64(bet.Prize)
 		if bet.Prize == 0 {
@@ -448,6 +485,10 @@ func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequ
 		} else {
 			*summary.BetsWon += 1
 		}
+	}
+	res := &g.OaMyBetsSummaryResponse{}
+	for _, value := range currencySummaries {
+		res.CurrencySummaries = append(res.CurrencySummaries, value)
 	}
 	return res, nil
 }

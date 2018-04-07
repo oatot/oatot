@@ -299,9 +299,9 @@ typedef struct {
 #define MAX_BETSTRING_LENGTH 40
 
 typedef struct {
-    int bets_n; // The actual number of active bets.
-    balance_t oac_balance; // Is needed to limit bet amount menu field.
-    balance_t btc_balance; // Is needed to limit bet amount menu field.
+    int balancesN;
+    balance_t balances[CURRENCIES_N]; // Is needed to limit bet amount menu field.
+    int betsN; // The actual number of active bets.
     activeBet_t bets[MAX_ACTIVE_BETS_NUMBER]; // Active bets.
     char betStrings[MAX_ACTIVE_BETS_NUMBER][MAX_BETSTRING_LENGTH];
 } t_oatotinfo;
@@ -568,15 +568,15 @@ extern void UI_VoteCustomMenu(void);
 //
 // OATOT
 
-// Drawing
+// Drawing.
 #define BUTTON_HORIZONTAL_SPACING 150
-// Calculate default bet amount from balance
+// Calculate default bet amount from balance.
 #define OPTIMAL_BET_AMOUNT_MAGIC_COEFFICIENT 10
 
 extern const char* betHorse_items[3];
 extern const char* betCurrency_items[3];
 
-// Common checking & action functions
+// Common checking & action functions.
 extern int GetBalanceLen(void);
 extern void InitBetFromInput(activeBet_t* bet, int horse_index, int currency_index, menufield_s amount_field);
 extern void DiscardBet(int bet_index);

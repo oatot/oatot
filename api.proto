@@ -107,7 +107,7 @@ message OaDiscardBetResponse {
 message OaTransferMoneyRequest {
   // TODO: make server-wide, one RPC for all players.
   required OaAuth oa_auth = 1;
-  // prize
+  // Prize.
   required fixed64 amount = 2;
   required string currency = 3;
 }
@@ -115,20 +115,27 @@ message OaTransferMoneyRequest {
 message OaTransferMoneyResponse {
 }
 
+message BetSum {
+  required fixed64 amount = 1;
+  required string currency = 2;
+  required string horse = 3;
+}
+
 message OaActiveBetsSumsRequest {
-  required string horse = 1;
 }
 
 message OaActiveBetsSumsResponse {
-  // TODO: one RPC for all horses.
-  required fixed64 oac_amount = 1;
-  required fixed64 btc_amount = 2;
+  repeated BetSum bet_sums = 1;
+}
+
+enum GameStage {
+  FORMING_TEAMS = 0;
+  MAKING_BETS = 1;
+  PLAYING = 2;
 }
 
 message OaChangeGameStageRequest {
-  // 0 for FORMING_TEAMS, 1 for MAKING_BETS, 2 for PLAYING
-  // TODO: replace with enum.
-  required fixed64 new_stage = 1;
+  required GameStage new_stage = 1;
 }
 
 message OaChangeGameStageResponse {
@@ -149,14 +156,18 @@ message OaRegisterRequest {
 message OaRegisterResponse {
 }
 
+message Balance {
+  required fixed64 free_money = 1;
+  required fixed64 money_on_bets = 2;
+  required string currency = 3;
+}
+
 message OaMyBalanceRequest {
   required OaAuth oa_auth = 1;
-  required string currency = 2;
 }
 
 message OaMyBalanceResponse {
-  required fixed64 free_money = 1;
-  required fixed64 money_on_bets = 2;
+  repeated Balance balances = 1;
 }
 
 message Bet {
@@ -220,6 +231,7 @@ message CurrencySummary {
   required fixed64 total_lost = 3;
   required fixed64 bets_won = 4;
   required fixed64 bets_lost = 5;
+  required string currency = 6;
 }
 
 message OaMyBetsSummaryRequest {
@@ -227,10 +239,7 @@ message OaMyBetsSummaryRequest {
 }
 
 message OaMyBetsSummaryResponse {
-  // TODO: currency name as a string to support more in future.
-  // Only past bets.
-  required CurrencySummary oac_summary = 1;
-  required CurrencySummary btc_summary = 2;
+  repeated CurrencySummary currency_summaries = 1;
 }
 
 service Oatot {
@@ -297,7 +306,6 @@ service Oatot {
   // Discard a bet. This MUST only be possible during MAKING_BETS game stage.
   // Completely remove it and disregard in OaActiveBetsSums, OaMyActiveBets,
   // OaMyPastBets, ...
-  // TODO: s/bet/bet/
   rpc OaDiscardBet(OaDiscardBetRequest) returns (OaDiscardBetResponse);
 
   // Active bets for this match. Output array MUST BE sorted by open time increase.
