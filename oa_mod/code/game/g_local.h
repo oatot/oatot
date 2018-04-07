@@ -1171,6 +1171,7 @@ extern vmCvar_t g_spawnprotect;
 // OATOT Cvars.
 
 // Meaningful for the external users.
+extern vmCvar_t g_enableBetting;
 extern vmCvar_t g_makingBetsTime;
 extern vmCvar_t g_easyItemPickup;
 extern vmCvar_t g_scoreboardDefaultSeason;
