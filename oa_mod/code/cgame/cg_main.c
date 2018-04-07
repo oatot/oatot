@@ -2222,6 +2222,8 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     trap_SendClientCommand("getActiveBetsSums\n");
     trap_SendClientCommand("getActiveBets\n");
     trap_SendClientCommand("getBalance\n");
+    cgs.flagsStatus[TEAM_RED].dropped = qfalse;
+    cgs.flagsStatus[TEAM_RED].stolen = qfalse;
     // load the new map
     // load the new map
 #ifndef SCRIPTHUD
