@@ -24,11 +24,9 @@ var (
 	client   g.OatotClient
 )
 
-// ==================================================================
 // TODO: replace complex and ugly solution of C*FromGo (or *ToC) with
 // smart recursive function (using reflect), common for all types.
 // Consider using `go generate` to generate the rest of this file.
-// ==================================================================
 
 // Dirty type paramertic function.
 // Just in order to prevent code repetition.
@@ -236,7 +234,7 @@ func GOaActiveBetsSums(betSums *C.betSum_t) C.int {
 		res.BetSums,
 		&sums,
 		CBetSumFromGo,
-		currenciesN * horsesN,
+		currenciesN*horsesN,
 	)
 
 }
