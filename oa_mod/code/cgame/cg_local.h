@@ -454,6 +454,11 @@ typedef struct weaponInfo_s {
     int lfxdrawn;
 } weaponInfo_t;
 
+typedef struct flagState_s {
+    qboolean stolen;
+    qboolean dropped;
+} flagState_t;
+
 // each IT_* item has an associated itemInfo_t
 // that constains media references necessary to present the
 // item and its effects
@@ -770,6 +775,7 @@ typedef struct {
     qhandle_t redFlagShader[3];
     qhandle_t blueFlagShader[3];
     qhandle_t flagShader[4];
+    qhandle_t droppedFlagShader[4];
 
     //For Double Domination:
     //qhandle_t ddPointA;
@@ -1093,6 +1099,7 @@ typedef struct {
     sfxHandle_t returnOpponentSound;
     sfxHandle_t takenYourTeamSound;
     sfxHandle_t takenOpponentSound;
+    sfxHandle_t dropFlagSound;
 
     sfxHandle_t redFlagReturnedSound;
     sfxHandle_t blueFlagReturnedSound;
@@ -1246,6 +1253,7 @@ typedef struct {
     // oatot
     int gameStage;
     betSum_t betSums[HORSES_N * CURRENCIES_N];
+    flagState_t flagsStatus[TEAM_NUM_TEAMS];
 
     // teamchat width is *3 because of embedded color codes
     char teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH * 3 + 1];

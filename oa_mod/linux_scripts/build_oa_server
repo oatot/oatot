@@ -16,7 +16,7 @@ cp -r ../resources/* ../build/release-linux-$ARCH/$MODNAME
 
 cd ..
 # Build and pak it.
-make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images models scripts gfx menu
+make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images models scripts gfx menu sound
 
 # Copy pk3s to dir specified for downloading.
 if (($# == 1)); then

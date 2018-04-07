@@ -2899,6 +2899,28 @@ void CG_DrawResults(int prize, int balance_change) {
 
 /*
 =================
+CG_DrawFlagsStatus
+=================
+ */
+void CG_DrawFlagsStatus(void) {
+    if (cgs.flagsStatus[TEAM_RED].stolen) {
+        if (cgs.flagsStatus[TEAM_RED].dropped) {
+            CG_DrawPic(120, 25, 40, 40, cgs.media.droppedFlagShader[TEAM_RED]);
+        } else {
+            CG_DrawPic(120, 25, 40, 40, cgs.media.flagShader[TEAM_RED]);
+        }
+    }
+    if (cgs.flagsStatus[TEAM_BLUE].stolen) {
+        if (cgs.flagsStatus[TEAM_BLUE].dropped) {
+            CG_DrawPic(480, 25, 40, 40, cgs.media.droppedFlagShader[TEAM_BLUE]);
+        } else {
+            CG_DrawPic(480, 25, 40, 40, cgs.media.flagShader[TEAM_BLUE]);
+        }
+    }
+}
+
+/*
+=================
 CG_DrawOatotStuff
 =================
  */
@@ -3451,9 +3473,15 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
         if (!cg.scoreBoardShowing) {
             if (!cg.loading && !cg.warmup) {
                 if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) {
+                    // Always draw oatot info for spectators.
                     CG_DrawOatotStuff();
-                } else if (cgs.gameStage != PLAYING) {
-                    CG_DrawOatotStuff();
+                } else {
+                    // Draw flags status only for players.
+                    CG_DrawFlagsStatus();
+                    if (cgs.gameStage != PLAYING) {
+                        // Don't draw oatot info for players if they are currently playing.
+                        CG_DrawOatotStuff();
+                    }
                 }
             }
         }
