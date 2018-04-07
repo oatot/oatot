@@ -1972,11 +1972,11 @@ void printCurrencySummary(gentity_t* ent, currencySummary_t summary) {
     strcat(summary_str, "^6Your ^3");
     strcat(summary_str, summary.currency);
     strcat(summary_str, " ^6summary:\n");
-    Q_snprintf(total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %d%s\n", summary.totalBet, summary.currency);
+    Q_snprintf(total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %d %s\n", summary.totalBet, summary.currency);
     strcat(summary_str, total_bet_str);
-    Q_snprintf(total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %d%s\n", summary.totalPrize, summary.currency);
+    Q_snprintf(total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %d %s\n", summary.totalPrize, summary.currency);
     strcat(summary_str, total_prize_str);
-    Q_snprintf(total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %d%s\n", summary.totalLost, summary.currency);
+    Q_snprintf(total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %d %s\n", summary.totalLost, summary.currency);
     strcat(summary_str, total_lost_str);
     Q_snprintf(bets_won_str, MAX_STRING_TOKENS, "^2Bets won: %d\n", summary.betsWon);
     strcat(summary_str, bets_won_str);
@@ -2145,7 +2145,7 @@ void Cmd_ShareBalance_f(gentity_t* ent) {
                 if (i == balances_n - 1) {
                     strcat(balance_str, va("^3%d %s ", balances[i].freeMoney, balances[i].currency));
                 } else {
-                    strcat(balance_str, va("^3%d %s ^5, ", balances[i].freeMoney, balances[i].currency));
+                    strcat(balance_str, va("^3%d %s^5, ", balances[i].freeMoney, balances[i].currency));
                 }
             }
             trap_SendServerCommand(-1, va("print \"%s ^6:p\n\"", balance_str));
