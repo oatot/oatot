@@ -634,11 +634,13 @@ void CG_InitConsoleCommands(void) {
     trap_AddCommand("stats");
     trap_AddCommand("teamtask");
     trap_AddCommand("loaddefered"); // spelled wrong, but not changing for demo
-    trap_AddCommand("bet"); // oatot
-    trap_AddCommand("unbet"); // oatot
-    trap_AddCommand("pastBets"); // oatot
-    trap_AddCommand("betsSummary"); // oatot
-    trap_AddCommand("ready"); // oatot
-    trap_AddCommand("help"); // oatot
-    trap_AddCommand("shareBalance"); // oatot
+    if (cg_enableBetting.integer) {
+        trap_AddCommand("bet"); // oatot
+        trap_AddCommand("unbet"); // oatot
+        trap_AddCommand("pastBets"); // oatot
+        trap_AddCommand("betsSummary"); // oatot
+        trap_AddCommand("ready"); // oatot
+        trap_AddCommand("help"); // oatot
+        trap_AddCommand("shareBalance"); // oatot
+    }
 }

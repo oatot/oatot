@@ -1509,6 +1509,7 @@ extern vmCvar_t cg_scoreboardSeason;
 extern vmCvar_t cg_scoreboardAggressive;
 // Utility.
 extern vmCvar_t cg_scoreboardDefaultSeasonBackup;
+extern vmCvar_t cg_enableBetting;
 
 //unlagged - cg_unlagged.c
 void CG_PredictWeaponEffects(centity_t* cent);
@@ -1600,7 +1601,7 @@ extern char systemChat[256];
 extern char teamChat1[256];
 extern char teamChat2[256];
 
-// oatot
+// cg_draw_oatot.c
 void CG_DrawOatotStuff(void);
 void CG_DrawBalanceBar(int left_side);
 void CG_DrawBalance(void);

@@ -425,7 +425,9 @@ void CG_ParseServerinfo(void) {
         cgs.ffa_gt = 1;
     }
     trap_Cvar_Set("g_gametype", va("%i", cgs.gametype));
-    cgs.gameStage = atoi(Info_ValueForKey(info, "g_gameStage")); // oatot
+    if (cg_enableBetting.integer) {
+        cgs.gameStage = atoi(Info_ValueForKey(info, "g_gameStage")); // oatot
+    }
     cgs.dmflags = atoi(Info_ValueForKey(info, "dmflags"));
     cgs.videoflags = atoi(Info_ValueForKey(info, "videoflags"));
     cgs.elimflags = atoi(Info_ValueForKey(info, "elimflags"));
