@@ -302,7 +302,7 @@ static cvarTable_t gameCvarTable[] = {
     //oatot Cvars
 
     // Meaningful for the external users.
-    { &g_enableBetting, "g_enableBetting", "1", CVAR_ROM, 0, qfalse },
+    { &g_enableBetting, "g_enableBetting", "1", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
     { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },

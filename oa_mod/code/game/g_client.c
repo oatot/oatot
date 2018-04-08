@@ -1122,9 +1122,11 @@ void ClientUserinfoChanged(int clientNum) {
                client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader);
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
-    G_UpdateBalance(ent);
-    G_UpdateActiveBets(ent);
-    G_UpdateActiveBetsSums(ent);
+    if (g_enableBetting.integer) {
+        G_UpdateBalance(ent);
+        G_UpdateActiveBets(ent);
+        G_UpdateActiveBetsSums(ent);
+    }
     // this is not the userinfo, more like the configstring actually
     G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid"));
 }
@@ -1420,8 +1422,10 @@ void ClientBegin(int clientNum) {
         client->pers.welcomed = qtrue;
         printWelcomeMessage(clientNum);
     }
-    G_UpdateBalance(ent);
-    G_UpdateActiveBets(ent);
+    if (g_enableBetting.integer) {
+        G_UpdateBalance(ent);
+        G_UpdateActiveBets(ent);
+    }
 }
 
 /*
