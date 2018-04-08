@@ -2389,6 +2389,7 @@ GOOBJ = \
   $(B)/$(BASEGAME)/go-client/goclient.so
 
 Q3GOBJ_ = \
+  $(B)/$(BASEGAME)/game/g_oatot.o \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_chat.o \
   $(B)/$(BASEGAME)/game/ai_cmd.o \
