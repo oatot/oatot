@@ -1432,7 +1432,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     }
     if (cg_drawFPS.integer && (stereoFrame == STEREO_CENTER || stereoFrame == STEREO_RIGHT)) {
         if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR) {
-            if (cgs.gameStage == PLAYING) {
+            if (!cg_enableBetting.integer || (cgs.gameStage == PLAYING)) {
                 y = CG_DrawFPS(y);
             }
         }
@@ -1445,7 +1445,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     y = CG_DrawFollowMessage(y);
     if (cg_drawTimer.integer) {
         if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR) {
-            if (cgs.gameStage == PLAYING) {
+            if (!cg_enableBetting.integer || (cgs.gameStage == PLAYING)) {
                 y = CG_DrawTimer(y);
             }
         }
@@ -1455,7 +1455,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     }
     if (cg_drawSpeed.integer) {
         if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR) {
-            if (cgs.gameStage == PLAYING) {
+            if (!cg_enableBetting.integer || (cgs.gameStage == PLAYING)) {
                 y = CG_DrawSpeedMeter(y);
             }
         }
