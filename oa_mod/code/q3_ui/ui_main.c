@@ -282,7 +282,7 @@ static cvarTable_t cvarTable[] = {
     { &ui_setupchecked, "ui_setupchecked", "0", CVAR_ARCHIVE },
 
     // oatot
-    { &ui_enableBetting, "g_enableBetting", "1", CVAR_ROM }
+    { &ui_enableBetting, "g_enableBetting", "1", 0 }
 };
 
 // bk001129 - made static to avoid aliasing

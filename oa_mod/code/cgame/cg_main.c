@@ -516,7 +516,7 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
     // Utility.
     {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE},
-    {&cg_enableBetting, "g_enableBetting", "1", CVAR_ROM}
+    {&cg_enableBetting, "g_enableBetting", "1", 0}
 };
 
 static int cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
