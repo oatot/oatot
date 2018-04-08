@@ -296,16 +296,6 @@ typedef struct {
     char mapname[10][MAX_MAPNAME_LENGTH];
 } t_mappage;
 
-#define MAX_BETSTRING_LENGTH 40
-
-typedef struct {
-    int balancesN;
-    balance_t balances[CURRENCIES_N]; // Is needed to limit bet amount menu field.
-    int betsN; // The actual number of active bets.
-    activeBet_t bets[MAX_ACTIVE_BETS_NUMBER]; // Active bets.
-    char betStrings[MAX_ACTIVE_BETS_NUMBER][MAX_BETSTRING_LENGTH];
-} t_oatotinfo;
-
 #define MAX_NAMELENGTH_INFO 20
 
 typedef struct {
@@ -314,7 +304,6 @@ typedef struct {
 } t_mapinfo;
 
 extern t_mappage mappage;
-extern t_oatotinfo oatotinfo;
 
 extern void Menu_Cache(void);
 extern void Menu_Focus(menucommon_s* m);
@@ -393,6 +382,7 @@ extern void UI_CreditMenu(void);
 //
 extern void InGame_Cache(void);
 extern void UI_InGameMenu(void);
+extern void InGame_Event(void* ptr, int notification);
 
 //
 // ui_confirm.c
@@ -583,14 +573,6 @@ extern void DiscardBet(int bet_index);
 extern void MakeBet(activeBet_t bet);
 extern qboolean CheckBetUpper(activeBet_t bet);
 extern qboolean CheckBetLower(activeBet_t bet);
-
-// ui_oatotmenu.c
-extern void UI_OatotMenu(void);
-extern void UI_OatotMenuInternal(void);
-
-// ui_betmenu.c
-extern void UI_BetMenu(activeBet_t bet, qboolean edit_mode);
-extern void UI_BetMenuInternal(activeBet_t bet, qboolean edit_mode);
 
 //
 // ui_players.c

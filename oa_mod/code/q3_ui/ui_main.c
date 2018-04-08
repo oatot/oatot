@@ -181,6 +181,9 @@ vmCvar_t ui_browserOnlyHumans;
 //new in beta 37:
 vmCvar_t ui_setupchecked;
 
+// oatot
+vmCvar_t ui_enableBetting;
+
 // bk001129 - made static to avoid aliasing.
 static cvarTable_t cvarTable[] = {
     { &ui_ffa_fraglimit, "ui_ffa_fraglimit", "20", CVAR_ARCHIVE },
@@ -277,6 +280,9 @@ static cvarTable_t cvarTable[] = {
 
     //new in beta 37:
     { &ui_setupchecked, "ui_setupchecked", "0", CVAR_ARCHIVE },
+
+    // oatot
+    { &ui_enableBetting, "g_enableBetting", "1", CVAR_ROM }
 };
 
 // bk001129 - made static to avoid aliasing

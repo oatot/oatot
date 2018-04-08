@@ -29,6 +29,7 @@ INGAME MENU
 */
 
 #include "ui_local.h"
+#include "ui_oatot.h"
 
 #define INGAME_FRAME "menu/" MENU_ART_DIR "/addbotframe"
 //#define INGAME_FRAME "menu/" MENU_ART_DIR "/cut_frame"
@@ -45,7 +46,6 @@ INGAME MENU
 #define ID_RESUME 18
 #define ID_TEAMORDERS 19
 #define ID_VOTE 20
-#define ID_OATOT 21
 
 typedef struct {
     menuframework_s menu;
@@ -237,16 +237,10 @@ void InGame_MenuInit(void) {
     if (atoi(Info_ValueForKey(info, "g_allowVote")) == 0 || gametype == GT_SINGLE_PLAYER) {
         s_ingame.vote.generic.flags |= QMF_GRAYED;
     }
-    y += INGAME_MENU_VERTICAL_SPACING;
-    s_ingame.oatot.generic.type = MTYPE_PTEXT;
-    s_ingame.oatot.generic.flags = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
-    s_ingame.oatot.generic.x = 320;
-    s_ingame.oatot.generic.y = y;
-    s_ingame.oatot.generic.id = ID_OATOT;
-    s_ingame.oatot.generic.callback = InGame_Event;
-    s_ingame.oatot.string = "OATOT MENU";
-    s_ingame.oatot.color = color_red;
-    s_ingame.oatot.style = UI_CENTER | UI_DROPSHADOW;
+    if (ui_enableBetting.integer) {
+        y += INGAME_MENU_VERTICAL_SPACING;
+        UI_InitOatotField(&s_ingame.oatot, y);
+    }
     y += INGAME_MENU_VERTICAL_SPACING;
     s_ingame.setup.generic.type = MTYPE_PTEXT;
     s_ingame.setup.generic.flags = QMF_CENTER_JUSTIFY | QMF_PULSEIFFOCUS;
@@ -316,13 +310,15 @@ void InGame_MenuInit(void) {
     Menu_AddItem(&s_ingame.menu, &s_ingame.removebots);
     Menu_AddItem(&s_ingame.menu, &s_ingame.teamorders);
     Menu_AddItem(&s_ingame.menu, &s_ingame.vote);
-    Menu_AddItem(&s_ingame.menu, &s_ingame.oatot);
     Menu_AddItem(&s_ingame.menu, &s_ingame.setup);
     Menu_AddItem(&s_ingame.menu, &s_ingame.server);
     Menu_AddItem(&s_ingame.menu, &s_ingame.restart);
     Menu_AddItem(&s_ingame.menu, &s_ingame.resume);
     Menu_AddItem(&s_ingame.menu, &s_ingame.leave);
     Menu_AddItem(&s_ingame.menu, &s_ingame.quit);
+    if (ui_enableBetting.integer) {
+        Menu_AddItem(&s_ingame.menu, &s_ingame.oatot);
+    }
 }
 
 /*
