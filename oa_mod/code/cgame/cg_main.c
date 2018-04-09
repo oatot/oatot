@@ -297,7 +297,6 @@ vmCvar_t cg_scoreboardSeason;
 vmCvar_t cg_scoreboardAggressive;
 // Utility.
 vmCvar_t cg_scoreboardDefaultSeasonBackup;
-vmCvar_t cg_enableBetting;
 
 typedef struct {
     vmCvar_t* vmCvar;
@@ -516,7 +515,6 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
     // Utility.
     {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE},
-    {&cg_enableBetting, "g_enableBetting", "1", 0}
 };
 
 static int cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
@@ -2220,7 +2218,7 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     s = CG_ConfigString(CS_LEVEL_START_TIME);
     cgs.levelStartTime = atoi(s);
     CG_ParseServerinfo();
-    if (cg_enableBetting.integer) {
+    if (cgs.enableBetting) {
         // oatot
         trap_SendClientCommand("getActiveBetsSums\n");
         trap_SendClientCommand("getActiveBets\n");

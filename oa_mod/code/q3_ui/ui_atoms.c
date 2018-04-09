@@ -976,6 +976,7 @@ UI_Init
 =================
 */
 void UI_Init(void) {
+    char info[MAX_INFO_STRING];
     UI_RegisterCvars();
     UI_InitGameinfo();
     // cache redundant calulations
@@ -995,6 +996,9 @@ void UI_Init(void) {
     Menu_Cache();
     uis.activemenu = NULL;
     uis.menusp = 0;
+    // oatot
+    trap_GetConfigString(CS_SERVERINFO, info, MAX_INFO_STRING);
+    enableBetting = atoi(Info_ValueForKey(info, "g_enableBetting"));
 }
 
 /*

@@ -182,7 +182,7 @@ vmCvar_t ui_browserOnlyHumans;
 vmCvar_t ui_setupchecked;
 
 // oatot
-vmCvar_t ui_enableBetting;
+qboolean enableBetting;
 
 // bk001129 - made static to avoid aliasing.
 static cvarTable_t cvarTable[] = {
@@ -280,9 +280,6 @@ static cvarTable_t cvarTable[] = {
 
     //new in beta 37:
     { &ui_setupchecked, "ui_setupchecked", "0", CVAR_ARCHIVE },
-
-    // oatot
-    { &ui_enableBetting, "g_enableBetting", "1", 0 }
 };
 
 // bk001129 - made static to avoid aliasing

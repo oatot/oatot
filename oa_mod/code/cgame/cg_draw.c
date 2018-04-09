@@ -1432,7 +1432,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     }
     if (cg_drawFPS.integer && (stereoFrame == STEREO_CENTER || stereoFrame == STEREO_RIGHT)) {
         if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR) {
-            if (!cg_enableBetting.integer || (cgs.gameStage == PLAYING)) {
+            if (!cgs.enableBetting || (cgs.gameStage == PLAYING)) {
                 y = CG_DrawFPS(y);
             }
         }
@@ -1445,7 +1445,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     y = CG_DrawFollowMessage(y);
     if (cg_drawTimer.integer) {
         if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR) {
-            if (!cg_enableBetting.integer || (cgs.gameStage == PLAYING)) {
+            if (!cgs.enableBetting || (cgs.gameStage == PLAYING)) {
                 y = CG_DrawTimer(y);
             }
         }
@@ -1455,7 +1455,7 @@ static void CG_DrawUpperRight(stereoFrame_t stereoFrame) {
     }
     if (cg_drawSpeed.integer) {
         if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR) {
-            if (!cg_enableBetting.integer || (cgs.gameStage == PLAYING)) {
+            if (!cgs.enableBetting || (cgs.gameStage == PLAYING)) {
                 y = CG_DrawSpeedMeter(y);
             }
         }
@@ -3184,14 +3184,14 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
         if (!cg.scoreBoardShowing) {
             if (!cg.loading && !cg.warmup) {
                 if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) {
-                    if (cg_enableBetting.integer) {
+                    if (cgs.enableBetting) {
                         // Always draw oatot info for spectators.
                         CG_DrawOatotStuff();
                     }
                 } else {
                     // Draw flags status only for players.
                     CG_DrawFlagsStatus();
-                    if (cg_enableBetting.integer) {
+                    if (cgs.enableBetting) {
                         if (cgs.gameStage != PLAYING) {
                             // Don't draw oatot info for players if they are currently playing.
                             CG_DrawOatotStuff();

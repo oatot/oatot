@@ -6,7 +6,7 @@
 #include "../ui/ui_shared.h"
 #include "ui_local.h"
 
-extern vmCvar_t ui_enableBetting;
+extern qboolean enableBetting;
 
 // For ui_ingame.c
 #define ID_OATOT 21

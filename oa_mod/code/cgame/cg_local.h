@@ -1252,6 +1252,7 @@ typedef struct {
 
     // oatot
     int gameStage;
+    qboolean enableBetting;
     betSum_t betSums[HORSES_N * CURRENCIES_N];
     flagState_t flagsStatus[TEAM_NUM_TEAMS];
 
@@ -1509,7 +1510,6 @@ extern vmCvar_t cg_scoreboardSeason;
 extern vmCvar_t cg_scoreboardAggressive;
 // Utility.
 extern vmCvar_t cg_scoreboardDefaultSeasonBackup;
-extern vmCvar_t cg_enableBetting;
 
 //unlagged - cg_unlagged.c
 void CG_PredictWeaponEffects(centity_t* cent);

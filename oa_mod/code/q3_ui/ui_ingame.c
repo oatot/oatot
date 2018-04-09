@@ -237,7 +237,7 @@ void InGame_MenuInit(void) {
     if (atoi(Info_ValueForKey(info, "g_allowVote")) == 0 || gametype == GT_SINGLE_PLAYER) {
         s_ingame.vote.generic.flags |= QMF_GRAYED;
     }
-    if (ui_enableBetting.integer) {
+    if (enableBetting) {
         y += INGAME_MENU_VERTICAL_SPACING;
         UI_InitOatotField(&s_ingame.oatot, y);
     }
@@ -316,7 +316,7 @@ void InGame_MenuInit(void) {
     Menu_AddItem(&s_ingame.menu, &s_ingame.resume);
     Menu_AddItem(&s_ingame.menu, &s_ingame.leave);
     Menu_AddItem(&s_ingame.menu, &s_ingame.quit);
-    if (ui_enableBetting.integer) {
+    if (enableBetting) {
         Menu_AddItem(&s_ingame.menu, &s_ingame.oatot);
     }
 }
