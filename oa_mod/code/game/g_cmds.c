@@ -2008,8 +2008,8 @@ void Cmd_GetMappage_f(gentity_t* ent) {
     trap_SendServerCommand(ent - g_entities, string);
 }
 
-#define OATOT_CMD_START 2
-#define OATOT_CMD_END 11
+#define BETTING_CMD_START 2
+#define BETTING_CMD_END 10
 
 //KK-OAX This is the table that ClientCommands runs the console entry against.
 commands_t cmds[ ] = {
@@ -2018,17 +2018,20 @@ commands_t cmds[ ] = {
     { "vote", 0, Cmd_Vote_f },
 
     // oatot commands
+
+    // betting-related
     { "bet", 0, Cmd_Bet_f },
     { "unbet", 0, Cmd_Unbet_f },
     { "pastBets", 0, Cmd_PastBets_f },
     { "betsSummary", 0, Cmd_BetsSummary_f },
     { "ready", 0, Cmd_Ready_f },
-    { "help", 0, Cmd_Help_f },
     { "shareBalance", 0, Cmd_ShareBalance_f },
-    { "getEnableBetting", 0, Cmd_UpdateEnableBetting_f },
     { "getBalance", 0, Cmd_UpdateBalance_f },
     { "getActiveBets", 0, Cmd_UpdateActiveBets_f },
     { "getActiveBetsSums", 0, Cmd_UpdateActiveBetsSums_f },
+    // common
+    { "help", 0, Cmd_Help_f },
+    { "getEnableBetting", 0, Cmd_UpdateEnableBetting_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },
@@ -2146,7 +2149,7 @@ void ClientCommand(int clientNum) {
         return;
     }
     if (!g_enableBetting.integer) {
-        if (i >= OATOT_CMD_START && i <= OATOT_CMD_END) {
+        if (i >= BETTING_CMD_START && i <= BETTING_CMD_END) {
             return;
         }
     }
