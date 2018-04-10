@@ -41,7 +41,7 @@ go build
 
 ## OpenArena mod
 
-Modified OAX.
+Modified OAX. The mod is currently **only CTF-oriented** (both betting structure and user interface).
 
 *New console commands*:
 
