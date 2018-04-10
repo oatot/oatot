@@ -2025,6 +2025,7 @@ commands_t cmds[ ] = {
     { "ready", 0, Cmd_Ready_f },
     { "help", 0, Cmd_Help_f },
     { "shareBalance", 0, Cmd_ShareBalance_f },
+    { "getEnableBetting", 0, Cmd_UpdateEnableBetting_f },
     { "getBalance", 0, Cmd_UpdateBalance_f },
     { "getActiveBets", 0, Cmd_UpdateActiveBets_f },
     { "getActiveBetsSums", 0, Cmd_UpdateActiveBetsSums_f },

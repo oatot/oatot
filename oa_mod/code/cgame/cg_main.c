@@ -2218,12 +2218,11 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     s = CG_ConfigString(CS_LEVEL_START_TIME);
     cgs.levelStartTime = atoi(s);
     CG_ParseServerinfo();
-    if (cgs.enableBetting) {
-        // oatot
-        trap_SendClientCommand("getActiveBetsSums\n");
-        trap_SendClientCommand("getActiveBets\n");
-        trap_SendClientCommand("getBalance\n");
-    }
+    // oatot
+    trap_SendClientCommand("getEnableBetting\n");
+    trap_SendClientCommand("getActiveBetsSums\n");
+    trap_SendClientCommand("getActiveBets\n");
+    trap_SendClientCommand("getBalance\n");
     cgs.flagsStatus[TEAM_RED].dropped = qfalse;
     cgs.flagsStatus[TEAM_RED].stolen = qfalse;
     // load the new map

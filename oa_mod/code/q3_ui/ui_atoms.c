@@ -936,6 +936,10 @@ qboolean UI_ConsoleCommand(int realTime) {
         WriteMapList();
         return qtrue;
     }
+    if (Q_strequal(cmd, "ui_enablebetting")) {
+        enableBetting = atoi(UI_Argv(1));
+        return qtrue;
+    }
     if (Q_strequal(cmd, "ui_updatebalance")) {
         oatotinfo.balancesN = atoi(UI_Argv(1));
         for (i = 0; i < oatotinfo.balancesN; i++) {

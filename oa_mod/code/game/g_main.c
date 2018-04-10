@@ -299,7 +299,7 @@ static cvarTable_t gameCvarTable[] = {
     { &g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse },
     { &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
-    //oatot Cvars
+    // oatot Cvars.
 
     // Meaningful for the external users.
     { &g_enableBetting, "g_enableBetting", "1", 0, 0, qfalse },

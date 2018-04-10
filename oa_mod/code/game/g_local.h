@@ -136,6 +136,7 @@ void Cmd_BetsSummary_f(gentity_t* ent);
 void Cmd_Ready_f(gentity_t* ent);
 void Cmd_Help_f(gentity_t* ent);
 void Cmd_ShareBalance_f(gentity_t* ent);
+void Cmd_UpdateEnableBetting_f(gentity_t* ent);
 void Cmd_UpdateBalance_f(gentity_t* ent);
 void Cmd_UpdateActiveBets_f(gentity_t* ent);
 void Cmd_UpdateActiveBetsSums_f(gentity_t* ent);

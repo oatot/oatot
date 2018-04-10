@@ -61,6 +61,17 @@ static int CG_ValidOrder(const char* p) {
 
 /*
 =================
+CG_ParseEnableBetting
+
+=================
+*/
+static void CG_ParseEnableBetting(void) {
+    cgs.enableBetting = atoi(CG_Argv(1));
+    trap_SendConsoleCommand(va("ui_enablebetting %d\n", cgs.enableBetting));
+}
+
+/*
+=================
 CG_ParseBalance
 
 =================
@@ -1214,6 +1225,10 @@ static void CG_ServerCommand(void) {
     cmd = CG_Argv(0);
     if (!cmd[0]) {
         // server claimed the command
+        return;
+    }
+    if (strequals(cmd, "enableBetting")) {
+        CG_ParseEnableBetting();
         return;
     }
     if (strequals(cmd, "updateBalance")) {

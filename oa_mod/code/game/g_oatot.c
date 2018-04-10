@@ -469,6 +469,20 @@ void Cmd_ShareBalance_f(gentity_t* ent) {
 
 /*
 ==================
+Cmd_UpdateEnableBetting_f
+==================
+*/
+void Cmd_UpdateEnableBetting_f(gentity_t* ent) {
+    gclient_t* client = ent->client;
+    if (client) {
+        trap_SendServerCommand(ent - g_entities, va("enableBetting %d\n", g_enableBetting.integer));
+    } else {
+        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
+    }
+}
+
+/*
+==================
 Cmd_UpdateBalance_f
 ==================
 */
