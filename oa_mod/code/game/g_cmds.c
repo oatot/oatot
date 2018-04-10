@@ -639,10 +639,6 @@ void Cmd_Kill_f(gentity_t* ent) {
     }
     ent->flags &= ~FL_GODMODE;
     ent->client->ps.stats[STAT_HEALTH] = ent->health = -999;
-    if (ent->client->ps.powerups[PW_REDFLAG] || ent->client->ps.powerups[PW_BLUEFLAG]) {
-        G_SetFlagsStatus(OtherTeam(ent->client->sess.sessionTeam), 1, 1);
-        Team_DropFlagSound(ent);
-    }
     if (ent->client->lastSentFlying > -1) {
         //If player is in the air because of knockback we give credit to the person who sent it flying
         player_die(ent, ent, &g_entities[ent->client->lastSentFlying], 100000, MOD_FALLING);

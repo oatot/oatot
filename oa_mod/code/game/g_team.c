@@ -384,8 +384,6 @@ void Team_FragBonuses(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker
             AddScore(attacker, targ->r.currentOrigin, CTF_FRAG_CARRIER_BONUS);
         }
         attacker->client->pers.teamState.fragcarrier++;
-        G_SetFlagsStatus(OtherTeam(team), 1, 1);
-        Team_DropFlagSound(attacker);
         if (g_gametype.integer != GT_POSSESSION) {
             PrintMsg(NULL, "%s" S_COLOR_WHITE " fragged %s's flag carrier!\n",
                      attacker->client->pers.netname, TeamName(team));
