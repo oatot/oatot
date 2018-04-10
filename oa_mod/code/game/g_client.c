@@ -1122,6 +1122,7 @@ void ClientUserinfoChanged(int clientNum) {
                client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader);
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
+    Cmd_UpdateEnableBetting_f(ent);
     if (g_enableBetting.integer) {
         G_UpdateBalance(ent);
         G_UpdateActiveBets(ent);
@@ -1423,6 +1424,7 @@ void ClientBegin(int clientNum) {
         client->pers.welcomed = qtrue;
         printWelcomeMessage(clientNum);
     }
+    Cmd_UpdateEnableBetting_f(ent);
     if (g_enableBetting.integer) {
         G_UpdateBalance(ent);
         G_UpdateActiveBets(ent);
