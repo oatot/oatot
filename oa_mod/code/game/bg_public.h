@@ -166,6 +166,11 @@ typedef struct {
     int id;
 } activeBet_t;
 
+typedef struct flagState_s {
+    qboolean stolen;
+    qboolean dropped;
+} flagState_t;
+
 // oatot
 qboolean GetBalanceByCurrency(const char* currency, balance_t* balances, balance_t* result);
 

@@ -128,7 +128,7 @@ static void CG_ParseActiveBets(void) {
 
 /*
 =================
-CG_ParseFlagsStatus
+CG_ParseFlagStatus
 
 =================
 */

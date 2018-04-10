@@ -1123,6 +1123,7 @@ void ClientUserinfoChanged(int clientNum) {
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
     Cmd_UpdateEnableBetting_f(ent);
+    Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {
         G_UpdateBalance(ent);
         G_UpdateActiveBets(ent);
@@ -1425,6 +1426,7 @@ void ClientBegin(int clientNum) {
         printWelcomeMessage(clientNum);
     }
     Cmd_UpdateEnableBetting_f(ent);
+    Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {
         G_UpdateBalance(ent);
         G_UpdateActiveBets(ent);

@@ -637,7 +637,7 @@ void Cmd_Kill_f(gentity_t* ent) {
     ent->flags &= ~FL_GODMODE;
     ent->client->ps.stats[STAT_HEALTH] = ent->health = -999;
     if (ent->client->ps.powerups[PW_REDFLAG] || ent->client->ps.powerups[PW_BLUEFLAG]) {
-        trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", OtherTeam(ent->client->sess.sessionTeam), 1, 1));
+        G_SetFlagsStatus(OtherTeam(ent->client->sess.sessionTeam), 1, 1);
         Team_DropFlagSound(ent);
     }
     if (ent->client->lastSentFlying > -1) {
@@ -2032,6 +2032,7 @@ commands_t cmds[ ] = {
     // common
     { "help", 0, Cmd_Help_f },
     { "getEnableBetting", 0, Cmd_UpdateEnableBetting_f },
+    { "getFlagsStatus", 0, Cmd_UpdateFlagsStatus_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },

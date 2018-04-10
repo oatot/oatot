@@ -454,11 +454,6 @@ typedef struct weaponInfo_s {
     int lfxdrawn;
 } weaponInfo_t;
 
-typedef struct flagState_s {
-    qboolean stolen;
-    qboolean dropped;
-} flagState_t;
-
 // each IT_* item has an associated itemInfo_t
 // that constains media references necessary to present the
 // item and its effects
