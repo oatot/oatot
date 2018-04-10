@@ -1122,6 +1122,8 @@ void ClientUserinfoChanged(int clientNum) {
                client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader);
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
+    // this is not the userinfo, more like the configstring actually
+    G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid"));
     Cmd_UpdateEnableBetting_f(ent);
     Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {
@@ -1129,8 +1131,6 @@ void ClientUserinfoChanged(int clientNum) {
         G_UpdateActiveBets(ent);
         G_UpdateActiveBetsSums(ent);
     }
-    // this is not the userinfo, more like the configstring actually
-    G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid"));
 }
 
 /*
