@@ -1252,6 +1252,7 @@ typedef struct {
 
     // oatot
     int gameStage;
+    qboolean enableBetting;
     betSum_t betSums[HORSES_N * CURRENCIES_N];
     flagState_t flagsStatus[TEAM_NUM_TEAMS];
 
@@ -1600,7 +1601,7 @@ extern char systemChat[256];
 extern char teamChat1[256];
 extern char teamChat2[256];
 
-// oatot
+// cg_draw_oatot.c
 void CG_DrawOatotStuff(void);
 void CG_DrawBalanceBar(int left_side);
 void CG_DrawBalance(void);

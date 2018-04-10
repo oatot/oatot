@@ -1,4 +1,5 @@
 #include "ui_local.h"
+#include "ui_oatot.h"
 
 #define ART_BACK0 "menu/" MENU_OATOT_DIR "/myback_0"
 #define ART_BACK1 "menu/" MENU_OATOT_DIR "/myback_1"

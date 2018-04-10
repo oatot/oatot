@@ -170,7 +170,7 @@ AddTeamScore
 */
 void AddTeamScore(vec3_t origin, int team, int score) {
     gentity_t* te;
-    if (g_gameStage.integer != PLAYING) {
+    if (!isMatchTime()) {
         return;
     }
     if (g_gametype.integer != GT_DOMINATION) {

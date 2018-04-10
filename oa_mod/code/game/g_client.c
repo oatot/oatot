@@ -21,8 +21,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 //
 
-#include "client.h"
-
 #include "g_local.h"
 
 // g_client.c -- client functions that don't happen every frame
@@ -1124,9 +1122,12 @@ void ClientUserinfoChanged(int clientNum) {
                client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader);
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
-    G_UpdateBalance(ent);
-    G_UpdateActiveBets(ent);
-    G_UpdateActiveBetsSums(ent);
+    Cmd_UpdateEnableBetting_f(ent);
+    if (g_enableBetting.integer) {
+        G_UpdateBalance(ent);
+        G_UpdateActiveBets(ent);
+        G_UpdateActiveBetsSums(ent);
+    }
     // this is not the userinfo, more like the configstring actually
     G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid"));
 }
@@ -1152,7 +1153,6 @@ restarts.
 ============
 */
 char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
-    bet_t bets[MAX_ACTIVE_BETS_NUMBER];
     char* value;
     // char *areabits;
     gclient_t* client;
@@ -1168,10 +1168,8 @@ char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
     trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
     value = Info_ValueForKey(userinfo, "cl_guid");
     Q_strncpyz(client->pers.guid, value, sizeof(client->pers.guid));
-    if (!GOaIsNew(client->pers.guid)) {
-        client->sess.activeBetsNumber = GOaMyActiveBets(client->pers.guid, bets);
-    } else {
-        client->sess.activeBetsNumber = 0;
+    if (g_enableBetting.integer) {
+        G_OatotInitClientActiveBets(client);
     }
     // IP filtering //KK-OAX Has this been obsoleted?
     // https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=500
@@ -1292,9 +1290,14 @@ void motd(gentity_t* ent) {
 void printWelcomeMessage(int clientNum) {
     trap_SendServerCommand(clientNum, "print \"^2==========================================================\n\"");
     trap_SendServerCommand(clientNum, "print \"^4> ^3Welcome to ^6OATOT ^3mod.\n\"");
-    trap_SendServerCommand(clientNum, "print \"^4> ^3New OpenArena mod for making bets in-game!\n\"");
+    if (g_enableBetting.integer) {
+        trap_SendServerCommand(clientNum, "print \"^4> ^3New OpenArena mod for making bets in-game!\n\"");
+    } else {
+        trap_SendServerCommand(clientNum, "print \"^4> ^3New OpenArena mod!\n\"");
+    }
     trap_SendServerCommand(clientNum, "print \"^4> ^3Read more: ^1<link to guild-oa.com section>\n\"");
     trap_SendServerCommand(clientNum, "print \"^4> ^3Source code is also available: ^1github.com/OaGuild/oatot\n\"");
+    trap_SendServerCommand(clientNum, "print \"^4> ^3To get help: type ^2/help.\n\"");
     trap_SendServerCommand(clientNum, "print \"^4> ^3Enjoy!\n\"");
     trap_SendServerCommand(clientNum, "print \"^2==========================================================\n\"");
 }
@@ -1387,8 +1390,8 @@ void ClientBegin(int clientNum) {
     client->ps.eFlags = flags;
     // locate ent at a spawn point
     ClientSpawn(ent);
-    if (GOaIsNew(client->pers.guid)) {
-        GOaRegister(client->pers.guid);
+    if (g_enableBetting.integer) {
+        G_OatotRegister(client->pers.guid);
     }
     if ((client->sess.sessionTeam != TEAM_SPECTATOR) &&
             ((!(client->isEliminated) /*&&
@@ -1421,8 +1424,11 @@ void ClientBegin(int clientNum) {
         client->pers.welcomed = qtrue;
         printWelcomeMessage(clientNum);
     }
-    G_UpdateBalance(ent);
-    G_UpdateActiveBets(ent);
+    Cmd_UpdateEnableBetting_f(ent);
+    if (g_enableBetting.integer) {
+        G_UpdateBalance(ent);
+        G_UpdateActiveBets(ent);
+    }
 }
 
 /*
@@ -1773,10 +1779,9 @@ server system housekeeping.
 */
 void ClientDisconnect(int clientNum) {
     gentity_t* ent;
-    int i, new_val;
+    int i;
     team_t cl_team;
     char userinfo[MAX_INFO_STRING];
-    char new_val_str[MAX_CVAR_VALUE_STRING];
     // cleanup if we are kicking a bot that
     // hasn't spawned yet
     G_RemoveQueuedBotBegin(clientNum);
@@ -1784,7 +1789,7 @@ void ClientDisconnect(int clientNum) {
     if (!ent->client) {
         return;
     }
-    // store the team for oatot
+    // Store the team for oatot.
     cl_team = ent->client->sess.sessionTeam;
     ClientLeaving(clientNum);
     //KK-OAX Admin
@@ -1848,29 +1853,7 @@ void ClientDisconnect(int clientNum) {
     if (ent->r.svFlags & SVF_BOT) {
         BotAIShutdownClient(clientNum, qfalse);
     }
-    if (g_gameStage.integer == FORMING_TEAMS) {
-        if (ent->client->pers.ready) {
-            new_val = g_readyN.integer - 1;
-            Q_snprintf(new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val);
-            trap_Cvar_Set("g_readyN", new_val_str);
-        }
-    }
-    G_UpdateCvars();
-    if (checkForRestart()) {
-        // perhaps the majority is ready now
-        trap_Cvar_Set("g_readyToBet", "1");
-        trap_SendConsoleCommand(EXEC_APPEND, "map_restart\n");
-    }
-    if (g_gameStage.integer != FORMING_TEAMS) {
-        if (cl_team != TEAM_SPECTATOR) {
-            if (!level.intermissiontime) {
-                // quitting not during the FORMING_TEAMS stage isn't allowed, auto-restart
-                trap_SendServerCommand(-1, "cp \"^1We got rage-quitter! Restart!\n\"");
-                trap_Cvar_Set("g_rageQuit", "1");
-                GOaCloseBetsByIncident();
-                trap_SendConsoleCommand(EXEC_APPEND, "map_restart\n");
-            }
-        }
+    if (g_enableBetting.integer) {
+        G_OatotClientDisconnect(ent, cl_team);
     }
 }
-

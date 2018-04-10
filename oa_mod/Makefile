@@ -2301,6 +2301,7 @@ Q3CGOBJ_ = \
   $(B)/$(BASEGAME)/cgame/cg_challenges.o \
   $(B)/$(BASEGAME)/cgame/cg_consolecmds.o \
   $(B)/$(BASEGAME)/cgame/cg_draw.o \
+  $(B)/$(BASEGAME)/cgame/cg_draw_oatot.o \
   $(B)/$(BASEGAME)/cgame/cg_drawtools.o \
   $(B)/$(BASEGAME)/cgame/cg_effects.o \
   $(B)/$(BASEGAME)/cgame/cg_ents.o \
@@ -2388,6 +2389,7 @@ GOOBJ = \
   $(B)/$(BASEGAME)/go-client/goclient.so
 
 Q3GOBJ_ = \
+  $(B)/$(BASEGAME)/game/g_oatot.o \
   $(B)/$(BASEGAME)/game/g_main.o \
   $(B)/$(BASEGAME)/game/ai_chat.o \
   $(B)/$(BASEGAME)/game/ai_cmd.o \
@@ -2531,6 +2533,7 @@ Q3UIOBJ_ = \
   $(B)/$(BASEGAME)/ui/ui_firstconnect.o \
   $(B)/$(BASEGAME)/ui/ui_gameinfo.o \
   $(B)/$(BASEGAME)/ui/ui_ingame.o \
+  $(B)/$(BASEGAME)/ui/ui_ingame_oatot.o \
   $(B)/$(BASEGAME)/ui/ui_loadconfig.o \
   $(B)/$(BASEGAME)/ui/ui_menu.o \
   $(B)/$(BASEGAME)/ui/ui_mfield.o \

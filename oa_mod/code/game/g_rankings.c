@@ -145,7 +145,7 @@ G_RankFireWeapon
 ================
 */
 void G_RankFireWeapon(int self, int weapon) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -203,7 +203,7 @@ void G_RankDamage(int self, int attacker, int damage, int means_of_death) {
     int key_hit;
     int key_damage;
     int key_splash;
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -425,7 +425,7 @@ G_RankPlayerDie
 void G_RankPlayerDie(int self, int attacker, int means_of_death) {
     int p1;
     int p2;
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -559,7 +559,7 @@ G_RankWeaponTime
 void G_RankWeaponTime(int self, int weapon) {
     gclient_t* client;
     int time;
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -612,7 +612,7 @@ G_RankPickupWeapon
 ================
 */
 void G_RankPickupWeapon(int self, int weapon) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -659,7 +659,7 @@ G_RankPickupAmmo
 ================
 */
 void G_RankPickupAmmo(int self, int weapon, int quantity) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -709,7 +709,7 @@ G_RankPickupHealth
 ================
 */
 void G_RankPickupHealth(int self, int quantity) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -739,7 +739,7 @@ G_RankPickupArmor
 ================
 */
 void G_RankPickupArmor(int self, int quantity) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -766,7 +766,7 @@ G_RankPickupPowerup
 ================
 */
 void G_RankPickupPowerup(int self, int powerup) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -806,7 +806,7 @@ G_RankPickupHoldable
 ================
 */
 void G_RankPickupHoldable(int self, int holdable) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -828,7 +828,7 @@ G_RankUseHoldable
 ================
 */
 void G_RankUseHoldable(int self, int holdable) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -850,7 +850,7 @@ G_RankReward
 ================
 */
 void G_RankReward(int self, int award) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -872,7 +872,7 @@ G_RankCapture
 ================
 */
 void G_RankCapture(int self) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -885,7 +885,7 @@ G_RankUserTeamName
 ================
 */
 void G_RankUserTeamName(int self, char* team_name) {
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -901,7 +901,7 @@ void G_RankClientDisconnect(int self) {
     gclient_t* client;
     int time;
     int match_rating;
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }
@@ -925,7 +925,7 @@ void G_RankGameOver(void) {
     int i;
     char str[MAX_INFO_VALUE];
     int num;
-    if ((level.warmupTime != 0) || (g_gameStage.integer != PLAYING)) {
+    if ((level.warmupTime != 0) || !isMatchTime()) {
         // no reports during warmup period
         return;
     }

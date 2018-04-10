@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  User interface building blocks and support functions.
 **********************************************************************/
 #include "ui_local.h"
+#include "ui_oatot.h"
 
 uiStatic_t uis;
 qboolean m_entersound; // after a frame, so caching won't disrupt the sound
@@ -935,6 +936,10 @@ qboolean UI_ConsoleCommand(int realTime) {
         WriteMapList();
         return qtrue;
     }
+    if (Q_strequal(cmd, "ui_enablebetting")) {
+        enableBetting = atoi(UI_Argv(1));
+        return qtrue;
+    }
     if (Q_strequal(cmd, "ui_updatebalance")) {
         oatotinfo.balancesN = atoi(UI_Argv(1));
         for (i = 0; i < oatotinfo.balancesN; i++) {
@@ -975,6 +980,7 @@ UI_Init
 =================
 */
 void UI_Init(void) {
+    char info[MAX_INFO_STRING];
     UI_RegisterCvars();
     UI_InitGameinfo();
     // cache redundant calulations

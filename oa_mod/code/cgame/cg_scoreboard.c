@@ -72,7 +72,7 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     iconx = SB_BOTICON_X;
     headx = SB_HEAD_X;
     // draw the handicap or bot skill marker (unless player has flag)
-    if (cgs.gameStage == FORMING_TEAMS) {
+    if (cgs.enableBetting && (cgs.gameStage == FORMING_TEAMS)) {
         if (ci->botSkill > 0 && ci->botSkill <= 5) {
             if (cg_drawIcons.integer) {
                 CG_DrawPic(iconx, y, 16, 16, cgs.media.botSkillShaders[ ci->botSkill - 1 ]);

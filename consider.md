@@ -5,17 +5,6 @@ Things to consider
 * Seperate the logic of actual betting from the gamecode as much as possible.
   So it is trivial to add support for betting for other mods, like Aftershock.
 
-* Add some GUI-way to place bets. Some people might not be comfortable with
-  using console-commands.
-
-* Lower the amount of time and complexity dedicated to betting. Having to do
-  `/readyToBet` `/finishedbetting` takes away from the time spent playing the
-  game. Maybe simply having a normal `/ready`, then a 2 minute countdown where
-  people can place their bets. I think it is important that betting is more of a
-  "side thing", if it should catch on and be popular. People probably come to
-  play or spectate, rather than to type commands and spend their OA coins. Even
-  though spending OA-coins can be a fun side-thing!
-
 * Remove 1000 free OAC. Make the only way to gain OAC by playing the game. That
   way people can't generate new qkeys to bet against themselves and gain free
   money. With time, the amount of coins in circulation will increase anyways.

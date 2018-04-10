@@ -514,7 +514,7 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
     // Utility.
-    {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE}
+    {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE},
 };
 
 static int cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
@@ -2219,6 +2219,7 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     cgs.levelStartTime = atoi(s);
     CG_ParseServerinfo();
     // oatot
+    trap_SendClientCommand("getEnableBetting\n");
     trap_SendClientCommand("getActiveBetsSums\n");
     trap_SendClientCommand("getActiveBets\n");
     trap_SendClientCommand("getBalance\n");

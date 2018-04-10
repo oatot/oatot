@@ -41,7 +41,7 @@ go build
 
 ## OpenArena mod
 
-Modified OAX.
+Modified OAX. The mod is currently **only CTF-oriented** (both betting structure and user interface).
 
 *New console commands*:
 
@@ -89,6 +89,8 @@ in some way.
 *New Cvars*
 
 **Server-side:**<br>
+ - `g_enableBetting`<br>
+    1 to enable *all* the betting features, 1 by default.
  - `g_makingBetsTime`<br>
     The duration of MAKING_BETS in mins, 2 by default.
  - `g_easyItemPickup`<br>

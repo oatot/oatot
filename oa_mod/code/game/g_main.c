@@ -21,10 +21,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 //
 
-#include <dlfcn.h>
-
-#include "client.h"
-
 #include "g_local.h"
 #include "bg_public.h"
 
@@ -153,6 +149,7 @@ vmCvar_t g_rockets;
 // OATOT Cvars.
 
 // Meaningful for the external users.
+vmCvar_t g_enableBetting; // 1 to enable all the betting features, 0 to disable it.
 vmCvar_t g_makingBetsTime; // Time for making bets & warmup before match (in mins).
 vmCvar_t g_easyItemPickup; // 1 for high items.
 vmCvar_t g_scoreboardDefaultSeason; // Season which will be set as default scoreboard season on clients.
@@ -302,9 +299,10 @@ static cvarTable_t gameCvarTable[] = {
     { &g_podiumDist, "g_podiumDist", "80", 0, 0, qfalse },
     { &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
-    //oatot Cvars
+    // oatot Cvars.
 
     // Meaningful for the external users.
+    { &g_enableBetting, "g_enableBetting", "1", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
     { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },
@@ -754,27 +752,14 @@ static int G_CheckGametypeScripts(void) {
 }
 
 /*
-For Go module separated shared library.
-Survive dlclose(qagame.so) initiated by openarena-server executable.
-We also link with this Go .so to use its header.
-*/
-void G_LoadGoClientSo(void) {
-    void* handle = dlopen("go-client/libgoclient.so", RTLD_NOW);
-    if (!handle) {
-        G_Printf("dlopen: %s\n", dlerror());
-        return;
-    }
-}
-
-/*
 ============
 G_InitGame
 
 ============
 */
 void G_InitGame(int levelTime, int randomSeed, int restart) {
-    int i, next_game_stage;
-    char mapname[MAX_CVAR_VALUE_STRING], next_game_stage_str[MAX_CVAR_VALUE_STRING];
+    int i;
+    char mapname[MAX_CVAR_VALUE_STRING];
     G_Printf("------- Game Initialization -------\n");
     G_Printf("gamename: %s\n", GAMEVERSION);
     G_Printf("gamedate: %s\n", __DATE__);
@@ -863,36 +848,10 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
         BotAILoadMap(restart);
         G_InitBots(restart);
     }
-    // oatot: load shared object for Go client.
-    G_LoadGoClientSo();
-    // oatot: tell the backend that we exist and initialize Go client.
-    GInitializeClient();
-    // oatot game stages changing logic.
-    if (g_rageQuit.integer == 1) {
-        // Rage quit.
-        trap_Cvar_Set("g_gameStage", "0");
-        GOaChangeGameStage(FORMING_TEAMS);
-    } else if (needToUpdateGameStage() || (g_gameStage.integer == PLAYING)) {
-        // Normal stage change or map change.
-        next_game_stage = (g_gameStage.integer + 1) % 3;
-        Q_snprintf(next_game_stage_str, MAX_CVAR_VALUE_STRING, "%d", next_game_stage);
-        trap_Cvar_Set("g_gameStage", next_game_stage_str);
-        GOaChangeGameStage(next_game_stage);
-    } else if (g_gameStage.integer == MAKING_BETS) {
-        // Was callvoted.
-        trap_Cvar_Set("g_gameStage", "0");
-        GOaChangeGameStage(FORMING_TEAMS);
-    }
-    trap_Cvar_Set("g_readyN", "0");
-    trap_Cvar_Set("g_rageQuit", "0");
-    trap_Cvar_Set("g_betsMade", "0");
-    trap_Cvar_Set("g_readyToBet", "0");
-    G_UpdateCvars();
-    if (g_gameStage.integer == FORMING_TEAMS) {
-        // At this stage, no bets should be active,
-        // but if the map was callvot'ed, it is still possible,
-        // hence let's clear them.
-        GOaCloseBetsByIncident();
+    if (g_enableBetting.integer) {
+        // oatot (betting).
+        G_OatotInit();
+        G_UpdateGameStage();
     }
     G_RemapTeamShaders();
     //elimination:
@@ -1896,62 +1855,6 @@ qboolean ScoreIsTied(void) {
     return a == b;
 }
 
-void getClientsBalances(int* money) {
-    gclient_t* cl;
-    balance_t balance;
-    int i;
-    for (i = 0; i < g_maxclients.integer; i++) {
-        cl = level.clients + i;
-        if (!GOaIsNew(cl->pers.guid) && (cl->pers.connected == CON_CONNECTED)) {
-            if (G_GetCurrencyBalance(g_entities + i, "OAC", &balance)) {
-                money[i] = balance.freeMoney;
-            }
-        }
-    }
-}
-
-void transferPrizeMoney(int* balances_before, int* balances_after, char* winner) {
-    gclient_t* cl;
-    int i, score, change;
-    // Amount of "prize" is equal to player score.
-    for (i = 0; i < g_maxclients.integer; i++) {
-        cl = level.clients + i;
-        if (g_gameStage.integer == PLAYING) {
-            if (!GOaIsNew(cl->pers.guid) && (cl->pers.connected == CON_CONNECTED)) {
-                score = cl->ps.persistant[PERS_SCORE];
-                change = balances_after[i] - balances_before[i];
-                if (Q_strequal(winner, "red") && (cl->sess.sessionTeam == TEAM_RED)) {
-                    if (cl->sess.sessionTeam != TEAM_SPECTATOR) {
-                        GOaTransferMoney(cl->pers.guid, score, "OAC");
-                        trap_SendServerCommand(i, va("showResults %d %d\n", score, change));
-                    } else if (cl->sess.activeBetsNumber != 0) {
-                        trap_SendServerCommand(i, va("showResults 0 %d\n", change));
-                    }
-                } else if (Q_strequal(winner, "blue") && (cl->sess.sessionTeam == TEAM_BLUE)) {
-                    if (cl->sess.sessionTeam != TEAM_SPECTATOR) {
-                        GOaTransferMoney(cl->pers.guid, score, "OAC");
-                        trap_SendServerCommand(i, va("showResults %d %d\n", score, change));
-                    } else if (cl->sess.activeBetsNumber != 0) {
-                        trap_SendServerCommand(i, va("showResults 0 %d\n", change));
-                    }
-                } else if (cl->sess.activeBetsNumber != 0) {
-                    trap_SendServerCommand(i, va("showResults 0 %d\n", change));
-                }
-            }
-        }
-    }
-}
-
-void endOfMatchLogic(char* winner) {
-    // TODO: only OAC is supported here.
-    int balances_before[MAX_GENTITIES];
-    int balances_after[MAX_GENTITIES];
-    getClientsBalances(balances_before);
-    GOaCloseBets(winner);
-    getClientsBalances(balances_after);
-    transferPrizeMoney(balances_before, balances_after, winner);
-}
-
 /*
 =================
 CheckExitRules
@@ -1999,17 +1902,22 @@ void CheckExitRules(void) {
         // always wait for sudden death
         return;
     }
-    if (g_timelimit.integer > 0 && !level.warmupTime && (g_gameStage.integer == PLAYING)) {
+    if (g_timelimit.integer > 0 && !level.warmupTime) {
         if ((level.time - level.startTime) / 60000 >= g_timelimit.integer) {
-            if (level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE]) {
-                endOfMatchLogic("red");
-            } else {
-                endOfMatchLogic("blue");
+            if (isMatchTime()) {
+                if (g_enableBetting.integer) {
+                    if (level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE]) {
+                        endOfMatchLogic("red");
+                        G_UpdateActiveBetsSums(0);
+                    } else {
+                        endOfMatchLogic("blue");
+                        G_UpdateActiveBetsSums(0);
+                    }
+                }
+                trap_SendServerCommand(-1, "print \"Timelimit hit.\n\"");
+                LogExit("Timelimit hit.");
+                return;
             }
-            G_UpdateActiveBetsSums(0);
-            trap_SendServerCommand(-1, "print \"Timelimit hit.\n\"");
-            LogExit("Timelimit hit.");
-            return;
         }
     }
     if (level.numPlayingClients < 2) {
@@ -2044,15 +1952,19 @@ void CheckExitRules(void) {
     }
     if ((g_gametype.integer >= GT_CTF && g_ffa_gt < 1) && g_capturelimit.integer) {
         if (level.teamScores[TEAM_RED] >= g_capturelimit.integer) {
-            endOfMatchLogic("red");
-            G_UpdateActiveBetsSums(0);
+            if (g_enableBetting.integer) {
+                endOfMatchLogic("red");
+                G_UpdateActiveBetsSums(0);
+            }
             trap_SendServerCommand(-1, "print \"Red hit the capturelimit.\n\"");
             LogExit("Capturelimit hit.");
             return;
         }
         if (level.teamScores[TEAM_BLUE] >= g_capturelimit.integer) {
-            endOfMatchLogic("blue");
-            G_UpdateActiveBetsSums(0);
+            if (g_enableBetting.integer) {
+                endOfMatchLogic("blue");
+                G_UpdateActiveBetsSums(0);
+            }
             trap_SendServerCommand(-1, "print \"Blue hit the capturelimit.\n\"");
             LogExit("Capturelimit hit.");
             return;
@@ -2166,42 +2078,6 @@ void CheckDomination(void) {
             level.dom_scoreGiven++;
         }
         CalculateRanks();
-    }
-}
-
-/*
-=============
-CheckOatotStageUpdate
-=============
-*/
-void CheckOatotStageUpdate(void) {
-    int duration = level.time - level.startTime;
-    if (g_gameStage.integer == MAKING_BETS) {
-        if (duration > (g_makingBetsTime.integer * 60000)) {
-            // time is up
-            trap_Cvar_Set("g_betsMade", "1");
-            trap_SendConsoleCommand(EXEC_APPEND, "map_restart\n");
-        }
-        if ((g_makingBetsTime.integer * 60000 - duration) < 30000) {
-            // 30 seconds left
-            if (!level.timeWarningPrinted) {
-                level.timeWarningPrinted = qtrue;
-                trap_SendServerCommand(-1, "cp \"^130 seconds before the start!!!\"");
-            }
-        }
-        if (duration > 5000) {
-            // wait 5 secs before printing info to make sure everyone is able to see it
-            if (!level.betsGreetingPrinted) {
-                // info which is printed once at the beginning
-                level.betsGreetingPrinted = qtrue;
-                // min / min(s) logic
-                if (g_makingBetsTime.integer == 1) {
-                    trap_SendServerCommand(-1, va("cp \"^2%d min to make bets & warm up :) \"", g_makingBetsTime.integer));
-                } else {
-                    trap_SendServerCommand(-1, va("cp \"^2%d mins to make bets & warm up :) \"", g_makingBetsTime.integer));
-                }
-            }
-        }
     }
 }
 
@@ -2432,121 +2308,6 @@ void CheckTeamVote(int team) {
     trap_SetConfigstring(CS_TEAMVOTE_TIME + cs_offset, "");
 }
 
-/*
-==================
-G_GetBalance
-==================
-*/
-int G_GetBalance(gentity_t* ent, balance_t* balances) {
-    gclient_t* client = ent->client;
-    if (GOaIsNew(client->pers.guid)) {
-        return -1;
-    } else {
-        return GOaMyBalance(client->pers.guid, balances);
-    }
-}
-
-/*
-==================
-G_GetActiveBets
-==================
-*/
-int G_GetActiveBets(gentity_t* ent, bet_t* bets) {
-    gclient_t* client = ent->client;
-    int i = 0;
-    int bets_n = 0;
-    if (GOaIsNew(client->pers.guid)) {
-        return bets_n;
-    }
-    bets_n = GOaMyActiveBets(client->pers.guid, bets);
-    if (bets_n != client->sess.activeBetsNumber) {
-        return -1;
-    } else if (bets_n < 0 || bets_n > MAX_ACTIVE_BETS_NUMBER) {
-        return -1;
-    }
-    for (i = 0; i < bets_n; i++) {
-        client->pers.activeBetsIds[i] = bets[i].betID;
-    }
-    return bets_n;
-}
-
-/*
-==================
-G_GetCurrencyBalance
-==================
-*/
-qboolean G_GetCurrencyBalance(gentity_t* ent, const char* currency, balance_t* res) {
-    int i, balances_n;
-    balance_t balances[CURRENCIES_N];
-    balances_n = G_GetBalance(ent, balances);
-    for (i = 0; i < balances_n; i++) {
-        if (!strcmp(currency, balances[i].currency)) {
-            *res = balances[i];
-            return qtrue;
-        }
-    }
-    return qfalse;
-}
-
-/*
-==================
-G_UpdateBalance
-==================
-*/
-void G_UpdateBalance(gentity_t* ent) {
-    int i;
-    balance_t balances[CURRENCIES_N];
-    int balances_n = G_GetBalance(ent, balances);
-    char cmd_str[MAX_STRING_TOKENS];
-    cmd_str[0] = 0;
-    strcat(cmd_str, va("updateBalance %d ", balances_n));
-    for (i = 0; i < balances_n; i++) {
-        strcat(cmd_str, va("%d %d %s ", balances[i].freeMoney, balances[i].moneyOnBets, balances[i].currency));
-    }
-    trap_SendServerCommand(ent - g_entities, cmd_str);
-}
-
-/*
-==================
-G_UpdateActiveBets
-==================
-*/
-void G_UpdateActiveBets(gentity_t* ent) {
-    int i;
-    char cmd_str[MAX_STRING_TOKENS];
-    bet_t bets[MAX_ACTIVE_BETS_NUMBER];
-    int n_bets = G_GetActiveBets(ent, bets);
-    cmd_str[0] = 0;
-    strcat(cmd_str, va("updateActiveBets \%d ", n_bets));
-    for (i = 0; i < n_bets; i++) {
-        strcat(cmd_str, va("%s %s %d %d ", bets[i].horse, bets[i].currency, bets[i].amount, bets[i].betID));
-    }
-    strcat(cmd_str, "\"");
-    trap_SendServerCommand(ent - g_entities, cmd_str);
-}
-
-/*
-==================
-G_UpdateActiveBetsSums
-==================
-*/
-void G_UpdateActiveBetsSums(gentity_t* ent) {
-    int i;
-    char cmd_str[MAX_STRING_TOKENS];
-    cmd_str[0] = 0;
-    betSum_t betSums[HORSES_N * CURRENCIES_N];
-    int sums_n = GOaActiveBetsSums(betSums);
-    strcat(cmd_str, va("updateActiveBetsSums %d ", sums_n));
-    for (i = 0; i < sums_n; i++) {
-        strcat(cmd_str, va("%d %s %s ", betSums[i].amount, betSums[i].currency, betSums[i].horse));
-    }
-    if (!ent) {
-        trap_SendServerCommand(-1, cmd_str);
-    } else {
-        trap_SendServerCommand(ent - g_entities, cmd_str);
-    }
-}
-
 static void CheckEmpty(void) {
     if (!g_emptyTime.integer) {
         return; //a time period must be set
@@ -2725,7 +2486,9 @@ void G_RunFrame(int levelTime) {
     //end = trap_Milliseconds();
     // see if it is time to do a tournement restart
     CheckTournament();
-    CheckOatotStageUpdate();
+    if (g_enableBetting.integer) {
+        checkOatotStageUpdate();
+    }
     //Check Elimination state
     CheckElimination();
     CheckLMS();

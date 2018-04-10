@@ -20,8 +20,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ===========================================================================
 */
 //
-#include "client.h"
-
 #include "g_local.h"
 
 #include "../../ui/menudef.h"
@@ -693,8 +691,8 @@ void SetTeam(gentity_t* ent, char* s) {
     // see what change is requested
     //
     client = ent->client;
-    if (g_gameStage.integer != FORMING_TEAMS) {
-        if (!((client->sess.sessionTeam == TEAM_SPECTATOR) && (Q_strequal(s, "spectator") || Q_strequal(s, "s")))) {
+    if (g_enableBetting.integer) {
+        if (!G_AllowToSwitchTeam(client, s)) {
             return;
         }
     }
@@ -865,9 +863,8 @@ Cmd_Team_f
 =================
 */
 void Cmd_Team_f(gentity_t* ent) {
-    int oldTeam, new_val;
+    int oldTeam;
     char s[MAX_TOKEN_CHARS];
-    char new_val_str[MAX_CVAR_VALUE_STRING];
     qboolean force;
     if (trap_Argc() != 2) {
         oldTeam = ent->client->sess.sessionTeam;
@@ -901,14 +898,8 @@ void Cmd_Team_f(gentity_t* ent) {
     }
     trap_Argv(1, s, sizeof(s));
     if (Q_strequal(s, "spectator") || Q_strequal(s, "s")) {
-        if (g_gameStage.integer == FORMING_TEAMS) {
-            if (ent->client->pers.ready) {
-                ent->client->pers.ready = qfalse;
-                new_val = g_readyN.integer - 1;
-                Q_snprintf(new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val);
-                trap_Cvar_Set("g_readyN", new_val_str);
-                G_UpdateCvars();
-            }
+        if (g_enableBetting.integer) {
+            G_DecreaseReadyNForSpec(ent->client);
         }
     }
     SetTeam(ent, s);
@@ -1816,404 +1807,6 @@ void Cmd_Vote_f(gentity_t* ent) {
     // for players entering or leaving
 }
 
-void printConsoleMessage(gentity_t* ent, const char* message) {
-    trap_SendServerCommand(ent - g_entities, "print \"^3============\n\"");
-    trap_SendServerCommand(ent - g_entities, message);
-    trap_SendServerCommand(ent - g_entities, "print \"^3============\n\"");
-}
-
-void StrToUpper(char* str) {
-    int i;
-    for (i = 0; i < strlen(str); i++) {
-        str[i] = toupper(str[i]);
-    }
-}
-
-/*
-==================
-Cmd_Bet_f
-==================
-*/
-void Cmd_Bet_f(gentity_t* ent) {
-    int money, max_money = 0;
-    char arg1[MAX_STRING_TOKENS];
-    char arg2[MAX_STRING_TOKENS];
-    char arg3[MAX_STRING_TOKENS];
-    balance_t balance;
-    gclient_t* client = ent->client;
-    if (g_gameStage.integer != MAKING_BETS) {
-        trap_SendServerCommand(ent - g_entities, "print \"^1Betting not allowed now.\n\"");
-        return;
-    }
-    if (client) {
-        int bets_n = client->sess.activeBetsNumber;
-        if (bets_n < MAX_ACTIVE_BETS_NUMBER) {
-            trap_Argv(1, arg1, sizeof(arg1));
-            trap_Argv(2, arg2, sizeof(arg2));
-            trap_Argv(3, arg3, sizeof(arg3));
-            // --> "red", "blue", ...
-            Q_StrToLower(arg1);
-            // --> "OAC", "BTC", ...
-            StrToUpper(arg3);
-            // Check arguments.
-            if (!SearchStr(horses, HORSES_N, arg1)) {
-                trap_SendServerCommand(ent - g_entities, "print \"^1Invalid horse.\n\"");
-                return;
-            }
-            if (!SearchStr(currencies, CURRENCIES_N, arg3)) {
-                trap_SendServerCommand(ent - g_entities, "print \"^1Invalid currency.\n\"");
-                return;
-            }
-            money = atoi(arg2);
-            if (G_GetCurrencyBalance(ent, arg3, &balance)) {
-                max_money = balance.freeMoney;
-            }
-            if (money <= 0 || money > max_money) {
-                trap_SendServerCommand(ent - g_entities, "print \"^1Insufficient amount of money.\n\"");
-                return;
-            }
-            bet_t bet;
-            memcpy(bet.horse, arg1, sizeof(arg1));
-            memcpy(bet.currency, arg3, sizeof(arg3));
-            bet.amount = money;
-            GOaMyBet(client->pers.guid, bet);
-            ent->client->sess.activeBetsNumber += 1;
-            G_UpdateBalance(ent);
-            G_UpdateActiveBets(ent);
-            G_UpdateActiveBetsSums(0);
-            trap_SendServerCommand(ent - g_entities, "print \"^2Your bet is made.\n\"");
-        } else {
-            trap_SendServerCommand(ent - g_entities, "print \"^1You can't make so many bets, sorry!\n\"");
-        }
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-Cmd_Unbet_f
-==================
-*/
-void Cmd_Unbet_f(gentity_t* ent) {
-    int bet_id;
-    char arg1[MAX_STRING_TOKENS];
-    gclient_t* client = ent->client;
-    if (g_gameStage.integer != MAKING_BETS) {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You can't unbet anything now.\n\"");
-        return;
-    }
-    if (client) {
-        // Check argument.
-        trap_Argv(1, arg1, sizeof(arg1));
-        if (atoi(arg1) < 0 || atoi(arg1) >= client->sess.activeBetsNumber) {
-            trap_SendServerCommand(ent - g_entities, "print \"^1Invalid bet ID.\n\"");
-            return;
-        }
-        bet_id = client->pers.activeBetsIds[atoi(arg1)];
-        GOaDiscardBet(client->pers.guid, bet_id);
-        ent->client->sess.activeBetsNumber -= 1;
-        G_UpdateBalance(ent);
-        G_UpdateActiveBets(ent);
-        G_UpdateActiveBetsSums(0);
-        trap_SendServerCommand(ent - g_entities, "print \"^2Bet was discarded.\n\"");
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-Cmd_PastBets_f
-get last BETS_NUMBER_IN_HISTORY_PAGE bets,
-specifying "elder" as arg shows the page before.
-==================
-*/
-void Cmd_PastBets_f(gentity_t* ent) {
-    int i, bets_n;
-    char bet_str[MAX_STRING_TOKENS];
-    fullbet_t past_bets[BETS_NUMBER_IN_HISTORY_PAGE];
-    gclient_t* client = ent->client;
-    if (client) {
-        if (trap_Argc() == 1 || !client->pers.nextPageUsed) {
-            bets_n = GOaMyPastBets(client->pers.guid, "", client->pers.nextPage, past_bets);
-            client->pers.nextPageUsed = qtrue;
-        } else {
-            bets_n = GOaMyPastBets(client->pers.guid, client->pers.nextPage, client->pers.nextPage, past_bets);
-        }
-        trap_SendServerCommand(ent - g_entities, "print \"^6Bets list:\n\"");
-        for (i = 0; i < bets_n; i++) {
-            fullbet_t bet = past_bets[i];
-            bet_str[0] = 0;
-            strcat(bet_str, "print \"");
-            if (!strcmp(bet.openBet.horse, "red")) {
-                strcat(bet_str, "^6*^7On ^1Red^6*^7 ");
-            } else {
-                strcat(bet_str, "^6*^7On ^5Blue^6*^7 ");
-            }
-            strcat(bet_str, ((bet.prize > 0) ? "^6Result: ^2Win^7 " : "^1Defeat^7 "));
-            strcat(bet_str, va("^6Amount:^7 %d ^3%s^6 ", bet.openBet.amount, bet.openBet.currency));
-            strcat(bet_str, va("^6Prize:^7 %d ^3%s^6  ", bet.prize, bet.openBet.currency));
-            // TODO: implement time storage in backend.
-            //strcat( bet_str, bet.openBet.openTime );
-            strcat(bet_str, "\n\"");
-            printConsoleMessage(ent, bet_str);
-        }
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-void printCurrencySummary(gentity_t* ent, currencySummary_t summary) {
-    char summary_str[MAX_STRING_TOKENS];
-    char total_bet_str[MAX_STRING_TOKENS];
-    char total_prize_str[MAX_STRING_TOKENS];
-    char total_lost_str[MAX_STRING_TOKENS];
-    char bets_won_str[MAX_STRING_TOKENS];
-    char bets_lost_str[MAX_STRING_TOKENS];
-    summary_str[0] = 0;
-    strcat(summary_str, "print \"");
-    strcat(summary_str, "^6Your ^3");
-    strcat(summary_str, summary.currency);
-    strcat(summary_str, " ^6summary:\n");
-    Q_snprintf(total_bet_str, MAX_STRING_TOKENS, "^6Total bet: %d %s\n", summary.totalBet, summary.currency);
-    strcat(summary_str, total_bet_str);
-    Q_snprintf(total_prize_str, MAX_STRING_TOKENS, "^2Total prize: %d %s\n", summary.totalPrize, summary.currency);
-    strcat(summary_str, total_prize_str);
-    Q_snprintf(total_lost_str, MAX_STRING_TOKENS, "^1Total lost: %d %s\n", summary.totalLost, summary.currency);
-    strcat(summary_str, total_lost_str);
-    Q_snprintf(bets_won_str, MAX_STRING_TOKENS, "^2Bets won: %d\n", summary.betsWon);
-    strcat(summary_str, bets_won_str);
-    Q_snprintf(bets_lost_str, MAX_STRING_TOKENS, "^1Bets lost: %d\n", summary.betsLost);
-    strcat(summary_str, bets_lost_str);
-    strcat(summary_str, "\n\"");
-    printConsoleMessage(ent, summary_str);
-}
-
-/*
-==================
-Cmd_BetsSummary_f
-==================
-*/
-void Cmd_BetsSummary_f(gentity_t* ent) {
-    currencySummary_t summaries[CURRENCIES_N];
-    int summaries_n, i;
-    gclient_t* client = ent->client;
-    if (client) {
-        summaries_n = GOaMyBetsSummary(client->pers.guid, summaries);
-        for (i = 0; i < summaries_n; i++) {
-            printCurrencySummary(ent, summaries[i]);
-        }
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/* Use this function in G_Init() only. */
-qboolean needToUpdateGameStage(void) {
-    if (g_gameStage.integer == FORMING_TEAMS) {
-        if (g_readyToBet.integer) {
-            return qtrue;
-        }
-    }
-    if (g_gameStage.integer == MAKING_BETS) {
-        if (g_betsMade.integer) {
-            return qtrue;
-        }
-    }
-    return qfalse;
-}
-
-/* Just check if the majority is now ready to bet. */
-qboolean checkForRestart(void) {
-    if (g_gameStage.integer == FORMING_TEAMS) {
-        int red_players = G_CountHumanPlayers(TEAM_RED);
-        int blue_players = G_CountHumanPlayers(TEAM_BLUE);
-        if ((red_players >= 1) && (blue_players >= 1)) {
-            // At least 1v1 is needed to start.
-            if (g_readyN.integer > ((red_players + blue_players) / 2)) {
-                return qtrue;
-            }
-        }
-    }
-    return qfalse;
-}
-
-/*
-==================
-Cmd_Ready_f
-==================
-*/
-void Cmd_Ready_f(gentity_t* ent) {
-    int new_val;
-    char new_val_str[MAX_CVAR_VALUE_STRING];
-    gclient_t* client = ent->client;
-    if (g_gameStage.integer == MAKING_BETS) {
-        trap_SendServerCommand(ent - g_entities, "print \"^2You can make bets now.\n\"");
-        return;
-    }
-    if (g_gameStage.integer == PLAYING) {
-        trap_SendServerCommand(ent - g_entities, "print \"^1Too slow, they are already playing.\n\"");
-        return;
-    }
-    if (client) {
-        if (client->sess.sessionTeam == TEAM_SPECTATOR) {
-            trap_SendServerCommand(ent - g_entities, "print \"^1Specs can't ^2/ready.\n\"");
-            return;
-        } else if (!client->pers.ready) {
-            client->pers.ready = qtrue;
-            new_val = g_readyN.integer + 1;
-            Q_snprintf(new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val);
-            trap_Cvar_Set("g_readyN", new_val_str);
-            G_UpdateCvars();
-            trap_SendServerCommand(-1, va("cp \"%s" S_COLOR_GREEN " is ready.\n\"",
-                                          client->pers.netname));
-            trap_SendServerCommand(ent - g_entities, "cp \"^2You are ready.\n\"");
-            if (checkForRestart()) {
-                trap_Cvar_Set("g_readyToBet", "1");
-                trap_SendConsoleCommand(EXEC_APPEND, "map_restart\n");
-            }
-        } else if (client->pers.ready) {
-            client->pers.ready = qfalse;
-            new_val = g_readyN.integer - 1;
-            Q_snprintf(new_val_str, MAX_CVAR_VALUE_STRING, "%d", new_val);
-            trap_Cvar_Set("g_readyN", new_val_str);
-            G_UpdateCvars();
-            trap_SendServerCommand(-1, va("cp \"%s" S_COLOR_RED " is not ready.\n\"",
-                                          client->pers.netname));
-            trap_SendServerCommand(ent - g_entities, "cp \"^1You are not ready.\n\"");
-        }
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-G_ReadAndPrintFile
-==================
-*/
-static void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
-    char text[MAX_ARENAS_TEXT];
-    if (file) {
-        trap_FS_Read(&text, len, file);
-        text[len] = '\0';
-        trap_SendServerCommand(ent - g_entities, va("print \"%s\"", text));
-        trap_FS_FCloseFile(file);
-    }
-}
-
-/*
-==================
-Cmd_Help_f
-==================
-*/
-void Cmd_Help_f(gentity_t* ent) {
-    int len, len_common;
-    fileHandle_t file0, file1;
-    gclient_t* client = ent->client;
-    if (client) {
-        len_common = trap_FS_FOpenFile("texts/help_message_common.txt", &file0, FS_READ);
-        if (g_gameStage.integer == FORMING_TEAMS) {
-            len = trap_FS_FOpenFile("texts/help_message_forming_teams.txt", &file1, FS_READ);
-        } else if (g_gameStage.integer == MAKING_BETS) {
-            len = trap_FS_FOpenFile("texts/help_message_making_bets.txt", &file1, FS_READ);
-        } else {
-            len = trap_FS_FOpenFile("texts/help_message_playing.txt", &file1, FS_READ);
-        }
-        G_ReadAndPrintFile(ent, file1, len);
-        G_ReadAndPrintFile(ent, file0, len_common);
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-Cmd_ShareBalance_f
-==================
-*/
-void Cmd_ShareBalance_f(gentity_t* ent) {
-    char arg1[MAX_STRING_TOKENS];
-    char balance_str[MAX_STRING_TOKENS];
-    balance_str[0] = 0;
-    gclient_t* client = ent->client;
-    balance_t balance;
-    balance_t balances[CURRENCIES_N];
-    int i, amount, balances_n;
-    if (client) {
-        if (trap_Argc() == 1) {
-            strcat(balance_str, va("^5%s ^5has ", client->pers.netname));
-            balances_n = G_GetBalance(ent, balances);
-            for (i = 0; i < balances_n; i++) {
-                if (i == balances_n - 1) {
-                    strcat(balance_str, va("^3%d %s ", balances[i].freeMoney, balances[i].currency));
-                } else {
-                    strcat(balance_str, va("^3%d %s^5, ", balances[i].freeMoney, balances[i].currency));
-                }
-            }
-            trap_SendServerCommand(-1, va("print \"%s ^6:p\n\"", balance_str));
-        } else {
-            trap_Argv(1, arg1, sizeof(arg1));
-            // --> "OAC", "BTC", ...
-            StrToUpper(arg1);
-            // Check argument.
-            if (!SearchStr(currencies, CURRENCIES_N, arg1)) {
-                trap_SendServerCommand(ent - g_entities, "print \"^1Invalid currency.\n\"");
-                return;
-            }
-            if (G_GetCurrencyBalance(ent, arg1, &balance)) {
-                amount = balance.freeMoney;
-                trap_SendServerCommand(-1, va("print \"^5%s ^5has ^3%d %s ^6:p\n\"", client->pers.netname, amount, arg1));
-            }
-        }
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-Cmd_UpdateBalance_f
-==================
-*/
-void Cmd_UpdateBalance_f(gentity_t* ent) {
-    gclient_t* client = ent->client;
-    if (client) {
-        G_UpdateBalance(ent);
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-Cmd_UpdateActiveBets_f
-==================
-*/
-void Cmd_UpdateActiveBets_f(gentity_t* ent) {
-    gclient_t* client = ent->client;
-    if (client) {
-        G_UpdateActiveBets(ent);
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
-/*
-==================
-Cmd_UpdateActiveBetsSums_f
-==================
-*/
-void Cmd_UpdateActiveBetsSums_f(gentity_t* ent) {
-    gclient_t* client = ent->client;
-    if (client) {
-        G_UpdateActiveBetsSums(ent);
-    } else {
-        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
-    }
-}
-
 /*
 ==================
 Cmd_CallTeamVote_f
@@ -2415,6 +2008,9 @@ void Cmd_GetMappage_f(gentity_t* ent) {
     trap_SendServerCommand(ent - g_entities, string);
 }
 
+#define BETTING_CMD_START 2
+#define BETTING_CMD_END 10
+
 //KK-OAX This is the table that ClientCommands runs the console entry against.
 commands_t cmds[ ] = {
     // normal commands
@@ -2422,16 +2018,20 @@ commands_t cmds[ ] = {
     { "vote", 0, Cmd_Vote_f },
 
     // oatot commands
+
+    // betting-related
     { "bet", 0, Cmd_Bet_f },
     { "unbet", 0, Cmd_Unbet_f },
     { "pastBets", 0, Cmd_PastBets_f },
     { "betsSummary", 0, Cmd_BetsSummary_f },
     { "ready", 0, Cmd_Ready_f },
-    { "help", 0, Cmd_Help_f },
     { "shareBalance", 0, Cmd_ShareBalance_f },
     { "getBalance", 0, Cmd_UpdateBalance_f },
     { "getActiveBets", 0, Cmd_UpdateActiveBets_f },
     { "getActiveBetsSums", 0, Cmd_UpdateActiveBetsSums_f },
+    // common
+    { "help", 0, Cmd_Help_f },
+    { "getEnableBetting", 0, Cmd_UpdateEnableBetting_f },
 
     // communication commands
     { "tell", CMD_MESSAGE, Cmd_Tell_f },
@@ -2547,6 +2147,11 @@ void ClientCommand(int clientNum) {
         trap_SendServerCommand(clientNum,
                                "print \"Must be alive to use this command\n\"");
         return;
+    }
+    if (!g_enableBetting.integer) {
+        if (i >= BETTING_CMD_START && i <= BETTING_CMD_END) {
+            return;
+        }
     }
     cmds[ i ].cmdHandler(ent);
 }

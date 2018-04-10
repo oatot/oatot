@@ -81,9 +81,11 @@ extern int enableq;
 typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
 
-// oatot
-qboolean needToUpdateGameStage(void);
-qboolean checkForRestart(void);
+//==========================
+// OATOT
+//==========================
+
+/* Structures. */
 
 typedef struct bet_s bet_t;
 typedef struct fullbet_s fullbet_t;
@@ -124,6 +126,77 @@ struct weaponStats_s {
     // Per-weapon damage.
     int weapDamage[MAX_WEAPONS];
 };
+
+/* Cmds. */
+
+void Cmd_Bet_f(gentity_t* ent);
+void Cmd_Unbet_f(gentity_t* ent);
+void Cmd_PastBets_f(gentity_t* ent);
+void Cmd_BetsSummary_f(gentity_t* ent);
+void Cmd_Ready_f(gentity_t* ent);
+void Cmd_Help_f(gentity_t* ent);
+void Cmd_ShareBalance_f(gentity_t* ent);
+void Cmd_UpdateEnableBetting_f(gentity_t* ent);
+void Cmd_UpdateBalance_f(gentity_t* ent);
+void Cmd_UpdateActiveBets_f(gentity_t* ent);
+void Cmd_UpdateActiveBetsSums_f(gentity_t* ent);
+
+/* OATOT game process logic functions. */
+
+/* Server-wide. */
+
+// Returns true for PLAYING game stage, false for other.
+// If betting is disabled, always returns true.
+// This is used to figure out if scoring or match ending is needed.
+qboolean isMatchTime(void);
+// For G_UpdateGameStage().
+qboolean needToUpdateGameStage(void);
+// Check if the majority is now ready to bet.
+qboolean checkForRestart(void);
+// Load shared object for go-client, init Go client for gRPC.
+// The loading is needed to survive dlclose(qagame.so).
+void G_OatotInit(void);
+// Game stage update logic.
+void G_UpdateGameStage(void);
+// End of match: close bets, score prize, show the results.
+void endOfMatchLogic(char* winner);
+// For MAKING_BETS stage, prints info about time left,
+// calls restart when time is up.
+void checkOatotStageUpdate(void);
+
+/* For given client. */
+
+// Is called on client disconnect:
+// rage-quit check, ready count decrease.
+void G_OatotClientDisconnect(gentity_t* ent, team_t team);
+// Register the client on backend.
+void G_OatotRegister(char* guid);
+// Initialize active bets for given client.
+void G_OatotInitClientActiveBets(gclient_t* client);
+// Decrease ready counter in case player gone to spec.
+void G_DecreaseReadyNForSpec(gclient_t* client);
+// False if not FORMING_TEAMS and not spectator.
+qboolean G_AllowToSwitchTeam(gclient_t* client, char* s);
+
+/* oatot: call some certain RPCs needed.
+(ask backend to give info).
+*/
+
+int G_GetBalance(gentity_t* ent, balance_t* balances);
+int G_GetActiveBets(gentity_t* ent, bet_t* bets);
+qboolean G_GetCurrencyBalance(gentity_t* ent, const char* currency, balance_t* res);
+
+/* oatot: draw updates (send commands to cgame). */
+
+void G_UpdateBalance(gentity_t* ent);
+void G_UpdateActiveBets(gentity_t* ent);
+void G_UpdateActiveBetsSums(gentity_t* ent);
+
+/* Utility. */
+
+void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len);
+
+//==========================
 
 struct gentity_s {
     entityState_t s; // communicated by server to clients
@@ -1066,17 +1139,6 @@ extern int allowedFraglimit(int limit);
 extern int VoteParseCustomVotes(void);
 extern t_customvote getCustomVote(char* votecommand);
 
-// oatot: call some certain RPCs needed.
-int G_GetBalance(gentity_t* ent, balance_t* balances);
-int G_GetActiveBets(gentity_t* ent, bet_t* bets);
-
-qboolean G_GetCurrencyBalance(gentity_t* ent, const char* currency, balance_t* res);
-
-// oatot: draw updates.
-void G_UpdateBalance(gentity_t* ent);
-void G_UpdateActiveBets(gentity_t* ent);
-void G_UpdateActiveBetsSums(gentity_t* ent);
-
 // ai_main.c
 #define MAX_FILEPATH 144
 
@@ -1171,6 +1233,7 @@ extern vmCvar_t g_spawnprotect;
 // OATOT Cvars.
 
 // Meaningful for the external users.
+extern vmCvar_t g_enableBetting;
 extern vmCvar_t g_makingBetsTime;
 extern vmCvar_t g_easyItemPickup;
 extern vmCvar_t g_scoreboardDefaultSeason;
