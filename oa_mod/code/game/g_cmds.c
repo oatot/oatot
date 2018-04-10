@@ -43,7 +43,7 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
     scoreFlags = 0;
     numSorted = level.numConnectedClients;
     for (i = 0; i < numSorted; i++) {
-        int ping;
+        int ping, speed;
         cl = &level.clients[level.sortedClients[i]];
         if (cl->pers.connected == CON_CONNECTING) {
             ping = -1;
@@ -59,14 +59,18 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
             accuracy = 0;
         }
         perfect = (cl->ps.persistant[PERS_RANK] == 0 && cl->ps.persistant[PERS_KILLED] == 0) ? 1 : 0;
+        if (cl->pers.nFrames > 0) {
+            speed = (int) (cl->pers.speedSum / cl->pers.nFrames);
+        } else {
+            speed = 0;
+        }
         if (g_gametype.integer == GT_LMS) {
             Com_sprintf(entry, sizeof(entry),
                         " %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
                         cl->ps.persistant[PERS_SCORE], ping,
                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
                         cl->pers.grabs, cl->pers.weaponStats.favWeapon,
-                        (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
-                        (level.time - cl->pers.enterTime) / 60000,
+                        speed, cl->pers.ready, (level.time - cl->pers.enterTime) / 60000,
                         scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                         cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
                         cl->ps.persistant[PERS_EXCELLENT_COUNT],
@@ -82,8 +86,7 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
                         cl->ps.persistant[PERS_SCORE], ping,
                         cl->pers.kills, cl->pers.deaths, cl->pers.damageTaken, cl->pers.damageGiven,
                         cl->pers.grabs, cl->pers.weaponStats.favWeapon,
-                        (int) (cl->pers.speedSum / cl->pers.nFrames), cl->pers.ready,
-                        (level.time - cl->pers.enterTime) / 60000,
+                        speed, cl->pers.ready, (level.time - cl->pers.enterTime) / 60000,
                         scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy,
                         cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
                         cl->ps.persistant[PERS_EXCELLENT_COUNT],
