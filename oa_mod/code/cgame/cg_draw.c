@@ -2628,16 +2628,16 @@ CG_DrawFlagsStatus
 void CG_DrawFlagsStatus(void) {
     if (cgs.flagsStatus[TEAM_RED].stolen) {
         if (cgs.flagsStatus[TEAM_RED].dropped) {
-            CG_DrawPic(120, 25, 40, 40, cgs.media.droppedFlagShader[TEAM_RED]);
+            CG_DrawPic(120, 45, 40, 40, cgs.media.droppedFlagShader[TEAM_RED]);
         } else {
-            CG_DrawPic(120, 25, 40, 40, cgs.media.flagShader[TEAM_RED]);
+            CG_DrawPic(120, 45, 40, 40, cgs.media.flagShader[TEAM_RED]);
         }
     }
     if (cgs.flagsStatus[TEAM_BLUE].stolen) {
         if (cgs.flagsStatus[TEAM_BLUE].dropped) {
-            CG_DrawPic(480, 25, 40, 40, cgs.media.droppedFlagShader[TEAM_BLUE]);
+            CG_DrawPic(480, 45, 40, 40, cgs.media.droppedFlagShader[TEAM_BLUE]);
         } else {
-            CG_DrawPic(480, 25, 40, 40, cgs.media.flagShader[TEAM_BLUE]);
+            CG_DrawPic(480, 45, 40, 40, cgs.media.flagShader[TEAM_BLUE]);
         }
     }
 }
