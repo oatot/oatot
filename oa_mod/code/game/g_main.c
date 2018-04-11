@@ -852,6 +852,8 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
         // oatot (betting).
         G_OatotInit();
         G_UpdateGameStage();
+    } else {
+        trap_Cvar_Set("g_gameStage", "-1");
     }
     G_RemapTeamShaders();
     //elimination:
