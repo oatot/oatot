@@ -91,6 +91,9 @@ in some way.
 **Server-side:**<br>
  - `g_enableBetting`<br>
     1 to enable *all* the betting features, 1 by default.
+ - `g_backendAddr`<br>
+    The address (IP:port) string of oatot backend.
+    This Cvar has the same defaults as backend's `grpc-addr` flag.
  - `g_makingBetsTime`<br>
     The duration of MAKING_BETS in mins, 2 by default.
  - `g_easyItemPickup`<br>

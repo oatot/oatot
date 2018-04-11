@@ -1241,6 +1241,7 @@ extern vmCvar_t g_spawnprotect;
 
 // Meaningful for the external users.
 extern vmCvar_t g_enableBetting;
+extern vmCvar_t g_backendAddr;
 extern vmCvar_t g_makingBetsTime;
 extern vmCvar_t g_easyItemPickup;
 extern vmCvar_t g_scoreboardDefaultSeason;
