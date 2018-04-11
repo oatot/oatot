@@ -980,6 +980,7 @@ UI_Init
 =================
 */
 void UI_Init(void) {
+    int game_stage;
     char info[MAX_INFO_STRING];
     UI_RegisterCvars();
     UI_InitGameinfo();
@@ -1000,6 +1001,13 @@ void UI_Init(void) {
     Menu_Cache();
     uis.activemenu = NULL;
     uis.menusp = 0;
+    trap_GetConfigString(CS_SERVERINFO, info, MAX_INFO_STRING);
+    game_stage = atoi(Info_ValueForKey(info, "g_gameStage"));
+    if (game_stage == -1) {
+        enableBetting = qfalse;
+    } else {
+        enableBetting = qtrue;
+    }
 }
 
 /*

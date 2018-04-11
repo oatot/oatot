@@ -347,7 +347,7 @@ void Cmd_PastBets_f(gentity_t* ent) {
             } else {
                 strcat(bet_str, "^6*^7On ^5Blue^6*^7 ");
             }
-            strcat(bet_str, ((bet.prize > 0) ? "^6Result: ^2Win^7 " : "^1Defeat^7 "));
+            strcat(bet_str, ((bet.prize > 0) ? "^6Result: ^2Win^7 " : "^6Result: ^1Defeat^7 "));
             strcat(bet_str, va("^6Amount:^7 %d ^3%s^6 ", bet.openBet.amount, bet.openBet.currency));
             strcat(bet_str, va("^6Prize:^7 %d ^3%s^6  ", bet.prize, bet.openBet.currency));
             // TODO: implement time storage in backend.
