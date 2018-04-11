@@ -20,7 +20,6 @@ const currenciesN = 2
 const horsesN = 2
 
 var (
-	grpcAddr = "127.0.0.1:13283"
 	client   g.OatotClient
 )
 
@@ -118,10 +117,11 @@ func CBalanceFromGo(in *g.Balance, out *C.balance_t) {
 }
 
 //export GInitializeClient
-func GInitializeClient() {
+func GInitializeClient(grpcAddr *C.char) {
+	grpcAddrStr := C.GoString(grpcAddr)
 	if client == nil {
 		// Set up a connection to the server.
-		conn, err := grpc.Dial(grpcAddr, grpc.WithInsecure())
+		conn, err := grpc.Dial(grpcAddrStr, grpc.WithInsecure())
 		if err != nil {
 			log.Fatalf("Did not connect: %v", err)
 		}

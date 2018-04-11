@@ -150,6 +150,7 @@ vmCvar_t g_rockets;
 
 // Meaningful for the external users.
 vmCvar_t g_enableBetting; // 1 to enable all the betting features, 0 to disable it.
+vmCvar_t g_backendAddr; // The address (IP:port) of oatot backend.
 vmCvar_t g_makingBetsTime; // Time for making bets & warmup before match (in mins).
 vmCvar_t g_easyItemPickup; // 1 for high items.
 vmCvar_t g_scoreboardDefaultSeason; // Season which will be set as default scoreboard season on clients.
@@ -303,6 +304,7 @@ static cvarTable_t gameCvarTable[] = {
 
     // Meaningful for the external users.
     { &g_enableBetting, "g_enableBetting", "1", 0, 0, qfalse },
+    { &g_backendAddr, "g_backendAddr", "127.0.0.1:13283", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
     { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },

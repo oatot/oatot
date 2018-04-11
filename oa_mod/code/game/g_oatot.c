@@ -636,7 +636,7 @@ void G_OatotInit(void) {
     // oatot: load shared object for Go client.
     G_LoadGoClientSo();
     // oatot: tell the backend that we exist and initialize Go client.
-    GInitializeClient();
+    GInitializeClient(g_backendAddr.string);
 }
 
 // Game stage update logic.
