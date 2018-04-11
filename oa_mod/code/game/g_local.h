@@ -136,6 +136,7 @@ void Cmd_BetsSummary_f(gentity_t* ent);
 void Cmd_Ready_f(gentity_t* ent);
 void Cmd_Help_f(gentity_t* ent);
 void Cmd_ShareBalance_f(gentity_t* ent);
+void Cmd_UpdateFlagsStatus_f(gentity_t* ent);
 void Cmd_UpdateEnableBetting_f(gentity_t* ent);
 void Cmd_UpdateBalance_f(gentity_t* ent);
 void Cmd_UpdateActiveBets_f(gentity_t* ent);
@@ -191,6 +192,11 @@ qboolean G_GetCurrencyBalance(gentity_t* ent, const char* currency, balance_t* r
 void G_UpdateBalance(gentity_t* ent);
 void G_UpdateActiveBets(gentity_t* ent);
 void G_UpdateActiveBetsSums(gentity_t* ent);
+void G_UpdateFlagsStatus(gentity_t* ent);
+
+/* Set some info in game and send to cgame (if needed). */
+
+void G_SetFlagsStatus(team_t team, qboolean stolen, qboolean dropped);
 
 /* Utility. */
 
@@ -705,6 +711,7 @@ typedef struct {
     int max_humanplayers;
     int lastActiveTime; ///< Updated as long as there are at least one human player on the server
 
+    flagState_t flagsStatus[TEAM_NUM_TEAMS];
     qboolean timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match.
     qboolean betsGreetingPrinted; // oatot: print info about `g_makingBetsTime` mins to make bets.
 } level_locals_t;

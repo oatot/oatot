@@ -384,8 +384,6 @@ void Team_FragBonuses(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker
             AddScore(attacker, targ->r.currentOrigin, CTF_FRAG_CARRIER_BONUS);
         }
         attacker->client->pers.teamState.fragcarrier++;
-        trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", OtherTeam(team), 1, 1));
-        Team_DropFlagSound(attacker);
         if (g_gametype.integer != GT_POSSESSION) {
             PrintMsg(NULL, "%s" S_COLOR_WHITE " fragged %s's flag carrier!\n",
                      attacker->client->pers.netname, TeamName(team));
@@ -944,7 +942,7 @@ void Team_DropFlagSound(gentity_t* ent) {
 
 void Team_ReturnFlag(int team) {
     Team_ReturnFlagSound(Team_ResetFlag(team), team);
-    trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", team, 0, 0));
+    G_SetFlagsStatus(team, 0, 0);
     if (team == TEAM_FREE) {
         PrintMsg(NULL, "The flag has returned!\n");
         if (g_gametype.integer == GT_1FCTF) {
@@ -988,7 +986,7 @@ void Team_DroppedFlagThink(gentity_t* ent) {
     } else if (ent->item->giTag == PW_NEUTRALFLAG) {
         team = TEAM_FREE;
     }
-    trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", team, 0, 0));
+    G_SetFlagsStatus(team, 0, 0);
     Team_ReturnFlagSound(Team_ResetFlag(team), team);
     // Reset Flag will delete this entity
 }
@@ -1160,7 +1158,7 @@ int Team_TouchOurFlag(gentity_t* ent, gentity_t* other, int team) {
             other->client->pers.teamState.flagrecovery++;
             other->client->pers.teamState.lastreturnedflag = level.time;
             //ResetFlag will remove this entity! We must return zero
-            trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", team, 0, 0));
+            G_SetFlagsStatus(team, 0, 0);
             Team_ReturnFlagSound(Team_ResetFlag(team), team);
             return 0;
         }
@@ -1170,7 +1168,7 @@ int Team_TouchOurFlag(gentity_t* ent, gentity_t* other, int team) {
     if (!cl->ps.powerups[enemy_flag]) {
         return 0; // We don't have the flag
     }
-    trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", OtherTeam(team), 0, 0));
+    G_SetFlagsStatus(OtherTeam(team), 0, 0);
     if (g_gametype.integer == GT_1FCTF) {
         PrintMsg(NULL, "%s" S_COLOR_WHITE " captured the flag!\n", cl->pers.netname);
         G_LogPrintf("1FCTF: %i %i %i: %s captured the flag!\n", cl->ps.clientNum, -1, 1, cl->pers.netname);
@@ -1257,7 +1255,7 @@ int Team_TouchOurFlag(gentity_t* ent, gentity_t* other, int team) {
 
 int Team_TouchEnemyFlag(gentity_t* ent, gentity_t* other, int team) {
     gclient_t* cl = other->client;
-    trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", team, 1, 0));
+    G_SetFlagsStatus(team, 1, 0);
     if (g_gametype.integer == GT_1FCTF) {
         PrintMsg(NULL, "%s" S_COLOR_WHITE " got the flag!\n", other->client->pers.netname);
         G_LogPrintf("1FCTF: %i %i %i: %s got the flag!\n", cl->ps.clientNum, team, 0, cl->pers.netname);

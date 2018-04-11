@@ -919,8 +919,8 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
     if (G_RunScript(va("mapscripts/g_%s_%i.cfg", mapname, g_gametype.integer))) {
         G_RunScript(va("mapscripts/g_default_%i.cfg", g_gametype.integer));
     }
-    trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", TEAM_RED, 0, 0));
-    trap_SendServerCommand(-1, va("updateFlagStatus %d %d %d", TEAM_BLUE, 0, 0));
+    G_SetFlagsStatus(TEAM_RED, 0, 0);
+    G_SetFlagsStatus(TEAM_BLUE, 0, 0);
 }
 
 /*

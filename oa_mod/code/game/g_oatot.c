@@ -129,6 +129,36 @@ void G_UpdateActiveBetsSums(gentity_t* ent) {
     }
 }
 
+/*
+==================
+G_UpdateFlagsStatus
+==================
+*/
+void G_UpdateFlagsStatus(gentity_t* ent) {
+    int cl_n = (ent) ? ent - g_entities : -1;
+    trap_SendServerCommand(cl_n, va(
+        "updateFlagStatus %d %d %d\n",
+        TEAM_RED,
+        level.flagsStatus[TEAM_RED].stolen,
+        level.flagsStatus[TEAM_RED].dropped
+    ));
+    trap_SendServerCommand(cl_n, va(
+        "updateFlagStatus %d %d %d\n",
+        TEAM_BLUE,
+        level.flagsStatus[TEAM_BLUE].stolen,
+        level.flagsStatus[TEAM_BLUE].dropped
+    ));
+}
+
+//=====================================
+
+void G_SetFlagsStatus(team_t team, qboolean stolen, qboolean dropped) {
+    level.flagsStatus[team].stolen = stolen;
+    level.flagsStatus[team].dropped = dropped;
+    // Send updates to everyone (to cgame).
+    G_UpdateFlagsStatus(0);
+}
+
 //=====================================
 
 // Utility.
@@ -467,6 +497,20 @@ void Cmd_ShareBalance_f(gentity_t* ent) {
                 trap_SendServerCommand(-1, va("print \"^5%s ^5has ^3%d %s ^6:p\n\"", client->pers.netname, amount, arg1));
             }
         }
+    } else {
+        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
+    }
+}
+
+/*
+==================
+Cmd_UpdateFlagsStatus_f
+==================
+*/
+void Cmd_UpdateFlagsStatus_f(gentity_t* ent) {
+    gclient_t* client = ent->client;
+    if (client) {
+        G_UpdateFlagsStatus(ent);
     } else {
         trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
     }

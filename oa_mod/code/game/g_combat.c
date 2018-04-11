@@ -473,6 +473,10 @@ void player_die(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int 
     if (level.intermissiontime) {
         return;
     }
+    if (self->client->ps.powerups[PW_REDFLAG] || self->client->ps.powerups[PW_BLUEFLAG]) {
+        G_SetFlagsStatus(OtherTeam(self->client->sess.sessionTeam), 1, 1);
+        Team_DropFlagSound(self);
+    }
     // Global stats.
     self->client->pers.deaths += 1;
     if (attacker->client) {

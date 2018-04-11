@@ -1011,8 +1011,8 @@ static void CG_RegisterGraphics(void) {
     for (i = 0; i < CURRENCIES_N; i++) {
         cgs.media.currencyShader[i] = trap_R_RegisterShader(va("images/currency%d.png", i));
     }
-    cgs.media.readyShader = trap_R_RegisterShader("images/ready.png");
-    cgs.media.notReadyShader = trap_R_RegisterShader("images/not_ready.png");
+    cgs.media.readyShader = trap_R_RegisterShaderNoMip("images/ready.png");
+    cgs.media.notReadyShader = trap_R_RegisterShaderNoMip("images/not_ready.png");
     cgs.media.lockShader = trap_R_RegisterShaderNoMip("images/lock.png");
     cgs.media.winterShader0 = trap_R_RegisterShaderNoMip("images/winter0.png");
     cgs.media.winterShader1 = trap_R_RegisterShaderNoMip("images/winter1.png");
@@ -2223,8 +2223,7 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     trap_SendClientCommand("getActiveBetsSums\n");
     trap_SendClientCommand("getActiveBets\n");
     trap_SendClientCommand("getBalance\n");
-    cgs.flagsStatus[TEAM_RED].dropped = qfalse;
-    cgs.flagsStatus[TEAM_RED].stolen = qfalse;
+    trap_SendClientCommand("getFlagsStatus\n");
     // load the new map
     // load the new map
 #ifndef SCRIPTHUD
