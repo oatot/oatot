@@ -451,7 +451,7 @@ func (s *Server) OaMyPastBets(ctx context.Context, req *g.OaMyPastBetsRequest) (
 	} else {
 		lastBets = player.PastBets
 	}
-	for betID := range lastBets {
+	for _, betID := range lastBets {
 		bet := s.data.Bets[betID]
 		res.Bets = append(res.Bets, betToPb(bet, betID))
 	}
@@ -481,7 +481,7 @@ func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequ
 	for _, currency := range Currencies {
 		currencySummaries[currency] = defaultCurrencySummary(currency)
 	}
-	for betID := range player.PastBets {
+	for _, betID := range player.PastBets {
 		bet := s.data.Bets[betID]
 		summary := currencySummaries[bet.Currency]
 		*summary.TotalBet += uint64(bet.Amount)
