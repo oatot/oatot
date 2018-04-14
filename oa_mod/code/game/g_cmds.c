@@ -806,7 +806,7 @@ void SetTeam(gentity_t* ent, char* s) {
         }
     }
     if (oldTeam != TEAM_SPECTATOR) {
-        PlayerStore_store(Info_ValueForKey(userinfo, "cl_guid"), client->ps);
+        PlayerStore_store(client->pers.guid, client->ps);
     }
     // they go to the end of the line for tournements
     if (team == TEAM_SPECTATOR && oldTeam != team) {

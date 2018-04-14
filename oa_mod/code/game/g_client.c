@@ -1123,7 +1123,7 @@ void ClientUserinfoChanged(int clientNum) {
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
     // this is not the userinfo, more like the configstring actually
-    G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid"));
+    G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, client->pers.guid);
     Cmd_UpdateEnableBetting_f(ent);
     Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {
@@ -1398,7 +1398,7 @@ void ClientBegin(int clientNum) {
     flags = client->ps.eFlags;
     memset(&client->ps, 0, sizeof(client->ps));
     if (client->sess.sessionTeam != TEAM_SPECTATOR) {
-        PlayerStore_restore(Info_ValueForKey(userinfo, "cl_guid"), &(client->ps));
+        PlayerStore_restore(client->pers.guid, &(client->ps));
     }
     client->ps.eFlags = flags;
     // locate ent at a spawn point
@@ -1836,7 +1836,7 @@ void ClientDisconnect(int clientNum) {
         }
     }
     if (ent->client->pers.connected == CON_CONNECTED && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
-        PlayerStore_store(Info_ValueForKey(userinfo, "cl_guid"), ent->client->ps);
+        PlayerStore_store(ent->client->pers.guid, ent->client->ps);
     }
     G_LogPrintf("ClientDisconnect: %i\n", clientNum);
     // if we are playing in tourney mode and losing, give a win to the other player
