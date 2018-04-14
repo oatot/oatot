@@ -1123,7 +1123,7 @@ void ClientUserinfoChanged(int clientNum) {
     }
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
     // this is not the userinfo, more like the configstring actually
-    G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, Info_ValueForKey(userinfo, "cl_guid"));
+    G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, client->pers.guid);
     Cmd_UpdateEnableBetting_f(ent);
     Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {
@@ -1155,6 +1155,7 @@ restarts.
 */
 char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
     char* value;
+    const char* var;
     // char *areabits;
     gclient_t* client;
     char userinfo[MAX_INFO_STRING];
@@ -1166,9 +1167,20 @@ char* ClientConnect(int clientNum, qboolean firstTime, qboolean isBot) {
     client = &level.clients[ clientNum ];
     ent->client = client;
     memset(client, 0, sizeof(*client));
+    // Workaround for cl_guid changing bug.
+    // Client engine does change cl_guid back to its common value
+    // (from server-unique value) sometimes.
+    // cl_guid is always correct on first time connect,
+    // so we just store it and restore the value from Cvar.
     trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
-    value = Info_ValueForKey(userinfo, "cl_guid");
-    Q_strncpyz(client->pers.guid, value, sizeof(client->pers.guid));
+    var = va("clGuid%d", clientNum);
+    if (firstTime) {
+        value = Info_ValueForKey(userinfo, "cl_guid");
+        trap_Cvar_Set(var, value);
+        Q_strncpyz(client->pers.guid, value, sizeof(client->pers.guid));
+    } else {
+        trap_Cvar_VariableStringBuffer(var, client->pers.guid, sizeof(client->pers.guid));
+    }
     if (g_enableBetting.integer) {
         G_OatotInitClientActiveBets(client);
     }
@@ -1386,7 +1398,7 @@ void ClientBegin(int clientNum) {
     flags = client->ps.eFlags;
     memset(&client->ps, 0, sizeof(client->ps));
     if (client->sess.sessionTeam != TEAM_SPECTATOR) {
-        PlayerStore_restore(Info_ValueForKey(userinfo, "cl_guid"), &(client->ps));
+        PlayerStore_restore(client->pers.guid, &(client->ps));
     }
     client->ps.eFlags = flags;
     // locate ent at a spawn point
@@ -1824,7 +1836,7 @@ void ClientDisconnect(int clientNum) {
         }
     }
     if (ent->client->pers.connected == CON_CONNECTED && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
-        PlayerStore_store(Info_ValueForKey(userinfo, "cl_guid"), ent->client->ps);
+        PlayerStore_store(ent->client->pers.guid, ent->client->ps);
     }
     G_LogPrintf("ClientDisconnect: %i\n", clientNum);
     // if we are playing in tourney mode and losing, give a win to the other player

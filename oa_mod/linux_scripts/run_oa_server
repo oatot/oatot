@@ -19,9 +19,18 @@ fi
 PORT=$1
 CONFIG="$2"
 
+# Create diff home folder for this given server.
+# This is done to enable many servers running same
+# mod without messing up in common q3config_server.cfg file.
+mkdir ~/.openarena-$PORT
+ln -s ~/.openarena/baseoa ~/.openarena-$PORT
+mkdir ~/.openarena-$PORT/$MODNAME
+ln -s ~/.openarena/$MODNAME/qagame$ARCH.so ~/.openarena-$PORT/$MODNAME
+ln -s ~/.openarena/$MODNAME/$MODNAME.pk3 ~/.openarena-$PORT/$MODNAME
+
 # Set LD_LIBRARY_PATH for Go client .so.
 export LD_LIBRARY_PATH=$(readlink -f ../build/release-linux-$ARCH/${MODNAME}/go-client/)
 # Change to build dir.
 cd ../build/release-linux-$ARCH/${MODNAME}
 # Launch the server itself.
-$BINNAME +set fs_game $MODNAME +set dedicated 2 +set net_port $PORT +exec $CONFIG
+$BINNAME +set fs_homepath ~/.openarena-$PORT +set fs_game $MODNAME +set dedicated 2 +set net_port $PORT +exec $CONFIG
