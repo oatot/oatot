@@ -23,7 +23,7 @@ type MapStrToInt map[string]int64
 type Player struct {
 	FreeMoney     MapStrToInt      `json:"free_money"`
 	ActiveBets    map[int]struct{} `json:"active_bets"`
-	PastBets      map[int]struct{} `json:"past_bets"`
+	PastBets      []int            `json:"past_bets"`
 	CancelledBets map[int]struct{} `json:"cancelled_bets"`
 }
 
@@ -51,6 +51,8 @@ type Server struct {
 
 	StartMoney int64
 }
+
+const pastBetsPageSize = 15
 
 var Currencies = []string{
 	"OAC",
@@ -260,7 +262,6 @@ func (s *Server) OaRegister(ctx context.Context, req *g.OaRegisterRequest) (*g.O
 	s.data.Players[*req.OaAuth.ClGuid] = &Player{
 		FreeMoney:     basicFreeMoney(s.StartMoney),
 		ActiveBets:    make(map[int]struct{}),
-		PastBets:      make(map[int]struct{}),
 		CancelledBets: make(map[int]struct{}),
 	}
 	return &g.OaRegisterResponse{}, nil
@@ -375,7 +376,7 @@ func (s *Server) OaCloseBets(ctx context.Context, req *g.OaCloseBetsRequest) (*g
 		player := s.data.Players[bet.Player]
 		player.FreeMoney[bet.Currency] += bet.Prize
 		delete(player.ActiveBets, betID)
-		player.PastBets[betID] = struct{}{}
+		player.PastBets = append(player.PastBets, betID)
 		bet.Winner = *req.Winner
 		betIDs = append(betIDs, betID)
 	}
@@ -444,7 +445,13 @@ func (s *Server) OaMyPastBets(ctx context.Context, req *g.OaMyPastBetsRequest) (
 	res := &g.OaMyPastBetsResponse{
 		NextPage: &nextPage,
 	}
-	for betID := range player.PastBets {
+	var lastBets []int
+	if len(player.PastBets) > pastBetsPageSize {
+		lastBets = player.PastBets[len(player.PastBets)-pastBetsPageSize:]
+	} else {
+		lastBets = player.PastBets
+	}
+	for _, betID := range lastBets {
 		bet := s.data.Bets[betID]
 		res.Bets = append(res.Bets, betToPb(bet, betID))
 	}
@@ -474,7 +481,7 @@ func (s *Server) OaMyBetsSummary(ctx context.Context, req *g.OaMyBetsSummaryRequ
 	for _, currency := range Currencies {
 		currencySummaries[currency] = defaultCurrencySummary(currency)
 	}
-	for betID := range player.PastBets {
+	for _, betID := range player.PastBets {
 		bet := s.data.Bets[betID]
 		summary := currencySummaries[bet.Currency]
 		*summary.TotalBet += uint64(bet.Amount)

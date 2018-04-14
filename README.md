@@ -4,6 +4,7 @@ OpenArena tote
 ## Idea
 
 Make betting (with both virtual currency or [BTC][BTC-link]) possible in [OA][OA-link].
+Read more: http://guild-oa.com/oatot
 
 ## Motivation
 

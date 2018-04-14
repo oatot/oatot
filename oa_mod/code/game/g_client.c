@@ -1308,7 +1308,7 @@ void printWelcomeMessage(int clientNum) {
     } else {
         trap_SendServerCommand(clientNum, "print \"^4> ^3New OpenArena mod!\n\"");
     }
-    trap_SendServerCommand(clientNum, "print \"^4> ^3Read more: ^1<link to guild-oa.com section>\n\"");
+    trap_SendServerCommand(clientNum, "print \"^4> ^3Read more: ^1guild-oa.com/oatot\n\"");
     trap_SendServerCommand(clientNum, "print \"^4> ^3Source code is also available: ^1github.com/OaGuild/oatot\n\"");
     trap_SendServerCommand(clientNum, "print \"^4> ^3To get help: type ^2/help.\n\"");
     trap_SendServerCommand(clientNum, "print \"^4> ^3Enjoy!\n\"");
