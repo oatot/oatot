@@ -71,6 +71,18 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     ci = &cgs.clientinfo[score->client];
     iconx = SB_BOTICON_X;
     headx = SB_HEAD_X;
+    if (ci->botSkill > 0 && ci->botSkill <= 5) {
+        // Clear all the stats for bots.
+        // Not useful info, but overlaps because of playing too long.
+        score->damageGiven = 0;
+        score->damageTaken = 0;
+        score->kills = 0;
+        score->deaths = 0;
+        score->accuracy = 0;
+        score->grabs = 0;
+        score->captures = 0;
+        score->averageSpeed = 0;
+    }
     // draw the handicap or bot skill marker (unless player has flag)
     if (cgs.enableBetting && (cgs.gameStage == FORMING_TEAMS)) {
         if (ci->botSkill > 0 && ci->botSkill <= 5) {
