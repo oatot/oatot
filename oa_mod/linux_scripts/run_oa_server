@@ -26,7 +26,7 @@ mkdir ~/.openarena-$PORT
 ln -s ~/.openarena/baseoa ~/.openarena-$PORT
 mkdir ~/.openarena-$PORT/$MODNAME
 ln -s ~/.openarena/$MODNAME/qagame$ARCH.so ~/.openarena-$PORT/$MODNAME
-ln -s ~/.openarena/$MODNAME/$MODNAME.pk3 ~/.openarena-$PORT/$MODNAME
+ln -s ~/.openarena/$MODNAME/*.pk3 ~/.openarena-$PORT/$MODNAME
 
 # Set LD_LIBRARY_PATH for Go client .so.
 export LD_LIBRARY_PATH=$(readlink -f ../build/release-linux-$ARCH/${MODNAME}/go-client/)
