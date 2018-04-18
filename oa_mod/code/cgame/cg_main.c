@@ -510,7 +510,7 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_chatBeep, "cg_chatBeep", "1", CVAR_ARCHIVE},
     {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE},
 
-    {&cg_scoreboardEffects, "cg_scoreboardEffects", "1", CVAR_ARCHIVE},
+    {&cg_scoreboardEffects, "cg_scoreboardEffects", "0", CVAR_ARCHIVE},
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
     // Utility.

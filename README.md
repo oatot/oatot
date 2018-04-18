@@ -105,7 +105,7 @@ in some way.
 
 **Client-side:**<br>
  - `cg_scoreboardEffects`<br>
-    0 to disable all additional scoreboard effects, 1 by default.
+    1 to enable additional scoreboard effects, 0 by default.
  - `cg_scoreboardSeason`<br>
     Scoreboard season, `g_scoreboardDefaultSeason` (server-side Cvar) by default.
     0 - no season, 1 - winter, 2 - spring, 3 - summer, 4 - autumn.
