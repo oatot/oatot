@@ -1174,12 +1174,16 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker,
         client->damage_blood += take;
         client->damage_knockback += knockback;
         // Global stats.
-        client->pers.damageTaken += take;
         if (attacker->client) {
-            attacker->client->pers.damageGiven += take;
+            // We only include damage from weapons.
             if (modToWeapon[mod] != -1) {
                 // Update weapon stats of attacker.
                 G_UpdateWeaponStats(attacker, take, modToWeapon[mod]);
+                // Update damage stats.
+                // Don't count extra damage (when it exceeds hp).
+                int actualDamage = ((targ->health < take) ? targ->health : take);
+                client->pers.damageTaken += actualDamage;
+                attacker->client->pers.damageGiven += actualDamage;
             }
         }
         if (dir) {
