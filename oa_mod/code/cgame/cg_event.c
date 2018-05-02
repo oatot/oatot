@@ -893,10 +893,15 @@ void CG_EntityEvent(centity_t* cent, vec3_t position) {
     //
     case EV_NOAMMO:
         DEBUGNAME("EV_NOAMMO");
-        // trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound );
+        trap_S_StartSound(NULL, es->number, CHAN_AUTO, cgs.media.noAmmoSound);
         if (es->number == cg.snap->ps.clientNum) {
             CG_OutOfAmmoChange();
         }
+        CG_CenterPrint("^1NO AMMO", SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH);
+        break;
+    case EV_LOWAMMO:
+        DEBUGNAME("EV_LOWAMMO");
+        CG_CenterPrint("^6LOW AMMO", SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH);
         break;
     case EV_CHANGE_WEAPON:
         DEBUGNAME("EV_CHANGE_WEAPON");
