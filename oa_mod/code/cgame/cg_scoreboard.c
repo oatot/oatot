@@ -214,7 +214,7 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
 }
 
 void CG_DrawDate(int x, int y) {
-    CG_DrawSmallString(x, y, cgs.timestamp, 1.0F);
+    CG_DrawSmallString(x, y, va("^3%s", cgs.timestamp), 1.0F);
 }
 
 void CG_DrawScoreboardEffect(int x, int y, qhandle_t scoreboard_effect0, qhandle_t scoreboard_effect1) {
@@ -408,7 +408,7 @@ qboolean CG_DrawOldScoreboard(void) {
         n1 = CG_TeamScoreboard(y, TEAM_SPECTATOR, fade, maxClients, lineHeight);
         y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
         CG_DrawScoreboardEffects(0, y - BIGCHAR_WIDTH + 6);
-        CG_DrawDate(400, y - BIGCHAR_HEIGHT + 20);
+        CG_DrawDate(400, y - BIGCHAR_HEIGHT + 40);
     } else {
         //
         // free for all scoreboard
