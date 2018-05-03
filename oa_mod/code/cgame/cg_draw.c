@@ -3145,7 +3145,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 #else
             CG_DrawStatusBar();
 #endif
-            CG_DrawAmmoWarning();
+            // CG_DrawAmmoWarning();
             CG_DrawProxWarning();
             if (stereoFrame == STEREO_CENTER) {
                 CG_DrawCrosshair();
