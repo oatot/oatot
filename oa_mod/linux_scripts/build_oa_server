@@ -1,5 +1,6 @@
 # Tip: You can create a supermake.local file and this script will get the variable from there.
 MODNAME=oatot
+OAHOMEDIR=~/.openarena
 # ARCH should be either i386 (32 bit) or x86_64 (64 bit).
 ARCH=x86_64
 
@@ -8,7 +9,7 @@ if [ -r ./supermake.local ]; then
 fi
 
 # Create the mod dir.
-mkdir -p ~/.openarena/$MODNAME
+mkdir -p $OAHOMEDIR/$MODNAME
 
 # Copy all the resources needed.
 mkdir -p ../build/release-linux-$ARCH/$MODNAME
@@ -16,10 +17,10 @@ cp -r ../resources/* ../build/release-linux-$ARCH/$MODNAME
 
 cd ..
 # Build and pak it.
-make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so ~/.openarena/$MODNAME && zip -r ~/.openarena/$MODNAME/$MODNAME.pk3 vm texts images models scripts gfx menu sound
+make BASEGAME=$MODNAME && export LD_LIBRARY_PATH=$(readlink -f build/release-linux-$ARCH/${MODNAME}/go-client/) && cd build/release-linux-$ARCH/${MODNAME} && cp *.so $OAHOMEDIR/$MODNAME && zip -r $OAHOMEDIR/$MODNAME/$MODNAME.pk3 vm texts images models scripts gfx menu sound
 
 # Copy pk3s to dir specified for downloading.
 if (($# == 1)); then
     DOWNLOAD_DIR="$1"
-    cp ~/.openarena/$MODNAME/$MODNAME.pk3 $DOWNLOAD_DIR
+    cp $OAHOMEDIR/$MODNAME/$MODNAME.pk3 $DOWNLOAD_DIR
 fi
