@@ -2030,6 +2030,7 @@ commands_t cmds[ ] = {
     { "getActiveBetsSums", 0, Cmd_UpdateActiveBetsSums_f },
     // common
     { "help", 0, Cmd_Help_f },
+    { "getMakingBetsTime", 0, Cmd_UpdateMakingBetsTime_f },
     { "getEnableBetting", 0, Cmd_UpdateEnableBetting_f },
     { "getFlagsStatus", 0, Cmd_UpdateFlagsStatus_f },
 

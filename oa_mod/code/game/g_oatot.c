@@ -518,6 +518,20 @@ void Cmd_UpdateFlagsStatus_f(gentity_t* ent) {
 
 /*
 ==================
+Cmd_UpdateMakingBetsTime_f
+==================
+*/
+void Cmd_UpdateMakingBetsTime_f(gentity_t* ent) {
+    gclient_t* client = ent->client;
+    if (client) {
+        trap_SendServerCommand(ent - g_entities, va("makingBetsTime %d\n", g_makingBetsTime.integer));
+    } else {
+        trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
+    }
+}
+
+/*
+==================
 Cmd_UpdateEnableBetting_f
 ==================
 */

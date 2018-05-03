@@ -1250,6 +1250,9 @@ typedef struct {
     qboolean enableBetting;
     betSum_t betSums[HORSES_N * CURRENCIES_N];
     flagState_t flagsStatus[TEAM_NUM_TEAMS];
+    char timestamp[MAX_CVAR_VALUE_STRING];
+    // In minutes.
+    int makingBetsTime;
 
     // teamchat width is *3 because of embedded color codes
     char teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH * 3 + 1];

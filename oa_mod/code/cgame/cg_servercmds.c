@@ -61,6 +61,16 @@ static int CG_ValidOrder(const char* p) {
 
 /*
 =================
+CG_ParseMakingBetsTime
+
+=================
+*/
+static void CG_ParseMakingBetsTime(void) {
+    cgs.makingBetsTime = atoi(CG_Argv(1));
+}
+
+/*
+=================
 CG_ParseEnableBetting
 
 =================
@@ -429,6 +439,7 @@ void CG_ParseServerinfo(void) {
     char* mapname;
     info = CG_ConfigString(CS_SERVERINFO);
     cgs.gametype = atoi(Info_ValueForKey(info, "g_gametype"));
+    Q_strncpyz(cgs.timestamp, Info_ValueForKey(info, "g_timestamp"), sizeof(cgs.timestamp));
     //By default do as normal:
     cgs.ffa_gt = 0;
     //See if ffa gametype
@@ -1224,6 +1235,10 @@ static void CG_ServerCommand(void) {
     cmd = CG_Argv(0);
     if (!cmd[0]) {
         // server claimed the command
+        return;
+    }
+    if (strequals(cmd, "makingBetsTime")) {
+        CG_ParseMakingBetsTime();
         return;
     }
     if (strequals(cmd, "enableBetting")) {

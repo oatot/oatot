@@ -119,6 +119,28 @@ static void CG_DrawGameStageInfo(void) {
 
 /*
 =================
+CG_DrawOatotTimer
+=================
+ */
+static void CG_DrawOatotTimer(void) {
+    int msec, mins, seconds, tens;
+    msec = cgs.levelStartTime + cgs.makingBetsTime * 60000 - cg.time;
+    seconds = msec / 1000;
+    mins = seconds / 60;
+    tens = seconds / 10;
+    seconds -= tens * 10;
+    if (cgs.gameStage == MAKING_BETS) {
+        CG_DrawSmallString(
+            320 - 17 * SMALLCHAR_WIDTH,
+            120,
+            va("^3The match will be started in: ^1%i:%i%i", mins, tens, seconds),
+            1.0F
+        );
+    }
+}
+
+/*
+=================
 CG_DrawBalanceBar
 =================
  */
@@ -284,6 +306,7 @@ CG_DrawOatotStuff
  */
 void CG_DrawOatotStuff(void) {
     CG_DrawGameStageInfo();
+    CG_DrawOatotTimer();
     CG_DrawBalance();
     CG_DrawActiveBetsSums();
     CG_DrawActiveBets();

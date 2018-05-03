@@ -2219,6 +2219,7 @@ void CG_Init(int serverMessageNum, int serverCommandSequence, int clientNum) {
     cgs.levelStartTime = atoi(s);
     CG_ParseServerinfo();
     // oatot
+    trap_SendClientCommand("getMakingBetsTime\n");
     trap_SendClientCommand("getEnableBetting\n");
     trap_SendClientCommand("getActiveBetsSums\n");
     trap_SendClientCommand("getActiveBets\n");
