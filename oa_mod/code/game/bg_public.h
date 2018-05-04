@@ -555,9 +555,7 @@ typedef enum {
     EV_TAUNT_FOLLOWME,
     EV_TAUNT_GETFLAG,
     EV_TAUNT_GUARDBASE,
-    EV_TAUNT_PATROL,
-
-    EV_LOWAMMO
+    EV_TAUNT_PATROL
 
 } entity_event_t;
 

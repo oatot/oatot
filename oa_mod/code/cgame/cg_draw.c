@@ -2887,12 +2887,12 @@ static void CG_DrawAmmoWarning(void) {
         return;
     }
     if (cg.lowAmmoWarning == 2) {
-        s = "OUT OF AMMO";
+        s = "^1OUT OF AMMO";
     } else {
-        s = "LOW AMMO WARNING";
+        s = "^3LOW AMMO WARNING";
     }
-    w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
-    CG_DrawBigString(320 - w / 2, 64, s, 1.0F);
+    w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
+    CG_DrawSmallString(320 - w / 2, 220, s, 1.0F);
 }
 
 //#ifdef MISSIONPACK
@@ -3145,7 +3145,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
 #else
             CG_DrawStatusBar();
 #endif
-            // CG_DrawAmmoWarning();
+            CG_DrawAmmoWarning();
             CG_DrawProxWarning();
             if (stereoFrame == STEREO_CENTER) {
                 CG_DrawCrosshair();

@@ -31,47 +31,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 ==============
 CG_CheckAmmo
 
-If the ammo has gone low enough to generate the warning, play a sound
+Checks the current weapon for ammo warnings.
 ==============
 */
 void CG_CheckAmmo(void) {
-    int i;
-    int total;
-    int previous;
-    int weapons;
-    // see about how many seconds of ammo we have remaining
-    weapons = cg.snap->ps.stats[ STAT_WEAPONS ];
-    total = 0;
-    for (i = WP_MACHINEGUN; i < WP_NUM_WEAPONS; i++) {
-        if (!(weapons & (1 << i)) || i == WP_GRAPPLING_HOOK) {
-            continue;
-        }
-        switch (i) {
-        case WP_ROCKET_LAUNCHER:
-        case WP_GRENADE_LAUNCHER:
-        case WP_RAILGUN:
-        case WP_SHOTGUN:
-        //#ifdef MISSIONPACK
-        case WP_PROX_LAUNCHER:
-            //#endif
-            total += cg.snap->ps.ammo[i] * 1000;
-            break;
-        default:
-            total += cg.snap->ps.ammo[i] * 200;
-            break;
-        }
-        if (total >= 5000) {
-            cg.lowAmmoWarning = 0;
-            return;
-        }
+    int previous = cg.lowAmmoWarning;
+    int weapon = cgs.clientinfo[cg.clientNum].curWeapon;
+    int lowAmmoBound = BG_FindItemForWeapon(weapon)->quantity / 3;
+    if ((weapon == WP_GAUNTLET) || (weapon == WP_GRAPPLING_HOOK)) {
+        return;
     }
-    previous = cg.lowAmmoWarning;
-    if (total == 0) {
+    if (cg.snap->ps.ammo[weapon] == 0) {
         cg.lowAmmoWarning = 2;
-    } else {
+    } else if (cg.snap->ps.ammo[weapon] <= lowAmmoBound) {
         cg.lowAmmoWarning = 1;
+    } else {
+        cg.lowAmmoWarning = 0;
     }
-    // play a sound on transitions
+    // Play a sound on transitions.
     if (cg.lowAmmoWarning != previous) {
         trap_S_StartLocalSound(cgs.media.noAmmoSound, CHAN_LOCAL_SOUND);
     }

@@ -1369,7 +1369,6 @@ Make this thing stop during warmup (done)
 ==============
 */
 static void PM_Weapon(void) {
-    int lowAmmoBound;
     int addTime;
     // don't allow attack until all buttons are up
     if (pm->ps->pm_flags & PMF_RESPAWNED) {
@@ -1453,13 +1452,6 @@ static void PM_Weapon(void) {
         PM_AddEvent(EV_NOAMMO);
         pm->ps->weaponTime += 500;
         return;
-    }
-    // Check for low ammo.
-    lowAmmoBound = BG_FindItemForWeapon(pm->ps->weapon)->quantity / 4;
-    if (pm->ps->ammo[pm->ps->weapon] <= lowAmmoBound) {
-        if ((pm->ps->weapon != WP_GAUNTLET) && (pm->ps->weapon != WP_GRAPPLING_HOOK)) {
-            PM_AddEvent(EV_LOWAMMO);
-        }
     }
     // take an ammo away if not infinite, 999 or up
     if (!(pm->ps->ammo[ pm->ps->weapon ] == -1 || pm->ps->ammo[ pm->ps->weapon ] >= 999)) {
