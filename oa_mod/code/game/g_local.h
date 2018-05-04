@@ -135,6 +135,8 @@ void Cmd_PastBets_f(gentity_t* ent);
 void Cmd_BetsSummary_f(gentity_t* ent);
 void Cmd_Ready_f(gentity_t* ent);
 void Cmd_Help_f(gentity_t* ent);
+void Cmd_Timeout_f(gentity_t* ent);
+void Cmd_Timein_f(gentity_t* ent);
 void Cmd_ShareBalance_f(gentity_t* ent);
 void Cmd_UpdateFlagsStatus_f(gentity_t* ent);
 void Cmd_UpdateMakingBetsTime_f(gentity_t* ent);
@@ -715,6 +717,10 @@ typedef struct {
     flagState_t flagsStatus[TEAM_NUM_TEAMS];
     qboolean timeWarningPrinted; // oatot: print warning 30 seconds before the start of the match.
     qboolean betsGreetingPrinted; // oatot: print info about `g_makingBetsTime` mins to make bets.
+    // Timeout stuff.
+    qboolean isTimeoutTime;
+    qboolean isTimeoutRetreat;
+    int timeoutEndTime; // In msec.
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin
@@ -1246,6 +1252,8 @@ extern vmCvar_t g_backendAddr;
 extern vmCvar_t g_makingBetsTime;
 extern vmCvar_t g_easyItemPickup;
 extern vmCvar_t g_scoreboardDefaultSeason;
+extern vmCvar_t g_allowTimeouts;
+extern vmCvar_t g_afterTimeoutTime;
 // Utility.
 extern vmCvar_t g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing.
 extern vmCvar_t g_readyN;

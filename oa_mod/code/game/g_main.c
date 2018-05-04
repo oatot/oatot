@@ -154,6 +154,8 @@ vmCvar_t g_backendAddr; // The address (IP:port) of oatot backend.
 vmCvar_t g_makingBetsTime; // Time for making bets & warmup before match (in mins).
 vmCvar_t g_easyItemPickup; // 1 for high items.
 vmCvar_t g_scoreboardDefaultSeason; // Season which will be set as default scoreboard season on clients.
+vmCvar_t g_allowTimeouts;
+vmCvar_t g_afterTimeoutTime;
 // Utility.
 vmCvar_t g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing.
 vmCvar_t g_readyN;
@@ -308,6 +310,8 @@ static cvarTable_t gameCvarTable[] = {
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
     { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },
+    { &g_allowTimeouts, "g_allowTimeouts", "1", 0, 0, qfalse },
+    { &g_afterTimeoutTime, "g_afterTimeoutTime", "30", 0, 0, qfalse },
     // Utility.
     { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
@@ -2376,6 +2380,15 @@ Advances the non-player objects in the world
 void G_RunFrame(int levelTime) {
     int i;
     gentity_t* ent;
+    if (level.isTimeoutTime) {
+        return;
+    } else if (level.isTimeoutRetreat) {
+        if (level.time - level.timeoutEndTime >= g_afterTimeoutTime.integer * 1000) {
+            level.isTimeoutRetreat = qfalse;
+        } else {
+            return;
+        }
+    }
     // if we are waiting for the level to restart, do nothing
     if (level.restarted) {
         return;

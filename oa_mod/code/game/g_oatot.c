@@ -460,6 +460,49 @@ void Cmd_Help_f(gentity_t* ent) {
 
 /*
 ==================
+Cmd_Timeout_f
+==================
+*/
+void Cmd_Timeout_f(gentity_t* ent) {
+    if (!g_allowTimeouts.integer) {
+        if (ent) {
+            trap_SendServerCommand(ent - g_entities, "print \"^1Timeouts are not allowed!\n\"");
+        }
+        return;
+    }
+    if (ent) {
+        trap_SendServerCommand(-1, va("print \"%s ^1has called timeout.\n\"", ent->client->pers.netname));
+    } else {
+        trap_SendServerCommand(-1, "print \"^1Timeout has been called.\n\"");
+    }
+    level.isTimeoutTime = qtrue;
+}
+
+/*
+==================
+Cmd_Timein_f
+==================
+*/
+void Cmd_Timein_f(gentity_t* ent) {
+    if (!level.isTimeoutTime) {
+        if (ent) {
+            trap_SendServerCommand(ent - g_entities, "print \"^1Currently is not timeout time!\n\"");
+        }
+        return;
+    }
+    if (ent) {
+        trap_SendServerCommand(-1, va("print \"%s ^1has called timein.\n\"", ent->client->pers.netname));
+    } else {
+        trap_SendServerCommand(-1, "print \"^1Timein has been called.\n\"");
+    }
+    trap_SendServerCommand(-1, va("print \"^5The game will be started in ^3%d ^5seconds.\n\"", g_afterTimeoutTime.integer));
+    level.isTimeoutTime = qfalse;
+    level.isTimeoutRetreat = qtrue;
+    level.timeoutEndTime = level.time;
+}
+
+/*
+==================
 Cmd_ShareBalance_f
 ==================
 */
@@ -473,7 +516,7 @@ void Cmd_ShareBalance_f(gentity_t* ent) {
     int i, amount, balances_n;
     if (client) {
         if (trap_Argc() == 1) {
-            strcat(balance_str, va("^5%s ^5has ", client->pers.netname));
+            strcat(balance_str, va("%s ^5has ", client->pers.netname));
             balances_n = G_GetBalance(ent, balances);
             for (i = 0; i < balances_n; i++) {
                 if (i == balances_n - 1) {
@@ -494,7 +537,7 @@ void Cmd_ShareBalance_f(gentity_t* ent) {
             }
             if (G_GetCurrencyBalance(ent, arg1, &balance)) {
                 amount = balance.freeMoney;
-                trap_SendServerCommand(-1, va("print \"^5%s ^5has ^3%d %s ^6:p\n\"", client->pers.netname, amount, arg1));
+                trap_SendServerCommand(-1, va("print \"%s ^5has ^3%d %s ^6:p\n\"", client->pers.netname, amount, arg1));
             }
         }
     } else {
