@@ -35,12 +35,13 @@ Checks the current weapon for ammo warnings.
 ==============
 */
 void CG_CheckAmmo(void) {
+    int lowAmmoBound;
     int previous = cg.lowAmmoWarning;
     int weapon = cgs.clientinfo[cg.clientNum].curWeapon;
-    int lowAmmoBound = BG_FindItemForWeapon(weapon)->quantity / 3;
-    if ((weapon == WP_GAUNTLET) || (weapon == WP_GRAPPLING_HOOK)) {
+    if ((weapon <= WP_GAUNTLET) || (weapon == WP_GRAPPLING_HOOK)) {
         return;
     }
+    lowAmmoBound = BG_FindItemForWeapon(weapon)->quantity / 3;
     if (cg.snap->ps.ammo[weapon] == 0) {
         cg.lowAmmoWarning = 2;
     } else if (cg.snap->ps.ammo[weapon] <= lowAmmoBound) {
