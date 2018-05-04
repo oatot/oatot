@@ -127,6 +127,7 @@ static void CG_DrawOatotTimer(void) {
     msec = cgs.levelStartTime + cgs.makingBetsTime * 60000 - cg.time;
     seconds = msec / 1000;
     mins = seconds / 60;
+    seconds -= mins * 60;
     tens = seconds / 10;
     seconds -= tens * 10;
     if (cgs.gameStage == MAKING_BETS) {
