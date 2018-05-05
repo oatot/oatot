@@ -2381,23 +2381,18 @@ void G_RunFrame(int levelTime) {
     int i;
     int timeoutRetreat;
     gentity_t* ent;
-    // if we are waiting for the level to restart, do nothing
-    if (level.restarted) {
-        return;
-    }
-    level.framenum++;
-    level.previousTime = level.time;
-    level.time = levelTime;
-    //msec = level.time - level.previousTime;
     if (level.isTimeoutTime) {
         // Is Timeout time.
         return;
     } else if (level.isTimeoutRetreat) {
+        if (!level.timeoutEndTime) {
+            level.timeoutEndTime = levelTime;
+        }
         timeoutRetreat = g_afterTimeoutTime.integer * 1000;
         // Check for starting sound.
         if (-levelTime + timeoutRetreat + level.timeoutEndTime <= 3000) {
             if (!level.playedFightSound) {
-                G_GlobalSound(G_SoundIndex("sound/feedback/fight.wav"));
+                G_GlobalSound(G_SoundIndex("sound/feedback/prepare.wav"));
                 level.playedFightSound = qtrue;
             }
         }
@@ -2409,6 +2404,14 @@ void G_RunFrame(int levelTime) {
             return;
         }
     }
+    // if we are waiting for the level to restart, do nothing
+    if (level.restarted) {
+        return;
+    }
+    level.framenum++;
+    level.previousTime = level.time;
+    level.time = levelTime;
+    //msec = level.time - level.previousTime;
     // get any cvar changes
     G_UpdateCvars();
     if ((g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION) && !(g_elimflags.integer & EF_NO_FREESPEC) && g_elimination_lockspectator.integer > 1) {

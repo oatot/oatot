@@ -498,7 +498,6 @@ void Cmd_Timein_f(gentity_t* ent) {
     trap_SendServerCommand(-1, va("print \"^5The game will be started in ^3%d ^5seconds.\n\"", g_afterTimeoutTime.integer));
     level.isTimeoutTime = qfalse;
     level.isTimeoutRetreat = qtrue;
-    level.timeoutEndTime = level.time;
 }
 
 /*
