@@ -722,6 +722,8 @@ typedef struct {
     qboolean isTimeoutRetreat;
     qboolean playedFightSound;
     int timeoutEndTime; // In msec.
+    int timeoutStartTime; // In msec.
+    int timeoutsTotalTime; // In msec.
 } level_locals_t;
 
 //KK-OAX These are some Print Shortcuts for KillingSprees and Admin

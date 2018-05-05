@@ -61,6 +61,16 @@ static int CG_ValidOrder(const char* p) {
 
 /*
 =================
+CG_ParseTimeout
+
+=================
+*/
+static void CG_ParseTimeout(void) {
+    cgs.timeoutsDelay = atoi(CG_Argv(1));
+}
+/*
+
+   =================
 CG_ParseMakingBetsTime
 
 =================
@@ -1235,6 +1245,10 @@ static void CG_ServerCommand(void) {
     cmd = CG_Argv(0);
     if (!cmd[0]) {
         // server claimed the command
+        return;
+    }
+    if (strequals(cmd, "timeout")) {
+        CG_ParseTimeout();
         return;
     }
     if (strequals(cmd, "makingBetsTime")) {

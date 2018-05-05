@@ -2383,6 +2383,9 @@ void G_RunFrame(int levelTime) {
     gentity_t* ent;
     if (level.isTimeoutTime) {
         // Is Timeout time.
+        if (!level.timeoutStartTime) {
+            level.timeoutStartTime = levelTime;
+        }
         return;
     } else if (level.isTimeoutRetreat) {
         if (!level.timeoutEndTime) {
@@ -2398,9 +2401,12 @@ void G_RunFrame(int levelTime) {
         }
         if (levelTime - level.timeoutEndTime >= timeoutRetreat) {
             // Is not timeout retreat anymore.
+            level.timeoutsTotalTime += timeoutRetreat + level.timeoutEndTime - level.timeoutStartTime;
             level.isTimeoutRetreat = qfalse;
             level.playedFightSound = qfalse;
             level.timeoutEndTime = 0;
+            level.timeoutStartTime = 0;
+            trap_SendServerCommand(-1, va("timeout %d\n", level.timeoutsTotalTime));
         } else {
             // Is timeout retreat time.
             return;
