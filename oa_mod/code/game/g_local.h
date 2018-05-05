@@ -720,6 +720,7 @@ typedef struct {
     // Timeout stuff.
     qboolean isTimeoutTime;
     qboolean isTimeoutRetreat;
+    qboolean playedFightSound;
     int timeoutEndTime; // In msec.
 } level_locals_t;
 

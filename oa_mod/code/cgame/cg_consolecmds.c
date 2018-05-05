@@ -642,4 +642,6 @@ void CG_InitConsoleCommands(void) {
     trap_AddCommand("ready"); // oatot
     trap_AddCommand("help"); // oatot
     trap_AddCommand("shareBalance"); // oatot
+    trap_AddCommand("timeout"); // oatot
+    trap_AddCommand("timein"); // oatot
 }

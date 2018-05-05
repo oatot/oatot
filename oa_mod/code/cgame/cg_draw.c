@@ -618,10 +618,10 @@ static void CG_DrawStatusBar(void) {
                 // draw as dark grey when reloading
                 color = 2; // dark grey
             } else {
-                if (value >= 0) {
-                    color = 0; // green
-                } else {
+                if (cg.lowAmmoWarning) {
                     color = 1; // red
+                } else {
+                    color = 0; // green
                 }
             }
             trap_R_SetColor(colors[color]);
@@ -2889,10 +2889,10 @@ static void CG_DrawAmmoWarning(void) {
     if (cg.lowAmmoWarning == 2) {
         s = "^1OUT OF AMMO";
     } else {
-        s = "^3LOW AMMO WARNING";
+        s = "LOW AMMO WARNING";
     }
     w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
-    CG_DrawSmallString(320 - w / 2, 220, s, 1.0F);
+    CG_DrawSmallString(320 - w / 2, 140, s, 1.0F);
 }
 
 //#ifdef MISSIONPACK

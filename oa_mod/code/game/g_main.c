@@ -311,7 +311,7 @@ static cvarTable_t gameCvarTable[] = {
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
     { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },
     { &g_allowTimeouts, "g_allowTimeouts", "1", 0, 0, qfalse },
-    { &g_afterTimeoutTime, "g_afterTimeoutTime", "30", 0, 0, qfalse },
+    { &g_afterTimeoutTime, "g_afterTimeoutTime", "15", 0, 0, qfalse },
     // Utility.
     { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
@@ -2379,16 +2379,8 @@ Advances the non-player objects in the world
 */
 void G_RunFrame(int levelTime) {
     int i;
+    int timeoutRetreat;
     gentity_t* ent;
-    if (level.isTimeoutTime) {
-        return;
-    } else if (level.isTimeoutRetreat) {
-        if (level.time - level.timeoutEndTime >= g_afterTimeoutTime.integer * 1000) {
-            level.isTimeoutRetreat = qfalse;
-        } else {
-            return;
-        }
-    }
     // if we are waiting for the level to restart, do nothing
     if (level.restarted) {
         return;
@@ -2397,6 +2389,26 @@ void G_RunFrame(int levelTime) {
     level.previousTime = level.time;
     level.time = levelTime;
     //msec = level.time - level.previousTime;
+    if (level.isTimeoutTime) {
+        // Is Timeout time.
+        return;
+    } else if (level.isTimeoutRetreat) {
+        timeoutRetreat = g_afterTimeoutTime.integer * 1000;
+        // Check for starting sound.
+        if (-levelTime + timeoutRetreat + level.timeoutEndTime <= 3000) {
+            if (!level.playedFightSound) {
+                G_GlobalSound(G_SoundIndex("sound/feedback/fight.wav"));
+                level.playedFightSound = qtrue;
+            }
+        }
+        if (levelTime - level.timeoutEndTime >= timeoutRetreat) {
+            // Is not timeout retreat anymore.
+            level.isTimeoutRetreat = qfalse;
+        } else {
+            // Is timeout retreat time.
+            return;
+        }
+    }
     // get any cvar changes
     G_UpdateCvars();
     if ((g_gametype.integer == GT_ELIMINATION || g_gametype.integer == GT_CTF_ELIMINATION) && !(g_elimflags.integer & EF_NO_FREESPEC) && g_elimination_lockspectator.integer > 1) {

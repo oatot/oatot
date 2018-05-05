@@ -64,6 +64,9 @@ static void CG_DrawClientScore(int y, score_t* score, float* color, float fade, 
     vec3_t headAngles;
     clientInfo_t* ci;
     int iconx, headx;
+    if (lineHeight == SB_NORMAL_HEIGHT) {
+        lineHeight = SMALLCHAR_HEIGHT;
+    }
     // to detect insta
     info = CG_ConfigString(CS_SERVERINFO);
     if (score->client < 0 || score->client >= cgs.maxclients) {
