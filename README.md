@@ -58,6 +58,8 @@ Basic stuff you can call by typing `/<command>` in OA game console.
  - help
  - shareBalance
  - shareBalance     <currency>[BTC,OAC]
+ - timeout
+ - timein
 ```
 
 *Update note:*<br>
@@ -102,6 +104,10 @@ in some way.
  - `g_scoreboardDefaultSeason`<br>
     Season which will be set as default scoreboard season on clients, 1 by default.
     0 - no season, 1 - winter, 2 - spring, 3 - summer, 4 - autumn.
+ - `g_allowTimeouts`<br>
+    Allows all players to use `/timeout` cmd, 1 by default.
+ - `g_afterTimeoutTime`<br>
+    Time to wait after `/timein` cmd (in seconds).
 
 **Client-side:**<br>
  - `cg_scoreboardEffects`<br>
