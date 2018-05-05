@@ -2399,6 +2399,7 @@ void G_RunFrame(int levelTime) {
         if (levelTime - level.timeoutEndTime >= timeoutRetreat) {
             // Is not timeout retreat anymore.
             level.isTimeoutRetreat = qfalse;
+            level.playedFightSound = qfalse;
             level.timeoutEndTime = 0;
         } else {
             // Is timeout retreat time.

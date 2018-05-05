@@ -470,6 +470,12 @@ void Cmd_Timeout_f(gentity_t* ent) {
         }
         return;
     }
+    if (level.isTimeoutTime || level.isTimeoutRetreat) {
+        if (ent) {
+            trap_SendServerCommand(ent - g_entities, "print \"^1Please wait till the end of ongoing timeout!\n\"");
+        }
+        return;
+    }
     if (ent) {
         trap_SendServerCommand(-1, va("print \"%s ^1has called timeout.\n\"", ent->client->pers.netname));
     } else {
