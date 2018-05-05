@@ -33,10 +33,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #define SB_NORMAL_HEIGHT 40
 #define SB_INTER_HEIGHT 16 // interleaved height
-#define SB_TIGHT_HEIGHT 9 // Compressed (for > 12 players) height.
+#define SB_TIGHT_HEIGHT 10 // Compressed (for > 12 players) height.
 
 #define SB_MAXCLIENTS_NORMAL ((SB_STATUSBAR - SB_TOP) / SB_NORMAL_HEIGHT)
-#define SB_MAXCLIENTS_INTER 12
+#define SB_MAXCLIENTS_INTER 14
 #define SB_MAXCLIENTS 24
 
 // Normal
