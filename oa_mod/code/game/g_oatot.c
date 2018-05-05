@@ -478,8 +478,10 @@ void Cmd_Timeout_f(gentity_t* ent) {
     }
     if (ent) {
         trap_SendServerCommand(-1, va("print \"%s ^1has called timeout.\n\"", ent->client->pers.netname));
+        trap_SendServerCommand(-1, va("cp \"%s ^1has called timeout.\n\"", ent->client->pers.netname));
     } else {
         trap_SendServerCommand(-1, "print \"^1Timeout has been called.\n\"");
+        trap_SendServerCommand(-1, "cp \"^1Timeout has been called.\n\"");
     }
     level.isTimeoutTime = qtrue;
 }
@@ -498,8 +500,10 @@ void Cmd_Timein_f(gentity_t* ent) {
     }
     if (ent) {
         trap_SendServerCommand(-1, va("print \"%s ^1has called timein.\n\"", ent->client->pers.netname));
+        trap_SendServerCommand(-1, va("cp \"%s ^1has called timein.\n\"", ent->client->pers.netname));
     } else {
         trap_SendServerCommand(-1, "print \"^1Timein has been called.\n\"");
+        trap_SendServerCommand(-1, "cp \"^1Timein has been called.\n\"");
     }
     trap_SendServerCommand(-1, va("print \"^5The game will be started in ^3%d ^5seconds.\n\"", g_afterTimeoutTime.integer));
     level.isTimeoutTime = qfalse;

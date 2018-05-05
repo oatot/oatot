@@ -5,3 +5,5 @@
 ^3=========================================================
 ^1Detailed cmds description:
 ^6Type ^1/ready^6 if you think that teams are already formed.
+^6Type ^1/timeout^6 to call game timeout.
+^6Type ^1/timein^6 to interrupt game timeout.
