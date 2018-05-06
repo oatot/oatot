@@ -124,7 +124,7 @@ CG_DrawOatotTimer
  */
 static void CG_DrawOatotTimer(void) {
     int msec, mins, seconds, tens;
-    msec = cgs.levelStartTime + cgs.makingBetsTime * 60000 - cg.time;
+    msec = cgs.levelStartTime + cgs.makingBetsTime * 60000 - cg.time - cgs.timeoutsDelay;
     seconds = msec / 1000;
     mins = seconds / 60;
     seconds -= mins * 60;

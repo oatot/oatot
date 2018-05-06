@@ -1911,7 +1911,7 @@ void CheckExitRules(void) {
         return;
     }
     if (g_timelimit.integer > 0 && !level.warmupTime) {
-        if ((level.time - level.startTime) / 60000 >= g_timelimit.integer) {
+        if ((level.time - level.startTime - level.timeoutsTotalTime) / 60000 >= g_timelimit.integer) {
             if (isMatchTime()) {
                 if (g_enableBetting.integer) {
                     if (level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE]) {

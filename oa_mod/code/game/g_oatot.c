@@ -799,7 +799,7 @@ void endOfMatchLogic(char* winner) {
 // For MAKING_BETS stage, prints info about time left,
 // calls restart when time is up.
 void checkOatotStageUpdate(void) {
-    int duration = level.time - level.startTime;
+    int duration = level.time - level.startTime - level.timeoutsTotalTime;
     if (g_gameStage.integer == MAKING_BETS) {
         if (duration > (g_makingBetsTime.integer * 60000)) {
             // Time is up.
