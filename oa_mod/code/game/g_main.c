@@ -2409,6 +2409,7 @@ void G_RunFrame(int levelTime) {
             level.playedFightSound = qfalse;
             level.timeoutEndTime = 0;
             level.timeoutStartTime = 0;
+            level.lastTimeoutEndTime = levelTime;
             addTimeoutDelayForClients(delay);
             trap_SendServerCommand(-1, va("timeout %d\n", level.timeoutsTotalTime));
         } else {

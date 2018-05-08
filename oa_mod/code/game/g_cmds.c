@@ -66,7 +66,7 @@ void DeathmatchScoreboardMessage(gentity_t* ent) {
         }
         // Timeout delay logic.
         time = (level.time - cl->pers.enterTime - cl->pers.timeoutDelay) / 60000;
-        if (time < 0) {
+        if ((time < 0) || (cl->pers.enterTime >= level.lastTimeoutEndTime)) {
             // Happens after team switches.
             time = (level.time - cl->pers.enterTime) / 60000;
         }
