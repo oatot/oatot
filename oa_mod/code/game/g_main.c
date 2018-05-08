@@ -785,6 +785,8 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
     memset(&level, 0, sizeof(level));
     level.time = levelTime;
     level.startTime = levelTime;
+    level.timeoutsTotalTime = 0;
+    trap_SendServerCommand(-1, "timeout 0\n");
     level.snd_fry = G_SoundIndex("sound/player/fry.wav"); // FIXME standing in lava / slime
     if (g_gametype.integer != GT_SINGLE_PLAYER && g_logfile.string[0]) {
         if (g_logfileSync.integer) {
@@ -2379,7 +2381,7 @@ Advances the non-player objects in the world
 */
 void G_RunFrame(int levelTime) {
     int i;
-    int timeoutRetreat;
+    int timeoutRetreat, delay;
     gentity_t* ent;
     if (level.isTimeoutTime) {
         // Is Timeout time.
@@ -2401,11 +2403,13 @@ void G_RunFrame(int levelTime) {
         }
         if (levelTime - level.timeoutEndTime >= timeoutRetreat) {
             // Is not timeout retreat anymore.
-            level.timeoutsTotalTime += timeoutRetreat + level.timeoutEndTime - level.timeoutStartTime;
+            delay = timeoutRetreat + level.timeoutEndTime - level.timeoutStartTime;
+            level.timeoutsTotalTime += delay;
             level.isTimeoutRetreat = qfalse;
             level.playedFightSound = qfalse;
             level.timeoutEndTime = 0;
             level.timeoutStartTime = 0;
+            addTimeoutDelayForClients(delay);
             trap_SendServerCommand(-1, va("timeout %d\n", level.timeoutsTotalTime));
         } else {
             // Is timeout retreat time.

@@ -829,6 +829,18 @@ void checkOatotStageUpdate(void) {
     }
 }
 
+// Add timeout delay time for all the connected clients.
+void addTimeoutDelayForClients(int delay) {
+    int i;
+    gclient_t* cl;
+    for (i = 0; i < g_maxclients.integer; i++) {
+        cl = level.clients + i;
+        if (cl->pers.connected == CON_CONNECTED) {
+            cl->pers.timeoutDelay += delay;
+        }
+    }
+}
+
 //======================================
 // For given client.
 

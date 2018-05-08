@@ -167,6 +167,8 @@ void endOfMatchLogic(char* winner);
 // For MAKING_BETS stage, prints info about time left,
 // calls restart when time is up.
 void checkOatotStageUpdate(void);
+// Add timeout delay time for all the connected clients.
+void addTimeoutDelayForClients(int delay);
 
 /* For given client. */
 
@@ -455,6 +457,9 @@ typedef struct {
     unsigned long int speedSum;
     // Fav weapon.
     weaponStats_t weaponStats;
+
+    // Timeouts.
+    int timeoutDelay;
 
     // oatot
     qboolean ready;
