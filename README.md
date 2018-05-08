@@ -53,19 +53,19 @@ is to use `ready` command or by finishing the match
 in some way.
 
  - **FORMING_TEAMS**<br>
-    Available commands: `pastBets, betsSummary, ready, help, shareBalance`.
+    Available commands: `pastBets, betsSummary, ready, help, shareBalance, timeout, timein`.
     Players are able to switch teams or spec and disconnect. No additional restrictions
     comparing to normal game, but scores (both flags and personal) aren't counted.
     You can't make any bets yet, teams aren't formed.
 
  - **MAKING_BETS**<br>
-    Available commands: `bet, unbet, pastBets, betsSummary, help, shareBalance`.
+    Available commands: `bet, unbet, pastBets, betsSummary, help, shareBalance, timeout, timein`.
     Teams are fixed, you can't switch. If someone disconnects, `map_restart` is called.
     You can now make and discard your bets. Still no scores though.
     Next stage will be started in `g_makingBetsTime`.
 
  - **PLAYING**<br>
-    Available commands: `pastBets, betsSummary, help, shareBalance`.
+    Available commands: `pastBets, betsSummary, help, shareBalance, timeout, timein`.
     Betting is finished. Teams are still locked, but the game has started already,
     so score is now counted.
 
