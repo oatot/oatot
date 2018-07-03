@@ -20,7 +20,7 @@ const currenciesN = 2
 const horsesN = 2
 
 var (
-	client   g.OatotClient
+	client g.OatotClient
 )
 
 // TODO: replace complex and ugly solution of C*FromGo (or *ToC) with
