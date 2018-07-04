@@ -70,7 +70,7 @@ static void CG_ParseTimeout(void) {
 }
 /*
 
-   =================
+=================
 CG_ParseMakingBetsTime
 
 =================
