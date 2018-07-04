@@ -154,6 +154,8 @@ vmCvar_t g_backendAddr; // The address (IP:port) of oatot backend.
 vmCvar_t g_makingBetsTime; // Time for making bets & warmup before match (in mins).
 vmCvar_t g_easyItemPickup; // 1 for high items.
 vmCvar_t g_scoreboardDefaultSeason; // Season which will be set as default scoreboard season on clients.
+vmCvar_t g_allowTimeouts;
+vmCvar_t g_afterTimeoutTime;
 // Utility.
 vmCvar_t g_gameStage; // 0 for forming teams, 1 for making bets, 2 for playing.
 vmCvar_t g_readyN;
@@ -308,6 +310,8 @@ static cvarTable_t gameCvarTable[] = {
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
     { &g_easyItemPickup, "g_easyItemPickup", "1", 0, 0, qfalse },
     { &g_scoreboardDefaultSeason, "g_scoreboardDefaultSeason", "1", CVAR_SERVERINFO, 0, qfalse },
+    { &g_allowTimeouts, "g_allowTimeouts", "1", 0, 0, qfalse },
+    { &g_afterTimeoutTime, "g_afterTimeoutTime", "15", 0, 0, qfalse },
     // Utility.
     { &g_gameStage, "g_gameStage", "0", CVAR_SERVERINFO, 0, qfalse },
     { &g_readyN, "g_readyN", "0", 0, 0, qfalse },
@@ -781,6 +785,8 @@ void G_InitGame(int levelTime, int randomSeed, int restart) {
     memset(&level, 0, sizeof(level));
     level.time = levelTime;
     level.startTime = levelTime;
+    level.timeoutsTotalTime = 0;
+    trap_SendServerCommand(-1, "timeout 0\n");
     level.snd_fry = G_SoundIndex("sound/player/fry.wav"); // FIXME standing in lava / slime
     if (g_gametype.integer != GT_SINGLE_PLAYER && g_logfile.string[0]) {
         if (g_logfileSync.integer) {
@@ -1907,7 +1913,7 @@ void CheckExitRules(void) {
         return;
     }
     if (g_timelimit.integer > 0 && !level.warmupTime) {
-        if ((level.time - level.startTime) / 60000 >= g_timelimit.integer) {
+        if ((level.time - level.startTime - level.timeoutsTotalTime) / 60000 >= g_timelimit.integer) {
             if (isMatchTime()) {
                 if (g_enableBetting.integer) {
                     if (level.teamScores[TEAM_RED] > level.teamScores[TEAM_BLUE]) {
@@ -2375,7 +2381,42 @@ Advances the non-player objects in the world
 */
 void G_RunFrame(int levelTime) {
     int i;
+    int timeoutRetreat, delay;
     gentity_t* ent;
+    if (level.isTimeoutTime) {
+        // Is Timeout time.
+        if (!level.timeoutStartTime) {
+            level.timeoutStartTime = levelTime;
+        }
+        return;
+    } else if (level.isTimeoutRetreat) {
+        if (!level.timeoutEndTime) {
+            level.timeoutEndTime = levelTime;
+        }
+        timeoutRetreat = g_afterTimeoutTime.integer * 1000;
+        // Check for starting sound.
+        if (-levelTime + timeoutRetreat + level.timeoutEndTime <= 3000) {
+            if (!level.playedFightSound) {
+                G_GlobalSound(G_SoundIndex("sound/feedback/prepare.wav"));
+                level.playedFightSound = qtrue;
+            }
+        }
+        if (levelTime - level.timeoutEndTime >= timeoutRetreat) {
+            // Is not timeout retreat anymore.
+            delay = timeoutRetreat + level.timeoutEndTime - level.timeoutStartTime;
+            level.timeoutsTotalTime += delay;
+            level.isTimeoutRetreat = qfalse;
+            level.playedFightSound = qfalse;
+            level.timeoutEndTime = 0;
+            level.timeoutStartTime = 0;
+            level.lastTimeoutEndTime = levelTime;
+            addTimeoutDelayForClients(delay);
+            trap_SendServerCommand(-1, va("timeout %d\n", level.timeoutsTotalTime));
+        } else {
+            // Is timeout retreat time.
+            return;
+        }
+    }
     // if we are waiting for the level to restart, do nothing
     if (level.restarted) {
         return;

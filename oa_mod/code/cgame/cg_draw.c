@@ -618,10 +618,10 @@ static void CG_DrawStatusBar(void) {
                 // draw as dark grey when reloading
                 color = 2; // dark grey
             } else {
-                if (value >= 0) {
-                    color = 0; // green
-                } else {
+                if (cg.lowAmmoWarning) {
                     color = 1; // red
+                } else {
+                    color = 0; // green
                 }
             }
             trap_R_SetColor(colors[color]);
@@ -874,7 +874,7 @@ static float CG_DrawTimer(float y) {
     int w;
     int mins, seconds, tens;
     int msec;
-    msec = cg.time - cgs.levelStartTime;
+    msec = cg.time - cgs.levelStartTime - cgs.timeoutsDelay;
     seconds = msec / 1000;
     mins = seconds / 60;
     seconds -= mins * 60;
@@ -2887,12 +2887,12 @@ static void CG_DrawAmmoWarning(void) {
         return;
     }
     if (cg.lowAmmoWarning == 2) {
-        s = "OUT OF AMMO";
+        s = "^1OUT OF AMMO";
     } else {
         s = "LOW AMMO WARNING";
     }
-    w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
-    CG_DrawBigString(320 - w / 2, 64, s, 1.0F);
+    w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
+    CG_DrawSmallString(320 - w / 2, 140, s, 1.0F);
 }
 
 //#ifdef MISSIONPACK

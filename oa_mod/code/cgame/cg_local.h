@@ -1250,6 +1250,11 @@ typedef struct {
     qboolean enableBetting;
     betSum_t betSums[HORSES_N * CURRENCIES_N];
     flagState_t flagsStatus[TEAM_NUM_TEAMS];
+    char timestamp[MAX_CVAR_VALUE_STRING];
+    // In minutes.
+    int makingBetsTime;
+    // Total timeouts time (for delay, in msec).
+    int timeoutsDelay;
 
     // teamchat width is *3 because of embedded color codes
     char teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH * 3 + 1];
@@ -1569,8 +1574,9 @@ void CG_DrawStringExt(int x, int y, const char* string, const float* setColor,
                       qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars);
 void CG_DrawBigString(int x, int y, const char* s, float alpha);
 void CG_DrawBigStringColor(int x, int y, const char* s, vec4_t color);
+void CG_DrawStringSize(int x, int y, int w, int h, const char* s, float alpha);
 void CG_DrawSmallString(int x, int y, const char* s, float alpha);
-void CG_DrawSmallStringLen(int x, int y, const char* s, float alpha, int len);
+void CG_DrawStringCustom(int x, int y, int w, int h, const char* s, float alpha, int len);
 void CG_DrawSmallStringColor(int x, int y, const char* s, vec4_t color);
 
 int CG_DrawStrlen(const char* str);

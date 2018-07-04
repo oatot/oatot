@@ -1124,6 +1124,7 @@ void ClientUserinfoChanged(int clientNum) {
     trap_SetConfigstring(CS_PLAYERS + clientNum, s);
     // this is not the userinfo, more like the configstring actually
     G_LogPrintf("ClientUserinfoChanged: %i %s\\id\\%s\n", clientNum, s, client->pers.guid);
+    Cmd_UpdateMakingBetsTime_f(ent);
     Cmd_UpdateEnableBetting_f(ent);
     Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {
@@ -1437,6 +1438,7 @@ void ClientBegin(int clientNum) {
         client->pers.welcomed = qtrue;
         printWelcomeMessage(clientNum);
     }
+    Cmd_UpdateMakingBetsTime_f(ent);
     Cmd_UpdateEnableBetting_f(ent);
     Cmd_UpdateFlagsStatus_f(ent);
     if (g_enableBetting.integer) {

@@ -1,6 +1,7 @@
 # Tip: You can create a supermake.local file and this script will get the variable from there.
 BINNAME=openarena-server
 MODNAME=oatot
+OAHOMEDIR=~/.openarena
 # ARCH should be either i386 (32 bit) or x86_64 (64 bit).
 ARCH=x86_64
 
@@ -23,10 +24,10 @@ CONFIG="$2"
 # This is done to enable many servers running same
 # mod without messing up in common q3config_server.cfg file.
 mkdir ~/.openarena-$PORT
-ln -s ~/.openarena/baseoa ~/.openarena-$PORT
+ln -s $OAHOMEDIR/baseoa ~/.openarena-$PORT
 mkdir ~/.openarena-$PORT/$MODNAME
-ln -s ~/.openarena/$MODNAME/qagame$ARCH.so ~/.openarena-$PORT/$MODNAME
-ln -s ~/.openarena/$MODNAME/*.pk3 ~/.openarena-$PORT/$MODNAME
+ln -s $OAHOMEDIR/$MODNAME/qagame$ARCH.so ~/.openarena-$PORT/$MODNAME
+ln -s $OAHOMEDIR/$MODNAME/*.pk3 ~/.openarena-$PORT/$MODNAME
 
 # Set LD_LIBRARY_PATH for Go client .so.
 export LD_LIBRARY_PATH=$(readlink -f ../build/release-linux-$ARCH/${MODNAME}/go-client/)
