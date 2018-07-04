@@ -3190,7 +3190,9 @@ static void CG_Draw2D(stereoFrame_t stereoFrame) {
                     }
                 } else {
                     // Draw flags status only for players.
-                    CG_DrawFlagsStatus();
+                    if (cg_hudFlagStyle.integer) {
+                        CG_DrawFlagsStatus();
+                    }
                     if (cgs.enableBetting) {
                         if (cgs.gameStage != PLAYING) {
                             // Don't draw oatot info for players if they are currently playing.

@@ -295,6 +295,7 @@ vmCvar_t cg_teamChatBeep;
 vmCvar_t cg_scoreboardEffects;
 vmCvar_t cg_scoreboardSeason;
 vmCvar_t cg_scoreboardAggressive;
+vmCvar_t cg_hudFlagStyle;
 // Utility.
 vmCvar_t cg_scoreboardDefaultSeasonBackup;
 
@@ -513,6 +514,7 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_scoreboardEffects, "cg_scoreboardEffects", "0", CVAR_ARCHIVE},
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
+    {&cg_hudFlagStyle, "cg_hudFlagStyle", "1", CVAR_ARCHIVE},
     // Utility.
     {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE},
 };
