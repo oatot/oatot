@@ -170,10 +170,24 @@ G_ReadAndPrintFile
 */
 void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
     char text[MAX_ARENAS_TEXT];
+    char chunk[MAX_STRING_CHARS];
+    int shift, pos = 0;
+    if (len > MAX_ARENAS_TEXT) {
+        return;
+    }
     if (file) {
         trap_FS_Read(&text, len, file);
         text[len] = '\0';
-        trap_SendServerCommand(ent - g_entities, va("print \"%s\"", text));
+        while (pos < len) {
+            if (len - pos > MAX_STRING_CHARS) {
+                shift = MAX_STRING_CHARS;
+            } else {
+                shift = len - pos;
+            }
+            memcpy(chunk, text + pos, shift);
+            trap_SendServerCommand(ent - g_entities, va("print \"%s\"", chunk));
+            pos += shift;
+        }
         trap_FS_FCloseFile(file);
     }
 }
