@@ -170,7 +170,7 @@ G_ReadAndPrintFile
 */
 void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
     char text[MAX_ARENAS_TEXT];
-    char chunk[MAX_STRING_CHARS];
+    char chunk[MAX_STRING_CHARS/2];
     int shift, pos = 0;
     if (len > MAX_ARENAS_TEXT) {
         return;
@@ -179,8 +179,8 @@ void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
         trap_FS_Read(&text, len, file);
         text[len] = '\0';
         while (pos < len) {
-            if (len - pos > MAX_STRING_CHARS) {
-                shift = MAX_STRING_CHARS;
+            if (len - pos > MAX_STRING_CHARS/2) {
+                shift = MAX_STRING_CHARS/2;
             } else {
                 shift = len - pos;
             }
