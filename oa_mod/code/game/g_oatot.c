@@ -168,10 +168,12 @@ void G_SetFlagsStatus(team_t team, qboolean stolen, qboolean dropped) {
 G_ReadAndPrintFile
 ==================
 */
-void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
+void G_ReadAndPrintFile(gentity_t* ent, const char* filename) {
+    fileHandle_t file;
     char text[MAX_ARENAS_TEXT];
     char chunk[MAX_STRING_CHARS/2];
     int shift, pos = 0;
+    int len = trap_FS_FOpenFile(filename, &file, FS_READ);
     if (len > MAX_ARENAS_TEXT) {
         return;
     }
@@ -179,13 +181,13 @@ void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
         trap_FS_Read(&text, len, file);
         text[len] = '\0';
         while (pos < len) {
-            if (len - pos > MAX_STRING_CHARS/2 - 1) {
+            if ((len - pos) > (MAX_STRING_CHARS/2 - 1)) {
                 shift = MAX_STRING_CHARS/2 - 1;
             } else {
                 shift = len - pos;
             }
-            memcpy(chunk, text + pos, shift);
-            chunk[MAX_STRING_CHARS/2 - 1] = '\0';
+            Q_strncpyz(chunk, text + pos, shift);
+            chunk[shift] = '\0';
             trap_SendServerCommand(ent - g_entities, va("print \"%s\"", chunk));
             pos += shift;
         }
@@ -449,24 +451,18 @@ Cmd_Help_f
 ==================
 */
 void Cmd_Help_f(gentity_t* ent) {
-    int len, len_common;
-    fileHandle_t file0, file1;
     gclient_t* client = ent->client;
     if (client) {
         if (g_enableBetting.integer) {
-            len_common = trap_FS_FOpenFile("texts/help_message_common.txt", &file0, FS_READ);
             if (g_gameStage.integer == FORMING_TEAMS) {
-                len = trap_FS_FOpenFile("texts/help_message_forming_teams.txt", &file1, FS_READ);
+                G_ReadAndPrintFile(ent, "texts/help_message_forming_teams.txt");
             } else if (g_gameStage.integer == MAKING_BETS) {
-                len = trap_FS_FOpenFile("texts/help_message_making_bets.txt", &file1, FS_READ);
+                G_ReadAndPrintFile(ent, "texts/help_message_making_bets.txt");
             } else {
-                len = trap_FS_FOpenFile("texts/help_message_playing.txt", &file1, FS_READ);
+                G_ReadAndPrintFile(ent, "texts/help_message_playing.txt");
             }
-            G_ReadAndPrintFile(ent, file1, len);
-            G_ReadAndPrintFile(ent, file0, len_common);
         } else {
-            len = trap_FS_FOpenFile("texts/help_message_no_betting.txt", &file0, FS_READ);
-            G_ReadAndPrintFile(ent, file0, len);
+            G_ReadAndPrintFile(ent, "texts/help_message_no_betting.txt");
         }
     } else {
         trap_SendServerCommand(ent - g_entities, "print \"^1You aren't a client!\n\"");
