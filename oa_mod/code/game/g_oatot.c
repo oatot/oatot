@@ -171,25 +171,19 @@ G_ReadAndPrintFile
 void G_ReadAndPrintFile(gentity_t* ent, const char* filename) {
     fileHandle_t file;
     char text[MAX_ARENAS_TEXT];
-    char chunk[MAX_STRING_CHARS/2];
-    int shift, pos = 0;
+    char* chunk;
     int len = trap_FS_FOpenFile(filename, &file, FS_READ);
     if (len > MAX_ARENAS_TEXT) {
+        trap_Printf(va(S_COLOR_RED "file too large: %s is %i, max allowed is %i\n", filename, len, MAX_ARENAS_TEXT));
+        trap_FS_FCloseFile(file);
         return;
     }
     if (file) {
-        trap_FS_Read(&text, len, file);
+        trap_FS_Read(text, len, file);
         text[len] = '\0';
-        while (pos < len) {
-            if ((len - pos) > (MAX_STRING_CHARS/2 - 1)) {
-                shift = MAX_STRING_CHARS/2 - 1;
-            } else {
-                shift = len - pos;
-            }
-            Q_strncpyz(chunk, text + pos, shift);
-            chunk[shift] = '\0';
+        char* str = &text[0];
+        while ((chunk = strsep(&str, "\n")) != NULL) {
             trap_SendServerCommand(ent - g_entities, va("print \"%s\"", chunk));
-            pos += shift;
         }
         trap_FS_FCloseFile(file);
     }
