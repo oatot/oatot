@@ -183,7 +183,7 @@ void G_ReadAndPrintFile(gentity_t* ent, const char* filename) {
         text[len] = '\0';
         char* str = &text[0];
         while ((chunk = strsep(&str, "\n")) != NULL) {
-            trap_SendServerCommand(ent - g_entities, va("print \"%s\"", chunk));
+            trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", chunk));
         }
         trap_FS_FCloseFile(file);
     }

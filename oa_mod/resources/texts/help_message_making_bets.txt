@@ -8,14 +8,12 @@
 
 ^3=========================================================
 ^1Detailed cmds description:
-^6Type ^1/bet <horse>[^1red^1,^5blue^1] <amount> <currency>[^3OAC^1,^2BTC^1]^6
-to make a bet.
+^6Type ^1/bet <horse>[^1red^1,^5blue^1] <amount> <currency>[^3OAC^1,^2BTC^1]^6 to make a bet.
 ^6Type ^1/unbet <bet_ID>^6 to discard one of your active bets.
 ^1<bet_ID>^6 is shown in the user interface.
 ^6Type ^1/timeout^6 to call game timeout.
 ^6Type ^1/timein^6 to interrupt game timeout.
-^6Type ^1/pastBets^6 to get last 15 closed bets, type ^1/pastBets elder^6
-to get previous 15 bets.
+^6Type ^1/pastBets^6 to get last 15 closed bets, type ^1/pastBets elder^6 for prev 15 bets.
 ^6Type ^1/betsSummary^6 to get info on your total lose/win stats for all the bets.
 ^6Type ^1/shareBalance^6 to share your balance with everyone.
 ^6Type ^1/shareBalance^6 <currency>[^3OAC^1, ^2BTC]^6 to share balance in certain currency.
