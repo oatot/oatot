@@ -179,12 +179,13 @@ void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len) {
         trap_FS_Read(&text, len, file);
         text[len] = '\0';
         while (pos < len) {
-            if (len - pos > MAX_STRING_CHARS/2) {
-                shift = MAX_STRING_CHARS/2;
+            if (len - pos > MAX_STRING_CHARS/2 - 1) {
+                shift = MAX_STRING_CHARS/2 - 1;
             } else {
                 shift = len - pos;
             }
             memcpy(chunk, text + pos, shift);
+            chunk[MAX_STRING_CHARS/2 - 1] = '\0';
             trap_SendServerCommand(ent - g_entities, va("print \"%s\"", chunk));
             pos += shift;
         }
