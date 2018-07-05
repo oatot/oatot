@@ -47,3 +47,6 @@ Basic stuff you can call by typing `/<command>` in OA game console.
  - `cg_scoreboardAggressive`<br>
     1 to enable aggressive scoreboard effects. Incompatible with `cg_scoreboardSeason != 0`.
     0 by default.
+ - `cg_hudFlagStyle`<br>
+    0 to disable new flag status HUD.
+    1 by default.

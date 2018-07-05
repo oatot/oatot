@@ -7,3 +7,26 @@
 ^6Type ^1/ready^6 if you think that teams are already formed.
 ^6Type ^1/timeout^6 to call game timeout.
 ^6Type ^1/timein^6 to interrupt game timeout.
+^6Type ^1/pastBets^6 to get last 15 closed bets, type ^1/pastBets elder^6 for prev 15 bets.
+^6Type ^1/betsSummary^6 to get info on your total lose/win stats for all the bets.
+^6Type ^1/shareBalance^6 to share your balance with everyone.
+^6Type ^1/shareBalance^6 <currency>[^3OAC^1, ^2BTC]^6 to share balance in certain currency.
+^3========================================================
+
+^3=========================================================
+^1New Cvars list:
+^2 - cg_scoreboardEffects
+^6    1 to enable additional scoreboard effects, 0 by default.
+^2 - cg_scoreboardSeason
+^6    Scoreboard season.
+^6    0 - no season, 1 - winter, 2 - spring, 3 - summer, 4 - autumn.
+^6    Set to -1 in order to set server defaults again.
+^2 - cg_scoreboardAggressive
+^6    1 to enable aggressive scoreboard effects.
+^6    0 by default.
+^2 - cg_hudFlagStyle
+^6    0 to disable new flag status HUD.
+^6    1 by default.
+^3=========================================================
+
+^1Mail ^5dio@guild-oa.com ^1for any suggestions, bug reports and other stuff.

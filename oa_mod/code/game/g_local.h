@@ -205,7 +205,7 @@ void G_SetFlagsStatus(team_t team, qboolean stolen, qboolean dropped);
 
 /* Utility. */
 
-void G_ReadAndPrintFile(gentity_t* ent, fileHandle_t file, int len);
+void G_ReadAndPrintFile(gentity_t* ent, const char* filename);
 
 //==========================
 
