@@ -1255,6 +1255,7 @@ typedef struct {
     int makingBetsTime;
     // Total timeouts time (for delay, in msec).
     int timeoutsDelay;
+    qboolean isTimeoutTime;
 
     // teamchat width is *3 because of embedded color codes
     char teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH * 3 + 1];

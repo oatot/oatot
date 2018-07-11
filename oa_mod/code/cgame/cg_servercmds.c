@@ -1247,6 +1247,10 @@ static void CG_ServerCommand(void) {
         // server claimed the command
         return;
     }
+    if (strequals(cmd, "timeoutOngoing")) {
+        cgs.isTimeoutTime = atoi(CG_Argv(1));
+        return;
+    }
     if (strequals(cmd, "timeout")) {
         CG_ParseTimeout();
         return;

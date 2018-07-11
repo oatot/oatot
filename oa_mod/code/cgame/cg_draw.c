@@ -2043,7 +2043,11 @@ static void CG_DrawDisconnect(void) {
         return;
     }
     // also add text in center of screen
-    s = "Connection Interrupted"; // bk 010215 - FIXME
+    if (!cgs.isTimeoutTime) {
+        s = "Connection Interrupted"; // bk 010215 - FIXME
+    } else {
+        s = "^1Timeout is ongoing!";
+    }
     w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
     CG_DrawBigString(320 - w / 2, 100, s, 1.0F);
     // blink the icon

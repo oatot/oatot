@@ -489,6 +489,7 @@ void Cmd_Timeout_f(gentity_t* ent) {
         trap_SendServerCommand(-1, "cp \"^1Timeout has been called.\n\"");
     }
     level.isTimeoutTime = qtrue;
+    trap_SendServerCommand(-1, "timeoutOngoing 1\n");
 }
 
 /*

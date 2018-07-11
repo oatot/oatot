@@ -2412,6 +2412,7 @@ void G_RunFrame(int levelTime) {
             level.lastTimeoutEndTime = levelTime;
             addTimeoutDelayForClients(delay);
             trap_SendServerCommand(-1, va("timeout %d\n", level.timeoutsTotalTime));
+            trap_SendServerCommand(-1, "timeoutOngoing 0\n");
         } else {
             // Is timeout retreat time.
             return;
