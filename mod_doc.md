@@ -19,6 +19,12 @@ Basic stuff you can call by typing `/<command>` in OA game console.
 *New Cvars*
 
 **Server-side:**<br>
+ - `g_delagProjectiles`<br>
+    <= 0 for old behavior (no projectiles delag);
+    == 1 for less old behavior (50 msec);
+    == 2 accurate to 1 server snap (usually similar to 50 msec);
+    otherwise: add client ping to the nudge, clamped at g_delagProjectiles.
+    100 by default (and therefore, the last option).
  - `g_enableBetting`<br>
     1 to enable *all* the betting features, 1 by default.
  - `g_backendAddr`<br>

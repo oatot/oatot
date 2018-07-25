@@ -149,6 +149,7 @@ vmCvar_t g_rockets;
 // OATOT Cvars.
 
 // Meaningful for the external users.
+vmCvar_t g_delagProjectiles;
 vmCvar_t g_enableBetting; // 1 to enable all the betting features, 0 to disable it.
 vmCvar_t g_backendAddr; // The address (IP:port) of oatot backend.
 vmCvar_t g_makingBetsTime; // Time for making bets & warmup before match (in mins).
@@ -305,6 +306,7 @@ static cvarTable_t gameCvarTable[] = {
     // oatot Cvars.
 
     // Meaningful for the external users.
+    { &g_delagProjectiles, "g_delagProjectiles", "100", CVAR_SYSTEMINFO, 0, qfalse },
     { &g_enableBetting, "g_enableBetting", "1", 0, 0, qfalse },
     { &g_backendAddr, "g_backendAddr", "127.0.0.1:13283", 0, 0, qfalse },
     { &g_makingBetsTime, "g_makingBetsTime", "2", 0, 0, qfalse },
