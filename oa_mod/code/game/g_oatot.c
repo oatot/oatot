@@ -8,7 +8,7 @@
 //=====================================
 
 // Call certain RPCs needed.
-// (asl backend to give info).
+// (ask backend to give info).
 
 /*
 ==================
