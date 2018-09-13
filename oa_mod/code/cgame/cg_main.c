@@ -292,6 +292,7 @@ vmCvar_t cg_chatBeep;
 vmCvar_t cg_teamChatBeep;
 
 // OATOT Cvars.
+vmCvar_t cg_ambientSounds;
 vmCvar_t cg_scoreboardEffects;
 vmCvar_t cg_scoreboardSeason;
 vmCvar_t cg_scoreboardAggressive;
@@ -511,6 +512,7 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_chatBeep, "cg_chatBeep", "1", CVAR_ARCHIVE},
     {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE},
 
+    {&cg_ambientSounds, "cg_ambientSounds", "1", CVAR_ARCHIVE},
     {&cg_scoreboardEffects, "cg_scoreboardEffects", "0", CVAR_ARCHIVE},
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},

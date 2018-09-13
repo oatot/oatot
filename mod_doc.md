@@ -43,6 +43,8 @@ Basic stuff you can call by typing `/<command>` in OA game console.
     Time to wait after `/timein` cmd (in seconds).
 
 **Client-side:**<br>
+ - `cg_ambientSounds`<br>
+    0 to disable ambient sounds, 1 by default.
  - `cg_scoreboardEffects`<br>
     1 to enable additional scoreboard effects, 0 by default.
  - `cg_scoreboardSeason`<br>

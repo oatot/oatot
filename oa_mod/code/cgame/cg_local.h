@@ -1506,6 +1506,7 @@ extern vmCvar_t cg_chatBeep;
 extern vmCvar_t cg_teamChatBeep;
 
 // OATOT Cvars.
+extern vmCvar_t cg_ambientSounds;
 extern vmCvar_t cg_scoreboardEffects;
 extern vmCvar_t cg_scoreboardSeason;
 extern vmCvar_t cg_scoreboardAggressive;
