@@ -2216,6 +2216,85 @@ int CG_LightVerts(vec3_t normal, int numVerts, polyVert_t* verts) {
     return qtrue;
 }
 
+void CG_setRGBA(byte *incolor, char *instring) {
+    if (strlen(instring) == 1 && ColorIndex(*(instring)) >= 0 && ColorIndex(*(instring)) < MAX_CCODES) {
+        incolor[0] = (int)(g_color_table[ColorIndex(*(instring))][0]*255);
+        incolor[1] = (int)(g_color_table[ColorIndex(*(instring))][1]*255);
+        incolor[2] = (int)(g_color_table[ColorIndex(*(instring))][2]*255);
+        incolor[3] = 255;
+    }
+    else if (!strcmp(instring, "red"))
+        CG_setRGBA(incolor, "1");
+    else if (!strcmp(instring, "green"))
+        CG_setRGBA(incolor, "2");
+    else if (!strcmp(instring, "yellow"))
+        CG_setRGBA(incolor, "3");
+    else if (!strcmp(instring, "blue"))
+        CG_setRGBA(incolor, "4");
+    else if (!strcmp(instring, "cyan"))
+        CG_setRGBA(incolor, "5");
+    else if (!strcmp(instring, "purple"))
+        CG_setRGBA(incolor, "6");
+    else if (!strcmp(instring, "white"))
+        CG_setRGBA(incolor, "7");
+    else if (!strcmp(instring, "orange"))
+        CG_setRGBA(incolor, "8");
+    else {
+        incolor[0] = hexToRed(instring);
+        incolor[1] = hexToGreen(instring);
+        incolor[2] = hexToBlue(instring);
+        incolor[3] = hexToAlpha(instring);
+    }
+}
+
+/*
+===============
+CG_setColor
+===============
+*/
+void CG_setColor(
+    clientInfo_t* ci,
+    refEntity_t* head,
+    refEntity_t* torso,
+    refEntity_t* legs,
+    int state
+){
+    clientInfo_t *localPlayer;
+    localPlayer = &cgs.clientinfo[cg.clientNum];
+
+    if ((state & EF_DEAD)  && cg_deadBodyDarken.integer) {
+        CG_setRGBA(legs->shaderRGBA, cg_deadBodyColor.string);
+        CG_setRGBA(torso->shaderRGBA, cg_deadBodyColor.string);
+        CG_setRGBA(head->shaderRGBA, cg_deadBodyColor.string);
+        return;
+    } else if (localPlayer->team == TEAM_FREE || (localPlayer->team != ci->team && !cg_forceTeamModels.integer && localPlayer->team != TEAM_SPECTATOR)) {
+        CG_setRGBA(legs->shaderRGBA, cg_enemyLegsColor.string);
+        CG_setRGBA(torso->shaderRGBA, cg_enemyTorsoColor.string);
+        CG_setRGBA(head->shaderRGBA, cg_enemyHeadColor.string);
+        return;
+    } else if ((ci->team == TEAM_BLUE && cg_forceTeamModels.integer) || (ci->team == TEAM_BLUE && localPlayer->team == TEAM_SPECTATOR)) {
+        CG_setRGBA(legs->shaderRGBA, cg_blueLegsColor.string);
+        CG_setRGBA(torso->shaderRGBA, cg_blueTorsoColor.string);
+        CG_setRGBA(head->shaderRGBA, cg_blueHeadColor.string);
+        return;
+    } else if ((ci->team == TEAM_RED &&  cg_forceTeamModels.integer) || (ci->team == TEAM_RED && localPlayer->team == TEAM_SPECTATOR)) {
+        CG_setRGBA(legs->shaderRGBA, cg_redLegsColor.string);
+        CG_setRGBA(torso->shaderRGBA, cg_redTorsoColor.string);
+        CG_setRGBA(head->shaderRGBA, cg_redHeadColor.string);
+        return;
+    } else if (localPlayer->team != TEAM_FREE && (localPlayer->team == ci->team && !cg_forceTeamModels.integer)) {
+        CG_setRGBA(legs->shaderRGBA, cg_teamLegsColor.string);
+        CG_setRGBA(torso->shaderRGBA, cg_teamTorsoColor.string);
+        CG_setRGBA(head->shaderRGBA, cg_teamHeadColor.string);
+        return;
+    } else {
+        CG_setRGBA(legs->shaderRGBA, cg_enemyLegsColor.string);
+        CG_setRGBA(torso->shaderRGBA, cg_enemyTorsoColor.string);
+        CG_setRGBA(head->shaderRGBA, cg_enemyHeadColor.string);
+        return;
+    }
+}
+
 /*
 ===============
 CG_Player
@@ -2296,6 +2375,9 @@ void CG_Player(centity_t* cent) {
     memset(&legs, 0, sizeof(legs));
     memset(&torso, 0, sizeof(torso));
     memset(&head, 0, sizeof(head));
+
+    CG_setColor(ci, &head, &torso, &legs, cent->currentState.eFlags);
+
     // get the rotation information
     CG_PlayerAngles(cent, legs.axis, torso.axis, head.axis);
     // get the animation state (after rotation, to allow feet shuffle)

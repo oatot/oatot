@@ -58,3 +58,20 @@ Basic stuff you can call by typing `/<command>` in OA game console.
  - `cg_hudFlagStyle`<br>
     0 to disable new flag status HUD.
     1 by default.
+ - `cg_deadBodyDarken` "1" by default.
+ - `cg_deadBodyColor`
+ - `cg_teamLegsColor` "white" by default.
+ - `cg_teamTorsoColor` "white" by default.
+ - `cg_teamHeadColor` "white" by default.
+ - `cg_redLegsColor` "red" by default.
+ - `cg_redTorsoColor` "red" by default.
+ - `cg_redHeadColor` "red" by default.
+ - `cg_blueLegsColor` "blue" by default.
+ - `cg_blueTorsoColor` "blue by default.
+ - `cg_blueHeadColor` "blue" by default.
+ - `cg_enemyLegsColor` "yellow" by default.
+ - `cg_enemyTorsoColor` "yellow" by default.
+ - `cg_enemyHeadColor` "yellow" by default.
+ - `cg_forceTeamModels`
+    0 by default, 1 to activate red/blue color switch.
+    with 0, the switch is based on enemy/team Cvars.
