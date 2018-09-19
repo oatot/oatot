@@ -1514,6 +1514,10 @@ extern vmCvar_t cg_scoreboardSeason;
 extern vmCvar_t cg_scoreboardAggressive;
 extern vmCvar_t cg_hudFlagStyle;
 
+extern vmCvar_t cg_blueTeamModel;
+extern vmCvar_t cg_redTeamModel;
+extern vmCvar_t cg_enemyModel;
+extern vmCvar_t cg_teamModel;
 extern vmCvar_t cg_forceTeamModels;
 
 extern vmCvar_t cg_enemyHeadColor;
@@ -1677,13 +1681,17 @@ void CG_UpdateGraphicFraction(float newFract);
 // end loadingscreen
 
 //
-// cg_player.c
+// cg_players.c
 //
 void CG_Player(centity_t* cent);
 void CG_ResetPlayerEntity(centity_t* cent);
 void CG_AddRefEntityWithPowerups(refEntity_t* ent, entityState_t* state, int team, qboolean isMissile);
 void CG_NewClientInfo(int clientNum);
 sfxHandle_t CG_CustomSound(int clientNum, const char* soundName);
+int hexToRed(char* hexin);
+int hexToGreen(char* hexin);
+int hexToBlue(char* hexin);
+int hexToAlpha(char* hexin);
 void CG_setRGBA(byte *incolor, char *instring);
 
 //

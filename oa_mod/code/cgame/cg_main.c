@@ -298,6 +298,10 @@ vmCvar_t cg_scoreboardSeason;
 vmCvar_t cg_scoreboardAggressive;
 vmCvar_t cg_hudFlagStyle;
 
+vmCvar_t cg_blueTeamModel;
+vmCvar_t cg_redTeamModel;
+vmCvar_t cg_enemyModel;
+vmCvar_t cg_teamModel;
 vmCvar_t cg_forceTeamModels;
 
 vmCvar_t cg_blueHeadColor;
@@ -539,6 +543,10 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
     {&cg_hudFlagStyle, "cg_hudFlagStyle", "1", CVAR_ARCHIVE},
+    {&cg_blueTeamModel, "cg_blueTeamModel", "skelebot/pm", CVAR_ARCHIVE},
+    {&cg_redTeamModel, "cg_redTeamModel", "major/pm", CVAR_ARCHIVE},
+    {&cg_enemyModel, "cg_enemyModel", "smarine/pm", CVAR_ARCHIVE},
+    {&cg_teamModel, "cg_teamModel", "major/pm", CVAR_ARCHIVE},
     {&cg_forceTeamModels, "cg_forceTeamModels", "0", CVAR_ARCHIVE},
     {&cg_enemyHeadColor, "cg_enemyHeadColor", "yellow", CVAR_ARCHIVE},
     {&cg_enemyTorsoColor, "cg_enemyTorsoColor", "yellow", CVAR_ARCHIVE},
