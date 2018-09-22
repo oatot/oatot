@@ -292,10 +292,37 @@ vmCvar_t cg_chatBeep;
 vmCvar_t cg_teamChatBeep;
 
 // OATOT Cvars.
+vmCvar_t cg_ambientSounds;
 vmCvar_t cg_scoreboardEffects;
 vmCvar_t cg_scoreboardSeason;
 vmCvar_t cg_scoreboardAggressive;
 vmCvar_t cg_hudFlagStyle;
+
+vmCvar_t cg_blueTeamModel;
+vmCvar_t cg_redTeamModel;
+vmCvar_t cg_enemyModel;
+vmCvar_t cg_teamModel;
+vmCvar_t cg_forceTeamModels;
+
+vmCvar_t cg_blueHeadColor;
+vmCvar_t cg_blueTorsoColor;
+vmCvar_t cg_blueLegsColor;
+
+vmCvar_t cg_redHeadColor;
+vmCvar_t cg_redTorsoColor;
+vmCvar_t cg_redLegsColor;
+
+vmCvar_t cg_enemyHeadColor;
+vmCvar_t cg_enemyTorsoColor;
+vmCvar_t cg_enemyLegsColor;
+
+vmCvar_t cg_teamHeadColor;
+vmCvar_t cg_teamTorsoColor;
+vmCvar_t cg_teamLegsColor;
+
+vmCvar_t cg_deadBodyDarken;
+vmCvar_t cg_deadBodyColor;
+
 // Utility.
 vmCvar_t cg_scoreboardDefaultSeasonBackup;
 
@@ -511,10 +538,30 @@ static cvarTable_t cvarTable[] = {// bk001129
     {&cg_chatBeep, "cg_chatBeep", "1", CVAR_ARCHIVE},
     {&cg_teamChatBeep, "cg_teamChatBeep", "1", CVAR_ARCHIVE},
 
+    {&cg_ambientSounds, "cg_ambientSounds", "1", CVAR_ARCHIVE},
     {&cg_scoreboardEffects, "cg_scoreboardEffects", "0", CVAR_ARCHIVE},
     {&cg_scoreboardSeason, "cg_scoreboardSeason", "-1", CVAR_ARCHIVE},
     {&cg_scoreboardAggressive, "cg_scoreboardAggressive", "0", CVAR_ARCHIVE},
     {&cg_hudFlagStyle, "cg_hudFlagStyle", "1", CVAR_ARCHIVE},
+    {&cg_blueTeamModel, "cg_blueTeamModel", "skelebot/pm", CVAR_ARCHIVE},
+    {&cg_redTeamModel, "cg_redTeamModel", "major/pm", CVAR_ARCHIVE},
+    {&cg_enemyModel, "cg_enemyModel", "smarine/pm", CVAR_ARCHIVE},
+    {&cg_teamModel, "cg_teamModel", "major/pm", CVAR_ARCHIVE},
+    {&cg_forceTeamModels, "cg_forceTeamModels", "0", CVAR_ARCHIVE},
+    {&cg_enemyHeadColor, "cg_enemyHeadColor", "yellow", CVAR_ARCHIVE},
+    {&cg_enemyTorsoColor, "cg_enemyTorsoColor", "yellow", CVAR_ARCHIVE},
+    {&cg_enemyLegsColor, "cg_enemyLegsColor", "yellow", CVAR_ARCHIVE},
+    {&cg_blueHeadColor, "cg_blueHeadColor", "blue", CVAR_ARCHIVE},
+    {&cg_blueTorsoColor, "cg_blueTorsoColor", "blue", CVAR_ARCHIVE},
+    {&cg_blueLegsColor, "cg_blueLegsColor", "blue", CVAR_ARCHIVE},
+    {&cg_redHeadColor, "cg_redHeadColor", "red", CVAR_ARCHIVE},
+    {&cg_redTorsoColor, "cg_redTorsoColor", "red", CVAR_ARCHIVE},
+    {&cg_redLegsColor, "cg_redLegsColor", "red", CVAR_ARCHIVE},
+    {&cg_teamHeadColor, "cg_teamHeadColor", "white", CVAR_ARCHIVE},
+    {&cg_teamTorsoColor, "cg_teamTorsoColor", "white", CVAR_ARCHIVE},
+    {&cg_teamLegsColor, "cg_teamLegsColor", "white", CVAR_ARCHIVE},
+    {&cg_deadBodyDarken, "cg_deadBodyDarken", "1", CVAR_ARCHIVE},
+    {&cg_deadBodyColor, "cg_deadBodyColor", "0x323232FF", CVAR_ARCHIVE},
     // Utility.
     {&cg_scoreboardDefaultSeasonBackup, "cg_scoreboardDefaultSeasonBackup", "0", CVAR_ARCHIVE},
 };

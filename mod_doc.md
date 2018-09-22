@@ -19,6 +19,12 @@ Basic stuff you can call by typing `/<command>` in OA game console.
 *New Cvars*
 
 **Server-side:**<br>
+ - `g_delagProjectiles`<br>
+    <= 0 for old behavior (no projectiles delag);
+    == 1 for less old behavior (50 msec);
+    == 2 accurate to 1 server snap (usually similar to 50 msec);
+    otherwise: add client ping to the nudge, clamped at g_delagProjectiles.
+    100 by default (and therefore, the last option).
  - `g_enableBetting`<br>
     1 to enable *all* the betting features, 1 by default.
  - `g_backendAddr`<br>
@@ -37,6 +43,8 @@ Basic stuff you can call by typing `/<command>` in OA game console.
     Time to wait after `/timein` cmd (in seconds).
 
 **Client-side:**<br>
+ - `cg_ambientSounds`<br>
+    0 to disable ambient sounds, 1 by default.
  - `cg_scoreboardEffects`<br>
     1 to enable additional scoreboard effects, 0 by default.
  - `cg_scoreboardSeason`<br>
@@ -50,3 +58,24 @@ Basic stuff you can call by typing `/<command>` in OA game console.
  - `cg_hudFlagStyle`<br>
     0 to disable new flag status HUD.
     1 by default.
+ - `cg_forceTeamModels`
+    0 by default, 1 to activate red/blue color switch.
+    with 0, the switch is based on enemy/team Cvars.
+ - `cg_enemyModel` "smarine/pm" by default.
+ - `cg_teamModel` "major/pm" by default.
+ - `cg_redTeamModel` "major/pm" by default.
+ - `cg_blueTeamModel` "skelebot/pm" by default.
+ - `cg_deadBodyDarken` "1" by default.
+ - `cg_deadBodyColor` "0x323232FF" by default.
+ - `cg_teamLegsColor` "white" by default.
+ - `cg_teamTorsoColor` "white" by default.
+ - `cg_teamHeadColor` "white" by default.
+ - `cg_redLegsColor` "red" by default.
+ - `cg_redTorsoColor` "red" by default.
+ - `cg_redHeadColor` "red" by default.
+ - `cg_blueLegsColor` "blue" by default.
+ - `cg_blueTorsoColor` "blue by default.
+ - `cg_blueHeadColor` "blue" by default.
+ - `cg_enemyLegsColor` "yellow" by default.
+ - `cg_enemyTorsoColor` "yellow" by default.
+ - `cg_enemyHeadColor` "yellow" by default.

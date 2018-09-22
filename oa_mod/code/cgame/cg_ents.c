@@ -835,7 +835,9 @@ static void CG_AddCEntity(centity_t* cent) {
     // calculate the current origin
     CG_CalcEntityLerpPositions(cent);
     // add automatic effects
-    CG_EntityEffects(cent);
+    if (!(cg_ambientSounds.integer == 0 && cent->currentState.eType == ET_SPEAKER)) {
+        CG_EntityEffects(cent);
+    }
     switch (cent->currentState.eType) {
     default:
         CG_Error("Bad entity type: %i\n", cent->currentState.eType);

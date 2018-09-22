@@ -32,6 +32,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 // If you absolutely need something stored, it can either be kept
 // by the server in the server stored userinfos, or stashed in a cvar.
 
+#define MAX_CCODES 62
+
 #ifdef MISSIONPACK
 #define CG_FONT_THRESHOLD 0.1
 #endif
@@ -1255,6 +1257,7 @@ typedef struct {
     int makingBetsTime;
     // Total timeouts time (for delay, in msec).
     int timeoutsDelay;
+    qboolean isTimeoutTime;
 
     // teamchat width is *3 because of embedded color codes
     char teamChatMsgs[TEAMCHAT_HEIGHT][TEAMCHAT_WIDTH * 3 + 1];
@@ -1505,10 +1508,37 @@ extern vmCvar_t cg_chatBeep;
 extern vmCvar_t cg_teamChatBeep;
 
 // OATOT Cvars.
+extern vmCvar_t cg_ambientSounds;
 extern vmCvar_t cg_scoreboardEffects;
 extern vmCvar_t cg_scoreboardSeason;
 extern vmCvar_t cg_scoreboardAggressive;
 extern vmCvar_t cg_hudFlagStyle;
+
+extern vmCvar_t cg_blueTeamModel;
+extern vmCvar_t cg_redTeamModel;
+extern vmCvar_t cg_enemyModel;
+extern vmCvar_t cg_teamModel;
+extern vmCvar_t cg_forceTeamModels;
+
+extern vmCvar_t cg_enemyHeadColor;
+extern vmCvar_t cg_enemyTorsoColor;
+extern vmCvar_t cg_enemyLegsColor;
+
+extern vmCvar_t cg_blueHeadColor;
+extern vmCvar_t cg_blueTorsoColor;
+extern vmCvar_t cg_blueLegsColor;
+
+extern vmCvar_t cg_redHeadColor;
+extern vmCvar_t cg_redTorsoColor;
+extern vmCvar_t cg_redLegsColor;
+
+extern vmCvar_t cg_teamHeadColor;
+extern vmCvar_t cg_teamTorsoColor;
+extern vmCvar_t cg_teamLegsColor;
+
+extern vmCvar_t cg_deadBodyDarken;
+extern vmCvar_t cg_deadBodyColor;
+
 // Utility.
 extern vmCvar_t cg_scoreboardDefaultSeasonBackup;
 
@@ -1651,13 +1681,18 @@ void CG_UpdateGraphicFraction(float newFract);
 // end loadingscreen
 
 //
-// cg_player.c
+// cg_players.c
 //
 void CG_Player(centity_t* cent);
 void CG_ResetPlayerEntity(centity_t* cent);
 void CG_AddRefEntityWithPowerups(refEntity_t* ent, entityState_t* state, int team, qboolean isMissile);
 void CG_NewClientInfo(int clientNum);
 sfxHandle_t CG_CustomSound(int clientNum, const char* soundName);
+int hexToRed(char* hexin);
+int hexToGreen(char* hexin);
+int hexToBlue(char* hexin);
+int hexToAlpha(char* hexin);
+void CG_setRGBA(byte *incolor, char *instring);
 
 //
 // cg_predict.c
